@@ -42,3 +42,7 @@ domino <- setClass(
 print.domino = function(dom){
     cat('A Domino object of', length(dom@clusters), 'cells.\n')
 }
+
+test <- function() {
+    Quick test to double check git is set up correctly
+}
