@@ -13,7 +13,7 @@
 #' @export
 #' 
 signaling_heatmap = function(dom, clusts = NULL, min_thresh = -Inf, max_thresh = Inf, 
-                             scale = 'none', normalize = 'none', ...){
+                              scale = 'none', normalize = 'none', ...){
   if(!dom@misc[['build']]){
     stop('Please run domino_build prior to generate signaling network.')
   }
@@ -140,8 +140,8 @@ incoming_signaling_heatmap = function(dom,  rec_clust, clusts = NULL, min_thresh
 #' @export
 #' 
 signaling_network = function(dom,  cols = NULL, edge_weight = .3, clusts = NULL, showOutgoingSignalingClusts = NULL,
-                             showIncomingSignalingClusts = NULL, min_thresh = -Inf, max_thresh = Inf, normalize = 'none',
-                             scale = 'sq', layout = 'circle', scale_by = 'rec_sig', vert_scale = 3, plot_title = NULL, ...){
+                            showIncomingSignalingClusts = NULL, min_thresh = -Inf, max_thresh = Inf, normalize = 'none',
+                            scale = 'sq', layout = 'circle', scale_by = 'rec_sig', vert_scale = 3, plot_title = NULL, ...){
   if(!length(dom@clusters)){
     stop("This domino object was not built with clusters so there is no intercluster signaling.")
   }
@@ -336,7 +336,7 @@ gene_network = function(dom, clust = NULL, OutgoingSignalingClust = NULL,
       recs <- dom@linkages$clust_tf_rec[[cl]][[tf]]
       all_recs = c(all_recs, recs)
       if(length(recs)){
-         all_tfs = c(all_tfs, tf)
+        all_tfs = c(all_tfs, tf)
       }
       for(rec in recs){
         links = c(links, rec, tf)
@@ -559,7 +559,7 @@ feat_heatmap = function(dom, feats = NULL, bool = TRUE, bool_thresh = .2,
 #' @export
 #' 
 cor_heatmap = function(dom, bool = TRUE, bool_thresh = .15, title = TRUE, 
-                       feats = NULL, recs = NULL, mark_connections = FALSE, ...){
+                      feats = NULL, recs = NULL, mark_connections = FALSE, ...){
   mat = dom@cor
   
   if(bool){
@@ -662,10 +662,10 @@ cor_scatter = function(dom, tf, rec, remove_rec_dropout = TRUE, ...){
 #' 
 circos_ligand_receptor <- 
   function(dom, receptor,
-           file,
-           ligand_expression_threshold = 0.01,
-           cell_idents = NULL, cell_colors = NULL,
-           ident_names = NULL){
+          file,
+          ligand_expression_threshold = 0.01,
+          cell_idents = NULL, cell_colors = NULL,
+          ident_names = NULL){
     # dom: A domino object with network built (build_domino)
     # [,1] "origin": formatted as [cell_ident]_[ligand]
     # [,2] "destination": name of the receptor receiving ligand signals
@@ -689,10 +689,10 @@ circos_ligand_receptor <-
     for(cell in cell_idents){
       cell_barcodes <- colnames(z_scores[,dom@clusters == cell])
       df <- mean_ligand_expression(z_scores,
-                                   ligands = ligands,
-                                   cell_ident = cell, 
-                                   cell_barcodes = cell_barcodes, 
-                                   destination = receptor)
+                                  ligands = ligands,
+                                  cell_ident = cell, 
+                                  cell_barcodes = cell_barcodes, 
+                                  destination = receptor)
       signaling_df <- rbind(signaling_df, df)
     }
     # TODO: replace temporary fix to remove NANs from mean expression
@@ -714,7 +714,7 @@ circos_ligand_receptor <-
     # order group as a factor with the receptor coming first
     group <- factor(group,
                     levels = c(receptor,
-                               sort(unique(gsub("_.*", "", nm))[-1]) # alphabetical order of the other cell idents
+                              sort(unique(gsub("_.*", "", nm))[-1]) # alphabetical order of the other cell idents
                     ))
     
     # colors for ligand chords
@@ -741,12 +741,12 @@ circos_ligand_receptor <-
     circos.par(start.degree = 0)
     
     chordDiagram(arc_df, group = group, grid.col = grid_col,
-                 link.visible = FALSE, # hide default chords
-                 annotationTrack = c("grid"),
-                 preAllocateTracks = list(
-                   track.height = mm_h(4),
-                   track.margin = c(mm_h(4), 0)),
-                 big.gap = 2
+                link.visible = FALSE, # hide default chords
+                annotationTrack = c("grid"),
+                preAllocateTracks = list(
+                  track.height = mm_h(4),
+                  track.margin = c(mm_h(4), 0)),
+                big.gap = 2
     )
     
     for(send in signaling_df$origin){

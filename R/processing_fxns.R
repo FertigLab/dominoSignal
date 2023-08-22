@@ -70,31 +70,31 @@ build_domino = function(dom, max_tf_per_clust = 5, min_tf_pval = .01,
         # If cluster methods are used, provide cluster-specific tf_rec linkages
         cl_tf_rec = list()
         for(clust in levels(dom@clusters)){
-          percent = dom@misc$cl_rec_percent[, clust]
-          pass_genes = names(percent[percent > min_rec_percentage])
-          expressed = c()
-          for(rec in names(dom@linkages$rec_lig)){
+        percent = dom@misc$cl_rec_percent[, clust]
+        pass_genes = names(percent[percent > min_rec_percentage])
+        expressed = c()
+        for(rec in names(dom@linkages$rec_lig)){
             if(rec %in% names(dom@linkages$complexes)){
-              rec_gene = dom@linkages$complexes[[rec]]
+            rec_gene = dom@linkages$complexes[[rec]]
             } else {rec_gene = rec}
             
             if(length(rec_gene) == sum(rec_gene %in% pass_genes)){
-              expressed = c(expressed, rec)
+                expressed = c(expressed, rec)
             }
-          } 
-          active_tf = dom@linkages$clust_tf[[clust]]
-          cl_tf_rec[[clust]] =
-              lapply(dom@linkages$tf_rec[active_tf], 
-                     FUN = function(x){return(x[x %in% expressed])}
-                     )
-          }
+            } 
+            active_tf = dom@linkages$clust_tf[[clust]]
+            cl_tf_rec[[clust]] =
+                lapply(dom@linkages$tf_rec[active_tf], 
+                    FUN = function(x){return(x[x %in% expressed])}
+                    )
+            }
         dom@linkages[['clust_tf_rec']] = cl_tf_rec
         
         # Get a list of active receptors for each cluster
         clust_rec = list()
         for(clust in levels(dom@clusters)){
             vec = lc(dom@linkages$clust_tf_rec[[clust]],
-                     lc(clust_tf, clust))
+                    lc(clust_tf, clust))
             vec = unique(vec[!is.na(vec)])
             clust_rec[[clust]] = vec
         }
@@ -103,10 +103,10 @@ build_domino = function(dom, max_tf_per_clust = 5, min_tf_pval = .01,
         # Get a list of incoming ligands for each cluster
         clust_ligs = list()
         for(clust in levels(dom@clusters)){
-              vec = lc(dom@linkages$rec_lig,
-                       lc(clust_rec, clust))
-              vec = unique(vec[!is.na(vec)])
-              clust_ligs[[clust]] = vec
+                vec = lc(dom@linkages$rec_lig,
+                        lc(clust_rec, clust))
+                vec = unique(vec[!is.na(vec)])
+                clust_ligs[[clust]] = vec
         }
         dom@linkages[['clust_incoming_lig']] = clust_ligs
 
@@ -121,12 +121,12 @@ build_domino = function(dom, max_tf_per_clust = 5, min_tf_pval = .01,
             inc_ligs = clust_ligs[[clust]]
             rl_map = dom@misc[["rl_map"]]
             inc_ligs <- sapply(inc_ligs, function(l){
-               int <- rl_map[rl_map$L.name == l, ][1,] 
-               if((int$L.name != int$L.gene) & !grepl("\\,", int$L.gene)){
-                   int$L.gene
-               } else { 
-                   int$L.name
-               }
+                int <- rl_map[rl_map$L.name == l, ][1,] 
+                if((int$L.name != int$L.gene) & !grepl("\\,", int$L.gene)){
+                    int$L.gene
+                } else { 
+                    int$L.name
+                }
             })
             if(length(dom@linkages$complexes) > 0){ #if complexes were used
                 inc_ligs_list <- lapply(inc_ligs, function(l){
@@ -149,9 +149,9 @@ build_domino = function(dom, max_tf_per_clust = 5, min_tf_pval = .01,
             for(c2 in levels(dom@clusters)){
                 n_cell = length(which(dom@clusters == c2))
                 if(n_cell > 1){
-                  expr = matrix(dom@z_scores[lig_genes, which(dom@clusters == c2)],
+                    expr = matrix(dom@z_scores[lig_genes, which(dom@clusters == c2)],
                                 nrow = length(lig_genes))
-                  sig = rowMeans(expr)
+                    sig = rowMeans(expr)
                 } else if(n_cell == 1){
                     sig = dom@z_scores[lig_genes, which(dom@clusters == c2)]
                 } else {
