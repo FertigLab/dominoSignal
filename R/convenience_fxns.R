@@ -101,6 +101,13 @@ collate_network_items = function(dom, clusters = NULL, return = NULL){
 #' @export
 
 table_convert_genes <- function(genes, from, to, conversion_table) {
+    # Check inputs:
+    stopifnot("Genes must be a vector of characters" = (is(test, "character") & is(test, "vector")))
+    stopifnot("From must be one of ENSMUSG, ENSG, MGI, or HGNC" = from %in% c("ENSMUSG", "ENSG", "MGI", "HGNC"))
+    stopifnot("To must be one of MGI or HGNC" = to %in% c("MGI", "HGNC"))
+    stopifnot("Conversion table must be provided with at least two of column names mm.ens, hs.ens, mgi and/or hgnc" =
+        (is(conversion_table, "data.frame") & length(which(colnames(conversion_table) %in% c("mm.ens", "hs.ens", "mgi", "hgnc"))) > 1))
+
     if (from == 'ENSMUSG'){
         col1 = conversion_table$mm.ens 
     }
