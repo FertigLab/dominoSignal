@@ -11,8 +11,6 @@ name: R
 on:
   push:
     branches: [ "46-github-workflow-for-build-check-bioccheck-for-quality-control" ]
-  pull_request:
-    branches: [ "46-github-workflow-for-build-check-bioccheck-for-quality-control" ]
 
 permissions:
   contents: read
