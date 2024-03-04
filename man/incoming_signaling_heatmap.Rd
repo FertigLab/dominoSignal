@@ -10,6 +10,8 @@ incoming_signaling_heatmap(
   clusts = NULL,
   min_thresh = -Inf,
   max_thresh = Inf,
+  display_top = NULL,
+  display_method = "mean",
   scale = "none",
   normalize = "none",
   title = TRUE,
@@ -26,6 +28,10 @@ incoming_signaling_heatmap(
 \item{min_thresh}{Minimum signaling threshold for plotting. Defaults to -Inf for no threshold.}
 
 \item{max_thresh}{Maximum signaling threshold for plotting. Defaults to Inf for no threshold.}
+
+\item{display_top}{Number of top receptor-ligand pairs to display in output (rather than all results)}
+
+\item{display_method}{How to determine top pairs. Options are 'mean' or 'median' of pair's expression across all incoming populations, or 'max' to take the top N invidivual expression values with no repeats}
 
 \item{scale}{How to scale the values (after thresholding). Options are 'none', 'sqrt' for square root, or 'log' for log10.}
 
