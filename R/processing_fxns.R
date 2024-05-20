@@ -136,12 +136,12 @@ build_domino <- function(
         inc_ligs <- unlist(inc_ligs_list)
       }
       lig_genes <- intersect(inc_ligs, rownames(dom@z_scores))
-      if (length(lig_genes) %in% c(0, 1)) {
+      if (length(lig_genes) == 0) {
         lig_genes <- numeric(0)
       }
       cl_sig_mat <- matrix(0, ncol = length(levels(dom@clusters)), nrow = length(lig_genes))
       colnames(cl_sig_mat) <- colnames(signaling)
-      rownames(cl_sig_mat) <- lig_genes
+      if (!identical(lig_genes, numeric(0))) {rownames(cl_sig_mat) <- lig_genes}
       for (c2 in levels(dom@clusters)) {
         n_cell <- length(which(dom@clusters == c2))
         if (n_cell > 1) {
@@ -170,7 +170,8 @@ build_domino <- function(
           }
         })
         names(cl_sig_list) <- names(inc_ligs_list)
-        if (length(cl_sig_list) > 1) {
+        # Check if at least one complex is signaling (and that cl_sig_list isn't all NULL)
+        if (length(cl_sig_list) > 1 & !all(sapply(cl_sig_list, is.null))) {
           cl_sig_mat <- do.call(rbind, cl_sig_list)
         }
       }
