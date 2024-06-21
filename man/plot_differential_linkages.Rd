@@ -29,3 +29,11 @@ a Heatmap-class object of features ranked by test_statistic annotated with the p
 \description{
 Plot differential linkages among domino results ranked by a comparative statistic
 }
+\examples{
+plot_differential_linkages(
+ differential_linkages = dominoSignal:::tiny_differential_linkage_c1,
+ test_statistic = "p.value",
+ stat_ranking = "ascending"
+)
+
+}

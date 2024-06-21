@@ -19,3 +19,12 @@ A linkage summary class object consisting of nested lists of the active transcri
 \description{
 Creates a linkage_summary object storing the linkages learned in different domino objects as nested lists to facilitate comparisons of networks learned by domino across subject covariates.
 }
+\examples{
+dom_ls <- dominoSignal:::dom_ls_tiny
+meta_df <- data.frame("ID" = c("dom1", "dom2"), "group" = c("A", "B"))
+summarize_linkages(
+ domino_results = dom_ls, subject_meta = meta_df, 
+ subject_names = meta_df$ID
+)
+
+}

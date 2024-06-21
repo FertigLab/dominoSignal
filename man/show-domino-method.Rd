@@ -15,4 +15,10 @@ a printed description of the number of cells in a domino object and its build st
 \description{
 Shows content overview of domino object
 }
+\examples{
+dominoSignal:::pbmc_dom_built_tiny
+
+show(dominoSignal:::pbmc_dom_built_tiny)
+
+}
 \keyword{internal}

@@ -26,3 +26,8 @@ A list containing linkages between some combination of receptors, ligands, trans
 \description{
 A function to pull linkages from a domino object
 }
+\examples{
+complexes <- dom_linkages(dominoSignal:::pbmc_dom_built_tiny, "complexes")
+tf_rec_by_cluster <- dom_linkages(dominoSignal:::pbmc_dom_built_tiny, "tf-receptor", TRUE)
+
+}

@@ -4,12 +4,14 @@
 \alias{rename_clusters}
 \title{Renames clusters in a domino object}
 \usage{
-rename_clusters(dom, clust_conv)
+rename_clusters(dom, clust_conv, warning = FALSE)
 }
 \arguments{
 \item{dom}{Domino object to rename clusters in}
 
 \item{clust_conv}{Named vector of conversions from old to new clusters. Values are taken as new clusters IDs and names as old cluster IDs.}
+
+\item{warning}{Logical. If TRUE, will warn if a cluster is not found in the conversion table. Default is FALSE.}
 }
 \value{
 A domino object with clusters renamed in all applicable slots.
@@ -23,4 +25,9 @@ using pySCENIC), and finds features enriched by cluster. It will return a
 domino object prepared for \code{\link[=build_domino]{build_domino()}}, which will calculate a signaling
 network.
 }
-\keyword{internal}
+\examples{
+new_clust <- c("CD8_T_cell" = "CD8+ T Cells",
+ "CD14_monocyte" = "CD14+ Monocytes", "B_cell" = "B Cells")
+pbmc_dom_built_tiny <- rename_clusters(dominoSignal:::pbmc_dom_built_tiny, new_clust)
+
+}
