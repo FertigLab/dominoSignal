@@ -50,8 +50,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using the cellphoneDB Database</a>
-    <a class="dropdown-item" href="../articles/domino_object_vignette.html">Interacting with dominoSignal Objects</a>
+    <a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using the CellPhoneDB Database</a>
+    <a class="dropdown-item" href="../articles/domino_object_vignette.html">Interacting with domino Objects</a>
     <a class="dropdown-item" href="../articles/plotting_vignette.html">Plotting Functions and Options</a>
     <a class="dropdown-item" href="../articles/tf_scenic_vignette.html">SCENIC for TF Activation Scoring</a>
   </div>
@@ -63,6 +63,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-news">News</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-news">
     <h6 class="dropdown-header" data-toc-skip>Releases</h6>
+    <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.99.2-alpha">dominoSignal v0.99.2</a>
     <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.1-alpha">dominoSignal v0.2.1</a>
     <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.2-alpha">dominoSignal v0.2.2</a>
     <div class="dropdown-divider"></div>
@@ -113,20 +114,21 @@ data can be downloaded <a href="https://cf.10xgenomics.com/samples/cell/pbmc3k/p
 <h2 id="options-and-setup">Options and Setup<a class="anchor" aria-label="anchor" href="#options-and-setup"></a>
 </h2>
 <details><summary>
-Required libraries
+Libraries and set up
 </summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fertiglab.github.io/dominoSignal/" class="external-link">dominoSignal</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fertiglab.github.io/dominoSignal/" class="external-link">dominoSignal</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/circlize" class="external-link">circlize</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/ComplexHeatmap" class="external-link">ComplexHeatmap</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span></span></code></pre></div>
 </details><details><summary>
 Data used in our vignettes can be downloaded from Zenodo
 </summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bfc</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span>ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># BiocFileCache helps with managing files across sessions</span></span>
+<span><span class="va">bfc</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span>ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">data_url</span> <span class="op">&lt;-</span> <span class="st">"https://zenodo.org/records/10951634/files"</span></span>
 <span></span>
 <span><span class="co"># download the reduced pbmc files preprocessed PBMC 3K scRNAseq data set as a</span></span>
@@ -141,7 +143,7 @@ Data used in our vignettes can be downloaded from Zenodo
 <span><span class="va">scenic_regulon_url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">data_url</span>, <span class="st">"/regulons_pbmc_3k.csv"</span><span class="op">)</span></span>
 <span><span class="va">scenic_regulon</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">bfc</span>, <span class="va">scenic_regulon_url</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># download cellphoneDB files</span></span>
+<span><span class="co"># download CellPhoneDB files</span></span>
 <span><span class="va">cellphone_url</span> <span class="op">&lt;-</span> <span class="st">"https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz"</span></span>
 <span><span class="va">cellphone_tar</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">bfc</span>, <span class="va">cellphone_url</span><span class="op">)</span></span>
 <span><span class="va">cellphone_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"/cellphone"</span><span class="op">)</span></span>
@@ -149,7 +151,7 @@ Data used in our vignettes can be downloaded from Zenodo
 <span><span class="va">cellphone_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">cellphone_dir</span>, <span class="st">"/cellphonedb-data-4.0.0/data"</span><span class="op">)</span></span>
 <span></span>
 <span></span>
-<span><span class="co"># directory for created inputs to pySCENIC and domino2</span></span>
+<span><span class="co"># directory for created inputs to pySCENIC and dominoSignal</span></span>
 <span><span class="va">input_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"/inputs"</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">input_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">input_dir</span><span class="op">)</span></span>
@@ -162,9 +164,8 @@ Data used in our vignettes can be downloaded from Zenodo
 <p>Analysis of cell-cell communication with dominoSignal often follows
 initial processing and annotation of scRNAseq data. We used the <a href="https://bioconductor.org/books/3.18/OSCA.workflows/unfiltered-human-pbmcs-10x-genomics.html" class="external-link">OSCA
 workflow</a> to prepare the data set for analysis with dominoSignal. The
-<a href="data-raw/example_data.R">complete processing script</a> is
-available in the data-raw directory of the dominoSignal package. The
-processed data can be downloaded from <a href="10.5281/zenodo.10124865">Zenodo</a>.</p>
+complete processing script is available in the data-raw directory of the
+dominoSignal package. The processed data can be downloaded from <a href="10.5281/zenodo.10124865">Zenodo</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pbmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">pbmc</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -180,7 +181,7 @@ processed data can be downloaded from <a href="10.5281/zenodo.10124865">Zenodo</
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"FertigLab/dominoSignal"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="loading-tf-and-r-l-data">Loading TF and R-L data<a class="anchor" aria-label="anchor" href="#loading-tf-and-r-l-data"></a>
+<h2 id="loading-tf-and-r---l-data">Loading TF and R - L data<a class="anchor" aria-label="anchor" href="#loading-tf-and-r---l-data"></a>
 </h2>
 <div class="section level3">
 <h3 id="loading-scenic-results">Loading SCENIC Results<a class="anchor" aria-label="anchor" href="#loading-scenic-results"></a>
@@ -196,7 +197,7 @@ driving TF activity or the TF inducing the receptor’s expression.</p>
 <span><span class="va">auc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">scenic_auc</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span class="op">=</span> <span class="fl">1</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span></span></code></pre></div>
 <p>The initial regulons data frame read into R from the ctx function has
-2 rows of column names that need to be replaced with one succinct
+two rows of column names that need to be replaced with one succinct
 description. dominoSignal has changed the input format for TF regulons
 to be a list storing vectors of target genes in each regulon, where the
 names of the list are the TF genes. This facilitates the use of
@@ -213,7 +214,7 @@ function.</p>
 orientation and should be transposed to TF x cell orientation. pySCENIC
 also appends “(+)” to TF names that are converted to “…” upon loading
 into R. These characters can be included without affecting the results
-of dominoSignal analysis, but can be confusing when querying TF features
+of dominoSignal analysis but can be confusing when querying TF features
 in the data. We recommend comprehensive removal of the “…” characters
 using the <code><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -224,13 +225,13 @@ using the <code><a href="https://rdrr.io/r/base/grep.html" class="external-link"
 <div class="section level3">
 <h3 id="load-cellphonedb-database">Load CellPhoneDB Database<a class="anchor" aria-label="anchor" href="#load-cellphonedb-database"></a>
 </h3>
-<p>dominoSignal has been updated to read ligand-receptor data bases in a
-uniform data.frame format referred to as a receptor-ligand map (rl_map)
-to enable the use of alternative or updated reference databases as
-opposed to a particular version of CellPhoneDB’s database in older
-versions of Domino. Each row corresponds to a ligand-receptor
+<p>dominoSignal has been updated to read ligand - receptor data bases in
+a uniform data frame format referred to as a receptor-ligand map
+(rl_map) to enable the use of alternative or updated reference databases
+in addition to the particular version of CellPhoneDB’s database in older
+versions of Domino. Each row corresponds to a ligand - receptor
 interaction. Genes participating in an interaction are referred to as
-“partner A” and “partner B” without a requirement for fixed ordering of
+“partner A” and “partner B” without requiring for fixed ordering of
 whether A or B is the ligand and vice versa. The minimum required
 columns of this data frame are:</p>
 <ul>
@@ -252,12 +253,12 @@ co-expressed to function. In these cases, the “name_*” column shows the
 name of the protein complex, and the “gene_*” column shows the names of
 the genes encoding the components of the complex separated by commas
 “,”. When plotting results from the build domino object, the names of
-the interacting ligands and receptors will be used based on
-combinatorial expression of the complex components.</p>
+the interacting ligands and receptors will be used based on combined
+expression of the complex components.</p>
 <p>To facilitate the use of this formatting with the CellPhoneDB
 database, we include a helper function,
 <code><a href="../reference/create_rl_map_cellphonedb.html">create_rl_map_cellphonedb()</a></code>, that automatically parses
-files from the cellPhoneDB database to arrive at the rl_map format.</p>
+files from the CellPhoneDB database to arrive at the rl_map format.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">complexes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">cellphone_data</span>, <span class="st">"/complex_input.csv"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">cellphone_data</span>, <span class="st">"/gene_input.csv"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -399,7 +400,7 @@ files from the cellPhoneDB database to arrive at the rl_map format.</p>
 <p>The change to use rl_map formatting also enables users to manually
 append interactions of interest that are not included in the interaction
 database if need be. This can be attained by formatting the desired
-interactions as a data.frame with the same column headers as the rl_map
+interactions as a data frame with the same column headers as the rl_map
 and using the <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Integrin complexes are not annotated as receptors in CellPhoneDB_v4.0</span></span>
@@ -549,7 +550,7 @@ and using the <code><a href="https://rdrr.io/r/base/cbind.html" class="external-
 <ol style="list-style-type: lower-alpha">
 <li><p>initializes the domino result object</p></li>
 <li><p>assesses differential TF activity across cell clusters by
-wilcoxon rank-sum test</p></li>
+Wilcoxon rank-sum test</p></li>
 <li><p>establishes TF-receptor linkages based on Spearman correlation of
 TF activities with receptor expression across the queried data
 set.</p></li>
@@ -579,11 +580,11 @@ the names are cell barcodes matching the expression matrix, are
 provided. Assessing signaling based on other categorical groupings of
 cells can be achieved by passing these groupings as “clusters” to
 <code><a href="../reference/build_domino.html">build_domino()</a></code> in place of cell types. dominoSignal accepts
-a matrix of counts, a matrix of scaled counts, and a <span class="math inline">\(\text{\underline{named}}\)</span> vector of cell
-cluster labels as factors. Shown below is how to extract these elements
-from a <code>{SingleCellExperiment}</code> object. Note that since the
-data is scaled by gene, genes with no expression in any cell need to be
-removed.</p>
+a matrix of counts, a matrix of scaled counts, and a
+<strong>named</strong> vector of cell cluster labels as factors. Shown
+below is how to extract these elements from a <a href="https://doi.org/doi:10.18129/B9.bioc.SingleCellExperiment" class="external-link">SingleCellExperiment</a>
+object. Note that since the data is scaled by gene, genes with no
+expression in any cell need to be removed.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">counts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">pbmc</span>, <span class="st">"counts"</span><span class="op">)</span></span>
 <span><span class="va">logcounts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">pbmc</span>, <span class="st">"logcounts"</span><span class="op">)</span></span>
@@ -598,7 +599,7 @@ slots for these data objects, thereby missing many genes encoding
 ligands and receptors. <strong>Ensure that all your genes of interest
 are included in the rows of your z_scores matrix.</strong> Scaled
 expression was calculated for all genes in this PBMC data set after
-removal of genes expressed in less than 3 cells.</p>
+removal of genes expressed in less than three cells.</p>
 </div>
 <div class="section level3">
 <h3 id="create-domino-object">Create Domino object<a class="anchor" aria-label="anchor" href="#create-domino-object"></a>
@@ -611,7 +612,7 @@ if receptors that function in heteromeric complexes will be considered
 in testing linkages between TFs and receptors. If TRUE, a receptor
 complex is only linked to a TF if a majority of the component genes meet
 the Spearman correlation threshold. “remove_rec_dropout” decides whether
-receptor values of 0 will be considered in correlation calculations;
+receptor values of zero will be considered in correlation calculations;
 this measure is intended to reduce the effect of dropout on receptors
 with low expression.</p>
 <p>To run <code><a href="../reference/create_domino.html">create_domino()</a></code> with matrix and vector
@@ -620,16 +621,16 @@ inputs:</p>
 <code class="sourceCode R"><span><span class="va">pbmc_dom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_domino.html">create_domino</a></span><span class="op">(</span>rl_map <span class="op">=</span> <span class="va">rl_map</span>, features <span class="op">=</span> <span class="va">auc_in</span>, counts <span class="op">=</span> <span class="va">counts</span>, z_scores <span class="op">=</span> <span class="va">z_scores</span>,</span>
 <span>    clusters <span class="op">=</span> <span class="va">clusters</span>, tf_targets <span class="op">=</span> <span class="va">regulon_list</span>, use_clusters <span class="op">=</span> <span class="cn">TRUE</span>, use_complexes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    remove_rec_dropout <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co"># rl_map: receptor-ligand map data frame features: TF scores (AUC matrix)</span></span>
-<span><span class="co"># counts: counts matrix z_scores: scaled expression data clusters: named vector</span></span>
-<span><span class="co"># of cell cluster assignments tf_targets: list of TFs and their regulons</span></span>
-<span><span class="co"># use_clusters: assess receptor activation and ligand expression on a</span></span>
+<span><span class="co"># rl_map: receptor - ligand map data frame features: TF activation scores (AUC</span></span>
+<span><span class="co"># matrix) counts: counts matrix z_scores: scaled expression data clusters:</span></span>
+<span><span class="co"># named vector of cell cluster assignments tf_targets: list of TFs and their</span></span>
+<span><span class="co"># regulons use_clusters: assess receptor activation and ligand expression on a</span></span>
 <span><span class="co"># per-cluster basis use_complexes: include receptors and genes that function as</span></span>
 <span><span class="co"># a complex in results remove_rec_dropout: whether to remove zeroes from</span></span>
 <span><span class="co"># correlation calculations</span></span></code></pre></div>
 <p>For information on what is stored in a domino object and how to
-access it, please see our <a href="vignette(%22domino_object_vignette%22)">vignette on the structure
-of domino objects</a>.</p>
+access it, please see our <a href="https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette" class="external-link">vignette
+on the structure of domino objects</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="build-domino-network">Build Domino Network<a class="anchor" aria-label="anchor" href="#build-domino-network"></a>
@@ -644,7 +645,7 @@ be called as active.</p>
 be called active in a cluster and the number of receptors that may be
 linked to any one TF. For thresholds of <em>n</em> TFs and <em>m</em>
 receptors, the bottom <em>n</em> TFs by lowest p-values from the
-wilcoxon rank sum test and the top <em>m</em> receptors by Spearman
+Wilcoxon rank sum test and the top <em>m</em> receptors by Spearman
 correlation coefficient are chosen.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pbmc_dom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_domino.html">build_domino</a></span><span class="op">(</span>dom <span class="op">=</span> <span class="va">pbmc_dom</span>, min_tf_pval <span class="op">=</span> <span class="fl">0.001</span>, max_tf_per_clust <span class="op">=</span> <span class="fl">25</span>,</span>
@@ -652,9 +653,9 @@ correlation coefficient are chosen.</p>
 <span><span class="co"># min_tf_pval: Threshold for p-value of DE for TFs rec_tf_cor_threshold:</span></span>
 <span><span class="co"># Minimum correlation between receptor and TF min_rec_percentage: Minimum</span></span>
 <span><span class="co"># percent of cells that must express receptor</span></span></code></pre></div>
-<p>Both of the thresholds for the number of receptors and TFs can be
-sent to infinity (Inf) to collect all receptors and TFs that meet
-statistical significance thresholds.</p>
+<p>Both thresholds for the number of receptors and TFs can be sent to
+infinity (Inf) to collect all receptors and TFs that meet statistical
+significance thresholds.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pbmc_dom_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_domino.html">build_domino</a></span><span class="op">(</span>dom <span class="op">=</span> <span class="va">pbmc_dom</span>, min_tf_pval <span class="op">=</span> <span class="fl">0.001</span>, max_tf_per_clust <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>    max_rec_per_tf <span class="op">=</span> <span class="cn">Inf</span>, rec_tf_cor_threshold <span class="op">=</span> <span class="fl">0.25</span>, min_rec_percentage <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
@@ -664,7 +665,7 @@ statistical significance thresholds.</p>
 <h2 id="visualization-of-domino-results">Visualization of Domino Results<a class="anchor" aria-label="anchor" href="#visualization-of-domino-results"></a>
 </h2>
 <p>Multiple functions are available to visualize the intracellular
-networks between receptors and TFs and the ligand-receptor mediated
+networks between receptors and TFs and the ligand - receptor mediated
 intercellular networks between cell types.</p>
 <div class="section level3">
 <h3 id="summarize-tf-activity-and-linkage">Summarize TF Activity and Linkage<a class="anchor" aria-label="anchor" href="#summarize-tf-activity-and-linkage"></a>
@@ -692,13 +693,14 @@ that signal.</p>
 <p>Signaling networks can also be drawn with the edges only rendering
 the signals directed towards a given cell type or signals from one cell
 type directed to others. To see those options in use, as well as other
-plotting functions and their options, please see our <a href="vignette(%22plotting_vignette%22)">plotting vignette</a>.</p>
+plotting functions and their options, please see our <a href="https://fertiglab.github.io/dominoSignal/articles/plotting_vignette" class="external-link">plotting
+vignette</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="specific-signaling-interactions-between-clusters">Specific Signaling Interactions between Clusters<a class="anchor" aria-label="anchor" href="#specific-signaling-interactions-between-clusters"></a>
 </h3>
 <p>Beyond the aggregated degree of signaling between cell types, the
-degrees of signaling through specific ligand-receptor interactions can
+degrees of signaling through specific ligand - receptor interactions can
 be assessed. <code><a href="../reference/gene_network.html">gene_network()</a></code> provides a graph of linkages
 between active TFs in a cluster, the linked receptors in that cluster,
 and the possible ligands of these active receptors.</p>
@@ -738,19 +740,20 @@ the data.</p>
 </h2>
 <p>Since dominoSignal is a package still being developed, there are new
 functions and features that will be implemented in future versions. In
-the meantime, we have put together further information on <a href="vignette(%22plotting_vignette%22)">plotting</a> and the <a href="vignette(%22domino_object_vignette%22)">domino object
-structure</a> if you would like to explore more of the package’s
+the meantime, we have put together further information on <a href="https://fertiglab.github.io/dominoSignal/articles/plotting_vignette" class="external-link">plotting</a>
+and the <a href="https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette" class="external-link">domino
+object structure</a> if you would like to explore more of the package’s
 functionality. Additionally, if you find any bugs, have further
-questions, or want to share an idea, please let us know <a href="https://github.com/FertigLab/domino_development/issues" class="external-link">here</a>.</p>
+questions, or want to share an idea, please let us know <a href="https://github.com/FertigLab/dominoSIgnal/issues" class="external-link">here</a>.</p>
 <details><summary>
 Vignette Build Information
 </summary><p>Date last built and session information:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2024-05-20"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2024-06-26"</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.4.0 (2024-04-24)</span></span>
+<span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">#&gt; Running under: Ubuntu 22.04.4 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -772,47 +775,47 @@ Vignette Build Information
 <span><span class="co">#&gt; [8] methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] knitr_1.46                  ComplexHeatmap_2.20.0      </span></span>
+<span><span class="co">#&gt;  [1] knitr_1.47                  ComplexHeatmap_2.20.0      </span></span>
 <span><span class="co">#&gt;  [3] circlize_0.4.16             plyr_1.8.9                 </span></span>
 <span><span class="co">#&gt;  [5] SingleCellExperiment_1.26.0 SummarizedExperiment_1.34.0</span></span>
-<span><span class="co">#&gt;  [7] Biobase_2.64.0              GenomicRanges_1.56.0       </span></span>
-<span><span class="co">#&gt;  [9] GenomeInfoDb_1.40.0         IRanges_2.38.0             </span></span>
+<span><span class="co">#&gt;  [7] Biobase_2.64.0              GenomicRanges_1.56.1       </span></span>
+<span><span class="co">#&gt;  [9] GenomeInfoDb_1.40.1         IRanges_2.38.0             </span></span>
 <span><span class="co">#&gt; [11] S4Vectors_0.42.0            BiocGenerics_0.50.0        </span></span>
 <span><span class="co">#&gt; [13] MatrixGenerics_1.16.0       matrixStats_1.3.0          </span></span>
 <span><span class="co">#&gt; [15] dominoSignal_0.99.2        </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] DBI_1.2.2               httr2_1.0.1             formatR_1.14           </span></span>
-<span><span class="co">#&gt;   [4] biomaRt_2.60.0          rlang_1.1.3             magrittr_2.0.3         </span></span>
-<span><span class="co">#&gt;   [7] clue_0.3-65             GetoptLong_1.0.5        compiler_4.4.0         </span></span>
-<span><span class="co">#&gt;  [10] RSQLite_2.3.6           png_0.1-8               systemfonts_1.1.0      </span></span>
+<span><span class="co">#&gt;   [1] DBI_1.2.3               httr2_1.0.1             formatR_1.14           </span></span>
+<span><span class="co">#&gt;   [4] biomaRt_2.60.0          rlang_1.1.4             magrittr_2.0.3         </span></span>
+<span><span class="co">#&gt;   [7] clue_0.3-65             GetoptLong_1.0.5        compiler_4.4.1         </span></span>
+<span><span class="co">#&gt;  [10] RSQLite_2.3.7           png_0.1-8               systemfonts_1.1.0      </span></span>
 <span><span class="co">#&gt;  [13] vctrs_0.6.5             stringr_1.5.1           pkgconfig_2.0.3        </span></span>
-<span><span class="co">#&gt;  [16] shape_1.4.6.1           crayon_1.5.2            fastmap_1.2.0          </span></span>
-<span><span class="co">#&gt;  [19] backports_1.4.1         dbplyr_2.5.0            XVector_0.44.0         </span></span>
+<span><span class="co">#&gt;  [16] shape_1.4.6.1           crayon_1.5.3            fastmap_1.2.0          </span></span>
+<span><span class="co">#&gt;  [19] backports_1.5.0         dbplyr_2.5.0            XVector_0.44.0         </span></span>
 <span><span class="co">#&gt;  [22] utf8_1.2.4              rmarkdown_2.27          UCSC.utils_1.0.0       </span></span>
 <span><span class="co">#&gt;  [25] ragg_1.3.2              purrr_1.0.2             bit_4.0.5              </span></span>
-<span><span class="co">#&gt;  [28] xfun_0.44               zlibbioc_1.50.0         cachem_1.1.0           </span></span>
+<span><span class="co">#&gt;  [28] xfun_0.45               zlibbioc_1.50.0         cachem_1.1.0           </span></span>
 <span><span class="co">#&gt;  [31] jsonlite_1.8.8          progress_1.2.3          blob_1.2.4             </span></span>
-<span><span class="co">#&gt;  [34] highr_0.10              DelayedArray_0.30.1     broom_1.0.6            </span></span>
-<span><span class="co">#&gt;  [37] parallel_4.4.0          prettyunits_1.2.0       cluster_2.1.6          </span></span>
+<span><span class="co">#&gt;  [34] highr_0.11              DelayedArray_0.30.1     broom_1.0.6            </span></span>
+<span><span class="co">#&gt;  [37] parallel_4.4.1          prettyunits_1.2.0       cluster_2.1.6          </span></span>
 <span><span class="co">#&gt;  [40] R6_2.5.1                bslib_0.7.0             stringi_1.8.4          </span></span>
 <span><span class="co">#&gt;  [43] RColorBrewer_1.1-3      car_3.1-2               jquerylib_0.1.4        </span></span>
 <span><span class="co">#&gt;  [46] Rcpp_1.0.12             iterators_1.0.14        igraph_2.0.3           </span></span>
 <span><span class="co">#&gt;  [49] Matrix_1.7-0            tidyselect_1.2.1        abind_1.4-5            </span></span>
 <span><span class="co">#&gt;  [52] yaml_2.3.8              doParallel_1.0.17       codetools_0.2-20       </span></span>
 <span><span class="co">#&gt;  [55] curl_5.2.1              lattice_0.22-6          tibble_3.2.1           </span></span>
-<span><span class="co">#&gt;  [58] withr_3.0.0             KEGGREST_1.44.0         evaluate_0.23          </span></span>
+<span><span class="co">#&gt;  [58] withr_3.0.0             KEGGREST_1.44.1         evaluate_0.24.0        </span></span>
 <span><span class="co">#&gt;  [61] desc_1.4.3              BiocFileCache_2.12.0    xml2_1.3.6             </span></span>
-<span><span class="co">#&gt;  [64] Biostrings_2.72.0       pillar_1.9.0            ggpubr_0.6.0           </span></span>
+<span><span class="co">#&gt;  [64] Biostrings_2.72.1       pillar_1.9.0            ggpubr_0.6.0           </span></span>
 <span><span class="co">#&gt;  [67] filelock_1.0.3          carData_3.0-5           foreach_1.5.2          </span></span>
 <span><span class="co">#&gt;  [70] generics_0.1.3          hms_1.1.3               ggplot2_3.5.1          </span></span>
 <span><span class="co">#&gt;  [73] munsell_0.5.1           scales_1.3.0            glue_1.7.0             </span></span>
-<span><span class="co">#&gt;  [76] tools_4.4.0             ggsignif_0.6.4          fs_1.6.4               </span></span>
+<span><span class="co">#&gt;  [76] tools_4.4.1             ggsignif_0.6.4          fs_1.6.4               </span></span>
 <span><span class="co">#&gt;  [79] tidyr_1.3.1             AnnotationDbi_1.66.0    colorspace_2.1-0       </span></span>
-<span><span class="co">#&gt;  [82] GenomeInfoDbData_1.2.12 cli_3.6.2               rappdirs_0.3.3         </span></span>
-<span><span class="co">#&gt;  [85] textshaping_0.3.7       fansi_1.0.6             S4Arrays_1.4.0         </span></span>
+<span><span class="co">#&gt;  [82] GenomeInfoDbData_1.2.12 cli_3.6.3               rappdirs_0.3.3         </span></span>
+<span><span class="co">#&gt;  [85] textshaping_0.4.0       fansi_1.0.6             S4Arrays_1.4.1         </span></span>
 <span><span class="co">#&gt;  [88] dplyr_1.1.4             gtable_0.3.5            rstatix_0.7.2          </span></span>
-<span><span class="co">#&gt;  [91] sass_0.4.9              digest_0.6.35           SparseArray_1.4.3      </span></span>
+<span><span class="co">#&gt;  [91] sass_0.4.9              digest_0.6.36           SparseArray_1.4.8      </span></span>
 <span><span class="co">#&gt;  [94] rjson_0.2.21            htmlwidgets_1.6.4       memoise_2.0.1          </span></span>
 <span><span class="co">#&gt;  [97] htmltools_0.5.8.1       pkgdown_2.0.9           lifecycle_1.0.4        </span></span>
 <span><span class="co">#&gt; [100] httr_1.4.7              GlobalOptions_0.1.2     bit64_4.0.5</span></span></code></pre></div>

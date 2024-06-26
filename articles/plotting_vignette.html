@@ -50,8 +50,8 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using the cellphoneDB Database</a>
-    <a class="dropdown-item" href="../articles/domino_object_vignette.html">Interacting with dominoSignal Objects</a>
+    <a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using the CellPhoneDB Database</a>
+    <a class="dropdown-item" href="../articles/domino_object_vignette.html">Interacting with domino Objects</a>
     <a class="dropdown-item" href="../articles/plotting_vignette.html">Plotting Functions and Options</a>
     <a class="dropdown-item" href="../articles/tf_scenic_vignette.html">SCENIC for TF Activation Scoring</a>
   </div>
@@ -63,6 +63,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-news">News</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-news">
     <h6 class="dropdown-header" data-toc-skip>Releases</h6>
+    <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.99.2-alpha">dominoSignal v0.99.2</a>
     <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.1-alpha">dominoSignal v0.2.1</a>
     <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.2-alpha">dominoSignal v0.2.2</a>
     <div class="dropdown-divider"></div>
@@ -112,16 +113,18 @@ options that can be utilized, and options for customization.</p>
 <h2 id="setup-and-data-load">Setup and Data Load<a class="anchor" aria-label="anchor" href="#setup-and-data-load"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fertiglab.github.io/dominoSignal/" class="external-link">dominoSignal</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fertiglab.github.io/dominoSignal/" class="external-link">dominoSignal</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span></code></pre></div>
-<p>In this tutorial, we will use the domino object we built on the <a href="vigenttes(%22dominoSignal%22)">Getting Started</a> page. If you
-have not yet built a domino object, you can do so by following the
-instructions on the <a href="vignette(%22dominoSignal%22)">Getting
+<p>In this tutorial, we will use the domino object we built on the <a href="https://fertiglab.github.io/dominoSignal/articles/dominoSignal" class="external-link">Getting
+Started</a> page. If you have not yet built a domino object, you can do
+so by following the instructions on the <a href="https://fertiglab.github.io/dominoSignal/articles/dominoSignal" class="external-link">Getting
 Started</a> page.</p>
 <details><summary>
 Instructions to load data
 </summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bfc</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span>ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># BiocFileCache helps with managing files across sessions</span></span>
+<span><span class="va">bfc</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span>ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">data_url</span> <span class="op">&lt;-</span> <span class="st">"https://zenodo.org/records/10951634/files/pbmc_domino_built.rds"</span></span>
 <span><span class="va">tmp_path</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">bfc</span>, <span class="va">data_url</span><span class="op">)</span></span>
 <span><span class="va">dom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">tmp_path</span><span class="op">)</span></span></code></pre></div>
@@ -180,7 +183,7 @@ to select a specific vector of features, to use a boolean view with a
 threshold, and to pass other arguments to
 <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">ComplexHeatmap::Heatmap()</a></code>. Specific to this function though
 are arguments for setting the range of values to be visualized and one
-to choose whether or not to normalize the scores to the max value.</p>
+to choose to normalize the scores to the max value.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/feat_heatmap.html">feat_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, min_thresh <span class="op">=</span> <span class="fl">0.1</span>, max_thresh <span class="op">=</span> <span class="fl">0.6</span>, norm <span class="op">=</span> <span class="cn">TRUE</span>, bool <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    use_raster <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -230,7 +233,7 @@ well.</p>
 <h2 id="network-plots">Network Plots<a class="anchor" aria-label="anchor" href="#network-plots"></a>
 </h2>
 <div class="section level3">
-<h3 id="network-showing-l-r-tf-signaling-between-clusters">Network showing L-R-TF signaling between clusters<a class="anchor" aria-label="anchor" href="#network-showing-l-r-tf-signaling-between-clusters"></a>
+<h3 id="network-showing-l---r---tf-signaling-between-clusters">Network showing L - R - TF signaling between clusters<a class="anchor" aria-label="anchor" href="#network-showing-l---r---tf-signaling-between-clusters"></a>
 </h3>
 <p><code><a href="../reference/gene_network.html">gene_network()</a></code> makes a network plot to display signaling
 in selected clusters such that ligands, receptors and features
@@ -265,7 +268,7 @@ cluster to another.</p>
 <p>In addition to changes such as scaling, thresholds, or layouts, this
 plot can be modified by selecting incoming or outgoing clusters (or
 both!). An example to view signaling from the CD14 Monocytes to other
-cluster:</p>
+clusters:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/signaling_network.html">signaling_network</a></span><span class="op">(</span><span class="va">dom</span>, showOutgoingSignalingClusts <span class="op">=</span> <span class="st">"CD14_monocyte"</span>, scale <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>    norm <span class="op">=</span> <span class="st">"none"</span>, layout <span class="op">=</span> <span class="st">"fr"</span>, scale_by <span class="op">=</span> <span class="st">"none"</span>, edge_weight <span class="op">=</span> <span class="fl">2</span>, vert_scale <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
@@ -273,7 +276,7 @@ cluster:</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="other-types-of-plot">Other Types of Plot<a class="anchor" aria-label="anchor" href="#other-types-of-plot"></a>
+<h2 id="other-types-of-plots">Other Types of Plots<a class="anchor" aria-label="anchor" href="#other-types-of-plots"></a>
 </h2>
 <div class="section level3">
 <h3 id="chord-diagrams-connecting-ligands-and-receptors">Chord Diagrams Connecting Ligands and Receptors<a class="anchor" aria-label="anchor" href="#chord-diagrams-connecting-ligands-and-receptors"></a>
@@ -300,8 +303,9 @@ visualized or selecting clusters of interest.</p>
 <h3 id="scatter-plot-to-visualize-correlation">Scatter Plot to Visualize Correlation<a class="anchor" aria-label="anchor" href="#scatter-plot-to-visualize-correlation"></a>
 </h3>
 <p><code><a href="../reference/cor_scatter.html">cor_scatter()</a></code> can be used to plot each cell based on
-expression of the selected TF and receptor. This produces a scatter plot
-as well as a line of best fit to look at receptor-TF correlation.</p>
+activation of the selected TF and expression of the receptor. This
+produces a scatter plot as well as a line of best fit to look at
+receptor - TF correlation.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cor_scatter.html">cor_scatter</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">"FOSB"</span>, <span class="st">"CD74"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plotting_vignette_files/figure-html/corscatter-1.png" width="700"></p>
@@ -317,20 +321,20 @@ default value of FALSE.</p>
 </h2>
 <p>Since dominoSignal is a package still being developed, there are new
 functions and features that will be implemented in future versions. In
-the meantime, to view an example analysis, see our <a href="vignette(%22dominoSignal%22)">Getting Started</a> page, or see our
-<a href="vignette(%22domino_object_vignette%22)">domino object
-structure</a> page to get familiar with the object structure.
+the meantime, to view an example analysis, see our <a href="https://fertiglab.github.io/dominoSignal/articles/dominoSignal" class="external-link">Getting
+Started</a> page, or see our <a href="https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette" class="external-link">domino
+object structure</a> page to get familiar with the object structure.
 Additionally, if you find any bugs, have further questions, or want to
-share an idea, please let us know <a href="https://github.com/FertigLab/domino_development/issues" class="external-link">here</a>.</p>
+share an idea, please let us know <a href="https://github.com/FertigLab/dominoSignal/issues" class="external-link">here</a>.</p>
 <details><summary>
 Vignette Build Information
 </summary><p>Date last built and session information:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2024-05-20"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2024-06-26"</span></span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.4.0 (2024-04-24)</span></span>
+<span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">#&gt; Running under: Ubuntu 22.04.4 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -354,41 +358,41 @@ Vignette Build Information
 <span><span class="co">#&gt; [1] patchwork_1.2.0     dominoSignal_0.99.2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] DBI_1.2.2               httr2_1.0.1             formatR_1.14           </span></span>
-<span><span class="co">#&gt;   [4] biomaRt_2.60.0          rlang_1.1.3             magrittr_2.0.3         </span></span>
+<span><span class="co">#&gt;   [1] DBI_1.2.3               httr2_1.0.1             formatR_1.14           </span></span>
+<span><span class="co">#&gt;   [4] biomaRt_2.60.0          rlang_1.1.4             magrittr_2.0.3         </span></span>
 <span><span class="co">#&gt;   [7] clue_0.3-65             GetoptLong_1.0.5        matrixStats_1.3.0      </span></span>
-<span><span class="co">#&gt;  [10] compiler_4.4.0          RSQLite_2.3.6           mgcv_1.9-1             </span></span>
+<span><span class="co">#&gt;  [10] compiler_4.4.1          RSQLite_2.3.7           mgcv_1.9-1             </span></span>
 <span><span class="co">#&gt;  [13] png_0.1-8               systemfonts_1.1.0       vctrs_0.6.5            </span></span>
 <span><span class="co">#&gt;  [16] stringr_1.5.1           pkgconfig_2.0.3         shape_1.4.6.1          </span></span>
-<span><span class="co">#&gt;  [19] crayon_1.5.2            fastmap_1.2.0           backports_1.4.1        </span></span>
+<span><span class="co">#&gt;  [19] crayon_1.5.3            fastmap_1.2.0           backports_1.5.0        </span></span>
 <span><span class="co">#&gt;  [22] dbplyr_2.5.0            XVector_0.44.0          labeling_0.4.3         </span></span>
 <span><span class="co">#&gt;  [25] utf8_1.2.4              rmarkdown_2.27          UCSC.utils_1.0.0       </span></span>
 <span><span class="co">#&gt;  [28] ragg_1.3.2              purrr_1.0.2             bit_4.0.5              </span></span>
-<span><span class="co">#&gt;  [31] xfun_0.44               zlibbioc_1.50.0         cachem_1.1.0           </span></span>
-<span><span class="co">#&gt;  [34] GenomeInfoDb_1.40.0     jsonlite_1.8.8          progress_1.2.3         </span></span>
-<span><span class="co">#&gt;  [37] blob_1.2.4              highr_0.10              broom_1.0.6            </span></span>
-<span><span class="co">#&gt;  [40] parallel_4.4.0          prettyunits_1.2.0       cluster_2.1.6          </span></span>
+<span><span class="co">#&gt;  [31] xfun_0.45               zlibbioc_1.50.0         cachem_1.1.0           </span></span>
+<span><span class="co">#&gt;  [34] GenomeInfoDb_1.40.1     jsonlite_1.8.8          progress_1.2.3         </span></span>
+<span><span class="co">#&gt;  [37] blob_1.2.4              highr_0.11              broom_1.0.6            </span></span>
+<span><span class="co">#&gt;  [40] parallel_4.4.1          prettyunits_1.2.0       cluster_2.1.6          </span></span>
 <span><span class="co">#&gt;  [43] R6_2.5.1                bslib_0.7.0             stringi_1.8.4          </span></span>
 <span><span class="co">#&gt;  [46] RColorBrewer_1.1-3      car_3.1-2               jquerylib_0.1.4        </span></span>
-<span><span class="co">#&gt;  [49] Rcpp_1.0.12             iterators_1.0.14        knitr_1.46             </span></span>
-<span><span class="co">#&gt;  [52] IRanges_2.38.0          splines_4.4.0           igraph_2.0.3           </span></span>
+<span><span class="co">#&gt;  [49] Rcpp_1.0.12             iterators_1.0.14        knitr_1.47             </span></span>
+<span><span class="co">#&gt;  [52] IRanges_2.38.0          splines_4.4.1           igraph_2.0.3           </span></span>
 <span><span class="co">#&gt;  [55] Matrix_1.7-0            tidyselect_1.2.1        abind_1.4-5            </span></span>
 <span><span class="co">#&gt;  [58] yaml_2.3.8              doParallel_1.0.17       codetools_0.2-20       </span></span>
 <span><span class="co">#&gt;  [61] curl_5.2.1              lattice_0.22-6          tibble_3.2.1           </span></span>
 <span><span class="co">#&gt;  [64] plyr_1.8.9              withr_3.0.0             Biobase_2.64.0         </span></span>
-<span><span class="co">#&gt;  [67] KEGGREST_1.44.0         evaluate_0.23           desc_1.4.3             </span></span>
+<span><span class="co">#&gt;  [67] KEGGREST_1.44.1         evaluate_0.24.0         desc_1.4.3             </span></span>
 <span><span class="co">#&gt;  [70] BiocFileCache_2.12.0    xml2_1.3.6              circlize_0.4.16        </span></span>
-<span><span class="co">#&gt;  [73] Biostrings_2.72.0       pillar_1.9.0            ggpubr_0.6.0           </span></span>
+<span><span class="co">#&gt;  [73] Biostrings_2.72.1       pillar_1.9.0            ggpubr_0.6.0           </span></span>
 <span><span class="co">#&gt;  [76] filelock_1.0.3          carData_3.0-5           foreach_1.5.2          </span></span>
-<span><span class="co">#&gt;  [79] stats4_4.4.0            generics_0.1.3          S4Vectors_0.42.0       </span></span>
+<span><span class="co">#&gt;  [79] stats4_4.4.1            generics_0.1.3          S4Vectors_0.42.0       </span></span>
 <span><span class="co">#&gt;  [82] hms_1.1.3               ggplot2_3.5.1           munsell_0.5.1          </span></span>
-<span><span class="co">#&gt;  [85] scales_1.3.0            glue_1.7.0              tools_4.4.0            </span></span>
-<span><span class="co">#&gt;  [88] ggsignif_0.6.4          fs_1.6.4                grid_4.4.0             </span></span>
+<span><span class="co">#&gt;  [85] scales_1.3.0            glue_1.7.0              tools_4.4.1            </span></span>
+<span><span class="co">#&gt;  [88] ggsignif_0.6.4          fs_1.6.4                grid_4.4.1             </span></span>
 <span><span class="co">#&gt;  [91] tidyr_1.3.1             AnnotationDbi_1.66.0    colorspace_2.1-0       </span></span>
-<span><span class="co">#&gt;  [94] nlme_3.1-164            GenomeInfoDbData_1.2.12 cli_3.6.2              </span></span>
-<span><span class="co">#&gt;  [97] rappdirs_0.3.3          textshaping_0.3.7       fansi_1.0.6            </span></span>
+<span><span class="co">#&gt;  [94] nlme_3.1-164            GenomeInfoDbData_1.2.12 cli_3.6.3              </span></span>
+<span><span class="co">#&gt;  [97] rappdirs_0.3.3          textshaping_0.4.0       fansi_1.0.6            </span></span>
 <span><span class="co">#&gt; [100] ComplexHeatmap_2.20.0   dplyr_1.1.4             gtable_0.3.5           </span></span>
-<span><span class="co">#&gt; [103] rstatix_0.7.2           sass_0.4.9              digest_0.6.35          </span></span>
+<span><span class="co">#&gt; [103] rstatix_0.7.2           sass_0.4.9              digest_0.6.36          </span></span>
 <span><span class="co">#&gt; [106] BiocGenerics_0.50.0     farver_2.1.2            rjson_0.2.21           </span></span>
 <span><span class="co">#&gt; [109] htmlwidgets_1.6.4       memoise_2.0.1           htmltools_0.5.8.1      </span></span>
 <span><span class="co">#&gt; [112] pkgdown_2.0.9           lifecycle_1.0.4         httr_1.4.7             </span></span>

@@ -24,8 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using the cellphoneDB Database</a>
-    <a class="dropdown-item" href="../articles/domino_object_vignette.html">Interacting with dominoSignal Objects</a>
+    <a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using the CellPhoneDB Database</a>
+    <a class="dropdown-item" href="../articles/domino_object_vignette.html">Interacting with domino Objects</a>
     <a class="dropdown-item" href="../articles/plotting_vignette.html">Plotting Functions and Options</a>
     <a class="dropdown-item" href="../articles/tf_scenic_vignette.html">SCENIC for TF Activation Scoring</a>
   </div>
@@ -37,6 +37,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-news">News</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-news">
     <h6 class="dropdown-header" data-toc-skip>Releases</h6>
+    <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.99.2-alpha">dominoSignal v0.99.2</a>
     <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.1-alpha">dominoSignal v0.2.1</a>
     <a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.2-alpha">dominoSignal v0.2.2</a>
     <div class="dropdown-divider"></div>
@@ -83,7 +84,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>linkage_summary</dt>
-<dd><p>a linkage_summary object</p></dd>
+<dd><p>a <code><a href="linkage_summary-class.html">linkage_summary()</a></code> object</p></dd>
 
 
 <dt>cluster</dt>
@@ -91,11 +92,11 @@
 
 
 <dt>group.by</dt>
-<dd><p>the name of the column in linkage_summary\@subject_meta by which to group subjects for counting.</p></dd>
+<dd><p>the name of the column in <code>linkage_summary@subject_meta</code> by which to group subjects for counting.</p></dd>
 
 
 <dt>linkage</dt>
-<dd><p>a stored linkage from the domino object. Can compare ('tfs', 'rec', 'incoming_lig', 'tfs_rec', 'rec_lig')</p></dd>
+<dd><p>a stored linkage from the domino object. Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'</p></dd>
 
 
 <dt>subject_names</dt>
@@ -111,7 +112,7 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>a data frame of results from the test of the differential linkages. Rows correspond to each linkage tested. Columns correspond to:</p><ul><li><p>'cluster' : the name of the cell cluster being compared</p></li>
+<p>A data frame of results from the test of the differential linkages. Rows correspond to each linkage tested. Columns correspond to:</p><ul><li><p>'cluster' : the name of the cell cluster being compared</p></li>
 <li><p>'linkage' : the type of linkage being compared</p></li>
 <li><p>'group.by' : the grouping variable</p></li>
 <li><p>'test_name' : the test used for comparison</p></li>
