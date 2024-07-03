@@ -34,6 +34,15 @@
     <loc>https://FertigLab.github.io/dominoSignal/news/index.html</loc>
   </url>
   <url>
+    <loc>https://FertigLab.github.io/dominoSignal/reference/CellPhoneDB.html</loc>
+  </url>
+  <url>
+    <loc>https://FertigLab.github.io/dominoSignal/reference/PBMC.html</loc>
+  </url>
+  <url>
+    <loc>https://FertigLab.github.io/dominoSignal/reference/SCENIC.html</loc>
+  </url>
+  <url>
     <loc>https://FertigLab.github.io/dominoSignal/reference/add_rl_column.html</loc>
   </url>
   <url>
@@ -131,6 +140,9 @@
   </url>
   <url>
     <loc>https://FertigLab.github.io/dominoSignal/reference/mean_ligand_expression.html</loc>
+  </url>
+  <url>
+    <loc>https://FertigLab.github.io/dominoSignal/reference/mock_linkage_summary.html</loc>
   </url>
   <url>
     <loc>https://FertigLab.github.io/dominoSignal/reference/plot_differential_linkages.html</loc>

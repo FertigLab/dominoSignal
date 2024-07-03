@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dominoSignal</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,20 +126,10 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">test_differential_linkages</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  linkage_summary <span class="op">=</span> <span class="fu">dominoSignal</span><span class="fu">:::</span><span class="va">linkage_sum_tiny</span>, cluster <span class="op">=</span> <span class="st">"C1"</span>, group.by <span class="op">=</span> <span class="st">"group"</span>, </span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tiny_differential_linkage_c1</span> <span class="op">&lt;-</span> <span class="fu">test_differential_linkages</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  linkage_summary <span class="op">=</span> <span class="fu"><a href="mock_linkage_summary.html">mock_linkage_summary</a></span><span class="op">(</span><span class="op">)</span>, cluster <span class="op">=</span> <span class="st">"C1"</span>, group.by <span class="op">=</span> <span class="st">"group"</span>,</span></span>
 <span class="r-in"><span>  linkage <span class="op">=</span> <span class="st">"rec"</span>, test_name <span class="op">=</span> <span class="st">"fishers.exact"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    cluster linkage group.by     test_name feature odds.ratio p.value p.adj</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R1      C1     rec    group fishers.exact      R1        Inf     0.1   0.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R2      C1     rec    group fishers.exact      R2        Inf     0.4   0.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R3      C1     rec    group fishers.exact      R3  0.3219834     1.0   1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R4      C1     rec    group fishers.exact      R4  1.0000000     1.0   1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    total_count G1_count G2_count total_n G1_n G2_n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R1           3        3        0       6    3    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R2           4        3        1       6    3    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R3           3        1        2       6    3    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R4           2        1        1       6    3    3</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

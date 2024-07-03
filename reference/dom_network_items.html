@@ -16,7 +16,7 @@ this build_domino() must be run on the object previously."><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">dominoSignal</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,8 +106,110 @@ this <code><a href="build_domino.html">build_domino()</a></code> must be run on 
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">monocyte_receptors</span> <span class="op">&lt;-</span> <span class="fu">dom_network_items</span><span class="op">(</span><span class="fu">dominoSignal</span><span class="fu">:::</span><span class="va">pbmc_dom_built_tiny</span>, <span class="st">"CD14_monocyte"</span>, <span class="st">"receptors"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">all_tfs</span> <span class="op">&lt;-</span> <span class="fu">dom_network_items</span><span class="op">(</span><span class="fu">dominoSignal</span><span class="fu">:::</span><span class="va">pbmc_dom_built_tiny</span>, return <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">build_domino</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bld_dm&gt; example(create_domino)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm&gt; example(create_rl_map_cellphonedb)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt___&gt; data(CellPhoneDB)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt___&gt; rl_map_tiny &lt;- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt___+  proteins = CellPhoneDB$proteins_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt___+  interactions = CellPhoneDB$interactions_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt___+  complexes =CellPhoneDB$complexes_tiny)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm&gt; example(create_regulon_list_scenic)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt___&gt; data(SCENIC)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt___&gt; regulon_list_tiny &lt;- create_regulon_list_scenic(regulons = SCENIC$regulons_tiny)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm&gt; data(SCENIC)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm&gt; data(PBMC)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm&gt; pbmc_dom_tiny &lt;- create_domino(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  rl_map = rl_map_tiny, features = SCENIC$auc_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  counts = PBMC$RNA_count_tiny, z_scores = PBMC$RNA_zscore_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading in and processing signaling database</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Database provided from source: CellPhoneDB</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Getting z_scores, clusters, and counts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating feature enrichment by cluster</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 of 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 of 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3 of 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating correlations</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 of 6</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 of 6</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3 of 6</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 of 6</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 of 6</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 6 of 6</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cannot compute exact p-value with ties</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm&gt; pbmc_dom_tiny_no_clusters &lt;- create_domino(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  rl_map = rl_map_tiny, features = SCENIC$auc_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  counts = PBMC$RNA_count_tiny, z_scores =PBMC$RNA_zscore_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  use_clusters = FALSE, use_complexes = FALSE,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  rec_min_thresh = 0.1, remove_rec_dropout = TRUE,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> crt_dm+  tf_selection_method = "all")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading in and processing signaling database</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Database provided from source: CellPhoneDB</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Getting z_scores, clusters, and counts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating correlations</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 of 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 of 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3 of 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 of 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 of 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 6 of 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bld_dm&gt; #a relaxed example</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bld_dm&gt; pbmc_dom_built_tiny &lt;- build_domino(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bld_dm+  dom = pbmc_dom_tiny, min_tf_pval = .05, max_tf_per_clust = Inf,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bld_dm+  max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bld_dm+ )</span>
+<span class="r-in"><span><span class="va">monocyte_receptors</span> <span class="op">&lt;-</span> <span class="fu">dom_network_items</span><span class="op">(</span><span class="va">pbmc_dom_built_tiny</span>, <span class="st">"CD14_monocyte"</span>, <span class="st">"receptors"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">all_tfs</span> <span class="op">&lt;-</span> <span class="fu">dom_network_items</span><span class="op">(</span><span class="va">pbmc_dom_built_tiny</span>, return <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
