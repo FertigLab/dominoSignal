@@ -766,6 +766,8 @@ cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
 #' cols = c("red", "orange", "green")
 #' names(cols) = dom_clusters(pbmc_dom_built_tiny)
 #' circos_ligand_receptor(pbmc_dom_built_tiny, receptor = "CXCR3", cell_colors = cols)
+#' # plot a subset of clusters
+#' circos_ligand_receptor(pbmc_dom_built_tiny, receptor = "CXCR3", cell_idents = c("CD14_monocyte", "CD8_T_cell"))
 #' 
 circos_ligand_receptor <- function(
     dom, receptor, ligand_expression_threshold = 0.01, cell_idents = NULL,
