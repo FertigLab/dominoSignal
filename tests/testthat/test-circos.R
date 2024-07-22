@@ -1,5 +1,4 @@
 test_that("Creating a circos plot data frame", {
-  data(PBMC)
   arc_df <- circos_lr_shape_data(
     dom = v0.2.1$pbmc_dom_built_tiny, 
     receptor="CXCR3", 
