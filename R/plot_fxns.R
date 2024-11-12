@@ -836,7 +836,7 @@ obtain_circos_expression <- function(dom, receptor, ligand_expression_threshold 
 #' Renders a circos plot from the output of obtain_circos_expression() to the active graphics device
 #' 
 
-render_circos_ligand_receptor <- function(arc_df, cell_colors = NULL, cell_idents = NULL){
+render_circos_ligand_receptor <- function(signaling_df, cell_colors = NULL, cell_idents = NULL){
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
@@ -852,7 +852,7 @@ render_circos_ligand_receptor <- function(arc_df, cell_colors = NULL, cell_ident
   names(grid_col) <- c(receptor, signaling_df$origin)
   circlize::circos.clear()
   circlize::circos.par(start.degree = 0)
-  circlize::chordDiagram(arc_df,
+  circlize::chordDiagram(signaling_df,
                          group = group, grid.col = grid_col, link.visible = FALSE, annotationTrack = c("grid"),
                          preAllocateTracks = list(track.height = circlize::mm_h(4), track.margin = c(circlize::mm_h(2), 0)), big.gap = 2
   )
