@@ -852,7 +852,7 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 render_circos_ligand_receptor <- function(
     signaling_df, cell_colors = NULL, cell_idents = NULL, group = NULL, ligand_expression_threshold = 0.01
   ){
-  ligands <- unique(gsub("^.*-", "", signaling_df$origin))
+  ligands <- sort(unique(signaling_df$ligand))
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
