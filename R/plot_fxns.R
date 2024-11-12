@@ -778,16 +778,15 @@ circos_ligand_receptor <- function(
     cell_idents <- sort(unique(dom@clusters))
   }
   
-  signaling_df_ls <- obtain_circos_expression(
+  signaling_df <- obtain_circos_expression(
     dom = dom, receptor = receptor, ligands = ligands,
     ligand_expression_threshold = ligand_expression_threshold,
     cell_idents = cell_idents
   )
   # render circos plot
   render_circos_ligand_receptor(
-    signaling_df = signaling_df_ls[[1]], 
-    cell_colors = cell_colors, 
-    cell_idents = cell_idents, group = signaling_df_ls[[2]],
+    signaling_df = signaling_df, 
+    cell_colors = cell_colors, cell_idents = cell_idents, 
     ligand_expression_threshold = ligand_expression_threshold
   )
 }
@@ -853,7 +852,7 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 #' 
 
 render_circos_ligand_receptor <- function(
-    signaling_df, cell_colors = NULL, cell_idents = NULL, group = NULL, ligand_expression_threshold = 0.01
+    signaling_df, cell_colors = NULL, cell_idents = NULL, ligand_expression_threshold = 0.01
   ){
   ligands <- sort(unique(signaling_df$ligand))
   # colors for ligand chords
