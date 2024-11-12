@@ -898,18 +898,20 @@ render_circos_ligand_receptor <- function(
   for (cell in cell_sectors) {
     row_pick <- sector_names[grepl(paste0("^", cell), sector_names)]
     if (length(row_pick)) {
-      circlize::highlight.sector(sector_names[grepl(paste0("^", cell, "-"), sector_names)],
-                                 track.index = 1,
-                                 col = cell_colors[cell], text = cell, cex = 1, facing = "inside", text.col = "black",
-                                 niceFacing = FALSE, text.vjust = -1.5
+      circlize::highlight.sector(
+        sector_names[grepl(paste0("^", cell, "-"), sector_names)],
+        track.index = 1, col = cell_colors[cell], 
+        text = cell, cex = 1, facing = "inside", text.col = "black",
+        niceFacing = FALSE, text.vjust = -1.5
       )
     }
   }
   # highlight receptor sector
-  circlize::highlight.sector(sector_names[grepl(paste0("^", receptor, "$"), sector_names)],
-                             track.index = 1,
-                             col = "#FFFFFF", text = receptor, cex = 1.5, facing = "clockwise", text.col = "black", niceFacing = TRUE,
-                             pos = 4
+  circlize::highlight.sector(
+    sector_names[grepl(paste0("^", receptor, "$"), sector_names)],
+    track.index = 1, col = "#FFFFFF", 
+    text = receptor, cex = 1.5, facing = "clockwise", text.col = "black", 
+    niceFacing = TRUE, pos = 4
   )
   # create legends
   lgd_cells <- ComplexHeatmap::Legend(
