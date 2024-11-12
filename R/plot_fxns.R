@@ -797,6 +797,14 @@ circos_ligand_receptor <- function(
 #' 
 #' Pull expression data from a domino object and format for plotting as a receptor-oriented circos plot.
 #' 
+#' @param dom Domino object that has undergone network building with [build_domino()]
+#' @param receptor Name of a receptor active in at least one cell type in the domino object
+#' @param ligands Character vector of ligands capable of interaction with the receptor
+#' @param ligand_expression_threshold Minimum mean expression value of a ligand by a cell type for a chord to be rendered between the cell type and the receptor
+#' @param cell_idents Vector of cell types from cluster assignments in the domino object to be included in the plot.
+#' @return a data frame of 
+#' @export circos_ligand_receptor
+#' @examples 
 
 obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_threshold = 0.01, cell_idents = NULL){
   signaling_df <- NULL
@@ -835,14 +843,8 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
   signaling_df["ligand.arc"] <- 1
   # receptor arc will always sum to 4 no matter how many ligands and cell idents are plotted
   signaling_df["receptor.arc"] <- 4 / (nrow(signaling_df))
-  # name grouping based on [cell_ident]
-  nm <- c(receptor, signaling_df$origin)
-  group <- structure(c(nm[1], gsub("-.*", "", nm[-1])), names = nm)
-  # order group as a factor with the receptor coming first
-  group <- factor(group, levels = c(
-    receptor, sort(unique(gsub("-.*", "", nm))[-1]) # alphabetical order of the other cell idents
-  ))
-  return(list(signaling_df, group))
+  
+  return(signaling_df)
 }
 
 #' Render Circos Ligand Receptor Plot
@@ -867,6 +869,16 @@ render_circos_ligand_receptor <- function(
     grid_col <- c(grid_col, rep(lig_colors[i], length(cell_idents)))
   }
   names(grid_col) <- c(receptor, signaling_df$origin)
+  
+  # name grouping based on [cell_ident]
+  nm <- c(receptor, signaling_df$origin)
+  # group <- structure(c(nm[1], gsub("-.*", "", nm[-1])), names = nm)
+  group <- structure(c(nm[1], cell_idents), names = nm)
+  # order group as a factor with the receptor coming first
+  group <- factor(group, levels = c(
+    receptor, cell_idents) # alphabetical order of the other cell idents
+  ))
+  
   circlize::circos.clear()
   circlize::circos.par(start.degree = 0)
   circlize::chordDiagram(
