@@ -815,20 +815,20 @@ obtain_circos_expression <- function(dom, receptor, ligand_expression_threshold 
   if (sum(signaling_df[["mean.expression"]] > ligand_expression_threshold) == 0) {
     stop("No ligands of ", receptor, " exceed ligand expression threshold.")
   }
-  # initialize chord diagram with even ligand arcs
-  arc_df <- signaling_df[, c("origin", "destination")]
-  arc_df["ligand.arc"] <- 1
+  
+  
+  signaling_df["ligand.arc"] <- 1
   # receptor arc will always sum to 4 no matter how many ligands and cell idents are plotted
-  arc_df["receptor.arc"] <- 4 / (nrow(signaling_df))
+  signaling_df["receptor.arc"] <- 4 / (nrow(signaling_df))
   
   # name grouping based on [cell_ident]
-  nm <- c(receptor, arc_df$origin)
+  nm <- c(receptor, signaling_df$origin)
   group <- structure(c(nm[1], gsub("-.*", "", nm[-1])), names = nm)
   # order group as a factor with the receptor coming first
   group <- factor(group, levels = c(
     receptor, sort(unique(gsub("-.*", "", nm))[-1]) # alphabetical order of the other cell idents
   ))
-  return(list(signaling_df, arc_df, group))
+  return(list(signaling_df, group))
 }
 
 #' Render Circos Ligand Receptor Plot
