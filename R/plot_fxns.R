@@ -815,6 +815,7 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
         origin = paste0(cell_names, "-", l), 
         destination = receptor, 
         mean.expression = unname(sig[rownames(sig) == l, ]),
+        sender = cell_names,
         ligand = l,
         receptor = receptor
       )
@@ -895,6 +896,7 @@ render_circos_ligand_receptor <- function(
   }
   sector_names <- circlize::get.all.sector.index()
   cell_sectors <- cell_idents[cell_idents %in% gsub("-.*", "", sector_names)]
+  # pick cell sectors based on excluding ligand names at teh end of the sector names
   for (cell in cell_sectors) {
     row_pick <- sector_names[grepl(paste0("^", cell), sector_names)]
     if (length(row_pick)) {
