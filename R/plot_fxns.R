@@ -780,8 +780,7 @@ circos_ligand_receptor <- function(
 #' Pull expression data from a domino object and format for plotting as a receptor-oriented circos plot.
 #' 
 
-obtain_circos_expression <- function(dom, receptor, ligand_expression_threshold = 0.01, cell_idents = NULL){
-  ligands <- dom@linkages$rec_lig[[receptor]]
+obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_threshold = 0.01, cell_idents = NULL){
   signaling_df <- NULL
   if (is.null(cell_idents)) {
     # default to all cluster labels in domino object in alphabetical order
