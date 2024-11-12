@@ -874,9 +874,7 @@ render_circos_ligand_receptor <- function(
   # group <- structure(c(nm[1], gsub("-.*", "", nm[-1])), names = nm)
   group <- structure(c(nm[1], cell_idents), names = nm)
   # order group as a factor with the receptor coming first
-  group <- factor(group, levels = c(
-    receptor, cell_idents) # alphabetical order of the other cell idents
-  ))
+  group <- factor(group, levels = c(receptor, cell_idents))
   
   circlize::circos.clear()
   circlize::circos.par(start.degree = 0)
