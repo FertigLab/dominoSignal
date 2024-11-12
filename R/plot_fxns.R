@@ -801,9 +801,10 @@ circos_ligand_receptor <- function(
 obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_threshold = 0.01, cell_idents = NULL){
   signaling_df <- NULL
   # obtain expression values from cl_signaling matrices
-  active_chk <- vapply(dom@linkages$clust_rec, FUN.VALUE = logical(1), FUN = function(x) {
-    receptor %in% x
-  })
+  active_chk <- vapply(
+    dom@linkages$clust_rec, 
+    FUN.VALUE = logical(1), FUN = function(x) {receptor %in% x}
+  )
   if (sum(active_chk)) {
     # obtain a signaling matrix where receptor is active
     active_cell <- names(active_chk[active_chk == TRUE])
@@ -813,7 +814,9 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
       df <- data.frame(
         origin = paste0(cell_names, "-", l), 
         destination = receptor, 
-        mean.expression = unname(sig[rownames(sig) == l, ])
+        mean.expression = unname(sig[rownames(sig) == l, ]),
+        ligand = l,
+        receptor = receptor
       )
       signaling_df <- rbind(signaling_df, df)
     }
@@ -828,12 +831,9 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
   if (sum(signaling_df[["mean.expression"]] > ligand_expression_threshold) == 0) {
     stop("No ligands of ", receptor, " exceed ligand expression threshold.")
   }
-  
-  
   signaling_df["ligand.arc"] <- 1
   # receptor arc will always sum to 4 no matter how many ligands and cell idents are plotted
   signaling_df["receptor.arc"] <- 4 / (nrow(signaling_df))
-  
   # name grouping based on [cell_ident]
   nm <- c(receptor, signaling_df$origin)
   group <- structure(c(nm[1], gsub("-.*", "", nm[-1])), names = nm)
