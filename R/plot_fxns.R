@@ -770,6 +770,17 @@ cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
 circos_ligand_receptor <- function(
     dom, receptor, ligand_expression_threshold = 0.01, cell_idents = NULL,
     cell_colors = NULL) {
+  
+  
+}
+
+
+#' Obtain Circos Expression
+#' 
+#' Pull expression data from a domino object and format for plotting as a receptor-oriented circos plot.
+#' 
+
+obtain_circos_expression <- function(dom, receptor, ligand_expression_threshold = 0.01, cell_idents = NULL){
   ligands <- dom@linkages$rec_lig[[receptor]]
   signaling_df <- NULL
   if (is.null(cell_idents)) {
@@ -786,8 +797,11 @@ circos_ligand_receptor <- function(
     sig <- dom@cl_signaling_matrices[active_cell][[1]]
     cell_names <- gsub("^L_", "", colnames(sig))
     for (l in ligands) {
-      df <- data.frame(origin = paste0(cell_names, "-", l), destination = receptor, mean.expression = unname(sig[rownames(sig) ==
-        l, ]))
+      df <- data.frame(
+        origin = paste0(cell_names, "-", l), 
+        destination = receptor, 
+        mean.expression = unname(sig[rownames(sig) == l, ])
+      )
       signaling_df <- rbind(signaling_df, df)
     }
   } else {
@@ -806,6 +820,7 @@ circos_ligand_receptor <- function(
   arc_df["ligand.arc"] <- 1
   # receptor arc will always sum to 4 no matter how many ligands and cell idents are plotted
   arc_df["receptor.arc"] <- 4 / (nrow(signaling_df))
+  
   # name grouping based on [cell_ident]
   nm <- c(receptor, arc_df$origin)
   group <- structure(c(nm[1], gsub("-.*", "", nm[-1])), names = nm)
@@ -813,6 +828,15 @@ circos_ligand_receptor <- function(
   group <- factor(group, levels = c(
     receptor, sort(unique(gsub("-.*", "", nm))[-1]) # alphabetical order of the other cell idents
   ))
+  return(list(signaling_df, arc_df, group))
+}
+
+#' Render Circos Ligand Receptor Plot
+#' 
+#' Renders a circos plot from the output of obtain_circos_expression() to the active graphics device
+#' 
+
+render_circos_ligand_receptor <- function(arc_df, cell_colors = NULL, cell_idents = NULL){
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
@@ -829,8 +853,8 @@ circos_ligand_receptor <- function(
   circlize::circos.clear()
   circlize::circos.par(start.degree = 0)
   circlize::chordDiagram(arc_df,
-    group = group, grid.col = grid_col, link.visible = FALSE, annotationTrack = c("grid"),
-    preAllocateTracks = list(track.height = circlize::mm_h(4), track.margin = c(circlize::mm_h(2), 0)), big.gap = 2
+                         group = group, grid.col = grid_col, link.visible = FALSE, annotationTrack = c("grid"),
+                         preAllocateTracks = list(track.height = circlize::mm_h(4), track.margin = c(circlize::mm_h(2), 0)), big.gap = 2
   )
   for (send in signaling_df$origin) {
     if (signaling_df[signaling_df$origin == send, ][["mean.expression"]] > ligand_expression_threshold) {
@@ -853,17 +877,17 @@ circos_ligand_receptor <- function(
     row_pick <- sector_names[grepl(paste0("^", cell), sector_names)]
     if (length(row_pick)) {
       circlize::highlight.sector(sector_names[grepl(paste0("^", cell, "-"), sector_names)],
-        track.index = 1,
-        col = cell_colors[cell], text = cell, cex = 1, facing = "inside", text.col = "black",
-        niceFacing = FALSE, text.vjust = -1.5
+                                 track.index = 1,
+                                 col = cell_colors[cell], text = cell, cex = 1, facing = "inside", text.col = "black",
+                                 niceFacing = FALSE, text.vjust = -1.5
       )
     }
   }
   # highlight receptor sector
   circlize::highlight.sector(sector_names[grepl(paste0("^", receptor, "$"), sector_names)],
-    track.index = 1,
-    col = "#FFFFFF", text = receptor, cex = 1.5, facing = "clockwise", text.col = "black", niceFacing = TRUE,
-    pos = 4
+                             track.index = 1,
+                             col = "#FFFFFF", text = receptor, cex = 1.5, facing = "clockwise", text.col = "black", niceFacing = TRUE,
+                             pos = 4
   )
   # create legends
   lgd_cells <- ComplexHeatmap::Legend(
