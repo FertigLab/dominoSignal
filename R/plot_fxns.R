@@ -770,8 +770,26 @@ cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
 circos_ligand_receptor <- function(
     dom, receptor, ligand_expression_threshold = 0.01, cell_idents = NULL,
     cell_colors = NULL) {
+  # pull signaling information from the domino result
+  ligands <- dom@linkages$rec_lig[[receptor]]
   
+  if(is.null(cell_idents)){
+    # default to all cluster labels in domino object in alphabetical order
+    cell_idents <- sort(unique(dom@clusters))
+  }
   
+  signaling_df_ls <- obtain_circos_expression(
+    dom = dom, receptor = receptor, ligands = ligands,
+    ligand_expression_threshold = ligand_expression_threshold,
+    cell_idents = cell_idents
+  )
+  # render circos plot
+  render_circos_ligand_receptor(
+    signaling_df = signaling_df_ls[[1]], 
+    cell_colors = cell_colors, 
+    cell_idents = cell_idents, group = signaling_df_ls[[2]],
+    ligand_expression_threshold = ligand_expression_threshold
+  )
 }
 
 
@@ -782,10 +800,6 @@ circos_ligand_receptor <- function(
 
 obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_threshold = 0.01, cell_idents = NULL){
   signaling_df <- NULL
-  if (is.null(cell_idents)) {
-    # default to all cluster labels in domino object in alphabetical order
-    cell_idents <- sort(unique(dom@clusters))
-  }
   # obtain expression values from cl_signaling matrices
   active_chk <- vapply(dom@linkages$clust_rec, FUN.VALUE = logical(1), FUN = function(x) {
     receptor %in% x
@@ -839,7 +853,6 @@ render_circos_ligand_receptor <- function(
     signaling_df, cell_colors = NULL, cell_idents = NULL, group = NULL, ligand_expression_threshold = 0.01
   ){
   ligands <- unique(gsub("^.*-", "", signaling_df$origin))
-  
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
