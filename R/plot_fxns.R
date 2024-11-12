@@ -895,13 +895,14 @@ render_circos_ligand_receptor <- function(
     }
   }
   sector_names <- circlize::get.all.sector.index()
-  cell_sectors <- cell_idents[cell_idents %in% gsub("-.*", "", sector_names)]
-  # pick cell sectors based on excluding ligand names at teh end of the sector names
+  cell_sectors <- cell_idents[cell_idents %in% signaling_df$sender]
+  # pick cell sectors based on excluding ligand names at the end of the sector names
   for (cell in cell_sectors) {
-    row_pick <- sector_names[grepl(paste0("^", cell), sector_names)]
+    # row_pick <- sector_names[grepl(paste0("^", cell), sector_names)]
+    row_pick <- sector_names[startsWith(sector_names, cell)]
     if (length(row_pick)) {
       circlize::highlight.sector(
-        sector_names[grepl(paste0("^", cell, "-"), sector_names)],
+        sector_names[startsWith(sector_names, cell)],
         track.index = 1, col = cell_colors[cell], 
         text = cell, cex = 1, facing = "inside", text.col = "black",
         niceFacing = FALSE, text.vjust = -1.5
@@ -910,7 +911,7 @@ render_circos_ligand_receptor <- function(
   }
   # highlight receptor sector
   circlize::highlight.sector(
-    sector_names[grepl(paste0("^", receptor, "$"), sector_names)],
+    sector_names[startsWith(sector_names, receptor)],
     track.index = 1, col = "#FFFFFF", 
     text = receptor, cex = 1.5, facing = "clockwise", text.col = "black", 
     niceFacing = TRUE, pos = 4
