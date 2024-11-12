@@ -835,7 +835,11 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 #' Renders a circos plot from the output of obtain_circos_expression() to the active graphics device
 #' 
 
-render_circos_ligand_receptor <- function(signaling_df, cell_colors = NULL, cell_idents = NULL){
+render_circos_ligand_receptor <- function(
+    signaling_df, cell_colors = NULL, cell_idents = NULL, group = NULL, ligand_expression_threshold = 0.01
+  ){
+  ligands <- unique(gsub("^.*-", "", signaling_df$origin))
+  
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
@@ -851,9 +855,15 @@ render_circos_ligand_receptor <- function(signaling_df, cell_colors = NULL, cell
   names(grid_col) <- c(receptor, signaling_df$origin)
   circlize::circos.clear()
   circlize::circos.par(start.degree = 0)
-  circlize::chordDiagram(signaling_df,
-                         group = group, grid.col = grid_col, link.visible = FALSE, annotationTrack = c("grid"),
-                         preAllocateTracks = list(track.height = circlize::mm_h(4), track.margin = c(circlize::mm_h(2), 0)), big.gap = 2
+  circlize::chordDiagram(
+    signaling_df[,c("origin", "destination", "ligand.arc", "receptor.arc")], group = group, 
+    grid.col = grid_col, link.visible = FALSE, 
+    annotationTrack = c("grid"),
+    preAllocateTracks = list(
+      track.height = circlize::mm_h(4), 
+      track.margin = c(circlize::mm_h(2), 0)
+    ), 
+    big.gap = 2
   )
   for (send in signaling_df$origin) {
     if (signaling_df[signaling_df$origin == send, ][["mean.expression"]] > ligand_expression_threshold) {
