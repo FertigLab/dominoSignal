@@ -1,3 +1,17 @@
+# dominoSignal v1.0.1
+
+## Receptor Complex Bugfix
+
+- Resolved issue where if create_domino was run with complexes=TRUE and no complexes were found to have active signaling, the full signaling matrix would be replaced by a NULL value.
+
+## GitHub Actions
+
+- Restoration of .github/workflows scripts for automatic build checks.
+
+# dominoSignal v1.0.0
+
+- Version number update to signify acceptance to bioconductor in release 3.20
+
 # dominoSignal v0.99.4
 
 ## Vignettes
