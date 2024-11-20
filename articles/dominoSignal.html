@@ -4,84 +4,97 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get Started with dominoSignal • dominoSignal</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Fira_Code-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<script src="../extra.js"></script><meta property="og:title" content="Get Started with dominoSignal">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Get Started with dominoSignal">
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
-<body>
-    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+<body data-spy="scroll" data-target="#toc">
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-#7DDED2" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <div class="container template-article">
+      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">dominoSignal</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+      </span>
+    </div>
 
-    <a class="navbar-brand me-2" href="../index.html">dominoSignal</a>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+<li>
+  <a href="../articles/dominoSignal.html">Get started</a>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.4</small>
-
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="../articles/dominoSignal.html">Get started</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using the CellPhoneDB Database</a></li>
-    <li><a class="dropdown-item" href="../articles/domino_object_vignette.html">Interacting with domino Objects</a></li>
-    <li><a class="dropdown-item" href="../articles/plotting_vignette.html">Plotting Functions and Options</a></li>
-    <li><a class="dropdown-item" href="../articles/tf_scenic_vignette.html">SCENIC for TF Activation Scoring</a></li>
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/cellphonedb_vignette.html">Using the CellPhoneDB Database</a>
+    </li>
+    <li>
+      <a href="../articles/domino_object_vignette.html">Interacting with domino Objects</a>
+    </li>
+    <li>
+      <a href="../articles/plotting_vignette.html">Plotting Functions and Options</a>
+    </li>
+    <li>
+      <a href="../articles/tf_scenic_vignette.html">SCENIC for TF Activation Scoring</a>
+    </li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-news">
-<li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
-    <li><a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.99.2-alpha">dominoSignal v0.99.2</a></li>
-    <li><a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.1-alpha">dominoSignal v0.2.1</a></li>
-    <li><a class="external-link dropdown-item" href="https://github.com/FertigLab/dominoSignal/releases/tag/v0.2.2-alpha">dominoSignal v0.2.2</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
-  </ul>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="navbar-nav">
-<li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
-</form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/FertigLab/dominoSignal/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/FertigLab/dominoSignal/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
       </ul>
 </div>
-
-
+<!--/.nav-collapse -->
   </div>
-</nav><div class="container template-article">
+<!--/.container -->
+</div>
+<!--/.navbar -->
 
 
 
-
-<div class="row">
-  <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>Get Started with dominoSignal</h1>
+      </header><div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header toc-ignore">
+      <h1 data-toc-skip>Get Started with dominoSignal</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/FertigLab/dominoSignal/blob/master/vignettes/dominoSignal.Rmd" class="external-link"><code>vignettes/dominoSignal.Rmd</code></a></small>
-      <div class="d-none name"><code>dominoSignal.Rmd</code></div>
+      <div class="hidden name"><code>dominoSignal.Rmd</code></div>
+
     </div>
 
     
@@ -734,11 +747,11 @@ Vignette Build Information
 </summary><p>Date last built and session information:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2024-08-05"</span></span>
+<span><span class="co">#&gt; [1] "2024-11-20"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
+<span><span class="co">#&gt; R version 4.4.2 (2024-10-31)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 22.04.4 LTS</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 22.04.5 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
 <span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -758,68 +771,75 @@ Vignette Build Information
 <span><span class="co">#&gt; [8] methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] knitr_1.48                  ComplexHeatmap_2.20.0      </span></span>
+<span><span class="co">#&gt;  [1] knitr_1.49                  ComplexHeatmap_2.22.0      </span></span>
 <span><span class="co">#&gt;  [3] circlize_0.4.16             plyr_1.8.9                 </span></span>
-<span><span class="co">#&gt;  [5] SingleCellExperiment_1.26.0 SummarizedExperiment_1.34.0</span></span>
-<span><span class="co">#&gt;  [7] Biobase_2.64.0              GenomicRanges_1.56.1       </span></span>
-<span><span class="co">#&gt;  [9] GenomeInfoDb_1.40.1         IRanges_2.38.1             </span></span>
-<span><span class="co">#&gt; [11] S4Vectors_0.42.1            BiocGenerics_0.50.0        </span></span>
-<span><span class="co">#&gt; [13] MatrixGenerics_1.16.0       matrixStats_1.3.0          </span></span>
-<span><span class="co">#&gt; [15] dominoSignal_0.99.4        </span></span>
+<span><span class="co">#&gt;  [5] SingleCellExperiment_1.28.1 SummarizedExperiment_1.36.0</span></span>
+<span><span class="co">#&gt;  [7] Biobase_2.66.0              GenomicRanges_1.58.0       </span></span>
+<span><span class="co">#&gt;  [9] GenomeInfoDb_1.42.0         IRanges_2.40.0             </span></span>
+<span><span class="co">#&gt; [11] S4Vectors_0.44.0            BiocGenerics_0.52.0        </span></span>
+<span><span class="co">#&gt; [13] MatrixGenerics_1.18.0       matrixStats_1.4.1          </span></span>
+<span><span class="co">#&gt; [15] dominoSignal_1.0.1         </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] DBI_1.2.3               httr2_1.0.2             formatR_1.14           </span></span>
-<span><span class="co">#&gt;   [4] biomaRt_2.60.1          rlang_1.1.4             magrittr_2.0.3         </span></span>
-<span><span class="co">#&gt;   [7] clue_0.3-65             GetoptLong_1.0.5        compiler_4.4.1         </span></span>
-<span><span class="co">#&gt;  [10] RSQLite_2.3.7           png_0.1-8               systemfonts_1.1.0      </span></span>
+<span><span class="co">#&gt;   [1] DBI_1.2.3               httr2_1.0.6             formatR_1.14           </span></span>
+<span><span class="co">#&gt;   [4] biomaRt_2.62.0          rlang_1.1.4             magrittr_2.0.3         </span></span>
+<span><span class="co">#&gt;   [7] clue_0.3-66             GetoptLong_1.0.5        compiler_4.4.2         </span></span>
+<span><span class="co">#&gt;  [10] RSQLite_2.3.8           png_0.1-8               systemfonts_1.1.0      </span></span>
 <span><span class="co">#&gt;  [13] vctrs_0.6.5             stringr_1.5.1           pkgconfig_2.0.3        </span></span>
 <span><span class="co">#&gt;  [16] shape_1.4.6.1           crayon_1.5.3            fastmap_1.2.0          </span></span>
-<span><span class="co">#&gt;  [19] backports_1.5.0         dbplyr_2.5.0            XVector_0.44.0         </span></span>
-<span><span class="co">#&gt;  [22] utf8_1.2.4              rmarkdown_2.27          UCSC.utils_1.0.0       </span></span>
-<span><span class="co">#&gt;  [25] ragg_1.3.2              purrr_1.0.2             bit_4.0.5              </span></span>
-<span><span class="co">#&gt;  [28] xfun_0.46               zlibbioc_1.50.0         cachem_1.1.0           </span></span>
-<span><span class="co">#&gt;  [31] jsonlite_1.8.8          progress_1.2.3          blob_1.2.4             </span></span>
-<span><span class="co">#&gt;  [34] highr_0.11              DelayedArray_0.30.1     broom_1.0.6            </span></span>
-<span><span class="co">#&gt;  [37] parallel_4.4.1          prettyunits_1.2.0       cluster_2.1.6          </span></span>
-<span><span class="co">#&gt;  [40] R6_2.5.1                bslib_0.8.0             stringi_1.8.4          </span></span>
-<span><span class="co">#&gt;  [43] RColorBrewer_1.1-3      car_3.1-2               jquerylib_0.1.4        </span></span>
-<span><span class="co">#&gt;  [46] Rcpp_1.0.13             iterators_1.0.14        igraph_2.0.3           </span></span>
-<span><span class="co">#&gt;  [49] Matrix_1.7-0            tidyselect_1.2.1        abind_1.4-5            </span></span>
-<span><span class="co">#&gt;  [52] yaml_2.3.10             doParallel_1.0.17       codetools_0.2-20       </span></span>
-<span><span class="co">#&gt;  [55] curl_5.2.1              lattice_0.22-6          tibble_3.2.1           </span></span>
-<span><span class="co">#&gt;  [58] withr_3.0.1             KEGGREST_1.44.1         evaluate_0.24.0        </span></span>
-<span><span class="co">#&gt;  [61] desc_1.4.3              BiocFileCache_2.12.0    xml2_1.3.6             </span></span>
-<span><span class="co">#&gt;  [64] Biostrings_2.72.1       pillar_1.9.0            ggpubr_0.6.0           </span></span>
-<span><span class="co">#&gt;  [67] filelock_1.0.3          carData_3.0-5           foreach_1.5.2          </span></span>
-<span><span class="co">#&gt;  [70] generics_0.1.3          hms_1.1.3               ggplot2_3.5.1          </span></span>
-<span><span class="co">#&gt;  [73] munsell_0.5.1           scales_1.3.0            glue_1.7.0             </span></span>
-<span><span class="co">#&gt;  [76] tools_4.4.1             ggsignif_0.6.4          fs_1.6.4               </span></span>
-<span><span class="co">#&gt;  [79] tidyr_1.3.1             AnnotationDbi_1.66.0    colorspace_2.1-1       </span></span>
-<span><span class="co">#&gt;  [82] GenomeInfoDbData_1.2.12 cli_3.6.3               rappdirs_0.3.3         </span></span>
-<span><span class="co">#&gt;  [85] textshaping_0.4.0       fansi_1.0.6             S4Arrays_1.4.1         </span></span>
-<span><span class="co">#&gt;  [88] dplyr_1.1.4             gtable_0.3.5            rstatix_0.7.2          </span></span>
-<span><span class="co">#&gt;  [91] sass_0.4.9              digest_0.6.36           SparseArray_1.4.8      </span></span>
-<span><span class="co">#&gt;  [94] rjson_0.2.21            htmlwidgets_1.6.4       memoise_2.0.1          </span></span>
-<span><span class="co">#&gt;  [97] htmltools_0.5.8.1       pkgdown_2.1.0           lifecycle_1.0.4        </span></span>
-<span><span class="co">#&gt; [100] httr_1.4.7              GlobalOptions_0.1.2     bit64_4.0.5</span></span></code></pre></div>
+<span><span class="co">#&gt;  [19] backports_1.5.0         dbplyr_2.5.0            XVector_0.46.0         </span></span>
+<span><span class="co">#&gt;  [22] utf8_1.2.4              rmarkdown_2.29          UCSC.utils_1.2.0       </span></span>
+<span><span class="co">#&gt;  [25] ragg_1.3.3              purrr_1.0.2             bit_4.5.0              </span></span>
+<span><span class="co">#&gt;  [28] xfun_0.49               zlibbioc_1.52.0         cachem_1.1.0           </span></span>
+<span><span class="co">#&gt;  [31] jsonlite_1.8.9          progress_1.2.3          blob_1.2.4             </span></span>
+<span><span class="co">#&gt;  [34] DelayedArray_0.32.0     broom_1.0.7             parallel_4.4.2         </span></span>
+<span><span class="co">#&gt;  [37] prettyunits_1.2.0       cluster_2.1.6           R6_2.5.1               </span></span>
+<span><span class="co">#&gt;  [40] bslib_0.8.0             stringi_1.8.4           RColorBrewer_1.1-3     </span></span>
+<span><span class="co">#&gt;  [43] car_3.1-3               jquerylib_0.1.4         Rcpp_1.0.13-1          </span></span>
+<span><span class="co">#&gt;  [46] iterators_1.0.14        igraph_2.1.1            Matrix_1.7-1           </span></span>
+<span><span class="co">#&gt;  [49] tidyselect_1.2.1        abind_1.4-8             yaml_2.3.10            </span></span>
+<span><span class="co">#&gt;  [52] doParallel_1.0.17       codetools_0.2-20        curl_6.0.1             </span></span>
+<span><span class="co">#&gt;  [55] lattice_0.22-6          tibble_3.2.1            withr_3.0.2            </span></span>
+<span><span class="co">#&gt;  [58] KEGGREST_1.46.0         evaluate_1.0.1          desc_1.4.3             </span></span>
+<span><span class="co">#&gt;  [61] BiocFileCache_2.14.0    xml2_1.3.6              Biostrings_2.74.0      </span></span>
+<span><span class="co">#&gt;  [64] pillar_1.9.0            ggpubr_0.6.0            filelock_1.0.3         </span></span>
+<span><span class="co">#&gt;  [67] carData_3.0-5           foreach_1.5.2           generics_0.1.3         </span></span>
+<span><span class="co">#&gt;  [70] hms_1.1.3               ggplot2_3.5.1           munsell_0.5.1          </span></span>
+<span><span class="co">#&gt;  [73] scales_1.3.0            glue_1.8.0              tools_4.4.2            </span></span>
+<span><span class="co">#&gt;  [76] ggsignif_0.6.4          fs_1.6.5                tidyr_1.3.1            </span></span>
+<span><span class="co">#&gt;  [79] AnnotationDbi_1.68.0    colorspace_2.1-1        GenomeInfoDbData_1.2.13</span></span>
+<span><span class="co">#&gt;  [82] Formula_1.2-5           cli_3.6.3               rappdirs_0.3.3         </span></span>
+<span><span class="co">#&gt;  [85] textshaping_0.4.0       fansi_1.0.6             S4Arrays_1.6.0         </span></span>
+<span><span class="co">#&gt;  [88] dplyr_1.1.4             gtable_0.3.6            rstatix_0.7.2          </span></span>
+<span><span class="co">#&gt;  [91] sass_0.4.9              digest_0.6.37           SparseArray_1.6.0      </span></span>
+<span><span class="co">#&gt;  [94] rjson_0.2.23            htmlwidgets_1.6.4       memoise_2.0.1          </span></span>
+<span><span class="co">#&gt;  [97] htmltools_0.5.8.1       pkgdown_2.1.1           lifecycle_1.0.4        </span></span>
+<span><span class="co">#&gt; [100] httr_1.4.7              GlobalOptions_0.1.2     bit64_4.5.2</span></span></code></pre></div>
 </details>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside>
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+      </div>
+
 </div>
 
 
 
-    <footer><div class="pkgdown-footer-left">
-  <p>dominoSignal is developed by Christopher Cherry, Jacob T Mitchell, Sushma Nagaraj, Kavita Krishnan, Dmitrijs Lvovs.</p>
+      <footer><div class="copyright">
+  <p></p>
+<p>Developed by Christopher Cherry, Jacob T Mitchell, Sushma Nagaraj, Kavita Krishnan, Dmitrijs Lvovs.</p>
 </div>
 
-<div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<div class="pkgdown">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
-    </footer>
+      </footer>
 </div>
+
 
 
 
