@@ -6,6 +6,7 @@
 \usage{
 render_circos_ligand_receptor(
   signaling_df,
+  receptor,
   cell_colors = NULL,
   cell_idents = NULL,
   ligand_expression_threshold = 0.01
@@ -13,6 +14,8 @@ render_circos_ligand_receptor(
 }
 \arguments{
 \item{signaling_df}{Data frame output from \code{\link[=obtain_circos_expression]{obtain_circos_expression()}}}
+
+\item{receptor}{Name of a receptor active in at least one cell type in the domino object}
 
 \item{cell_idents}{Vector of cell types from cluster assignments in the domino object to be included in the plot.}
 
