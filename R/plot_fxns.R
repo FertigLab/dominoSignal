@@ -796,12 +796,12 @@ circos_ligand_receptor <- function(
 #' 
 #' Pull expression data from a domino object and format for plotting as a receptor-oriented circos plot.
 #' 
-#' @param dom Domino object that has undergone network building with [build_domino()]
+#' @param dom Domino object that has undergone network building with build_domino()
 #' @param receptor Name of a receptor active in at least one cell type in the domino object
 #' @param ligands Character vector of ligands capable of interaction with the receptor
 #' @param ligand_expression_threshold Minimum mean expression value of a ligand by a cell type for a chord to be rendered between the cell type and the receptor
 #' @param cell_idents Vector of cell types from cluster assignments in the domino object to be included in the plot.
-#' @return a data frame where each row describes plotting parameters of ligand-receptor interactions to pass to [render_circos_ligand_receptor()]
+#' @return a data frame where each row describes plotting parameters of ligand-receptor interactions to pass to render_circos_ligand_receptor()
 #' @export obtain_circos_expression
 #' @examples 
 #' example(build_domino, echo = FALSE)
