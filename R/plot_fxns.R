@@ -870,6 +870,7 @@ render_circos_ligand_receptor <- function(
     signaling_df, cell_colors = NULL, cell_idents = NULL, ligand_expression_threshold = 0.01
   ){
   ligands <- sort(unique(signaling_df$ligand))
+  receptor <- sort(unique(signaling_df$receptor))
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
