@@ -13,7 +13,7 @@ obtain_circos_expression(
 )
 }
 \arguments{
-\item{dom}{Domino object that has undergone network building with \code{\link[=build_domino]{build_domino()}}}
+\item{dom}{Domino object that has undergone network building with build_domino()}
 
 \item{receptor}{Name of a receptor active in at least one cell type in the domino object}
 
@@ -24,7 +24,7 @@ obtain_circos_expression(
 \item{cell_idents}{Vector of cell types from cluster assignments in the domino object to be included in the plot.}
 }
 \value{
-a data frame where each row describes plotting parameters of ligand-receptor interactions to pass to \code{\link[=render_circos_ligand_receptor]{render_circos_ligand_receptor()}}
+a data frame where each row describes plotting parameters of ligand-receptor interactions to pass to render_circos_ligand_receptor()
 }
 \description{
 Pull expression data from a domino object and format for plotting as a receptor-oriented circos plot.
