@@ -7,4 +7,7 @@ articles:
   dominoSignal: dominoSignal.html
   plotting_vignette: plotting_vignette.html
   articles/tf_scenic_vignette: tf_scenic_vignette.html
-last_built: 2024-11-20T16:34Z
+last_built: 2024-12-05T13:16Z
+urls:
+  reference: https://FertigLab.github.io/dominoSignal/reference
+  article: https://FertigLab.github.io/dominoSignal/articles
