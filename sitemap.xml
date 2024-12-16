@@ -14,6 +14,7 @@
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/PBMC.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/SCENIC.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/add_rl_column.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/reference/avg_exp_for_complexes.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/build_domino.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/check_arg.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/circos_ligand_receptor.html</loc></url>
@@ -45,6 +46,7 @@
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/index.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/lc.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/linkage_summary-class.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/reference/mean_exp_by_cluster.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/mean_ligand_expression.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/mock_linkage_summary.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/reference/plot_differential_linkages.html</loc></url>
