@@ -1,3 +1,6 @@
+#' @import magrittr
+NULL
+
 #' Access database
 #'
 #' A function to pull database information from a domino object
@@ -529,4 +532,60 @@ resolve_complexes <- function(dom, genes) {
   })
   names(genes_list) <- genes
   return(genes_list)
+}
+
+#' Get average expression for complexes
+#'
+#' @param exp_mat A matrix(or dataframe) of genes x clusters, values are z-scores averaged over the clusters
+#' @param complexes_list A list similar to dom@linkages$complexes
+#'
+#' @return A list containing average expression for any complexes
+#' @keywords internal
+avg_exp_for_complexes <- function(exp_mat, complexes_list) {
+  # Trim the complexes list to only include those with genes in the data
+  trim_list <- complexes_list %>% 
+    purrr::keep(~{
+      all(.x %in% rownames(exp_mat))
+    })
+  gene_exp_list <- lapply(seq_along(trim_list), function(x) {
+    if (length(trim_list[[x]]) > 1) {
+      mean_exp <- exp_mat %>%
+        dplyr::filter(rownames(exp_mat) %in% trim_list[[x]]) %>%
+        dplyr::summarise(dplyr::across(dplyr::all_of(colnames(exp_mat)), mean))
+      return(mean_exp)
+    } else {
+      return(exp_mat[trim_list[[x]], ,drop=FALSE])
+    }
+  })
+  names(gene_exp_list) <- names(trim_list)
+  return(gene_exp_list)
+}
+
+#' Get average expression for a set of genes over cluster(s)
+#'
+#' @param dom A domino object
+#' @param clusts Cluster(s) for which we want to get average expression
+#' @param genes The genes for which we want to get average expression
+#'
+#' @return A dataframe of genes x clusters, values are z-scores averaged over the clusters
+#' @keywords internal
+mean_exp_by_cluster <- function(dom, clusts, genes) {
+  gene_exp_list <- purrr::map(seq_len(length(clusts)), function(x) {
+    cl <- clusts[x]
+    n_cell = length(which(dom@clusters == cl))
+    if(n_cell > 1){
+      sig = rowMeans(dom@z_scores[genes, which(dom@clusters == cl)])
+    } else if(n_cell == 1){
+      sig = dom@z_scores[genes, which(dom@clusters == cl)]
+    } else {
+      sig = rep(0, length(genes))
+      names(sig) = genes
+    }
+    sig[which(sig < 0)] <- 0
+    sig <- as.data.frame(sig)
+    colnames(sig) <- cl
+    return(sig)
+  })
+  gene_exp <- purrr::list_cbind(gene_exp_list)
+  return(gene_exp)
 }

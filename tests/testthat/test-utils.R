@@ -83,3 +83,50 @@ test_that("resolve_complexes maps complex names to their component genes, resolv
                              "TGFBR3" = "TGFBR3")
   expect_equal(resolve_complexes(pbmc_dom_tiny, genes), complexes_resolved)
 })
+
+test_that("avg_exp_for_complexes returns list with average expression of component genes for any complexes.", {
+  exp_mat <- data.frame(CD8_T_cell = c(0.252464, 0.000000, 0.000000, 0.000000), 
+                        CD14_monocyte = c(0.000000, 0.000000, 0.000000, 0.000000), 
+                        B_cell = c(0.000000, 0.000000, 0.329416, 0.000000)) 
+  rownames(exp_mat) <- c("TGFBR3", "ITGA6", "ITGB4", "IL7R")
+  genes_complexes_resolved <- list("integrin_a6b4_complex" = c("ITGB4", "ITGA6"), #both genes present in data, output mean
+                                   "IL7_receptor" = c("IL7R", "IL2RG"), #only one of the genes present in data - will be filtered
+                                   "TGFBR3" = "TGFBR3", #not a complex, output as is
+                                   "IL7R" = "IL7R") #gene can interact as part of a complex or alone, output as is
+  complexes_avg <- list("integrin_a6b4_complex" = data.frame(CD8_T_cell = 0, CD14_monocyte = 0, B_cell = 0.164708),
+                        "TGFBR3" = data.frame(CD8_T_cell = 0.252464, CD14_monocyte = 0, B_cell = 0, row.names = "TGFBR3"),
+                        "IL7R" = data.frame(CD8_T_cell = 0, CD14_monocyte = 0, B_cell = 0, row.names = "IL7R"))
+  expect_equal(avg_exp_for_complexes(exp_mat, genes_complexes_resolved), complexes_avg)
+})
+
+test_that("mean_exp_by_cluster returns gene expression averaged over clusters.", {
+  data(CellPhoneDB)
+  rl_map_tiny <- create_rl_map_cellphonedb(
+    genes = CellPhoneDB$genes_tiny,
+    proteins = CellPhoneDB$proteins_tiny,
+    interactions = CellPhoneDB$interactions_tiny,
+    complexes = CellPhoneDB$complexes_tiny)
+  
+  data(SCENIC)
+  regulon_list_tiny <- create_regulon_list_scenic(
+    regulons = SCENIC$regulons_tiny)
+  
+  data(PBMC)
+  pbmc_dom_tiny <- create_domino(
+    rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
+    counts = PBMC$RNA_count_tiny, z_scores = PBMC$RNA_zscore_tiny,
+    clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
+    use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE)
+  
+  dom <- build_domino(
+    dom = pbmc_dom_tiny, min_tf_pval = .05, max_tf_per_clust = Inf,
+    max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01
+  )
+  
+  clust <- c("B_cell", "CD14_monocyte")
+  genes <- c("CCL20", "IL7", "TGFB3")
+  mean_exp <- data.frame(B_cell = c(0.000000, 0.16609099, 0.000000),
+                         CD14_monocyte = c(0.20959562, 0.0000000, 0.13001233),
+                         row.names = c("CCL20", "IL7", "TGFB3"))
+  expect_equal(mean_exp_by_cluster(dom = dom, clusts = clust, genes = genes), mean_exp)
+})
