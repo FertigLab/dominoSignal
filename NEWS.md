@@ -1,3 +1,14 @@
+# dominoSignal v1.0.3
+
+- Added functions for calculation of mean gene expression among components of a complex using purrr functions
+
+
+# dominoSignal v1.0.2
+
+## Pkgdown Site Customization Scripts
+
+- Restored _pkgdown.yml and index scripts that specify site building parameters for https://FertigLab.github.io/dominoSignal to improve formatting.
+
 # dominoSignal v1.0.1
 
 ## Receptor Complex Bugfix
