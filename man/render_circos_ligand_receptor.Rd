@@ -31,6 +31,6 @@ Renders a circos plot from the output of \code{\link[=obtain_circos_expression]{
 example(build_domino, echo = FALSE)
 #basic usage
 circos_df <- obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-render_circos_ligand_receptor(signaling_df = circos_df)
+render_circos_ligand_receptor(signaling_df = circos_df, receptor = "CXCR3")
 
 }
