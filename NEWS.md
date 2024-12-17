@@ -1,3 +1,8 @@
+# dominoSignal v1.0.3
+
+- Added functions for calculation of mean gene expression among components of a complex using purrr functions
+
+
 # dominoSignal v1.0.2
 
 ## Pkgdown Site Customization Scripts
