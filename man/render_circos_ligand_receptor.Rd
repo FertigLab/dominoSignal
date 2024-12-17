@@ -17,6 +17,8 @@ render_circos_ligand_receptor(
 
 \item{receptor}{Name of a receptor active in at least one cell type in the domino object}
 
+\item{cell_colors}{Named vector of color names or hex codes where names correspond to the plotted cell types and the color values}
+
 \item{cell_idents}{Vector of cell types from cluster assignments in the domino object to be included in the plot.}
 
 \item{ligand_expression_threshold}{Minimum mean expression value of a ligand by a cell type for a chord to be rendered between the cell type and the receptor}
