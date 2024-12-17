@@ -881,7 +881,7 @@ render_circos_ligand_receptor <- function(
   if (is.null(cell_idents)){
     cell_idents <- sort(unique(signaling_df$sender))
   } else {
-    signaling_df <- signaling_df[signaling_df$sender %in% cell_idents]
+    signaling_df <- signaling_df[signaling_df$sender %in% cell_idents,]
   }
   # colors for [cell_ident] arcs
   if (is.null(cell_colors)) {
@@ -893,13 +893,11 @@ render_circos_ligand_receptor <- function(
     grid_col <- c(grid_col, rep(lig_colors[i], length(cell_idents)))
   }
   names(grid_col) <- c(receptor, signaling_df$origin)
+  l_name_mask <- paste0(paste(paste0("-", ligands), collapse = "|"), "$")
   
   # name grouping based on [cell_ident]
-  nm <- c(receptor, signaling_df$origin)
-  # group <- structure(c(nm[1], gsub("-.*", "", nm[-1])), names = nm)
-  group <- structure(c(nm[1], cell_idents), names = nm)
-  # order group as a factor with the receptor coming first
-  group <- factor(group, levels = c(receptor, cell_idents))
+  arc_name <- c(receptor, gsub(l_name_mask, "", signaling_df$origin))
+  group <- structure(arc_name, names = c(receptor, signaling_df$origin))
   
   circlize::circos.clear()
   circlize::circos.par(start.degree = 0)
