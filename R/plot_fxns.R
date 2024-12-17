@@ -821,17 +821,21 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
     active_cell <- names(active_chk[active_chk == TRUE])
     sig <- dom@cl_signaling_matrices[active_cell][[1]]
     cell_names <- gsub("^L_", "", colnames(sig))
-    for (l in ligands) {
-      df <- data.frame(
-        origin = paste0(cell_names, "-", l), 
-        destination = receptor, 
-        mean.expression = unname(sig[rownames(sig) == l, ]),
-        sender = cell_names,
-        ligand = l,
-        receptor = receptor
-      )
-      signaling_df <- rbind(signaling_df, df)
-    }
+    
+    lig_signal_ls <- lapply(
+      setNames(ligands, nm = ligands), 
+      function(l){
+        df <- data.frame(
+          origin = paste0(cell_names, "-", l), 
+          destination = receptor, 
+          mean.expression = unname(sig[rownames(sig) == l, ]),
+          sender = cell_names,
+          ligand = l,
+          receptor = receptor
+        )
+      }
+    )
+    signaling_df <- purrr::list_rbind(lig_signal_ls)
   } else {
     stop("No clusters have active ", receptor, " signaling")
   }
