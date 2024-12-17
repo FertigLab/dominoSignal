@@ -878,6 +878,11 @@ render_circos_ligand_receptor <- function(
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
+  if (is.null(cell_idents)){
+    cell_idents <- sort(unique(signaling_df$sender))
+  } else {
+    signaling_df <- signaling_df[signaling_df$sender %in% cell_idents]
+  }
   # colors for [cell_ident] arcs
   if (is.null(cell_colors)) {
     cell_colors <- ggplot_col_gen(length(cell_idents))
