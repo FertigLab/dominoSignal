@@ -839,6 +839,11 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
   } else {
     stop("No clusters have active ", receptor, " signaling")
   }
+  
+  if(!is.null(cell_idents)){
+    signaling_df <- signaling_df[signaling_df$sender %in% cell_idents,]
+  }
+  
   signaling_df$mean.expression[is.na(signaling_df$mean.expression)] <- 0
   # create a scaled mean expression plot for coord widths greater than 1 by dividing by the max
   # expression [range (0-1)] scaled.mean will only be used when the max expression is > 1
