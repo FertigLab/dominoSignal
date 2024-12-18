@@ -786,7 +786,7 @@ circos_ligand_receptor <- function(
   # render circos plot
   render_circos_ligand_receptor(
     signaling_df = signaling_df, receptor = receptor, 
-    cell_colors = cell_colors, cell_idents = cell_idents, 
+    cell_colors = cell_colors, 
     ligand_expression_threshold = ligand_expression_threshold
   )
 }
@@ -862,7 +862,6 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 #' @param receptor Name of a receptor active in at least one cell type in the domino object
 #' @param ligand_expression_threshold Minimum mean expression value of a ligand by a cell type for a chord to be rendered between the cell type and the receptor
 #' @param cell_colors Named vector of color names or hex codes where names correspond to the plotted cell types and the color values
-#' @param cell_idents Vector of cell types from cluster assignments in the domino object to be included in the plot.
 #' @return a circlize plot is rendered to the active graphics device
 #' @export render_circos_ligand_receptor
 #' @examples 
@@ -873,17 +872,14 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 #'
 
 render_circos_ligand_receptor <- function(
-    signaling_df, receptor, cell_colors = NULL, cell_idents = NULL, ligand_expression_threshold = 0.01
+    signaling_df, receptor, cell_colors = NULL, ligand_expression_threshold = 0.01
   ){
   ligands <- sort(unique(signaling_df$ligand))
   # colors for ligand chords
   lig_colors <- ggplot_col_gen(length(ligands))
   names(lig_colors) <- ligands
-  if (is.null(cell_idents)){
-    cell_idents <- sort(unique(signaling_df$sender))
-  } else {
-    signaling_df <- signaling_df[signaling_df$sender %in% cell_idents,]
-  }
+  cell_idents <- sort(unique(signaling_df$sender))
+  
   # colors for [cell_ident] arcs
   if (is.null(cell_colors)) {
     cell_colors <- ggplot_col_gen(length(cell_idents))
