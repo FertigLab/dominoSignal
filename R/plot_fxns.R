@@ -887,6 +887,8 @@ render_circos_ligand_receptor <- function(
     cell_colors <- ggplot_col_gen(length(cell_idents))
     names(cell_colors) <- cell_idents
   }
+  # ensure the vector cell_ident colors is in alphabetical order so that the legend matches the plot
+  cell_colors <- cell_colors[sort(names(cell_colors))]
   
   # chords colored by ligand type
   lig_colors <- ggplot_col_gen(length(ligands))
@@ -935,9 +937,9 @@ render_circos_ligand_receptor <- function(
   }
   sector_names <- circlize::get.all.sector.index()
   cell_sectors <- cell_idents[cell_idents %in% signaling_df$sender]
-  # pick cell sectors based on excluding ligand names at the end of the sector names
+  
+  # pick cell sectors based on the start of the sector name being the cell type
   for (cell in cell_sectors) {
-    # row_pick <- sector_names[grepl(paste0("^", cell), sector_names)]
     row_pick <- sector_names[startsWith(sector_names, cell)]
     if (length(row_pick)) {
       circlize::highlight.sector(
@@ -948,6 +950,7 @@ render_circos_ligand_receptor <- function(
       )
     }
   }
+  
   # highlight receptor sector
   circlize::highlight.sector(
     sector_names[startsWith(sector_names, receptor)],
