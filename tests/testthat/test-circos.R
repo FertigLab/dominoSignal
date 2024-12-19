@@ -31,5 +31,60 @@ test_that("domino object interpretation by obtain_circos_expression", {
   
   # fail without specification of a ligands
   expect_error(obtain_circos_expression(dom, receptor = "CXCR3"))
+})
+
+test_that("Cell types with hyphenated names can be plotted", {
+  ts_signaling_df <- data.frame(
+    origin = c("CT_1-L1", "CT_1-L2", "CT_2-L1", "CT_2-L2", "CT_3-L1", "CT_3-L2"),
+    destination = "R1",
+    mean.expression = c(0,0.5, 1,0.5, 0.5,0.5),
+    sender = c("CT_1", "CT_1", "CT_2", "CT_2", "CT_3", "CT_3"),
+    ligand = c("L1", "L2", "L1", "L2", "L1", "L2"),
+    receptor = "R1",
+    scaled.mean.expression = c(0,0.5, 1,0.5, 0.5,0.5),
+    ligand.arc = 1,
+    receptor.arc = 4/6
+  )
   
+  # plot can render from a manually written signaling data.frame
+  expect_no_error(render_circos_ligand_receptor(ts_signaling_df, receptor = "R1"))
+  
+  # plot can render if all cell type underscores are replaced by hyphens
+  ts_signaling_df_hyphen <- ts_signaling_df
+  ts_signaling_df_hyphen$origin <- gsub("_", "-", ts_signaling_df$origin)
+  ts_signaling_df_hyphen$sender <- gsub("_", "-", ts_signaling_df$sender)
+  
+  expect_no_error(render_circos_ligand_receptor(ts_signaling_df_hyphen, receptor = "R1"))
+  
+  # ts_signaling_df_2 <- ts_signaling_df
+  # ts_signaling_df_2$origin <- gsub("L1", "L3", gsub("L2", "L4", ts_signaling_df$origin))
+  # ts_signaling_df_2$ligand <- gsub("L1", "L3", gsub("L2", "L4", ts_signaling_df$ligand))
+  # 
+  # ts_signaling_df_comb <- rbind(ts_signaling_df, ts_signaling_df_2)
+  # ts_signaling_df_comb$receptor.arc <- 4/12
+  # 
+  # render_circos_ligand_receptor(ts_signaling_df_comb, receptor = "R1")
+  # 
+  # ts_signaling_df_3 <- ts_signaling_df
+  # ts_signaling_df_3$origin <- gsub("L1", "L5", gsub("L2", "L6", ts_signaling_df$origin))
+  # ts_signaling_df_3$ligand <- gsub("L1", "L5", gsub("L2", "L6", ts_signaling_df$ligand))
+  # 
+  # ts_signaling_df_comb2 <- rbind(ts_signaling_df_comb, ts_signaling_df_3)
+  # ts_signaling_df_comb2$receptor.arc <- 4/18
+  # 
+  # render_circos_ligand_receptor(ts_signaling_df_comb2, receptor = "R1")
+  # 
+  # # check specifying cell type colors
+  # cell_col_alpha <- setNames(
+  #   object = c("red", "green", "blue"), 
+  #   nm = c("CT_1", "CT_2", "CT_3")
+  # )
+  # 
+  # cell_col <- setNames(
+  #   object = c("red", "green", "blue"), 
+  #   nm = c("CT_2", "CT_3", "CT_1")
+  # )
+  # "#E69F00"
+  # render_circos_ligand_receptor(ts_signaling_df_comb2, receptor = "R1", cell_colors = cell_col_alpha)
+  # render_circos_ligand_receptor(ts_signaling_df_comb2, receptor = "R1", cell_colors = cell_col)
 })
