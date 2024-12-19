@@ -21,3 +21,5 @@
 ^vignettes/articles$
 .nojekyll$
 
+^doc$
+^Meta$
