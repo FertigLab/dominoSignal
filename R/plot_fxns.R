@@ -880,24 +880,29 @@ render_circos_ligand_receptor <- function(
     signaling_df, receptor, cell_colors = NULL, ligand_expression_threshold = 0.01
   ){
   ligands <- sort(unique(signaling_df$ligand))
-  # colors for ligand chords
-  lig_colors <- ggplot_col_gen(length(ligands))
-  names(lig_colors) <- ligands
-  cell_idents <- sort(unique(signaling_df$sender))
   
   # colors for [cell_ident] arcs
+  cell_idents <- sort(unique(signaling_df$sender))
   if (is.null(cell_colors)) {
     cell_colors <- ggplot_col_gen(length(cell_idents))
     names(cell_colors) <- cell_idents
   }
-  grid_col <- c("#FFFFFF") # hide the arc corresponding to the receptor by coloring white
-  for (i in seq_along(ligands)) {
-    grid_col <- c(grid_col, rep(lig_colors[i], length(cell_idents)))
-  }
+  
+  # chords colored by ligand type
+  lig_colors <- ggplot_col_gen(length(ligands))
+  names(lig_colors) <- ligands
+  origin_cols <- vapply(
+    signaling_df$ligand, FUN.VALUE = character(1), FUN = function(l){
+      return(lig_colors[l])
+    }
+  )
+  
+  # first index of color vector set to white to hid receptor arc
+  grid_col <- c("#FFFFFF", origin_cols)
   names(grid_col) <- c(receptor, signaling_df$origin)
-  l_name_mask <- paste0(paste(paste0("-", ligands), collapse = "|"), "$")
   
   # name grouping based on [cell_ident]
+  l_name_mask <- paste0(paste(paste0("-", ligands), collapse = "|"), "$")
   arc_name <- c(receptor, gsub(l_name_mask, "", signaling_df$origin))
   group <- structure(arc_name, names = c(receptor, signaling_df$origin))
   
