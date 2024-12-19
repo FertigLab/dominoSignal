@@ -1,4 +1,8 @@
 test_that("domino object interpretation by obtain_circos_expression", {
+  # start temporary graphics device for testing to preserve package enviroment
+  png(filename = paste0(tempdir(), "/", "ts.png"))
+  
+  # testing domino object
   data(CellPhoneDB)
   rl_map_tiny <- create_rl_map_cellphonedb(
     genes = CellPhoneDB$genes_tiny,
@@ -31,9 +35,14 @@ test_that("domino object interpretation by obtain_circos_expression", {
   
   # fail without specification of a ligands
   expect_error(obtain_circos_expression(dom, receptor = "CXCR3"))
+  
+  dev.off()
 })
 
 test_that("Cell types with hyphenated names can be plotted", {
+  # start temporary graphics device for testing to preserve package enviroment
+  png(filename = paste0(tempdir(), "/", "ts.png"))
+  
   ts_signaling_df <- data.frame(
     origin = c("CT_1-L1", "CT_1-L2", "CT_2-L1", "CT_2-L2", "CT_3-L1", "CT_3-L2"),
     destination = "R1",
@@ -55,6 +64,8 @@ test_that("Cell types with hyphenated names can be plotted", {
   ts_signaling_df_hyphen$sender <- gsub("_", "-", ts_signaling_df$sender)
   
   expect_no_error(render_circos_ligand_receptor(ts_signaling_df_hyphen, receptor = "R1"))
+  
+  dev.off()
   
   # ts_signaling_df_2 <- ts_signaling_df
   # ts_signaling_df_2$origin <- gsub("L1", "L3", gsub("L2", "L4", ts_signaling_df$origin))
