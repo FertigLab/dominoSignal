@@ -20,4 +20,5 @@
 ^scenic_bash$
 ^vignettes/articles$
 .nojekyll$
+Dockerfile
 
