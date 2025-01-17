@@ -56,6 +56,7 @@ NULL
 #'  domino_results = dom_ls, subject_meta = meta_df,
 #'  subject_names = meta_df$ID
 #')
+
 summarize_linkages <- function(domino_results, subject_meta, subject_names = NULL) {
   if (!is(domino_results, "list")) {
     stop("domino_results must be provided as a named list where names correspond to subject names")
@@ -132,6 +133,7 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
   }
   return(linkage_summary(subject_names = factor(subject_names), subject_meta = subject_meta, subject_linkages = subject_linkages))
 }
+
 #' Count occurrences of linkages across multiple domino results from a linkage summary
 #' 
 #' Count occurrences of linkages across multiple domino results from a linkage summary
@@ -148,6 +150,7 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
 #'   linkage_summary = mock_linkage_summary(), cluster = "C1", 
 #'   group.by = "group", linkage = "rec")
 #' 
+
 count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "rec_lig", subject_names = NULL) {
   if (is.null(subject_names)) {
     subject_names <- linkage_summary@subject_names
@@ -444,4 +447,3 @@ DL_logistic_regression <- function(act_df, group.by, model.formula) {
   }
   return(glm_stats)
 }
-
