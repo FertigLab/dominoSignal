@@ -1,5 +1,5 @@
 #' @import methods
-#' @import purrr
+#' @importFrom purrr map_int
 #'
 NULL
 
