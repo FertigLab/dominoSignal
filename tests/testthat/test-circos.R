@@ -66,36 +66,4 @@ test_that("Cell types with hyphenated names can be plotted", {
   expect_no_error(render_circos_ligand_receptor(ts_signaling_df_hyphen, receptor = "R1"))
   
   dev.off()
-  
-  # ts_signaling_df_2 <- ts_signaling_df
-  # ts_signaling_df_2$origin <- gsub("L1", "L3", gsub("L2", "L4", ts_signaling_df$origin))
-  # ts_signaling_df_2$ligand <- gsub("L1", "L3", gsub("L2", "L4", ts_signaling_df$ligand))
-  # 
-  # ts_signaling_df_comb <- rbind(ts_signaling_df, ts_signaling_df_2)
-  # ts_signaling_df_comb$receptor.arc <- 4/12
-  # 
-  # render_circos_ligand_receptor(ts_signaling_df_comb, receptor = "R1")
-  # 
-  # ts_signaling_df_3 <- ts_signaling_df
-  # ts_signaling_df_3$origin <- gsub("L1", "L5", gsub("L2", "L6", ts_signaling_df$origin))
-  # ts_signaling_df_3$ligand <- gsub("L1", "L5", gsub("L2", "L6", ts_signaling_df$ligand))
-  # 
-  # ts_signaling_df_comb2 <- rbind(ts_signaling_df_comb, ts_signaling_df_3)
-  # ts_signaling_df_comb2$receptor.arc <- 4/18
-  # 
-  # render_circos_ligand_receptor(ts_signaling_df_comb2, receptor = "R1")
-  # 
-  # # check specifying cell type colors
-  # cell_col_alpha <- setNames(
-  #   object = c("red", "green", "blue"), 
-  #   nm = c("CT_1", "CT_2", "CT_3")
-  # )
-  # 
-  # cell_col <- setNames(
-  #   object = c("red", "green", "blue"), 
-  #   nm = c("CT_2", "CT_3", "CT_1")
-  # )
-  # "#E69F00"
-  # render_circos_ligand_receptor(ts_signaling_df_comb2, receptor = "R1", cell_colors = cell_col_alpha)
-  # render_circos_ligand_receptor(ts_signaling_df_comb2, receptor = "R1", cell_colors = cell_col)
 })
