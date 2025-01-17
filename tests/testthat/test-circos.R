@@ -34,7 +34,7 @@ test_that("domino object interpretation by obtain_circos_expression", {
   expect_equal(unique(circos_df_ccl20$ligand), "CCL20")
   
   # fail without specification of a ligands
-  expect_error(obtain_circos_expression(dom, receptor = "CXCR3"))
+  expect_error(obtain_circos_expression(dom, receptor = "CXCR3"), "argument \"ligands\" is missing, with no default")
   
   dev.off()
 })
