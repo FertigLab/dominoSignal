@@ -177,6 +177,111 @@ count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "
   }
   return(df)
 }
+
+#' Count occurrence of a linkage's activity among subjects
+#' 
+#' Count the occurrence of subjects with an active inferred linkage in a specified cell type
+#' 
+#' @param linkage_summary a [linkage_summary()] object
+#' @param cluster the name of the cell cluster being compared across multiple domino results
+#' @param linkage a stored linkage type from the inferred network.
+#' @param feature the name of the specific linkage feature to be counted
+#'
+#' @return a data frame including the linkage summary's subject meta table appended to the activation state of the specified linkage in each subject.
+#' 
+
+count_linkage_activity <- function(linkage_summary, cluster, linkage, feature) {
+  df <- LS_obtain_meta(linkage_summary)
+  subject_ls <- LS_obtain_subject_list(linkage_summary)
+  feature_active <- purrr::map_int(subject_ls, \(x) {
+    feature %in% x[[cluster]][[linkage]]
+  })
+  df$cluster <- cluster
+  df$linkage <- linkage
+  df$feature <- feature
+  df$feature_activity <- feature_active
+  return(df)
+}
+
+#' Count occurrences of linkages across multiple inferred network results from a linkage summary
+#' 
+#' Counts the number of subjects with active linkage for all linkage features of a linkage type
+#' 
+#' @param linkage_summary a [linkage_summary()] object
+#' @param cluster the name of the cell cluster being compared across multiple domino results
+#' @param linkage a stored linkage type from the inferred network.
+#' @param subject_names a vector of subject_names from the linkage_summary to be compared. If NULL, all subject_names in the linkage summary are included in counting.
+#' @return a list of data frames with one data frame per linkage feature. Each data frame lists whether the linkage was inferred as active (1) or inactive (0) in the surveyed subjects
+#' 
+
+create_activity_list <- function(linkage_summary, cluster, linkage = "rec_lig", subject_names = NULL) {
+  if (is.null(subject_names)) {
+    subject_names <- LS_obtain_subject_names(linkage_summary)
+  }
+  # generate the large data frame of feature activity across all the subjects
+  subject_ls <- LS_obtain_subject_list(linkage_summary)
+  features <- c()
+  for(i in seq_along(subject_names)) {
+    nm <- subject_names[i]
+    feat <- subject_ls[[nm]][[cluster]][[linkage]]
+    features <- unique(c(features, feat))
+  }
+  names(features) <- features
+  activity_ls <- lapply(features, FUN = function(x) {
+    activity_df <- count_linkage_activity(
+      linkage_summary = linkage_summary,
+      cluster = cluster, linkage = linkage, feature = x)
+    return(activity_df)
+  })
+}
+
+#' Summarize the proportion of subjects with active linkage
+#' 
+#' Summarizes an activity list as a data frame where each row is an assessed linkage of the selected linkage type. If a group.by parameter is applied, the proportion of subjects in each level of the group.by variable will be returned.
+#' 
+#' @param activity_list list of data frames listing whether a linkage was inferred as active (1) or inactive (0) in the surveyed subjects
+#' @param group.by the name of the column in by which to group subjects for counting. If NULL, only total counts of linkages for linkages in the cluster across all subjects is given.
+#' @return A data frame with columns for the unique linkage features and the counts of how many times the linkage occured across the compared domino results. If group.by is used, counts of the linkages are also provided as columns named by the unique values of the group.by parameter.
+#' 
+
+summarize_activity_list <- function(activity_list, group.by = NULL) {
+  feature_count_ls <- lapply(activity_list, FUN = function(x){
+    feat_name <- unique(x[["feature"]])
+    total_n <- nrow(x)
+    active_n <- sum(x[["feature_activity"]])
+    feat_ct <- list(
+      "feature" = feat_name,
+      "total_n" = total_n,
+      "total_count" = active_n
+    )
+    if(!is.null(group.by)) {
+      if(is(x[[group.by]], "factor")){
+        lvls <- levels(x[[group.by]])
+      } else {
+        lvls <- unique(x[[group.by]])
+      }
+      
+      group_ct <- list()
+      for(i in seq_along(lvls)) {
+        l <- lvls[i]
+        group_x <- x[x[[group.by]] == l,]
+        
+        total_group <- nrow(group_x)
+        iname_tg <- paste0(l, "_n")
+        active_group <- sum(group_x[["feature_activity"]])
+        iname_ag <- paste0(l, "_count")
+        group_ct[[iname_tg]] <- total_group
+        group_ct[[iname_ag]] <- active_group
+      }
+      feat_ct <- c(feat_ct, group_ct)
+    }
+    feat_df <- as.data.frame(feat_ct)
+    return(feat_df)
+  })
+  df <- do.call(rbind, feature_count_ls)
+  return(df)
+}
+
 #' Statistical test for differential linkages across multiple domino results
 #' 
 #' Statistical test for differential linkages across multiple domino results
