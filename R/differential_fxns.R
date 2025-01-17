@@ -291,10 +291,12 @@ summarize_activity_list <- function(activity_list, group.by = NULL) {
 #' @param group.by the name of the column in `linkage_summary@subject_meta` by which to group subjects for counting.
 #' @param linkage a stored linkage from the domino object. Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
 #' @param subject_names a vector of subject_names from the linkage_summary to be compared. If NULL, all subject_names in the linkage summary are included in counting.
-#' @param test_name the statistical test used for comparison.
+#' @param method the statistical test used for comparison.
 #' \itemize{
 #'  \item{'fishers.exact'} : Fisher's exact test for the dependence of the proportion of subjects with an active linkage in the cluster on which group the subject belongs to in the group.by variable. Provides an odds ratio, p-value, and a Benjamini-Hochberg FDR-adjusted p-value (p.adj) for each linkage tested.
+#'  \item{'logistic.regression'} : Logistic regression test for the effect of the group.by variable on the probability of a subject having an active linkage. If using this method, a model.formula must be provided following formatting for models tested by the glm() function with "feature_activity" as the dependent variable. For each variable in the model, provides effect estimate as log-odds ratio, standard error of the estimate, odds ratio, standard error of the odds ratio, and p-value derived from tow-tailed z-test that the effect size = 0.
 #' }
+#' @param model.formula model formula passed to [glm()] when using test methods that accept linear models.
 #' @return A data frame of results from the test of the differential linkages. Rows correspond to each linkage tested. Columns correspond to:
 #' \itemize{
 #'  \item{'cluster'} : the name of the cell cluster being compared
@@ -312,74 +314,133 @@ summarize_activity_list <- function(activity_list, group.by = NULL) {
 #' @examples
 #' tiny_differential_linkage_c1 <- test_differential_linkages(
 #'   linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",
-#'   linkage = "rec", test_name = "fishers.exact"
+#'   linkage = "rec", method = "fishers.exact"
+#' )
+#' tiny_differential_linkage_c2 <- test_differential_linkages(
+#'   linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",
+#'   linkage = "rec", method = "logistic.regression", model.formula = "feature_activity ~ group"
 #' )
 #' 
-test_differential_linkages <- function(linkage_summary, cluster, group.by, linkage = "rec_lig", subject_names = NULL,
-  test_name = "fishers.exact") {
-  valid_tests <- c("fishers.exact")
-  if (!test_name %in% valid_tests) {
-    stop("test_name invalid")
+
+test_differential_linkages <- function(
+    linkage_summary, 
+    cluster, group.by, linkage = "rec_lig", 
+    subject_names = NULL,
+    method = "fishers.exact", model.formula = paste0("feature_activity~", group.by)
+  ) {
+  # create a counts data.frame as the basis of the results
+  act_ls <- create_activity_list(
+    linkage_summary = linkage_summary, 
+    cluster = cluster, linkage = linkage
+  )
+  res <- summarize_activity_list(
+    activity_list = act_ls, group.by = group.by
+  )
+  res$cluster <- cluster
+  res$linkage <- linkage
+  res$group.by <- group.by
+  res$method <- method
+  features <- names(act_ls)
+  stat_return <- list()
+  for(i in seq_along(features)) {
+    f <- features[i]
+    act_df <- act_ls[[f]]
+    lvls <- unique(act_df[[group.by]])
+    
+    if(method == "fishers.exact") {
+      fish_stats <- DL_fisher_test(act_df = act_df, group.by = group.by)
+      stat_return[[f]] <- fish_stats
+    }
+    if(method == "logistic.regression") {
+      glm_stats <- DL_logistic_regression(act_df = act_df, group.by = group.by, model.formula = model.formula)
+      stat_return[[f]] <- glm_stats
+    }
   }
-  if (is.null(subject_names)) {
-    subject_names <- linkage_summary@subject_names
-  }
-  # count the number of groups
-  subject_count <- as.data.frame(table(linkage_summary@subject_meta[[group.by]]))
-  colnames(subject_count) <- c(group.by, "total")
-  group_levels <- subject_count[[group.by]]
-  count_link <- count_linkage(linkage_summary = linkage_summary, cluster = cluster, linkage = linkage,
-    group.by = group.by, subject_names = subject_names)
-  # initiate data frame for storing results
-  n <- nrow(count_link)
-  result_df <- data.frame(cluster = rep(cluster, n), linkage = rep(linkage, n), group.by = rep(group.by,
-    n), test_name = rep(test_name, n), feature = count_link[["feature"]])
-  # empty contigency table
-  test_mat <- matrix(data = NA, nrow = nrow(subject_count), ncol = 2)
-  rownames(test_mat) <- subject_count[[group.by]]
-  colnames(test_mat) <- c("linkage_present", "linkage_absent")
-  test_template <- as.data.frame(test_mat)
-  if (test_name == "fishers.exact") {
-    test_result <- as.data.frame(t(vapply(
-      result_df[["feature"]], FUN.VALUE = numeric(2), FUN = function(x) {
-        feat_count <- count_link[count_link[["feature"]] == x, !colnames(count_link) %in% c("feature",
-          "total_count")]
-        feat_count <- vapply(feat_count, FUN.VALUE = numeric(1), FUN = as.numeric)
-        # fill contingency table
-        test_df <- test_template
-        test_df[["linkage_present"]] <- feat_count
-        test_df[["linkage_absent"]] <- subject_count[["total"]] - feat_count
-        # conduct test
-        test <- fisher.test(test_df)
-        odds.ratio <- test$estimate
-        p.value <- test$p.value
-        res <- c(odds.ratio, p.value)
-        res <- setNames(res, c("odds.ratio", "p.value"))
-        return(res)
-      })
-    ))
-    # include fdr-adjusted p-values
-    test_result[["p.adj"]] <- p.adjust(p = test_result[["p.value"]], method = "fdr")
-  }
-  # append test result columns to result
-  result_df <- cbind(result_df, test_result)
-  # append counts of active linkages for each group
-  count_append <- count_link[, !colnames(count_link) == "feature"]
-  colnames(count_append) <- vapply(
-    colnames(count_append), FUN.VALUE = character(1), FUN = function(x) {
-      if (!grepl("_count$", x)) {
-        return(paste0(x, "_count"))
-      } else {
-        return(x)
-      }
-    })
-  result_df <- cbind(result_df, count_append)
-  # append total counts of subjects in each group and the total number of subjects
-  total_n <- sum(subject_count[["total"]])
-  result_df[["total_n"]] <- total_n
-  for (g in group_levels) {
-    g_n <- as.numeric(subject_count[subject_count[[group.by]] == g, "total"])
-    result_df[[paste0(g, "_n")]] <- g_n
-  }
-  return(result_df)
+  stat_df <- as.data.frame(do.call(rbind, stat_return))
+  # multiple test correction on p.value
+  stat_df$p.adj <- p.adjust(stat_df$p.value, method = "fdr")
+  res <- cbind(res, stat_df[rownames(res),])
+  return(res)
 }
+
+#' Differential Linkage test using Fisher's Exact Test
+#' 
+#' Differential Linkage test using Fisher's Exact Test
+#' 
+#' @param act_df data frame specifying to what level of the group.by variable each subject belongs and the activity state of the linkage being tested
+#' @param group.by the name of the column by which to group subjects for counting.
+#' @return named vector of odds.ratio estimate and p-value obtained from Fisher's Exact Test as implemented in [fisher.test()]
+#' 
+
+DL_fisher_test <- function(act_df, group.by) {
+  lvls <- unique(act_df[[group.by]])
+  act_df[["feature_activity"]] <- factor(act_df[["feature_activity"]], levels = c("0", "1"))
+  test <- fisher.test(
+    x = act_df[[group.by]], y = act_df[["feature_activity"]]
+  )
+  stat_res <- c("p.value" = test$p.value)
+  if(length(lvls) == 2) {
+    est <- c("odds.ratio" = unname(test$estimate))
+    stat_res <- c(stat_res, est)
+  }
+  return(stat_res)
+}
+
+#' Differential Linkage test using Logistic Regression
+#' 
+#' Differential Linkage test using Logistic Regression
+#' 
+#' @param act_df data frame specifying to what level of the group.by variable each subject belongs and the activity state of the linkage being tested
+#' @param group.by the name of the column by which to group subjects for counting.
+#' @param model.formula model formula passed to [glm()] when using test methods that accept linear models.
+#' @return named vector of log odds ratio, log odds ratio standard error, odds ratio, odds ratio standard error, and p-value calculated for each variable in the model by Logistic Regression result as implemented in [glm()]
+#' 
+
+DL_logistic_regression <- function(act_df, group.by, model.formula) {
+  if(!is(model.formula, "formula")) {
+    model.formula <- as.formula(model.formula)
+  }
+  model <- glm(
+    data = act_df, 
+    formula = model.formula,
+    family = binomial(link = "logit")
+  )
+  model_df <- as.data.frame(summary(model)$coefficients)
+  # Taylor series-based delta method to calculate standard error of estimated odds ratio
+  model_df[["odds.ratio"]] <- exp(model_df[["Estimate"]])
+  model_df[["var.diag"]] <- diag(vcov(model))
+  model_df[["odds.ratio.se"]] <- sqrt(model_df[["odds.ratio"]]^2 * model_df[["var.diag"]])
+  glm_stats <- c(
+    "log.odds" = model_df[2,"Estimate"], 
+    "log.odds.std.err" = model_df[2,"Std. Error"],
+    "odds.ratio" = model_df[2,"odds.ratio"],
+    "odds.ratio.std.err" = model_df[2,"odds.ratio.se"],
+    "p.value" = model_df[2,"Pr(>|z|)"]
+  )
+  # log odds and p-value estimates for each latent var
+  term_lab <- attr(terms.formula(model.formula), "term.labels")[-1]
+  for(j in seq_along(term_lab)) {
+    varname <- term_lab[j]
+    var_stats <- c(
+      model_df[2 + j,"Estimate"], 
+      model_df[2 + j,"Std. Error"],
+      model_df[2 + j,"odds.ratio"],
+      model_df[2 + j,"odds.ratio.se"],
+      model_df[2 + j,"Pr(>|z|)"]
+    )
+    names(var_stats) <- c(
+      paste0(varname, "_", "log.odds"), 
+      paste0(varname, "_", "log.odds.std.err"),
+      paste0(varname, "_", "odds.ratio"),
+      paste0(varname, "_", "odds.ratio.std.err"),
+      paste0(varname, "_", "p.value")
+    )
+    
+    glm_stats <- c(
+      glm_stats,
+      var_stats
+    )
+  }
+  return(glm_stats)
+}
+
