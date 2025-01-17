@@ -589,3 +589,56 @@ mean_exp_by_cluster <- function(dom, clusts, genes) {
   gene_exp <- purrr::list_cbind(gene_exp_list)
   return(gene_exp)
 }
+
+## Helper functions for the linkage summary class
+
+#' Obtain subject metadata data frame from a linkage summary object
+#'
+#' A helper function for obtaining the data frame of meta data from a [linkage_summary()]
+#' 
+#' @param linkage_summary a [linkage_summary()] object
+#' @return the dataframe describing features of the subjects in the linkage summary
+#' @export
+#' 
+#' @examples
+#' link_sum <- mock_linkage_summary()
+#' LS_obtain_meta(link_sum)
+#' 
+
+LS_obtain_meta <- function(linkage_summary) {
+  return(slot(linkage_summary, "subject_meta"))
+}
+
+#' Obtain nested lists of linkages from a linkage summary object
+#'
+#' A helper function for obtaining the list of linkages inferred for each subject in a [linkage_summary()]
+#' 
+#' @param linkage_summary a [linkage_summary()] object
+#' @return list of linkages summarized in the linkage summary
+#' @export
+#' 
+#' @examples
+#' link_sum <- mock_linkage_summary()
+#' LS_obtain_subject_list(link_sum)
+#' 
+
+LS_obtain_subject_list <- function(linkage_summary) {
+  return(slot(linkage_summary, "subject_linkages"))
+}
+
+#' Obtain vector of subject names from a linkage summary object
+#'
+#' A helper function for obtaining the vector of subject names from a [linkage_summary()]
+#' 
+#' @param linkage_summary a [linkage_summary()] object
+#' @return a vector of subject names
+#' @export
+#' 
+#' @examples
+#' link_sum <- mock_linkage_summary()
+#' LS_obtain_subject_names(link_sum)
+#' 
+
+LS_obtain_subject_names <- function(linkage_summary) {
+  return(slot(linkage_summary, "subject_names"))
+}
