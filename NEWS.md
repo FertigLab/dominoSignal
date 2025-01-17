@@ -1,3 +1,7 @@
+# dominoSignal v1.0.4
+
+- refactorization of circos_ligand_receptor function to remove use of grepl-based regular expressions to reformat cell and molecule names from a domino object into a data frame for plotting a receptor circos plot. Component functions for creating the data frame of ligand expression centered on a single receptor and to render this data frame as a circos plot are now included in the package as "obtain_circos_expression" and "render_circos_ligand_receptor", respectively.
+
 # dominoSignal v1.0.3
 
 - Added functions for calculation of mean gene expression among components of a complex using purrr functions
