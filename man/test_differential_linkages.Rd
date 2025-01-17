@@ -10,7 +10,8 @@ test_differential_linkages(
   group.by,
   linkage = "rec_lig",
   subject_names = NULL,
-  test_name = "fishers.exact"
+  method = "fishers.exact",
+  model.formula = paste0("feature_activity~", group.by)
 )
 }
 \arguments{
@@ -24,10 +25,13 @@ test_differential_linkages(
 
 \item{subject_names}{a vector of subject_names from the linkage_summary to be compared. If NULL, all subject_names in the linkage summary are included in counting.}
 
-\item{test_name}{the statistical test used for comparison.
+\item{method}{the statistical test used for comparison.
 \itemize{
 \item{'fishers.exact'} : Fisher's exact test for the dependence of the proportion of subjects with an active linkage in the cluster on which group the subject belongs to in the group.by variable. Provides an odds ratio, p-value, and a Benjamini-Hochberg FDR-adjusted p-value (p.adj) for each linkage tested.
+\item{'logistic.regression'} : Logistic regression test for the effect of the group.by variable on the probability of a subject having an active linkage. If using this method, a model.formula must be provided following formatting for models tested by the glm() function with "feature_activity" as the dependent variable. For each variable in the model, provides effect estimate as log-odds ratio, standard error of the estimate, odds ratio, standard error of the odds ratio, and p-value derived from tow-tailed z-test that the effect size = 0.
 }}
+
+\item{model.formula}{model formula passed to \code{\link[=glm]{glm()}} when using test methods that accept linear models.}
 }
 \value{
 A data frame of results from the test of the differential linkages. Rows correspond to each linkage tested. Columns correspond to:
@@ -50,7 +54,11 @@ Statistical test for differential linkages across multiple domino results
 \examples{
 tiny_differential_linkage_c1 <- test_differential_linkages(
   linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",
-  linkage = "rec", test_name = "fishers.exact"
+  linkage = "rec", method = "fishers.exact"
+)
+tiny_differential_linkage_c2 <- test_differential_linkages(
+  linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",
+  linkage = "rec", method = "logistic.regression", model.formula = "feature_activity ~ group"
 )
 
 }
