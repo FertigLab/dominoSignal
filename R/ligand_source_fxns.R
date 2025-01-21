@@ -11,6 +11,7 @@
 #'  \item{'binary_signaling'} : A matrix ligands by clusters where a value of 1 represents that the ligand is expressed above the signal_threshold value
 #'  \iten{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
 #' }
+#' @keywords internal
 #' 
 #' @examples
 #' example(build_domino)
@@ -60,6 +61,7 @@ find_outgoing_ligands <- function(dom, signal_threshold = 0) {
 #' }
 #' @param receiver_cell name of the receiving cluster whose receptors will be used 
 #' @return list of incoming ligands to the recipient cell type organized by their receptor
+#' @keywords internal
 #' 
 #' @examples
 #' example(build_domino)
@@ -104,6 +106,7 @@ query_ligand_senders <- function(dom, outgoing_list, receiver_cell) {
 #' @param receiver_cell name of the receiving cluster
 #' @param receptor name of the receptor receiving signals
 #' @return vector of intercellular linkages for each sender cell and active ligand
+#' @keywords internal
 #' 
 #' @examples
 #' example(build_domino)
@@ -138,3 +141,41 @@ senders_as_vector <- function(ligand_query, receiver_cell, receptor) {
   }
   return(linkage)
 }
+
+#' Add intercellular linkages to a domino object
+#' 
+#' @param dom A domino object
+#' @param signal_threshold minimum mean scaled expression of a ligand for a cell type to be considered a sender of the ligand
+#' 
+#' @return a domino object including intercellular linkages within the linkages slot as "rec_lig_cl"
+#' @export
+#' 
+#' @examples
+#' example(build_domino)
+#' dom <- add_intercellular_linkages(dom = pbmc_dom_built_tiny, signal_threshold = 0)
+#' slot(dom, linkages)$rec_lig_cl
+#' 
+
+add_intercellular_linkages <- function(dom, signal_threshold = 0){
+  rec_lig_cl <- list()
+  cell_types <- levels(dom@clusters)
+  for(j in seq_along(cell_types)) {
+    cl <- cell_types[j]
+    sender_query <- query_ligand_senders(
+      dom, 
+      outgoing_list = find_outgoing_ligands(dom), 
+      receiver = cl
+    )
+    cl_recs <- names(sender_query)
+    names(cl_recs) <- cl_recs
+    sender_vec <- unlist(
+      lapply(cl_recs, FUN = function(x) {senders_as_vector(sender_query, receiver_cell = cl, receptor = x)}),
+      use.names = FALSE
+    )
+    rec_lig_cl[[cl]] <- sender_vec
+  }
+  dom@linkages$rec_lig_cl <- rec_lig_cl
+  return(dom)
+}
+
+
