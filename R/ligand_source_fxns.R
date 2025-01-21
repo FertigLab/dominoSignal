@@ -153,7 +153,7 @@ senders_as_vector <- function(ligand_query, receiver_cell, receptor) {
 #' @examples
 #' example(build_domino)
 #' dom <- add_intercellular_linkages(dom = pbmc_dom_built_tiny, signal_threshold = 0)
-#' slot(dom, linkages)$rec_lig_cl
+#' slot(dom, "linkages")$rec_lig_cl
 #' 
 
 add_intercellular_linkages <- function(dom, signal_threshold = 0){
