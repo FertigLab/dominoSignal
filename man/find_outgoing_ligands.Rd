@@ -27,3 +27,4 @@ example(build_domino)
 find_outgoing_ligands(dom = pbmc_dom_built_tiny)
 
 }
+\keyword{internal}

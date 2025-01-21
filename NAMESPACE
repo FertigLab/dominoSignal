@@ -3,6 +3,7 @@
 export(LS_obtain_meta)
 export(LS_obtain_subject_list)
 export(LS_obtain_subject_names)
+export(add_intercellular_linkages)
 export(add_rl_column)
 export(build_domino)
 export(circos_ligand_receptor)
