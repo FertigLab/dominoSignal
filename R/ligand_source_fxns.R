@@ -46,3 +46,51 @@ find_outgoing_ligands <- function(dom, signal_threshold = 0) {
   )
   return(res)
 }
+
+#' Query Ligand Senders
+#' 
+#' Identify clusters that are senders of ligands received by a specified cluster
+#' 
+#' @param dom A domino object
+#' @param outgoing_list list output from [find_outgoing_ligands()]
+#' \itemize{
+#'  \item{'complete_signaling'} : A matrix of mean ligand expression by each cluster
+#'  \item{'binary_signaling'} : A matrix ligands by clusters where a value of 1 represents that the ligand is expressed above the signal_threshold value
+#'  \iten{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
+#' }
+#' @param receiver_cell name of the receiving cluster whose receptors will be used 
+#' @return list of incoming ligands to the recipient cell type organized by their receptor
+#' 
+#' @examples
+#' example(build_domino)
+#' outgoing_res <- find_outgoing_ligands(dom = pbmc_dom_built_tiny)
+#' query_ligand_senders(
+#'   dom = pbmc_dom_built_tiny,
+#'   outgoing_list = outgoing_res,
+#'   receiver_cell = "CD14_monocyte"
+#' )
+#' 
+
+query_ligand_senders <- function(dom, outgoing_list, receiver_cell) {
+  clusters <- names(dom@linkages$clust_rec)
+  # find active receptors
+  cl_rec <- dom@linkages$clust_rec[[receiver_cell]]
+  rec_lig_ls <- dom@linkages$rec_lig[cl_rec]
+  sender_ls <- lapply(
+    rec_lig_ls, 
+    FUN = function(ligs) {
+      cl_sender_ls <- lapply(
+        clusters, FUN = function(cl) {
+          return(as.numeric(ligs %in% outgoing_list$outgoing_ligands[[cl]]))
+        }
+      )
+      cl_sender <- do.call(cbind, cl_sender_ls)
+      dimnames(cl_sender) <- list(
+        ligs,
+        clusters
+      )
+      return(cl_sender)
+    }
+  )
+  return(sender_ls)
+}
