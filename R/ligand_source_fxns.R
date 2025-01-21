@@ -9,7 +9,7 @@
 #' \itemize{
 #'  \item{'complete_signaling'} : A matrix of mean ligand expression by each cluster
 #'  \item{'binary_signaling'} : A matrix ligands by clusters where a value of 1 represents that the ligand is expressed above the signal_threshold value
-#'  \iten{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
+#'  \item{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
 #' }
 #' @keywords internal
 #' 
@@ -57,7 +57,7 @@ find_outgoing_ligands <- function(dom, signal_threshold = 0) {
 #' \itemize{
 #'  \item{'complete_signaling'} : A matrix of mean ligand expression by each cluster
 #'  \item{'binary_signaling'} : A matrix ligands by clusters where a value of 1 represents that the ligand is expressed above the signal_threshold value
-#'  \iten{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
+#'  \item{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
 #' }
 #' @param receiver_cell name of the receiving cluster whose receptors will be used 
 #' @return list of incoming ligands to the recipient cell type organized by their receptor
