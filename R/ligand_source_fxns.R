@@ -164,7 +164,7 @@ add_intercellular_linkages <- function(dom, signal_threshold = 0){
     sender_query <- query_ligand_senders(
       dom, 
       outgoing_list = find_outgoing_ligands(dom), 
-      receiver = cl
+      receiver_cell = cl
     )
     cl_recs <- names(sender_query)
     names(cl_recs) <- cl_recs
