@@ -16,7 +16,7 @@ A list consisting of:
 \itemize{
 \item{'complete_signaling'} : A matrix of mean ligand expression by each cluster
 \item{'binary_signaling'} : A matrix ligands by clusters where a value of 1 represents that the ligand is expressed above the signal_threshold value
-\iten{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
+\item{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
 }
 }
 \description{

@@ -20,6 +20,6 @@ Add intercellular linkages to a domino object
 \examples{
 example(build_domino)
 dom <- add_intercellular_linkages(dom = pbmc_dom_built_tiny, signal_threshold = 0)
-slot(dom, linkages)$rec_lig_cl
+slot(dom, "linkages")$rec_lig_cl
 
 }
