@@ -94,3 +94,47 @@ query_ligand_senders <- function(dom, outgoing_list, receiver_cell) {
   )
   return(sender_ls)
 }
+
+#' Create a vector of intercellular linkages
+#' 
+#' Rephrase an incoming ligand query into a vector of intercellular linkages in the format of:
+#' '\["receiver"\]:"receptor" <- "ligand":\["sender"\]'
+#' 
+#' @param ligand_query list of incoming ligands to the recipient cell type organized by their receptor
+#' @param receiver_cell name of the receiving cluster
+#' @param receptor name of the receptor receiving signals
+#' @return vector of intercellular linkages for each sender cell and active ligand
+#' 
+#' @examples
+#' example(build_domino)
+#' LQ <- query_ligand_senders(
+#'   dom = pbmc_dom_built_tiny,
+#'   outgoing_list = find_outgoing_ligands(dom = pbmc_dom_built_tiny),
+#'   receiver_cell = "CD14_monocyte"
+#' )
+#' senders_as_vector(
+#'   ligand_query = LQ,
+#'   receiver_cell = "CD14_monocyte",
+#'   receptor = "CXCR3"
+#' )
+#' 
+#' 
+senders_as_vector <- function(ligand_query, receiver_cell, receptor) {
+  ligand_senders <- ligand_query[[receptor]]
+  ligands <- rownames(ligand_senders)
+  senders <- colnames(ligand_senders)
+  linkage <- c()
+  for(i in seq_along(ligands)) {
+    lig <- ligands[i]
+    for(j in seq_along(senders)) {
+      cl <- senders[j]
+      if(ligand_senders[i,j] == 1) {
+        linkage <- c(
+          linkage,
+          paste0("[", receiver_cell, "]:", receptor, " <- ", lig, ":[", cl, "]")
+        )
+      }
+    }
+  }
+  return(linkage)
+}
