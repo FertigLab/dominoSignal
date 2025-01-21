@@ -11,7 +11,7 @@
 #'  \item{'binary_signaling'} : A matrix ligands by clusters where a value of 1 represents that the ligand is expressed above the signal_threshold value
 #'  \item{'outgoing_ligands'} : A list of clusters containing each ligand expressed by the cluster above the signal_threshold value
 #' }
-#' @keywords internal
+#' @export
 #' 
 #' @examples
 #' example(build_domino)
