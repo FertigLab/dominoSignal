@@ -125,9 +125,18 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
         interact <- paste(rec_lig[1 + s], rec_lig[2 + s], sep = " <- ")
         int_rec_lig <- c(int_rec_lig, interact)
       }
+      # Incoming intercellular linkages
+      rec_lig_cl <- dom@linkages$rec_lig_cl[[cluster]]
+      
       # save the features of this cluster
-      c_features[[cluster]] <- list(tfs = tfs, rec = rec, incoming_lig = lig, tfs_rec = int_tfs_rec,
-        rec_lig = int_rec_lig)
+      c_features[[cluster]] <- list(
+        tfs = tfs, 
+        rec = rec, 
+        incoming_lig = lig, 
+        tfs_rec = int_tfs_rec,
+        rec_lig = int_rec_lig,
+        rec_lig_cl = rec_lig_cl
+      )
     }
     subject_linkages[[id]] <- c_features
   }
