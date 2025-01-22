@@ -61,7 +61,7 @@ find_outgoing_ligands <- function(dom, signal_threshold = 0) {
 #' }
 #' @param receiver_cell name of the receiving cluster whose receptors will be used 
 #' @return list of incoming ligands to the recipient cell type organized by their receptor
-#' @keywords internal
+#' @export
 #' 
 #' @examples
 #' example(build_domino)
@@ -106,7 +106,7 @@ query_ligand_senders <- function(dom, outgoing_list, receiver_cell) {
 #' @param receiver_cell name of the receiving cluster
 #' @param receptor name of the receptor receiving signals
 #' @return vector of intercellular linkages for each sender cell and active ligand
-#' @keywords internal
+#' @export
 #' 
 #' @examples
 #' example(build_domino)
