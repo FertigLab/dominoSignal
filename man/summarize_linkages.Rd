@@ -51,6 +51,14 @@ pbmc_dom_built_tiny_alt <- build_domino(
   min_rec_percentage = 0.01
 )
 
+#identify intercellular linkages
+pbmc_dom_tiny <- add_intercellular_linkages(
+  dom = pbmc_dom_tiny, signal_threshold = 0
+)
+pbmc_dom_tiny_alt <- add_intercellular_linkages(
+  dom = pbmc_dom_tiny_alt, signal_threshold = 0
+)
+
 #create a list of domino objects
 dom_ls <- list(
  dom1 = pbmc_dom_built_tiny,
