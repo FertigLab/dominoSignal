@@ -25,6 +25,32 @@ generate_expression_bootstrap <- function(counts, normalized_expression, cluster
     cluster_lvls <- levels(clusters)
   }
   
+  # check that sample names (colnames or vector names) match for all cells
+  nms_ls <- list(
+    "counts_names" = colnames(counts),
+    "normalized_expression_names" = colnames(normalized_expression),
+    "clusters_names" = names(clusters),
+    "TF_scores_names" = colnames(TF_scores)
+  )
+  # Null value check
+  for(i in seq_along(nms_ls)){
+    param_name <- names(nms_ls)[i]
+    param_short <- gsub("_names", "", param_name)
+    if(is.null(nms_ls[[param_name]])){
+      stop(paste0(param_short), " lacks named cell identifiers (names or colnames)")
+    }
+  }
+  
+  # Check all cell barcode names are the same and in the same order
+  name_check <- lapply(nms_ls, function(x){
+    sapply(nms_ls, function(y) {
+      sum(x == y) == length(x)
+    })
+  }) %>% do.call(rbind, .)
+  if(sum(name_check) != length(name_check)){
+    stop("At least one argument does not have matching cell identifiers with other arguments")
+  }
+  
   # select cells for the bootstrap by sampling sample names with replacement
   cell_ids <- c()
   for(j in seq_along(cluster_lvls)){
