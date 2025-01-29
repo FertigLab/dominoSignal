@@ -822,6 +822,22 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
     sig <- dom@cl_signaling_matrices[active_cell][[1]]
     cell_names <- gsub("^L_", "", colnames(sig))
     
+    
+    # ensure only ligands present in the signaling matrix are considered
+    lig_check <- ligands %in% rownames(sig)
+    if(length(lig_check) != sum(lig_check)){
+      message(paste0(
+        "Ligands: ", paste(ligands[!lig_check], collapse = ","),
+        " of receptor ", receptor, " are listed in the rl_map, but not present in the signaling matrix."
+      ))
+      if(sum(lig_check) == 0){
+        stop(paste0("No ligands of receptor ", receptor, " present in signaling matrix."))
+      } else {
+        message(paste0("Only ligands: ", paste(ligands[lig_check], collapse = ","), " will be considered."))
+      }
+    }
+    ligands <- ligands[lig_check]
+    
     lig_signal_ls <- lapply(
       setNames(ligands, nm = ligands), 
       function(l){
