@@ -1,3 +1,7 @@
+# dominoSignal v1.0.5
+
+- circos_ligand_receptor will not fail in cases where the rl_map of a domino objects includes ligands for a receptor where the ligands are not present in the expression matrix. A message is returned if ligands from the rl_map had to be excluded from the plot
+
 # dominoSignal v1.0.4
 
 - refactorization of circos_ligand_receptor function to remove use of grepl-based regular expressions to reformat cell and molecule names from a domino object into a data frame for plotting a receptor circos plot. Component functions for creating the data frame of ligand expression centered on a single receptor and to render this data frame as a circos plot are now included in the package as "obtain_circos_expression" and "render_circos_ligand_receptor", respectively.

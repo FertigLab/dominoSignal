@@ -67,3 +67,71 @@ test_that("Cell types with hyphenated names can be plotted", {
   
   dev.off()
 })
+
+test_that("Plots for receptors that have ligands in the rl_map but not the signaling matrix do not fail", {
+  # testing domino object
+  data(CellPhoneDB)
+  rl_map_tiny <- create_rl_map_cellphonedb(
+    genes = CellPhoneDB$genes_tiny,
+    proteins = CellPhoneDB$proteins_tiny,
+    interactions = CellPhoneDB$interactions_tiny,
+    complexes = CellPhoneDB$complexes_tiny)
+  
+  # add ligands to one of the existing receptors in the rl_map
+  # CXCR3: 3 ligands (CCL20, CCX, CCY)
+  # CCX and CCY are not in the signaling matrix
+  
+  rl_map_append <- rbind(
+    rl_map_tiny,
+    data.frame(
+      "int_pair" = c("CXCR3 & CCX", "CXCR3 & CCY"),
+      "name_A" = c("CXCR3", "CXCR3"),
+      "uniprot_A" = c("P49682", "P49682"),
+      "gene_A" = c("CXCR3", "CXCR3"),
+      "type_A" = c("R", "R"),          
+      "name_B" = c("CCX", "CCY"),
+      "uniprot_B" = c("CCX", "CCY"),
+      "gene_B" = c("CCX", "CCY"),
+      "type_B" = c("L", "L"),
+      "annotation_strategy" = c("unit_test", "unit_test"),
+      "source" = c("unit_test", "unit_test"),
+      "database_name" = c("unit_test", "unit_test")
+    )
+  )
+  
+  
+  data(SCENIC)
+  regulon_list_tiny <- create_regulon_list_scenic(
+    regulons = SCENIC$regulons_tiny)
+  
+  data(PBMC)
+  pbmc_dom_tiny <- create_domino(
+    rl_map = rl_map_append, features = SCENIC$auc_tiny,
+    counts = PBMC$RNA_count_tiny, z_scores = PBMC$RNA_zscore_tiny,
+    clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
+    use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE)
+  
+  dom <- build_domino(
+    dom = pbmc_dom_tiny, min_tf_pval = .05, max_tf_per_clust = Inf,
+    max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01
+  )
+  
+  expect_message(
+    obtain_circos_expression(dom = dom, receptor = "CXCR3", ligands = c("CCL20", "CCX", "CCY")),
+    "Ligands: CCX,CCY of receptor CXCR3 are listed in the rl_map, but not present in the signaling matrix.",
+    "Only ligands: CCL20 will be considered."
+  )
+  
+  # The same message is returned from the full function creating the circos plot
+  expect_message(
+    circos_ligand_receptor(dom = dom, receptor = "CXCR3"),
+    "Ligands: CCX,CCY of receptor CXCR3 are listed in the rl_map, but not present in the signaling matrix.",
+    "Only ligands: CCL20 will be considered."
+  )
+  
+  # A receptor with no ligands present returns an error
+  expect_error(
+    obtain_circos_expression(dom = dom, receptor = "CXCR3", ligands = c("CCX", "CCY")),
+    "No ligands of receptor CXCR3 present in signaling matrix."
+  )
+})
