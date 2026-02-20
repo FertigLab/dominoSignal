@@ -30,7 +30,7 @@ gene_network(
 
 \item{layout}{Type of layout to use. Options are 'grid', 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold force directed layout, and 'kk' for Kamada Kawai for directed layout.}
 
-\item{...}{Other parameters to pass to plot() with an \link{igraph} object. See \link{igraph} manual for options.}
+\item{...}{Other parameters to pass to plot() with an \link[igraph:aaa-igraph-package]{igraph::igraph} object. See \link[igraph:aaa-igraph-package]{igraph::igraph} manual for options.}
 }
 \value{
 an igraph rendered to the active graphics device
