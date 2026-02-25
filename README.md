@@ -1,4 +1,4 @@
-[![R build status](https://github.com/FertigLab/dominoSignal/workflows/r-build-check/badge.svg?branch=master)](https://github.com/FertigLab/dominoSignal/actions?workflow=r-build-check)
+[![R Build Status](https://github.com/FertigLab/dominoSignal/workflows/r-build-check.yml/badge.svg?branch=master)](https://github.com/FertigLab/dominoSignal/actions/workflows/r-build-check.yml)
 
 ## Introducing dominoSignal: Improved Inference of Cell Signaling from Single Cell RNA Sequencing Data <a href="https://fertiglab.github.io/dominoSignal/"><img src="man/figures/logo.svg" align="right" height="138" alt="dominoSignal logo" /></a>
 

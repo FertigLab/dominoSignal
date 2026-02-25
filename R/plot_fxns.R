@@ -802,12 +802,7 @@ circos_ligand_receptor <- function(
 #' @param ligand_expression_threshold Minimum mean expression value of a ligand by a cell type for a chord to be rendered between the cell type and the receptor
 #' @param cell_idents Vector of cell types from cluster assignments in the domino object to be included in the plot.
 #' @return a data frame where each row describes plotting parameters of ligand-receptor interactions to pass to render_circos_ligand_receptor()
-#' @export obtain_circos_expression
-#' @examples 
-#' example(build_domino, echo = FALSE)
-#' #basic usage
-#' obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-#' 
+#' @keywords internal
 
 obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_threshold = 0.01, cell_idents = NULL){
   signaling_df <- NULL
@@ -884,13 +879,7 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 #' @param ligand_expression_threshold Minimum mean expression value of a ligand by a cell type for a chord to be rendered between the cell type and the receptor
 #' @param cell_colors Named vector of color names or hex codes where names correspond to the plotted cell types and the color values
 #' @return a circlize plot is rendered to the active graphics device
-#' @export render_circos_ligand_receptor
-#' @examples 
-#' example(build_domino, echo = FALSE)
-#' #basic usage
-#' circos_df <- obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-#' render_circos_ligand_receptor(signaling_df = circos_df, receptor = "CXCR3")
-#'
+#' @keywords internal
 
 render_circos_ligand_receptor <- function(
     signaling_df, receptor, cell_colors = NULL, ligand_expression_threshold = 0.01
