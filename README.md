@@ -1,5 +1,3 @@
-[![R Build Status](https://github.com/FertigLab/dominoSignal/workflows/r-build-check.yml/badge.svg?branch=master)](https://github.com/FertigLab/dominoSignal/actions/workflows/r-build-check.yml)
-
 ## Introducing dominoSignal: Improved Inference of Cell Signaling from Single Cell RNA Sequencing Data <a href="https://fertiglab.github.io/dominoSignal/"><img src="man/figures/logo.svg" align="right" height="138" alt="dominoSignal logo" /></a>
 
 dominoSignal is an updated version of the original [domino](https://github.com/Elisseeff-Lab/domino) R package published in Nature Biomedical Engineering in [Computational reconstruction of the signalling networks surrounding implanted biomaterials from single-cell transcriptomics](https://doi.org/10.1038/s41551-021-00770-5). dominoSignal is a tool for analysis of intra- and intercellular signaling in single cell RNA sequencing data based on transcription factor activation and receptor and ligand linkages between clusters.
