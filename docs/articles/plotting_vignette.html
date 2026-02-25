@@ -122,7 +122,7 @@ Instructions to load data
 calculated between receptors and transcription factors.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, title <span class="op">=</span> <span class="st">"PBMC R-TF Correlations"</span>, column_names_gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/corheatmap-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/corheatmap-1.png" class="r-plt" alt="Heatmap of correlation values between receptors and transcription factors across the set." width="700"></p>
 <p>In addition to displaying the scores for the correlations, this
 function can also be used to identify correlations above a certain value
 (using the <code>bool</code> and <code>bool_thresh</code> arguments) or
@@ -132,7 +132,7 @@ to identify the combinations of receptors and transcription factors
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, bool <span class="op">=</span> <span class="cn">TRUE</span>, bool_thresh <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, bool <span class="op">=</span> <span class="cn">FALSE</span>, mark_connections <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/corheatmap-options-1.png" class="r-plt" width="50%"><img src="plotting_vignette_files/figure-html/corheatmap-options-2.png" class="r-plt" width="50%"></p>
+<p><img src="plotting_vignette_files/figure-html/corheatmap-options-1.png" class="r-plt" alt="Heatmap of correlations shown as true or false with threshold of 0.25 and heatmap of correlations with xs shown over receptors and transcription factors that are linked." width="50%"><img src="plotting_vignette_files/figure-html/corheatmap-options-2.png" class="r-plt" alt="Heatmap of correlations shown as true or false with threshold of 0.25 and heatmap of correlations with xs shown over receptors and transcription factors that are linked." width="50%"></p>
 <p>If only a subset of receptors or transcription factors are of
 interest, a vector of either (or both) can be passed to the
 function.</p>
@@ -140,7 +140,7 @@ function.</p>
 <code class="sourceCode R"><span><span class="va">receptors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CSF1R"</span>, <span class="st">"CSF3R"</span>, <span class="st">"CCR7"</span>, <span class="st">"FCER2"</span><span class="op">)</span></span>
 <span><span class="va">tfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PAX5"</span>, <span class="st">"JUNB"</span>, <span class="st">"FOXJ3"</span>, <span class="st">"FOSB"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, feats <span class="op">=</span> <span class="va">tfs</span>, recs <span class="op">=</span> <span class="va">receptors</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/corheatmap-subset-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/corheatmap-subset-1.png" class="r-plt" alt="A subsetted heatmap showing the correlation between specific transcription factors and receptors of interest." width="700"></p>
 <p>The heatmap functions in dominoSignal are based on
 <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">ComplexHeatmap::Heatmap()</a></code> and will also accept additional
 arguments meant for that function. For example, while an argument for
@@ -150,7 +150,7 @@ can still be passed to <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Hea
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, cluster_rows <span class="op">=</span> <span class="cn">FALSE</span>, cluster_columns <span class="op">=</span> <span class="cn">FALSE</span>, column_title <span class="op">=</span> <span class="st">"Heatmap Without Clustering"</span>,</span>
 <span>    column_names_gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/corheatmap-ComplexHeatmap-args-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/corheatmap-ComplexHeatmap-args-1.png" class="r-plt" alt="A correlation heatmap that has not been clustered and does not display a dendrogram as a result." width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="heatmap-of-transcription-factor-activation-scores">Heatmap of Transcription Factor Activation Scores<a class="anchor" aria-label="anchor" href="#heatmap-of-transcription-factor-activation-scores"></a>
@@ -159,7 +159,7 @@ can still be passed to <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Hea
 activation for features in the signaling network.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/feat_heatmap.html">feat_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, use_raster <span class="op">=</span> <span class="cn">FALSE</span>, row_names_gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/featheatmap-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/featheatmap-1.png" class="r-plt" alt="A heatmap showing transcription factor activation levels by cells which are arranged by cluster." width="700"></p>
 <p>It functions similarly to <code><a href="../reference/cor_heatmap.html">cor_heatmap()</a></code>, with arguments
 to select a specific vector of features, to use a boolean view with a
 threshold, and to pass other arguments to
@@ -170,7 +170,7 @@ to choose to normalize the scores to the max value.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/feat_heatmap.html">feat_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, min_thresh <span class="op">=</span> <span class="fl">0.1</span>, max_thresh <span class="op">=</span> <span class="fl">0.6</span>, norm <span class="op">=</span> <span class="cn">TRUE</span>, bool <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    use_raster <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/feat_heatmap.html">feat_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, bool <span class="op">=</span> <span class="cn">TRUE</span>, use_raster <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/featheatmap-options-1.png" class="r-plt" width="50%"><img src="plotting_vignette_files/figure-html/featheatmap-options-2.png" class="r-plt" width="50%"></p>
+<p><img src="plotting_vignette_files/figure-html/featheatmap-options-1.png" class="r-plt" alt="A heatmap showing activation of transcription factors with a minimum activity of 0.1 and maximum activity of 0.6 with values normalized to the maximum score, and a binary heatmap showing transcription factor activation with the default threshold of 0.2." width="50%"><img src="plotting_vignette_files/figure-html/featheatmap-options-2.png" class="r-plt" alt="A heatmap showing activation of transcription factors with a minimum activity of 0.1 and maximum activity of 0.6 with values normalized to the maximum score, and a binary heatmap showing transcription factor activation with the default threshold of 0.2." width="50%"></p>
 </div>
 <div class="section level3">
 <h3 id="heatmap-of-incoming-signaling-for-a-cluster">Heatmap of Incoming Signaling for a Cluster<a class="anchor" aria-label="anchor" href="#heatmap-of-incoming-signaling-for-a-cluster"></a>
@@ -181,13 +181,13 @@ TFs enriched in the cluster. For example, to view the incoming signaling
 of the CD8 T cells:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/incoming_signaling_heatmap.html">incoming_signaling_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">"CD8_T_cell"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/incoming-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/incoming-1.png" class="r-plt" alt="Heatmap of ligand expression by sending cluster targetting CD8 T cells." width="700"></p>
 <p>We can also select for specific clusters of interest that are
 signaling to the CD8 T cells. If we are only interested in viewing the
 monocyte signaling:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/incoming_signaling_heatmap.html">incoming_signaling_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">"CD8_T_cell"</span>, clusts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD14_monocyte"</span>, <span class="st">"CD16_monocyte"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/incoming-subset-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/incoming-subset-1.png" class="r-plt" alt="Heatmap of ligand expression subset to sending clusters CD14 monocytes and CD16 monocytes targetting CD8 T cells." width="700"></p>
 <p>As with our other heatmap functions, options are available for a
 minimum threshold, maximum threshold, whether to scale the values after
 thresholding, whether to normalize the matrix, and the ability to pass
@@ -201,14 +201,14 @@ signaling strength of ligands from each cluster to receptors of each
 cluster based on averaged expression.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/signaling_heatmap.html">signaling_heatmap</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/signaling-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/signaling-1.png" class="r-plt" alt="Heatmap of collective signaling between receiving clusters and sending clusters." width="700"></p>
 <p>As with other functions, specific clusters can be selected,
 thresholds can be set, and normalization methods can be selected as
 well.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/signaling_heatmap.html">signaling_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, scale <span class="op">=</span> <span class="st">"sqrt"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/signaling_heatmap.html">signaling_heatmap</a></span><span class="op">(</span><span class="va">dom</span>, normalize <span class="op">=</span> <span class="st">"rec_norm"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/signaling-norm-1.png" class="r-plt" width="50%"><img src="plotting_vignette_files/figure-html/signaling-norm-2.png" class="r-plt" width="50%"></p>
+<p><img src="plotting_vignette_files/figure-html/signaling-norm-1.png" class="r-plt" alt="A heatmap of collective signaling with a square root transformation and a heatmap of collective signaling normalized to the maximum value of received signaling." width="50%"><img src="plotting_vignette_files/figure-html/signaling-norm-2.png" class="r-plt" alt="A heatmap of collective signaling with a square root transformation and a heatmap of collective signaling normalized to the maximum value of received signaling." width="50%"></p>
 </div>
 </div>
 <div class="section level2">
@@ -223,20 +223,21 @@ associated with those clusters are displayed as nodes with edges as
 linkages. To look at signaling to the CD16 Monocytes from the CD14
 Monocytes:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/gene_network.html">gene_network</a></span><span class="op">(</span><span class="va">dom</span>, clust <span class="op">=</span> <span class="st">"CD16_monocyte"</span>, OutgoingSignalingClust <span class="op">=</span> <span class="st">"CD14_monocyte"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/genenetwork-1.png" class="r-plt" width="700"></p>
+<code class="sourceCode R"><span><span class="co"># \ linkages from the CD14 monocyte cluster to the CD16 monocyte cluster.</span></span>
+<span><span class="fu"><a href="../reference/gene_network.html">gene_network</a></span><span class="op">(</span><span class="va">dom</span>, clust <span class="op">=</span> <span class="st">"CD16_monocyte"</span>, OutgoingSignalingClust <span class="op">=</span> <span class="st">"CD14_monocyte"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plotting_vignette_files/figure-html/genenetwork-1.png" class="r-plt" alt="Network plot with columns for ligand, receptor, and transcription factor showing" width="700"></p>
 <p>Options to modify this plot include adjusting scaling for the ligands
 and different layouts (some of which are more legible than others).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gene_network.html">gene_network</a></span><span class="op">(</span><span class="va">dom</span>, clust <span class="op">=</span> <span class="st">"CD16_monocyte"</span>, OutgoingSignalingClust <span class="op">=</span> <span class="st">"CD14_monocyte"</span>,</span>
 <span>    lig_scale <span class="op">=</span> <span class="fl">25</span>, layout <span class="op">=</span> <span class="st">"sphere"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/genenetwork-options-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/genenetwork-options-1.png" class="r-plt" alt="Network plot for CD14 monocytes to CD16 monocyte with ligand values scaled up and a spherical network layout." width="700"></p>
 <p>Additionally, colors can be given for select genes (for example, to
 highlight a specific signaling path).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gene_network.html">gene_network</a></span><span class="op">(</span><span class="va">dom</span>, clust <span class="op">=</span> <span class="st">"CD16_monocyte"</span>, OutgoingSignalingClust <span class="op">=</span> <span class="st">"CD14_monocyte"</span>,</span>
 <span>    cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CD1D <span class="op">=</span> <span class="st">"violet"</span>, LILRB2 <span class="op">=</span> <span class="st">"violet"</span>, FOSB <span class="op">=</span> <span class="st">"violet"</span><span class="op">)</span>, lig_scale <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/genenetwork-cols-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/genenetwork-cols-1.png" class="r-plt" alt="Network plot from CD14 monocytes to CD16 monocytes in three column layout where ligand CD1D, receptor LILRB2, and transcription factor FOSB have been highlighted in violet and ligand nodes are scaled up." width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="network-showing-interaction-strength-across-data">Network Showing Interaction Strength Across Data<a class="anchor" aria-label="anchor" href="#network-showing-interaction-strength-across-data"></a>
@@ -246,7 +247,7 @@ such that nodes are clusters and the edges indicate signaling from one
 cluster to another.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/signaling_network.html">signaling_network</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/signalingnet-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/signalingnet-1.png" class="r-plt" alt="Network plot with circular layout with nodes corresponding to clusters and edges showing connections between clusters. The edges from the platelet population dominate the plot." width="700"></p>
 <p>In addition to changes such as scaling, thresholds, or layouts, this
 plot can be modified by selecting incoming or outgoing clusters (or
 both!). An example to view signaling from the CD14 Monocytes to other
@@ -254,7 +255,7 @@ clusters:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/signaling_network.html">signaling_network</a></span><span class="op">(</span><span class="va">dom</span>, showOutgoingSignalingClusts <span class="op">=</span> <span class="st">"CD14_monocyte"</span>, scale <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>    norm <span class="op">=</span> <span class="st">"none"</span>, layout <span class="op">=</span> <span class="st">"fr"</span>, scale_by <span class="op">=</span> <span class="st">"none"</span>, edge_weight <span class="op">=</span> <span class="fl">2</span>, vert_scale <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/signalingnet-clusts-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/signalingnet-clusts-1.png" class="r-plt" alt="Network plot for signaling from the CD14 monocytes which are plotted in the center with edges connecting to the other clusters which are positioned around the central node." width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -269,7 +270,7 @@ receptor, displaying mean cluster expression of the ligand with the
 width of the chord.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/circos_ligand_receptor.html">circos_ligand_receptor</a></span><span class="op">(</span><span class="va">dom</span>, receptor <span class="op">=</span> <span class="st">"CD74"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/circos-1.png" class="r-plt" width="90%"></p>
+<p><img src="plotting_vignette_files/figure-html/circos-1.png" class="r-plt" alt="Circos plot with outer arcs corresponding to sending clusters and inner arcs corresponding to ligands connecting to receptor CD74." width="90%"></p>
 <p>This function can be given cluster colors to match other plots you
 may make with your data. In addition, the plot can be adjusted by
 changing the threshold of ligand expression required for a linkage to be
@@ -279,7 +280,7 @@ visualized or selecting clusters of interest.</p>
 <span>    <span class="st">"hotpink"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_clusters.html">dom_clusters</a></span><span class="op">(</span><span class="va">dom</span>, labels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/circos_ligand_receptor.html">circos_ligand_receptor</a></span><span class="op">(</span><span class="va">dom</span>, receptor <span class="op">=</span> <span class="st">"CD74"</span>, cell_colors <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/circos-opt-1.png" class="r-plt" width="90%"></p>
+<p><img src="plotting_vignette_files/figure-html/circos-opt-1.png" class="r-plt" alt="Circos plot identical to the one above, except that the outer cluster arcs have been assigned specific colors." width="90%"></p>
 </div>
 <div class="section level3">
 <h3 id="scatter-plot-to-visualize-correlation">Scatter Plot to Visualize Correlation<a class="anchor" aria-label="anchor" href="#scatter-plot-to-visualize-correlation"></a>
@@ -290,7 +291,7 @@ produces a scatter plot as well as a line of best fit to look at
 receptor - TF correlation.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cor_scatter.html">cor_scatter</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">"FOSB"</span>, <span class="st">"CD74"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plotting_vignette_files/figure-html/corscatter-1.png" class="r-plt" width="700"></p>
+<p><img src="plotting_vignette_files/figure-html/corscatter-1.png" class="r-plt" alt="Scatter plot of receptor expression by transcription factor activation with a line of best fit displayed over the points." width="700"></p>
 <p>Do keep in mind that there is an argument for
 <code>remove_rec_dropout</code> that should match the parameter that was
 used when the domino object was built. In this case, we did not use that

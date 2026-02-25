@@ -385,7 +385,8 @@ which plots data set-wide TF activity scores as a heatmap.
 feat_heatmap(pbmc_dom, norm = TRUE, bool = FALSE, use_raster = FALSE, row_names_gp = grid::gpar(fontsize = 4))
 ```
 
-![](dominoSignal_files/figure-html/unnamed-chunk-4-1.png)
+![Heatmap showing feature activation for cells ordered by
+cluster.](dominoSignal_files/figure-html/unnamed-chunk-4-1.png)
 
 ### Cumulative signaling between cell types
 
@@ -402,7 +403,9 @@ corresponds to the sender cluster for that signal.
 signaling_network(pbmc_dom, edge_weight = 0.5, max_thresh = 3)
 ```
 
-![](dominoSignal_files/figure-html/unnamed-chunk-5-1.png)
+![Network plot where nodes are clusters and edges indicate the magnitude
+of communication between the
+clusters.](dominoSignal_files/figure-html/unnamed-chunk-5-1.png)
 
 Signaling networks can also be drawn with the edges only rendering the
 signals directed towards a given cell type or signals from one cell type
@@ -425,7 +428,9 @@ receptors.
 gene_network(pbmc_dom, clust = "dendritic_cell", layout = "grid")
 ```
 
-![](dominoSignal_files/figure-html/unnamed-chunk-6-1.png)
+![Network plot with columns corresponding to ligands, receptors, and
+transcription factors for signaling to dendritic
+cells.](dominoSignal_files/figure-html/unnamed-chunk-6-1.png)
 
 New to dominoSignal,
 [`gene_network()`](https://FertigLab.github.io/dominoSignal/reference/gene_network.md)
@@ -439,7 +444,10 @@ gene_network(pbmc_dom, clust = "dendritic_cell", OutgoingSignalingClust = "CD14_
     layout = "grid")
 ```
 
-![](dominoSignal_files/figure-html/unnamed-chunk-7-1.png)
+![Network plot with columns corresponding to ligands, receptors, and
+transcription factors showing signaling to dendritic cells from the CD14
+monocyte
+population.](dominoSignal_files/figure-html/unnamed-chunk-7-1.png)
 
 A comprehensive assessment of ligand expression targeting active
 receptors on a given cluster can be assessed with
@@ -451,7 +459,9 @@ incoming_signaling_heatmap(pbmc_dom, rec_clust = "dendritic_cell", max_thresh = 
     use_raster = FALSE)
 ```
 
-![](dominoSignal_files/figure-html/unnamed-chunk-8-1.png)
+![Heatmap showing ligand expression from each sending population to
+receiving receptors in dendritic cell
+population](dominoSignal_files/figure-html/unnamed-chunk-8-1.png)
 
 Another form of comprehensive ligand expression assessment is available
 for individual active receptors in the form of circos plots new to
@@ -468,7 +478,10 @@ the data.
 circos_ligand_receptor(pbmc_dom, receptor = "CD74")
 ```
 
-![](dominoSignal_files/figure-html/unnamed-chunk-9-1.png)
+![A circos plot with outer arcs corresponding to clusters and inner arcs
+corresponding to ligands directed to receptor CD74. Arcs represent mean
+expression of the
+ligands.](dominoSignal_files/figure-html/unnamed-chunk-9-1.png)
 
 ## Continued Development
 

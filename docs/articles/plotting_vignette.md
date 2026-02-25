@@ -47,7 +47,9 @@ transcription factors.
 cor_heatmap(dom, title = "PBMC R-TF Correlations", column_names_gp = grid::gpar(fontsize = 8))
 ```
 
-![](plotting_vignette_files/figure-html/corheatmap-1.png)
+![Heatmap of correlation values between receptors and transcription
+factors across the
+set.](plotting_vignette_files/figure-html/corheatmap-1.png)
 
 In addition to displaying the scores for the correlations, this function
 can also be used to identify correlations above a certain value (using
@@ -61,7 +63,14 @@ cor_heatmap(dom, bool = TRUE, bool_thresh = 0.25)
 cor_heatmap(dom, bool = FALSE, mark_connections = TRUE)
 ```
 
-![](plotting_vignette_files/figure-html/corheatmap-options-1.png)![](plotting_vignette_files/figure-html/corheatmap-options-2.png)
+![Heatmap of correlations shown as true or false with threshold of 0.25
+and heatmap of correlations with xs shown over receptors and
+transcription factors that are
+linked.](plotting_vignette_files/figure-html/corheatmap-options-1.png)![Heatmap
+of correlations shown as true or false with threshold of 0.25 and
+heatmap of correlations with xs shown over receptors and transcription
+factors that are
+linked.](plotting_vignette_files/figure-html/corheatmap-options-2.png)
 
 If only a subset of receptors or transcription factors are of interest,
 a vector of either (or both) can be passed to the function.
@@ -73,7 +82,9 @@ tfs <- c("PAX5", "JUNB", "FOXJ3", "FOSB")
 cor_heatmap(dom, feats = tfs, recs = receptors)
 ```
 
-![](plotting_vignette_files/figure-html/corheatmap-subset-1.png)
+![A subsetted heatmap showing the correlation between specific
+transcription factors and receptors of
+interest.](plotting_vignette_files/figure-html/corheatmap-subset-1.png)
 
 The heatmap functions in dominoSignal are based on
 [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
@@ -90,7 +101,9 @@ cor_heatmap(dom, cluster_rows = FALSE, cluster_columns = FALSE, column_title = "
     column_names_gp = grid::gpar(fontsize = 4))
 ```
 
-![](plotting_vignette_files/figure-html/corheatmap-ComplexHeatmap-args-1.png)
+![A correlation heatmap that has not been clustered and does not display
+a dendrogram as a
+result.](plotting_vignette_files/figure-html/corheatmap-ComplexHeatmap-args-1.png)
 
 ### Heatmap of Transcription Factor Activation Scores
 
@@ -103,7 +116,9 @@ signaling network.
 feat_heatmap(dom, use_raster = FALSE, row_names_gp = grid::gpar(fontsize = 4))
 ```
 
-![](plotting_vignette_files/figure-html/featheatmap-1.png)
+![A heatmap showing transcription factor activation levels by cells
+which are arranged by
+cluster.](plotting_vignette_files/figure-html/featheatmap-1.png)
 
 It functions similarly to
 [`cor_heatmap()`](https://FertigLab.github.io/dominoSignal/reference/cor_heatmap.md),
@@ -121,7 +136,16 @@ feat_heatmap(dom, min_thresh = 0.1, max_thresh = 0.6, norm = TRUE, bool = FALSE,
 feat_heatmap(dom, bool = TRUE, use_raster = FALSE)
 ```
 
-![](plotting_vignette_files/figure-html/featheatmap-options-1.png)![](plotting_vignette_files/figure-html/featheatmap-options-2.png)
+![A heatmap showing activation of transcription factors with a minimum
+activity of 0.1 and maximum activity of 0.6 with values normalized to
+the maximum score, and a binary heatmap showing transcription factor
+activation with the default threshold of
+0.2.](plotting_vignette_files/figure-html/featheatmap-options-1.png)![A
+heatmap showing activation of transcription factors with a minimum
+activity of 0.1 and maximum activity of 0.6 with values normalized to
+the maximum score, and a binary heatmap showing transcription factor
+activation with the default threshold of
+0.2.](plotting_vignette_files/figure-html/featheatmap-options-2.png)
 
 ### Heatmap of Incoming Signaling for a Cluster
 
@@ -135,7 +159,8 @@ view the incoming signaling of the CD8 T cells:
 incoming_signaling_heatmap(dom, "CD8_T_cell")
 ```
 
-![](plotting_vignette_files/figure-html/incoming-1.png)
+![Heatmap of ligand expression by sending cluster targetting CD8 T
+cells.](plotting_vignette_files/figure-html/incoming-1.png)
 
 We can also select for specific clusters of interest that are signaling
 to the CD8 T cells. If we are only interested in viewing the monocyte
@@ -146,7 +171,9 @@ signaling:
 incoming_signaling_heatmap(dom, "CD8_T_cell", clusts = c("CD14_monocyte", "CD16_monocyte"))
 ```
 
-![](plotting_vignette_files/figure-html/incoming-subset-1.png)
+![Heatmap of ligand expression subset to sending clusters CD14 monocytes
+and CD16 monocytes targetting CD8 T
+cells.](plotting_vignette_files/figure-html/incoming-subset-1.png)
 
 As with our other heatmap functions, options are available for a minimum
 threshold, maximum threshold, whether to scale the values after
@@ -165,7 +192,8 @@ cluster to receptors of each cluster based on averaged expression.
 signaling_heatmap(dom)
 ```
 
-![](plotting_vignette_files/figure-html/signaling-1.png)
+![Heatmap of collective signaling between receiving clusters and sending
+clusters.](plotting_vignette_files/figure-html/signaling-1.png)
 
 As with other functions, specific clusters can be selected, thresholds
 can be set, and normalization methods can be selected as well.
@@ -176,7 +204,14 @@ signaling_heatmap(dom, scale = "sqrt")
 signaling_heatmap(dom, normalize = "rec_norm")
 ```
 
-![](plotting_vignette_files/figure-html/signaling-norm-1.png)![](plotting_vignette_files/figure-html/signaling-norm-2.png)
+![A heatmap of collective signaling with a square root transformation
+and a heatmap of collective signaling normalized to the maximum value of
+received
+signaling.](plotting_vignette_files/figure-html/signaling-norm-1.png)![A
+heatmap of collective signaling with a square root transformation and a
+heatmap of collective signaling normalized to the maximum value of
+received
+signaling.](plotting_vignette_files/figure-html/signaling-norm-2.png)
 
 ## Network Plots
 
@@ -190,10 +225,12 @@ CD16 Monocytes from the CD14 Monocytes:
 
 ``` r
 
+# \ linkages from the CD14 monocyte cluster to the CD16 monocyte cluster.
 gene_network(dom, clust = "CD16_monocyte", OutgoingSignalingClust = "CD14_monocyte")
 ```
 
-![](plotting_vignette_files/figure-html/genenetwork-1.png)
+![Network plot with columns for ligand, receptor, and transcription
+factor showing](plotting_vignette_files/figure-html/genenetwork-1.png)
 
 Options to modify this plot include adjusting scaling for the ligands
 and different layouts (some of which are more legible than others).
@@ -204,7 +241,9 @@ gene_network(dom, clust = "CD16_monocyte", OutgoingSignalingClust = "CD14_monocy
     lig_scale = 25, layout = "sphere")
 ```
 
-![](plotting_vignette_files/figure-html/genenetwork-options-1.png)
+![Network plot for CD14 monocytes to CD16 monocyte with ligand values
+scaled up and a spherical network
+layout.](plotting_vignette_files/figure-html/genenetwork-options-1.png)
 
 Additionally, colors can be given for select genes (for example, to
 highlight a specific signaling path).
@@ -215,7 +254,10 @@ gene_network(dom, clust = "CD16_monocyte", OutgoingSignalingClust = "CD14_monocy
     cols = c(CD1D = "violet", LILRB2 = "violet", FOSB = "violet"), lig_scale = 10)
 ```
 
-![](plotting_vignette_files/figure-html/genenetwork-cols-1.png)
+![Network plot from CD14 monocytes to CD16 monocytes in three column
+layout where ligand CD1D, receptor LILRB2, and transcription factor FOSB
+have been highlighted in violet and ligand nodes are scaled
+up.](plotting_vignette_files/figure-html/genenetwork-cols-1.png)
 
 ### Network Showing Interaction Strength Across Data
 
@@ -228,7 +270,10 @@ the edges indicate signaling from one cluster to another.
 signaling_network(dom)
 ```
 
-![](plotting_vignette_files/figure-html/signalingnet-1.png)
+![Network plot with circular layout with nodes corresponding to clusters
+and edges showing connections between clusters. The edges from the
+platelet population dominate the
+plot.](plotting_vignette_files/figure-html/signalingnet-1.png)
 
 In addition to changes such as scaling, thresholds, or layouts, this
 plot can be modified by selecting incoming or outgoing clusters (or
@@ -241,7 +286,10 @@ signaling_network(dom, showOutgoingSignalingClusts = "CD14_monocyte", scale = "n
     norm = "none", layout = "fr", scale_by = "none", edge_weight = 2, vert_scale = 10)
 ```
 
-![](plotting_vignette_files/figure-html/signalingnet-clusts-1.png)
+![Network plot for signaling from the CD14 monocytes which are plotted
+in the center with edges connecting to the other clusters which are
+positioned around the central
+node.](plotting_vignette_files/figure-html/signalingnet-clusts-1.png)
 
 ## Other Types of Plots
 
@@ -258,7 +306,9 @@ width of the chord.
 circos_ligand_receptor(dom, receptor = "CD74")
 ```
 
-![](plotting_vignette_files/figure-html/circos-1.png)
+![Circos plot with outer arcs corresponding to sending clusters and
+inner arcs corresponding to ligands connecting to receptor
+CD74.](plotting_vignette_files/figure-html/circos-1.png)
 
 This function can be given cluster colors to match other plots you may
 make with your data. In addition, the plot can be adjusted by changing
@@ -273,7 +323,9 @@ names(cols) <- dom_clusters(dom, labels = FALSE)
 circos_ligand_receptor(dom, receptor = "CD74", cell_colors = cols)
 ```
 
-![](plotting_vignette_files/figure-html/circos-opt-1.png)
+![Circos plot identical to the one above, except that the outer cluster
+arcs have been assigned specific
+colors.](plotting_vignette_files/figure-html/circos-opt-1.png)
 
 ### Scatter Plot to Visualize Correlation
 
@@ -287,7 +339,9 @@ line of best fit to look at receptor - TF correlation.
 cor_scatter(dom, "FOSB", "CD74")
 ```
 
-![](plotting_vignette_files/figure-html/corscatter-1.png)
+![Scatter plot of receptor expression by transcription factor activation
+with a line of best fit displayed over the
+points.](plotting_vignette_files/figure-html/corscatter-1.png)
 
 Do keep in mind that there is an argument for `remove_rec_dropout` that
 should match the parameter that was used when the domino object was

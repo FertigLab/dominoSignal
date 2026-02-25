@@ -1,4 +1,4 @@
-## Introducing dominoSignal [![dominoSignal logo](logo.svg)](https://fertiglab.github.io/dominoSignal/)
+## Introducing dominoSignal ![dominoSignal hex logo](logo.svg)
 
 dominoSignal is an updated version of the original
 [domino](https://github.com/Elisseeff-Lab/domino) R package published in
