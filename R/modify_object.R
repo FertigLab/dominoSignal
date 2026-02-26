@@ -67,53 +67,44 @@ rename_clusters <- function(dom, clust_conv, warning = FALSE) {
     return(dom)
 }
 
-
-#' Convert genes using a table
+#' Adds a column to the RL signaling data frame.
 #'
-#' Takes a vector of gene inputs and a conversion table and returns a
-#' converted gene table
+#' This function adds a column to the internal rl 'map' used to map all
+#' receptor and receptor complexes to all ligand and ligand complexes.
 #'
-#' @param genes the genes to convert
-#' @param from  gene symbol type of the input (ENSG, ENSMUSG, HGNC, MGI)
-#' @param to    desired gene symbol type for the output (HGNC, MGI)
-#' @param conversion_table a data frame with column names corresponding to gene symbol types (mm.ens, hs.ens, mgi, hgnc)
-#' and rows corresponding to the gene symbols themselves
-#' @return A data frame of genes with original and corresponding converted symbols
-#' @keywords internal
-#'
-table_convert_genes <- function(genes, from, to, conversion_table) {
-  # Check inputs:
-  stopifnot(`Genes must be a vector of characters` = (is(genes, "character") & is(genes, "vector")))
-  stopifnot(`From must be one of ENSMUSG, ENSG, MGI, or HGNC` = from %in% c(
-    "ENSMUSG", "ENSG", "MGI",
-    "HGNC"
-  ))
-  stopifnot(`To must be one of MGI or HGNC` = to %in% c("MGI", "HGNC"))
-  stopifnot(`Conversion table must be provided with at least two of column names mm.ens, hs.ens, mgi and/or hgnc` = (is(
-    conversion_table,
-    "data.frame"
-  ) & length(which(colnames(conversion_table) %in% c(
-    "mm.ens", "hs.ens", "mgi",
-    "hgnc"
-  ))) > 1))
-  if (from == "ENSMUSG") {
-    col1 <- conversion_table$mm.ens
+#' @param map RL signaling data frame.
+#' @param map_ref Name of column to match new data to
+#' @param conv Data frame matching current data in map to new data.
+#' @param new_name Name of new column to be created in RL map
+#' @return An updated RL signaling data frame
+#' @export
+#' @examples 
+#' example(create_rl_map_cellphonedb, echo = FALSE)
+#' lr_name <- data.frame("abbrev" = c("L", "R"), "full" = c("Ligand", "Receptor"))
+#' rl_map_expanded <- add_rl_column(map = rl_map_tiny, map_ref = "type_A",
+#' conv = lr_name, new_name = "type_A_full")
+#' 
+add_rl_column <- function(map, map_ref, conv, new_name) {
+  map_in_ref <- match(map[[map_ref]], conv[, 1])
+  not_in_ref <- which(is.na(map_in_ref))
+  if (length(not_in_ref > 0)) {
+    not_in_ref_map <- cbind.data.frame(map[not_in_ref, ], as.character(NA), stringsAsFactors = FALSE)
+    colnames(not_in_ref_map)[ncol(not_in_ref_map)] <- new_name
+    rownames(not_in_ref_map) <- c()
+  } else {
+    not_in_ref_map <- c()
   }
-  if (from == "ENSG") {
-    col1 <- conversion_table$hs.ens
+  new_map <- c()
+  for (r_id in seq_len(nrow(map))) {
+    row <- map[r_id, ]
+    conv_ids <- which(conv[, 1] == row[[map_ref]])
+    for (id in conv_ids) {
+      new_row <- c(as.matrix(row), conv[id, 2])
+      new_map <- rbind(new_map, new_row)
+    }
   }
-  if (from == "MGI") {
-    col1 <- conversion_table$mgi
-  }
-  if (from == "HGNC") {
-    col1 <- conversion_table$hgnc
-  }
-  if (to == "MGI") {
-    col2 <- conversion_table$mgi
-  }
-  if (to == "HGNC") {
-    col2 <- conversion_table$hgnc
-  }
-  genesV2 <- cbind(col1[which(col1 %in% genes)], col2[which(col1 %in% genes)])
-  return(genesV2)
+  rownames(new_map) <- c()
+  colnames(new_map) <- c(colnames(map), new_name)
+  new_map <- rbind.data.frame(new_map, not_in_ref_map, stringsAsFactors = FALSE)
+  new_map <- data.frame(new_map, stringsAsFactors = FALSE)
 }
