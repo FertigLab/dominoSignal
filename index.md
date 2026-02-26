@@ -6,7 +6,7 @@ output: github_document
 
 
 
-## Introducing dominoSignal <a href="https://fertiglab.github.io/dominoSignal/"><img src="man/figures/logo.svg" align="right" height="138" style="float:right; height:138px;" alt="dominoSignal logo" /></a>
+## Introducing dominoSignal <img src="logo.svg" alt="dominoSignal hex logo" align="right" height="138" style="float:right; height:138px;" />
 
 dominoSignal is an updated version of the original [domino](https://github.com/Elisseeff-Lab/domino) R package published in Nature Biomedical Engineering in [Computational reconstruction of the signalling networks surrounding implanted biomaterials from single-cell transcriptomics](https://doi.org/10.1038/s41551-021-00770-5). dominoSignal is a tool for analysis of intra- and intercellular signaling in single cell RNA sequencing data based on transcription factor activation and receptor and ligand linkages.
 
@@ -15,7 +15,7 @@ dominoSignal is an updated version of the original [domino](https://github.com/E
 dominoSignal is undergoing active development to improve analysis capabilities and interpretability, so the codebase is subject to change as new features and fixes are implemented. The current version of dominoSignal can be found on [Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html) though the package is still undergoing development (see our [changelog](news/index.html) for more information on changes). This version can be installed through Bioconductor.
 
 
-```r
+``` r
 if (!requireNamespace("BiocManager")) {
     install.packages("BiocManager")
 }
@@ -25,7 +25,7 @@ BiocManager::install("dominoSignal")
 The development version is currently hosted on the [FertigLab GitHub](https://github.com/FertigLab) on the [dominoSignal GitHub repository](https://github.com/FertigLab/dominoSignal), and can be installed using the remotes package.
 
 
-```r
+``` r
 if (!require(remotes)) {
     install.packages("remotes")
 }

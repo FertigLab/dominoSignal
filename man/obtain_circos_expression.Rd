@@ -29,9 +29,4 @@ a data frame where each row describes plotting parameters of ligand-receptor int
 \description{
 Pull expression data from a domino object and format for plotting as a receptor-oriented circos plot.
 }
-\examples{
-example(build_domino, echo = FALSE)
-#basic usage
-obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-
-}
+\keyword{internal}

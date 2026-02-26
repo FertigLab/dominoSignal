@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introducing dominoSignal <a href="https://fertiglab.github.io/dominoSignal/"><img src="man/figures/logo.svg" align="right" height="138" style="float:right; height:138px;" alt="dominoSignal logo" /></a>
+## Introducing dominoSignal <img src="logo.svg" alt="dominoSignal hex logo" align="right" height="138" style="float:right; height:138px;" />
 
 dominoSignal is an updated version of the original [domino](https://github.com/Elisseeff-Lab/domino) R package published in Nature Biomedical Engineering in [Computational reconstruction of the signalling networks surrounding implanted biomaterials from single-cell transcriptomics](https://doi.org/10.1038/s41551-021-00770-5). dominoSignal is a tool for analysis of intra- and intercellular signaling in single cell RNA sequencing data based on transcription factor activation and receptor and ligand linkages.
 
