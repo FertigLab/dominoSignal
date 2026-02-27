@@ -10,7 +10,8 @@ dom_de(dom)
 \item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
 }
 \value{
-A matrix containing the p-values for differential expression of transcription factors (rows) in each cluster (columns)
+A matrix containing the p-values for differential expression of transcription factors (rows)
+in each cluster (columns)
 }
 \description{
 A function to pull differential expression p-values from a domino object

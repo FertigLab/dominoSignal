@@ -57,8 +57,10 @@ dom_counts <- function(dom) {
 #' A function to pull cluster information from a domino object
 #'
 #' @param dom a domino object that has been created with [create_domino()]
-#' @param labels a boolean for whether to return the cluster labels for each cell or the clusters used for inferring communication
-#' @return  A vector containing either the names of the clusters used OR factors of the cluster label for each individual cell
+#' @param labels A boolean for whether to return the cluster labels for each cell
+#'   or the clusters used for inferring communication
+#' @return A vector containing either the names of the clusters used or factors of
+#'   the cluster label for each individual cell
 #' @export
 #' @examples
 #' example(build_domino, echo = FALSE)
@@ -102,14 +104,14 @@ dom_tf_activation <- function(dom) {
 #' cor_matrix <- dom_correlations(pbmc_dom_built_tiny, "rl")
 #' 
 dom_correlations <- function(dom, type = "rl") {
-    if (type == "complex") {
-        corrs <- slot(dom, "cor")
-    } else if (type == "rl") {
-        misc <- slot(dom, "misc")
-        corrs <- misc$rec_cor
-    } else {
+    # validate and dispatch with switch for clarity
+    if (!type %in% c("rl", "complex")) {
         stop("Type must be either 'rl' or 'complex'")
     }
+    corrs <- switch(type,
+        complex = slot(dom, "cor"),
+        rl = slot(dom, "misc")[["rec_cor"]]
+    )
     return(corrs)
 }
 
@@ -118,11 +120,13 @@ dom_correlations <- function(dom, type = "rl") {
 #' A function to pull linkages from a domino object
 #'
 #' @param dom a domino object that has been created with [create_domino()]
-#' @param link_type one value (out of "complexes", "receptor-ligand",
-#'                  "tf-target", "tf-receptor", "receptor", "incoming-ligand") used
-#'                  to select the desired type of linkage
-#' @param by_cluster a boolean to indicate whether the linkages should be returned overall or by cluster
-#' @return  A list containing linkages between some combination of receptors, ligands, transcription factors, and clusters
+#' @param link_type One value (choices are "complexes", "receptor-ligand",
+#'   "tf-target", "tf-receptor", "receptor", and "incoming-ligand") that
+#'   selects which type of linkage to return.
+#' @param by_cluster A boolean to indicate whether to return linkages overall
+#'   or broken down by cluster
+#' @return  A list containing linkages between some combination of receptors, ligands,
+#'   transcription factors, and clusters
 #' @export
 #' @examples
 #' example(build_domino, echo = FALSE)
@@ -130,33 +134,28 @@ dom_correlations <- function(dom, type = "rl") {
 #' tf_rec_by_cluster <- dom_linkages(pbmc_dom_built_tiny, "tf-receptor", TRUE)
 #' 
 dom_linkages <- function(dom, link_type = c(
-                            "complexes", "receptor-ligand",
-                            "tf-target", "tf-receptor", "receptor", "incoming-ligand"
-                        ), by_cluster = FALSE) {
+    "complexes", "receptor-ligand", "tf-target", "tf-receptor", "receptor", "incoming-ligand"),
+by_cluster = FALSE) {
+    
     links <- slot(dom, "linkages")
+
     if (by_cluster) {
-        if (link_type == "tf-receptor") {
-            return(links$clust_tf)
-        } else if(link_type == "receptor") {
-            return(links$clust_rec) 
-        } else if(link_type == "incoming-ligand") {
-            return(links$clust_incoming_lig)
-        } else {
+        result <- switch(link_type,
+            "tf-receptor" = links$clust_tf,
+            "receptor" = links$clust_rec,
+            "incoming-ligand" = links$clust_incoming_lig,
             stop("This linkage type is not available")
-        }
+        )
     } else {
-        if (link_type == "complexes") {
-            return(links$complexes)
-        } else if (link_type == "receptor-ligand") {
-            return(links$rec_lig)
-        } else if (link_type == "tf-target") {
-            return(links$tf_targets)
-        } else if (link_type == "tf-receptor") {
-            return(links$tf_rec)
-        } else {
+        result <- switch(link_type,
+            "complexes" = links$complexes,
+            "receptor-ligand" = links$rec_lig,
+            "tf-target" = links$tf_targets,
+            "tf-receptor" = links$tf_rec,
             stop("This linkage type is not available.")
-        }
+        )
     }
+    return(result)
 }
 
 #' Access signaling
@@ -164,9 +163,11 @@ dom_linkages <- function(dom, link_type = c(
 #' A function to pull signaling matrices from a domino object
 #'
 #' @param dom a domino object that has been created with [create_domino()]
-#' @param cluster either NULL to indicate global signaling or a specific cluster for which a signaling matrix is desired
+#' @param cluster either NULL to indicate global signaling or a specific cluster for which a signaling matrix
+#'   is desired
 #' @return  A data frame containing the signaling score through each ligand (row) by each cluster (column) OR
-#'          a data frame containing the global summed signaling scores between receptors (rows) and ligands (columns) of each cluster
+#'. a data frame containing the global summed signaling scores between receptors (rows) and ligands (columns)
+#'  of each cluster
 #' @export
 #' @examples
 #' example(build_domino, echo = FALSE)
@@ -185,7 +186,8 @@ dom_signaling <- function(dom, cluster = NULL) {
 #' A function to pull differential expression p-values from a domino object
 #'
 #' @param dom a domino object that has been created with [create_domino()]
-#' @return  A matrix containing the p-values for differential expression of transcription factors (rows) in each cluster (columns)
+#' @return  A matrix containing the p-values for differential expression of transcription factors (rows)
+#'  in each cluster (columns)
 #' @export
 #' @examples
 #' example(build_domino, echo = FALSE)
@@ -223,37 +225,37 @@ dom_info <- function(dom) {
 #' this [build_domino()] must be run on the object previously.
 #'
 #' @param dom a domino object containing a signaling network (i.e. [build_domino()] was run)
-#' @param return string indicating whether to collate "features", "receptors", or "ligands". If "all" then a list of all three will be returned.
-#' @param clusters vector indicating clusters to collate network items from. If left as NULL then all clusters will be included.
+#' @param which_return string indicating whether to collate "features", "receptors", or "ligands".
+#'   If "NULL" then a list of all three will be returned.
+#' @param clusters vector indicating clusters to collate network items from.
+#'   If left as NULL then all clusters will be included.
 #' @return A vector containing all features, receptors, or ligands in the data set or a list containing all three.
 #' @export
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' monocyte_receptors <- dom_network_items(pbmc_dom_built_tiny, "CD14_monocyte", "receptors")
-#' all_tfs <- dom_network_items(pbmc_dom_built_tiny, return = "features")
+#' all_tfs <- dom_network_items(pbmc_dom_built_tiny, which_return = "features")
 #' 
-dom_network_items <- function(dom, clusters = NULL, return = NULL) {
+dom_network_items <- function(dom, clusters = NULL, which_return = NULL) {
     if (!dom@misc[["build"]]) {
-    stop("Please run domino_build prior to generate signaling network.")
+        stop("Please run domino_build prior to generate signaling network.")
     }
-    if (is.null(clusters) & is.null(dom@clusters)) {
+    if (is.null(clusters) && is.null(dom@clusters)) {
         stop("There are no clusters in this domino object. Please provide clusters.")
     }
     if (is.null(clusters)) {
         clusters <- levels(dom@clusters)
     }
     # Get all enriched TFs and correlated + expressed receptors for specified clusters
-    all_recs <- c()
-    all_tfs <- c()
-    all_ligs <- c()
+    all_recs <- character()
+    all_tfs <- character()
+    all_ligs <- character()
     for (cl in clusters) {
         all_recs <- c(all_recs, unlist(dom@linkages$clust_tf_rec[[cl]]))
         tfs <- names(dom@linkages$clust_tf_rec[[cl]])
-        tf_wo_rec <- which(
-          vapply(dom@linkages$clust_tf_rec[[cl]], FUN.VALUE = numeric(1), FUN = length) == 0
-        )
-        if (length(tf_wo_rec > 0)) {
-        tfs <- tfs[-tf_wo_rec]
+        tf_wo_rec <- which(lengths(dom@linkages$clust_tf_rec[[cl]]) == 0)
+        if (length(tf_wo_rec) > 0) {
+            tfs <- tfs[-tf_wo_rec]
         }
         all_tfs <- c(all_tfs, tfs)
         all_ligs <- c(all_ligs, rownames(dom@cl_signaling_matrices[[cl]]))
@@ -263,9 +265,9 @@ dom_network_items <- function(dom, clusters = NULL, return = NULL) {
     all_ligs <- unique(all_ligs)
     # Make list and return whats asked for
     list_out <- list(features = all_tfs, receptors = all_recs, ligands = all_ligs)
-    if (is.null(return)) {
+    if (is.null(which_return)) {
         return(list_out)
     } else {
-        return(list_out[[return]])
+        return(list_out[[which_return]])
     }
 }
