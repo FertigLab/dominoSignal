@@ -12,40 +12,36 @@
 #' @keywords internal
 #'
 table_convert_genes <- function(genes, from, to, conversion_table) {
-  # Check inputs:
-  stopifnot(`Genes must be a vector of characters` = (is(genes, "character") & is(genes, "vector")))
-  stopifnot(`From must be one of ENSMUSG, ENSG, MGI, or HGNC` = from %in% c(
-    "ENSMUSG", "ENSG", "MGI",
-    "HGNC"
-  ))
-  stopifnot(`To must be one of MGI or HGNC` = to %in% c("MGI", "HGNC"))
-  stopifnot(`Conversion table must be provided with at least two of column names mm.ens, hs.ens, mgi and/or hgnc` = (is(
-    conversion_table,
-    "data.frame"
-  ) & length(which(colnames(conversion_table) %in% c(
-    "mm.ens", "hs.ens", "mgi",
-    "hgnc"
-  ))) > 1))
-  if (from == "ENSMUSG") {
-    col1 <- conversion_table$mm.ens
-  }
-  if (from == "ENSG") {
-    col1 <- conversion_table$hs.ens
-  }
-  if (from == "MGI") {
-    col1 <- conversion_table$mgi
-  }
-  if (from == "HGNC") {
-    col1 <- conversion_table$hgnc
-  }
-  if (to == "MGI") {
-    col2 <- conversion_table$mgi
-  }
-  if (to == "HGNC") {
-    col2 <- conversion_table$hgnc
-  }
-  genesV2 <- cbind(col1[which(col1 %in% genes)], col2[which(col1 %in% genes)])
-  return(genesV2)
+    # Check inputs:
+    check_arg(genes, allow_class = c("character", "vector"))
+    check_arg(from, allow_values = c("ENSMUSG", "ENSG", "MGI", "HGNC"))
+    check_arg(to, allow_values = c("MGI", "HGNC"))
+    check_arg(conversion_table, allow_class = "data.frame")
+    stopifnot(`Conversion table must be provided with at least two of column names mm.ens, hs.ens, mgi and/or hgnc` =
+            (length(which(colnames(conversion_table) %in% c(
+                "mm.ens", "hs.ens", "mgi",
+                "hgnc"
+            ))) > 1))
+    if (from == "ENSMUSG") {
+        col1 <- conversion_table$mm.ens
+    }
+    if (from == "ENSG") {
+        col1 <- conversion_table$hs.ens
+    }
+    if (from == "MGI") {
+        col1 <- conversion_table$mgi
+    }
+    if (from == "HGNC") {
+        col1 <- conversion_table$hgnc
+    }
+    if (to == "MGI") {
+        col2 <- conversion_table$mgi
+    }
+    if (to == "HGNC") {
+        col2 <- conversion_table$hgnc
+    }
+    genesV2 <- cbind(col1[which(col1 %in% genes)], col2[which(col1 %in% genes)])
+    return(genesV2)
 }
 
 #' Use biomaRt to convert genes
@@ -55,48 +51,49 @@ table_convert_genes <- function(genes, from, to, conversion_table) {
 #' @param genes Vector of genes to convert.
 #' @param from Format of gene input (ENSMUSG, ENSG, MGI, or HGNC)
 #' @param to Format of gene output (MGI or HGNC)
-#' @param host Host to connect to. Defaults to https://www.ensembl.org following the useMart default, but can be changed to archived hosts if useMart fails to connect.
+#' @param host Host to connect to. Defaults to https://www.ensembl.org following the useMart default,
+#'   but can be changed to archived hosts if useMart fails to connect.
+#' @importFrom biomaRt useMart getLDS
 #' @return A data frame with input genes as column 1 and converted genes as column 2
 #' @keywords internal
 #'
 convert_genes <- function(
     genes, from = c("ENSMUSG", "ENSG", "MGI", "HGNC"), to = c("MGI", "HGNC"),
-    host = "https://www.ensembl.org") {
-  # Check inputs:
-  stopifnot(`Genes must be a vector of characters` = (is(genes, "character") & is(genes, "vector")))
-  stopifnot(`From must be one of ENSMUSG, ENSG, MGI, or HGNC` = from %in% c(
-    "ENSMUSG", "ENSG", "MGI",
-    "HGNC"
-  ))
-  stopifnot(`To must be one of MGI or HGNC` = to %in% c("MGI", "HGNC"))
-  stopifnot(`Host must be  web host to connect to` = (is(host, "character") & length(host) == 1))
-  if (from == "ENSMUSG") {
-    srcMart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = host)
-    sourceAtts <- "ensembl_gene_id"
-  }
-  if (from == "ENSG") {
-    srcMart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = host)
-    sourceAtts <- "ensembl_gene_id"
-  }
-  if (from == "MGI") {
-    srcMart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = host)
-    sourceAtts <- "mgi_symbol"
-  }
-  if (from == "HGNC") {
-    srcMart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = host)
-    sourceAtts <- "hgnc_symbol"
-  }
-  if (to == "MGI") {
-    tarMart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = host)
-    tarAtts <- "mgi_symbol"
-  }
-  if (to == "HGNC") {
-    tarMart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = host)
-    tarAtts <- "hgnc_symbol"
-  }
-  genesV2 <- getLDS(
-    attributes = sourceAtts, filters = sourceAtts, values = genes, mart = srcMart,
-    attributesL = tarAtts, martL = tarMart, uniqueRows = FALSE
-  )
-  return(genesV2)
+    host = "https://www.ensembl.org"
+) {
+    # Check inputs:
+    check_arg(genes, allow_class = c("character", "vector"))
+    check_arg(from, allow_values = c("ENSMUSG", "ENSG", "MGI", "HGNC"))
+    check_arg(to, allow_values = c("MGI", "HGNC"))
+    check_arg(host, allow_class = "character", allow_len = 1)
+
+    if (from == "ENSMUSG") {
+        srcMart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = host)
+        sourceAtts <- "ensembl_gene_id"
+    }
+    if (from == "ENSG") {
+        srcMart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = host)
+        sourceAtts <- "ensembl_gene_id"
+    }
+    if (from == "MGI") {
+        srcMart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = host)
+        sourceAtts <- "mgi_symbol"
+    }
+    if (from == "HGNC") {
+        srcMart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = host)
+        sourceAtts <- "hgnc_symbol"
+    }
+    if (to == "MGI") {
+        tarMart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = host)
+        tarAtts <- "mgi_symbol"
+    }
+    if (to == "HGNC") {
+        tarMart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = host)
+        tarAtts <- "hgnc_symbol"
+    }
+    genesV2 <- getLDS(
+        attributes = sourceAtts, filters = sourceAtts, values = genes, mart = srcMart,
+        attributesL = tarAtts, martL = tarMart, uniqueRows = FALSE
+    )
+    return(genesV2)
 }
