@@ -12,7 +12,7 @@
 \item{...}{Additional arguments to be passed to other methods}
 }
 \value{
-A printed description of the number of subjects and linkages in the linkage summary object
+A printed description of the number of subjects, groups, and clusters in the linkage summary object
 }
 \description{
 Prints a description of a linkage summary object
