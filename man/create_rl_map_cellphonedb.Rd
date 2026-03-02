@@ -17,7 +17,8 @@ create_rl_map_cellphonedb(
 )
 }
 \arguments{
-\item{genes}{data frame or file path to table of gene names in uniprot, hgnc_symbol, or ensembl format in CellPhoneDB database format}
+\item{genes}{data frame or file path to table of gene names in uniprot, hgnc_symbol, or ensembl format in
+CellPhoneDB database format}
 
 \item{proteins}{data frame or file path to table of protein features in CellPhoneDB format}
 
@@ -27,19 +28,24 @@ create_rl_map_cellphonedb(
 
 \item{database_name}{name of the database being used, stored in output}
 
-\item{gene_conv}{a tuple of (from, to) or (source, target) if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC}
+\item{gene_conv}{a tuple of (from, to) or (source, target) if gene conversion to orthologs is desired;
+options are ENSMUSG, ENSG, MGI, or HGNC}
 
 \item{gene_conv_host}{host for conversion; default ensembl, could also use mirrors if desired}
 
-\item{alternate_convert}{boolean if you would like to use a non-ensembl method of conversion (must supply table; not recommended, use only if ensembl is down)}
+\item{alternate_convert}{boolean if you would like to use a non-ensembl method of conversion
+(must supply table; not recommended, use only if ensembl is down)}
 
-\item{alternate_convert_table}{supplied table for non-ensembl method of conversion}
+\item{alternate_convert_table}{a data frame with column names corresponding to gene symbol types
+(mm.ens, hs.ens, mgi, hgnc) and rows corresponding to the gene symbols themselves for use with
+alternate_convert = TRUE}
 }
 \value{
 Data frame where each row describes a possible receptor-ligand interaction
 }
 \description{
-Generates a data frame of ligand-receptor interactions from a CellPhoneDB database annotating the genes encoding the interacting ligands and receptors to be queried in transcriptomic data.
+Generates a data frame of ligand-receptor interactions from a CellPhoneDB database annotating the genes
+encoding the interacting ligands and receptors to be queried in transcriptomic data.
 }
 \examples{
 data(CellPhoneDB)
