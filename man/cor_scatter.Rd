@@ -13,7 +13,8 @@ cor_scatter(dom, tf, rec, remove_rec_dropout = TRUE, ...)
 
 \item{rec}{Target receptor for plotting expression}
 
-\item{remove_rec_dropout}{Whether to remove cells with zero expression for plot. This should match the same setting as in \code{\link[=build_domino]{build_domino()}}.}
+\item{remove_rec_dropout}{Whether to remove cells with zero expression for plot.
+This should match the same setting as in \code{\link[=build_domino]{build_domino()}}.}
 
 \item{...}{Other parameters to pass to \code{\link[ggpubr:ggscatter]{ggpubr::ggscatter()}}.}
 }
