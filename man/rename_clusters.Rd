@@ -9,7 +9,8 @@ rename_clusters(dom, clust_conv, warning = FALSE)
 \arguments{
 \item{dom}{a domino object to rename clusters in}
 
-\item{clust_conv}{named vector of conversions from old to new clusters. Values are taken as new clusters IDs and names as old cluster IDs.}
+\item{clust_conv}{named vector of conversions from old to new clusters. Values are taken as new clusters
+IDs and names as old cluster IDs.}
 
 \item{warning}{logical. If TRUE, will warn if a cluster is not found in the conversion table. Default is FALSE.}
 }
@@ -21,8 +22,10 @@ This function renames the clusters used to build a domino object
 }
 \examples{
 example(build_domino, echo = FALSE)
-new_clust <- c("CD8_T_cell" = "CD8+ T Cells",
- "CD14_monocyte" = "CD14+ Monocytes", "B_cell" = "B Cells")
+new_clust <- c(
+    "CD8_T_cell" = "CD8+ T Cells",
+    "CD14_monocyte" = "CD14+ Monocytes", "B_cell" = "B Cells"
+)
 pbmc_dom_built_tiny <- rename_clusters(pbmc_dom_built_tiny, new_clust)
 
 }
