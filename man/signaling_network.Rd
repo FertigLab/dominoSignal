@@ -68,7 +68,7 @@ signaling_network(pbmc_dom_built_tiny, edge_weight = 2)
 # scaling, thresholds, layouts, selecting clusters
 signaling_network(
  pbmc_dom_built_tiny, showOutgoingSignalingClusts = "CD14_monocyte", 
- scale = "none", norm = "none", layout = "fr", scale_by = "none", 
+ scale = "none", normalize = "none", layout = "fr", scale_by = "none", 
  vert_scale = 5, edge_weight = 2)
 
 }

@@ -37,7 +37,7 @@ NULL
 #' # scaling, thresholds, layouts, selecting clusters
 #' signaling_network(
 #'  pbmc_dom_built_tiny, showOutgoingSignalingClusts = "CD14_monocyte", 
-#'  scale = "none", norm = "none", layout = "fr", scale_by = "none", 
+#'  scale = "none", normalize = "none", layout = "fr", scale_by = "none", 
 #'  vert_scale = 5, edge_weight = 2)
 #' 
 signaling_network <- function(
@@ -207,7 +207,7 @@ gene_network <- function(dom, clust = NULL, OutgoingSignalingClust = NULL,
       mat <- dom@cl_signaling_matrices[[cl]]
       if (dim(mat)[1] == 0) {
         message("No signaling found for ", cl, " under build parameters.")
-        (next)()
+        next
       }
       all_sums <- c(all_sums, rowSums(mat))
       tfs <- c(tfs, dom@linkages$clust_tf[[cl]])
