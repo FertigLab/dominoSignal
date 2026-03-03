@@ -138,7 +138,7 @@ resolve_complexes <- function(dom, genes) {
 #'
 #' @param list List to pull items from
 #' @param list_names Names of items in list to pool
-#' @return A vector contaning all items in the list by list_names
+#' @return A vector containing all items in the list by list_names
 #' @keywords internal
 #'
 lc <- function(list, list_names) {

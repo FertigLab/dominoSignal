@@ -47,7 +47,7 @@ NULL
 #' signaling_network(
 #'     pbmc_dom_built_tiny,
 #'     showOutgoingSignalingClusts = "CD14_monocyte",
-#'     scale = "none", norm = "none", layout = "fr", scale_by = "none",
+#'     scale = "none", normalize = "none", layout = "fr", scale_by = "none",
 #'     vert_scale = 5, edge_weight = 2
 #' )
 #'
@@ -214,10 +214,10 @@ gene_network <- function(
     cols = NULL, lig_scale = 1, layout = "grid", ...
 ) {
     if (!dom@misc[["build"]]) {
-        warning("Please build a signaling network with domino_build prior to plotting.")
+        warning("Please build a signaling network with build_domino prior to plotting.")
     }
     if (!length(dom@clusters)) {
-        warning("This domino object wasn't build with clusters. The global signaling network will be shown.")
+        warning("This domino object wasn't built with clusters. The global signaling network will be shown.")
         lig_scale <- FALSE
     }
     # Get connections between TF and recs for clusters
@@ -230,7 +230,7 @@ gene_network <- function(
             mat <- dom@cl_signaling_matrices[[cl]]
             if (dim(mat)[1] == 0) {
                 message("No signaling found for ", cl, " under build parameters.")
-                (next)()
+                next
             }
             all_sums <- c(all_sums, rowSums(mat))
             tfs <- c(tfs, dom@linkages$clust_tf[[cl]])

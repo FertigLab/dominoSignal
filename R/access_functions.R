@@ -137,11 +137,12 @@ dom_linkages <- function(dom, link_type = c(
     "complexes", "receptor-ligand", "tf-target", "tf-receptor", "receptor", "incoming-ligand"),
 by_cluster = FALSE) {
     
+    link_type <- match.arg(link_type)
     links <- slot(dom, "linkages")
 
     if (by_cluster) {
         result <- switch(link_type,
-            "tf-receptor" = links$clust_tf,
+            "tf-receptor" = links$clust_tf_rec,
             "receptor" = links$clust_rec,
             "incoming-ligand" = links$clust_incoming_lig,
             stop("This linkage type is not available")
@@ -177,7 +178,7 @@ dom_signaling <- function(dom, cluster = NULL) {
     if (is.null(cluster)) {
         as.data.frame(slot(dom, "signaling"))
     } else {
-        as.data.frame(slot(dom, "cl_signaling_matrices")[cluster])
+        as.data.frame(slot(dom, "cl_signaling_matrices")[[cluster]])
     }
 }
 
@@ -238,7 +239,7 @@ dom_info <- function(dom) {
 #' 
 dom_network_items <- function(dom, clusters = NULL, which_return = NULL) {
     if (!dom@misc[["build"]]) {
-        stop("Please run domino_build prior to generate signaling network.")
+        stop("Please run build_domino prior to generate signaling network.")
     }
     if (is.null(clusters) && is.null(dom@clusters)) {
         stop("There are no clusters in this domino object. Please provide clusters.")

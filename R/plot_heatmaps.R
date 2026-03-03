@@ -39,7 +39,7 @@ signaling_heatmap <- function(
     normalize = "none", ...
 ) {
     if (!dom@misc[["build"]]) {
-        stop("Please run domino_build prior to generate signaling network.")
+        stop("Please run build_domino prior to generate signaling network.")
     }
     if (!length(dom@clusters)) {
         stop("This domino object wasn't built with clusters so intercluster signaling cannot be generated.")
