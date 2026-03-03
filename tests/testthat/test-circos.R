@@ -118,14 +118,14 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
   
   expect_message(
     obtain_circos_expression(dom = dom, receptor = "CXCR3", ligands = c("CCL20", "CCX", "CCY")),
-    "Ligands: CCX,CCY of receptor CXCR3 are listed in the rl_map, but not present in the signaling matrix.",
+    "Ligands: CCX, CCY of receptor CXCR3 are listed in the rl_map, but not present in the signaling matrix.",
     "Only ligands: CCL20 will be considered."
   )
   
   # The same message is returned from the full function creating the circos plot
   expect_message(
     circos_ligand_receptor(dom = dom, receptor = "CXCR3"),
-    "Ligands: CCX,CCY of receptor CXCR3 are listed in the rl_map, but not present in the signaling matrix.",
+    "Ligands: CCX, CCY of receptor CXCR3 are listed in the rl_map, but not present in the signaling matrix.",
     "Only ligands: CCL20 will be considered."
   )
   

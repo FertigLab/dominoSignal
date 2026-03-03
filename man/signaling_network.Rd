@@ -25,7 +25,8 @@ signaling_network(
 \arguments{
 \item{dom}{a domino object with network built (\code{\link[=build_domino]{build_domino()}})}
 
-\item{cols}{named vector indicating the colors for clusters. Values are colors and names must match clusters in the domino object. If left as NULL then ggplot colors are generated for the clusters}
+\item{cols}{named vector indicating the colors for clusters. Values are colors and names must match clusters in
+the domino object. If left as NULL then ggplot colors are generated for the clusters}
 
 \item{edge_weight}{weight for determining thickness of edges on plot. Signaling values are multiplied by this value}
 
@@ -35,17 +36,25 @@ signaling_network(
 
 \item{showIncomingSignalingClusts}{vector of clusters to plot the incoming signaling on}
 
-\item{min_thresh}{minimum signaling threshold. Values lower than the threshold will be set to the threshold. Defaults to -Inf for no threshold}
+\item{min_thresh}{minimum signaling threshold. Values lower than the threshold will be set to the threshold.
+Defaults to -Inf for no threshold}
 
-\item{max_thresh}{maximum signaling threshold for plotting. Values higher than the threshold will be set to the threshold. Defaults to Inf for no threshold}
+\item{max_thresh}{maximum signaling threshold for plotting. Values higher than the threshold will be set to the
+threshold. Defaults to Inf for no threshold}
 
-\item{normalize}{options to normalize the signaling matrix. Accepted inputs are 'none' for no normalization, 'rec_norm' to normalize to the maximum value with each receptor cluster, or 'lig_norm' to normalize to the maximum value within each ligand cluster}
+\item{normalize}{options to normalize the signaling matrix. Accepted inputs are 'none' for no normalization,
+'rec_norm' to normalize to the maximum value with each receptor cluster, or 'lig_norm' to normalize to the
+maximum value within each ligand cluster}
 
-\item{scale}{how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root, 'log' for log10, or 'sq' for square}
+\item{scale}{how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root,
+'log' for log10, or 'sq' for square}
 
-\item{layout}{type of layout to use. Options are 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold force directed layout, and 'kk' for Kamada Kawai for directed layout}
+\item{layout}{type of layout to use. Options are 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold
+force directed layout, and 'kk' for Kamada Kawai for directed layout}
 
-\item{scale_by}{how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all incoming or outgoing signaling}
+\item{scale_by}{how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed
+incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all
+incoming or outgoing signaling}
 
 \item{vert_scale}{integer used to scale size of vertices with our without variable scaling from size_verts_by.}
 
@@ -63,12 +72,14 @@ colored based on the color scheme of the ligand expressing cluster
 }
 \examples{
 example(build_domino, echo = FALSE)
-#basic usage
+# basic usage
 signaling_network(pbmc_dom_built_tiny, edge_weight = 2)
 # scaling, thresholds, layouts, selecting clusters
 signaling_network(
- pbmc_dom_built_tiny, showOutgoingSignalingClusts = "CD14_monocyte", 
- scale = "none", norm = "none", layout = "fr", scale_by = "none", 
- vert_scale = 5, edge_weight = 2)
+    pbmc_dom_built_tiny,
+    showOutgoingSignalingClusts = "CD14_monocyte",
+    scale = "none", norm = "none", layout = "fr", scale_by = "none",
+    vert_scale = 5, edge_weight = 2
+)
 
 }
