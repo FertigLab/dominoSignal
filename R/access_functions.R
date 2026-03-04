@@ -14,6 +14,9 @@
 #' full_database <- dom_database(pbmc_dom_built_tiny, name_only = FALSE)
 #'
 dom_database <- function(dom, name_only = TRUE) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(name_only, allow_class = "logical", allow_len = 1)
+    
     db <- slot(dom, "db_info")
     if (name_only) {
         return(unique(db$database_name))
@@ -34,6 +37,7 @@ dom_database <- function(dom, name_only = TRUE) {
 #' zscores <- dom_zscores(pbmc_dom_built_tiny)
 #'
 dom_zscores <- function(dom) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
     slot(dom, "z_scores")
 }
 
@@ -49,6 +53,7 @@ dom_zscores <- function(dom) {
 #' counts <- dom_counts(pbmc_dom_built_tiny)
 #' 
 dom_counts <- function(dom) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
     as.matrix(slot(dom, "counts"))
 }
 
@@ -68,6 +73,9 @@ dom_counts <- function(dom) {
 #' cell_cluster_label <- dom_clusters(pbmc_dom_built_tiny, labels = TRUE)
 #' 
 dom_clusters <- function(dom, labels = FALSE) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(labels, allow_class = "logical", allow_len = 1)
+
     clust <- slot(dom, "clusters")
     if (labels) {
         return(clust)
@@ -88,6 +96,7 @@ dom_clusters <- function(dom, labels = FALSE) {
 #' tf_activation <- dom_tf_activation(pbmc_dom_built_tiny)
 #' 
 dom_tf_activation <- function(dom) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
     slot(dom, "features")
 }
 
@@ -104,10 +113,9 @@ dom_tf_activation <- function(dom) {
 #' cor_matrix <- dom_correlations(pbmc_dom_built_tiny, "rl")
 #' 
 dom_correlations <- function(dom, type = "rl") {
-    # validate and dispatch with switch for clarity
-    if (!type %in% c("rl", "complex")) {
-        stop("Type must be either 'rl' or 'complex'")
-    }
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(type, allow_class = "character", allow_len = 1, allow_values = c("rl", "complex"))
+    # dispatch with switch
     corrs <- switch(type,
         complex = slot(dom, "cor"),
         rl = slot(dom, "misc")[["rec_cor"]]
@@ -136,6 +144,7 @@ dom_correlations <- function(dom, type = "rl") {
 dom_linkages <- function(dom, link_type = c(
     "complexes", "receptor-ligand", "tf-target", "tf-receptor", "receptor", "incoming-ligand"),
 by_cluster = FALSE) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
     
     link_type <- match.arg(link_type)
     links <- slot(dom, "linkages")
@@ -175,6 +184,8 @@ by_cluster = FALSE) {
 #' monocyte_signaling <- dom_signaling(pbmc_dom_built_tiny, cluster = "CD14_monocyte")
 #' 
 dom_signaling <- function(dom, cluster = NULL) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(cluster, allow_class = c("character", "NULL"))
     if (is.null(cluster)) {
         as.data.frame(slot(dom, "signaling"))
     } else {
@@ -195,6 +206,7 @@ dom_signaling <- function(dom, cluster = NULL) {
 #' de_mat <- dom_de(pbmc_dom_built_tiny)
 #' 
 dom_de <- function(dom) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
     slot(dom, "clust_de")
 }
 
@@ -211,6 +223,7 @@ dom_de <- function(dom) {
 #' build_details <- dom_info(pbmc_dom_built_tiny)
 #' 
 dom_info <- function(dom) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
     info <- slot(dom, "misc")
     return(list(
         "create" = info$create, "build" = info$build,
@@ -238,6 +251,12 @@ dom_info <- function(dom) {
 #' all_tfs <- dom_network_items(pbmc_dom_built_tiny, which_return = "features")
 #' 
 dom_network_items <- function(dom, clusters = NULL, which_return = NULL) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(clusters, allow_class = c("character", "NULL"))
+    check_arg(which_return, allow_class = c("character", "NULL"),
+        allow_values = c("NULL", "features", "receptors", "ligands"),
+        allow_len = c(0, 1))
+
     if (!dom@misc[["build"]]) {
         stop("Please run build_domino prior to generate signaling network.")
     }
