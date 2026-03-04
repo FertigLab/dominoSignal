@@ -144,9 +144,11 @@ dom_correlations <- function(dom, type = "rl") {
 dom_linkages <- function(dom, link_type = c(
     "complexes", "receptor-ligand", "tf-target", "tf-receptor", "receptor", "incoming-ligand"),
 by_cluster = FALSE) {
+
     check_arg(dom, allow_class = "domino", allow_len = 1)
-    
+    check_arg(by_cluster, allow_class = "logical", allow_len = 1)
     link_type <- match.arg(link_type)
+    
     links <- slot(dom, "linkages")
 
     if (by_cluster) {

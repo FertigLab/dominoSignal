@@ -15,6 +15,12 @@
 #' cor_scatter(pbmc_dom_built_tiny, "FLI1","CXCR3")
 #'
 cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
+
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(tf, allow_class = "character", allow_len = 1)
+    check_arg(rec, allow_class = "character", allow_len = 1)
+    check_arg(remove_rec_dropout, allow_class = "logical", allow_len = 1)
+    
     if (remove_rec_dropout) {
         keep_id <- which(dom@counts[rec, ] > 0)
         rec_z_scores <- dom@z_scores[rec, keep_id]

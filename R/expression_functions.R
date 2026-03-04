@@ -9,6 +9,8 @@ NULL
 #' @return A list containing average expression for any complexes
 #' @keywords internal
 avg_exp_for_complexes <- function(exp_mat, complexes_list) {
+    check_arg(exp_mat, allow_class = c("matrix", "data.frame"))
+    check_arg(complexes_list, allow_class = "list")
     # Trim the complexes list to only include those with genes in the data
     trim_list <- complexes_list %>%
         purrr::keep(~ {
@@ -37,6 +39,10 @@ avg_exp_for_complexes <- function(exp_mat, complexes_list) {
 #' @return A dataframe of genes x clusters, values are z-scores averaged over the clusters
 #' @keywords internal
 mean_exp_by_cluster <- function(dom, clusts, genes) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(clusts, allow_class = "character")
+    check_arg(genes, allow_class = "character")
+
     gene_exp_list <- purrr::map(seq_along(clusts), function(x) {
         cl <- clusts[x]
         n_cell <- length(which(dom@clusters == cl))
@@ -79,6 +85,12 @@ mean_exp_by_cluster <- function(dom, clusts, genes) {
 #' )
 #'
 mean_ligand_expression <- function(x, ligands, cell_ident, cell_barcodes, destination) {
+    check_arg(x, allow_class = c("matrix", "data.frame"))
+    check_arg(ligands, allow_class = "character")
+    check_arg(cell_ident, allow_class = "character")
+    check_arg(cell_barcodes, allow_class = "character")
+    check_arg(destination, allow_class = "character", allow_len = 1)
+
     # initiate data frame to store results
     dframe <- NULL
     for (feat in ligands) {
@@ -106,6 +118,9 @@ mean_ligand_expression <- function(x, ligands, cell_ident, cell_barcodes, destin
 #' @keywords internal
 #'
 do_norm <- function(mat, dir) {
+    check_arg(mat, allow_class = c("matrix", "data.frame"))
+    check_arg(dir, allow_class = "character", allow_len = 1)
+
     if (dir == "row") {
         mat <- t(apply(mat, 1, function(x) {
             x / max(x)
