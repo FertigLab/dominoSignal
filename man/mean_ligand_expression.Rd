@@ -13,7 +13,8 @@ mean_ligand_expression(x, ligands, cell_ident, cell_barcodes, destination)
 
 \item{cell_ident}{Vector of cell type (identity) names for which to calculate mean ligand gene expression}
 
-\item{cell_barcodes}{Vector of cell barcodes (colnames of x) belonging to cell_ident to calculate mean expression across}
+\item{cell_barcodes}{Vector of cell barcodes (colnames of x) belonging to cell_ident to calculate mean
+expression across}
 
 \item{destination}{Name of the receptor with which each ligand interacts}
 }
@@ -28,7 +29,8 @@ plot of ligand expression and saving tables of mean expression.
 example(build_domino, echo = FALSE)
 counts <- dom_counts(pbmc_dom_built_tiny)
 mean_exp <- mean_ligand_expression(counts,
- ligands = c("PTPRC", "FASLG"), cell_ident = "CD14_monocyte",
- cell_barcodes = colnames(counts), destination = "FAS")
+    ligands = c("PTPRC", "FASLG"), cell_ident = "CD14_monocyte",
+    cell_barcodes = colnames(counts), destination = "FAS"
+)
 
 }

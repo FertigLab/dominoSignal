@@ -10,7 +10,7 @@ check_arg(
   allow_len = NULL,
   allow_range = NULL,
   allow_values = NULL,
-  need_vars = c(NULL),
+  need_vars = NULL,
   need_colnames = FALSE,
   need_rownames = FALSE,
   need_names = FALSE

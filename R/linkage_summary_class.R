@@ -8,18 +8,57 @@
 #' sample covariates.
 #'
 #' @slot subject_names unique names for each domino result included in the summary
-#' @slot subject_meta data.frame with each row describing one subject and columns describing features of the subjects by which to draw comparisons of signaling networks
-#' @slot subject_linkages nested list of linkages inferred for each subject. Lists are stored in a heirarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs), linkages between transcription factors and receptors (tfs_rec), active receptors (rec), possible receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)
+#' @slot subject_meta data.frame with each row describing one subject and columns describing features of the
+#'   subjects by which to draw comparisons of signaling networks
+#' @slot subject_linkages nested list of linkages inferred for each subject. Lists are stored in a
+#'   heirarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs)
+#'   linkages between transcription factors and receptors (tfs_rec), active receptors (rec), possible
+#'   receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)
 #' @name linkage_summary-class
 #' @rdname linkage_summary-class
 #' @exportClass linkage_summary
 #' @return an instance of class `linkage_summary`
 #'
 linkage_summary <- setClass(
-  Class = "linkage_summary",
-  slots = c(
-    subject_names = "factor",
-    subject_meta = "data.frame",
-    subject_linkages = "list"
-  )
+    Class = "linkage_summary",
+    slots = c(
+        subject_names = "factor",
+        subject_meta = "data.frame",
+        subject_linkages = "list"
+    )
 )
+
+#' Print linkage summary object
+#'
+#' Prints a description of a linkage summary object
+#'
+#' @param x A linkage summary object
+#' @param ... Additional arguments to be passed to other methods
+#' @return A printed description of the number of subjects, groups, and clusters in the linkage summary object
+#' @export
+#' @examples
+#' tiny_linkage <- mock_linkage_summary()
+#' print(tiny_linkage)
+#'
+setMethod("print", "linkage_summary", function(x, ...) {
+    message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects with ",
+        ncol(slot(x, "subject_meta")), " metadata annotations and linkages between ",
+        max(lengths(slot(x, "subject_linkages"))), " clusters.")
+})
+
+#' Show linkage_summary object information
+#'
+#' Shows content overview of linkage_summary object
+#'
+#' @param object A linkage_summary object
+#' @return A printed description of subject numbers, group numbers, and cluster numbers in the linkage summary object
+#' @export
+#' @examples
+#' tiny_linkage <- mock_linkage_summary()
+#' tiny_linkage
+#'
+setMethod("show", "linkage_summary", function(object) {
+    message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects with ",
+        ncol(slot(object, "subject_meta")), " metadata annotations and linkages between ",
+        max(lengths(slot(object, "subject_linkages"))), " clusters.")
+})

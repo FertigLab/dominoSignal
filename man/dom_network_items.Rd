@@ -4,14 +4,16 @@
 \alias{dom_network_items}
 \title{Access all features, receptors, or ligands present in a signaling network.}
 \usage{
-dom_network_items(dom, clusters = NULL, return = NULL)
+dom_network_items(dom, clusters = NULL, which_return = NULL)
 }
 \arguments{
 \item{dom}{a domino object containing a signaling network (i.e. \code{\link[=build_domino]{build_domino()}} was run)}
 
-\item{clusters}{vector indicating clusters to collate network items from. If left as NULL then all clusters will be included.}
+\item{clusters}{vector indicating clusters to collate network items from.
+If left as NULL then all clusters will be included.}
 
-\item{return}{string indicating whether to collate "features", "receptors", or "ligands". If "all" then a list of all three will be returned.}
+\item{which_return}{string indicating whether to collate "features", "receptors", or "ligands".
+If NULL then a list of all three will be returned.}
 }
 \value{
 A vector containing all features, receptors, or ligands in the data set or a list containing all three.
@@ -25,6 +27,6 @@ this \code{\link[=build_domino]{build_domino()}} must be run on the object previ
 \examples{
 example(build_domino, echo = FALSE)
 monocyte_receptors <- dom_network_items(pbmc_dom_built_tiny, "CD14_monocyte", "receptors")
-all_tfs <- dom_network_items(pbmc_dom_built_tiny, return = "features")
+all_tfs <- dom_network_items(pbmc_dom_built_tiny, which_return = "features")
 
 }

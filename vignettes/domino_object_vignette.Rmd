@@ -203,7 +203,7 @@ names(all_linkages)
 Alternately, to obtain a simplified list of receptors, ligands, and\/or features in the domino object, use the `dom_network_items()` function. To pull all transcription factors associated with the dendritic cell cluster:
 
 ```{r collate}
-dc_tfs <- dom_network_items(dom, "dendritic_cell", return = "features")
+dc_tfs <- dom_network_items(dom, "dendritic_cell", which_return = "features")
 head(dc_tfs)
 ```
 

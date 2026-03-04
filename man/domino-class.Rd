@@ -25,7 +25,8 @@ Calculated intermediate values are also stored.
 
 \item{\code{clusters}}{Named factor with cluster identity of each cell}
 
-\item{\code{features}}{Matrix of features (TFs) to correlate receptor - ligand expression with. Cells are columns and features are rows.}
+\item{\code{features}}{Matrix of features (TFs) to correlate receptor - ligand expression with.
+Cells are columns and features are rows.}
 
 \item{\code{cor}}{Correlation matrix of receptor expression to features.}
 
