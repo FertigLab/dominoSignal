@@ -56,7 +56,7 @@ This can reduce false positive correlation calculations when receptors have high
 \item{tf_selection_method}{Selection of which method to target transcription factors. If 'clusters' then
 differential expression for clusters will be calculated. If 'variable' then the most variable transcription factors
 will be selected. If 'all' then all transcription factors in the feature matrix will be used. Default is
-clusters'. Note that if you wish to use clusters for intercellular signaling downstream to MUST choose clusters.}
+'clusters'. Note that if you wish to use clusters for intercellular signaling downstream to MUST choose clusters.}
 
 \item{tf_variance_quantile}{What proportion of variable features to take if using variance to threshold features.
 Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'}

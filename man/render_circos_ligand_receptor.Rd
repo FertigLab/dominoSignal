@@ -20,7 +20,7 @@ render_circos_ligand_receptor(
 the color values}
 
 \item{ligand_expression_threshold}{Minimum mean expression value of a ligand by a cell type for a chord to be
-endered between the cell type and the receptor}
+rendered between the cell type and the receptor}
 }
 \value{
 a circlize plot is rendered to the active graphics device
