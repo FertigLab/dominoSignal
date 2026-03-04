@@ -13,7 +13,7 @@ dom_network_items(dom, clusters = NULL, which_return = NULL)
 If left as NULL then all clusters will be included.}
 
 \item{which_return}{string indicating whether to collate "features", "receptors", or "ligands".
-If "NULL" then a list of all three will be returned.}
+If NULL then a list of all three will be returned.}
 }
 \value{
 A vector containing all features, receptors, or ligands in the data set or a list containing all three.

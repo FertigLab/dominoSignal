@@ -11,7 +11,7 @@ summarize_linkages(domino_results, subject_meta, subject_names = NULL)
 match subject_names}
 
 \item{subject_meta}{data frame that includes the subject features by which the objects could be grouped.
-The first column should must be subject names}
+The first column must be subject names}
 
 \item{subject_names}{vector of subject names in domino_results. If NULL, defaults to first column of subject_meta.}
 }
