@@ -134,7 +134,7 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 #' @param signaling_df Data frame output from [obtain_circos_expression()]
 #' @param receptor Name of a receptor active in at least one cell type in the domino object
 #' @param ligand_expression_threshold Minimum mean expression value of a ligand by a cell type for a chord to be
-#'   endered between the cell type and the receptor
+#'   rendered between the cell type and the receptor
 #' @param cell_colors Named vector of color names or hex codes where names correspond to the plotted cell types and
 #'   the color values
 #' @return a circlize plot is rendered to the active graphics device

@@ -112,7 +112,7 @@ incoming_signaling_heatmap <- function(
     scale = "none", normalize = "none", title = TRUE, ...
 ) {
     if (!dom@misc[["build"]]) {
-        stop("Please run domino_build prior to generate signaling network.")
+        stop("Please run build_domino prior to generate signaling network.")
     }
     if (!length(dom@clusters)) {
         stop("This domino object wasn't build with clusters so cluster specific expression is not possible.")
@@ -229,8 +229,8 @@ feat_heatmap <- function(
     cl <- dom@clusters
     cl <- sort(cl)
     if (norm && (!is.null(min_thresh) || !is.null(max_thresh))) {
-        warning("You are using norm with min_thresh and max_thresh. Note that values will be thresholded AFTER
-            normalization.")
+        warning("You are using norm with min_thresh and max_thresh. ",
+        "Note that values will be thresholded AFTER normalization.")
     }
     if (norm) {
         mat <- do_norm(mat, "row")
@@ -304,7 +304,6 @@ feat_heatmap <- function(
         Heatmap(
             mat,
             name = "feature\nactivity",
-            top_annotation = feat_anno,
             cluster_columns = FALSE, show_column_names = FALSE,
             column_title = title,
             ...

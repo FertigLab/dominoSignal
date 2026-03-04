@@ -6,7 +6,7 @@
 #' @param domino_results list of domino result with one domino object per subject. Names from the list must
 #'   match subject_names
 #' @param subject_meta data frame that includes the subject features by which the objects could be grouped.
-#'   The first column should must be subject names
+#'   The first column must be subject names
 #' @param subject_names vector of subject names in domino_results. If NULL, defaults to first column of subject_meta.
 #' @return A linkage summary class object consisting of nested lists of the active transcription factors,
 #'   active receptors, and incoming ligands for each cluster across multiple domino results

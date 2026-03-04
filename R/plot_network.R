@@ -60,7 +60,7 @@ signaling_network <- function(
         stop("This domino object was not built with clusters so there is no intercluster signaling.")
     }
     if (!dom@misc[["build"]]) {
-        stop("Please build a signaling network with domino_build prior to plotting.")
+        stop("Please build a signaling network with build_domino prior to plotting.")
     }
     # Get signaling matrix
     mat <- dom@signaling

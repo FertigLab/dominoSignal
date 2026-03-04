@@ -227,7 +227,7 @@ dom_info <- function(dom) {
 #'
 #' @param dom a domino object containing a signaling network (i.e. [build_domino()] was run)
 #' @param which_return string indicating whether to collate "features", "receptors", or "ligands".
-#'   If "NULL" then a list of all three will be returned.
+#'   If NULL then a list of all three will be returned.
 #' @param clusters vector indicating clusters to collate network items from.
 #'   If left as NULL then all clusters will be included.
 #' @return A vector containing all features, receptors, or ligands in the data set or a list containing all three.
