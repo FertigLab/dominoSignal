@@ -32,7 +32,28 @@ NULL
 #' rl_map_tiny <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
 #'  proteins = CellPhoneDB$proteins_tiny,
 #'  interactions = CellPhoneDB$interactions_tiny,
-#'  complexes =CellPhoneDB$complexes_tiny)
+#'  complexes = CellPhoneDB$complexes_tiny)
+#' 
+#' \dontrun{
+#' rl_map_tiny_conv <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
+#'   proteins = CellPhoneDB$proteins_tiny,
+#'   interactions = CellPhoneDB$interactions_tiny,
+#'   gene_conv = c("HGNC", "MGI"),
+#'   gene_conv_host = "https://beta.ensembl.org")
+#' }
+#' 
+#' # Using alternate conversion table instead of biomaRt
+#' ortho_table <- data.frame(
+#'   hs.ens = c("ENSG00000198888", "ENSG00000198763", "ENSG00000198804"),
+#'   hgnc = c("MT-ND1", "MT-ND2", "MT-CO1"),
+#'   mm.ens = c("ENSMUSG00000064341", "ENSMUSG00000064345", "ENSMUSG00000064351"),
+#'   mgi = c("mt-Nd1", "mt-Nd2", "mt-Co1"))
+#' 
+#' rl_map_tiny_alt <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
+#'   proteins = CellPhoneDB$proteins_tiny,
+#'   interactions = CellPhoneDB$interactions_tiny,
+#'   complexes = CellPhoneDB$complexes_tiny, gene_conv = c("ENSG", "MGI"),
+#'   alternate_convert = TRUE, alternate_convert_table = ortho_table)
 #' 
 create_rl_map_cellphonedb <- function(
     genes, proteins, interactions, complexes = NULL, database_name = "CellPhoneDB",
@@ -195,7 +216,7 @@ create_rl_map_cellphonedb <- function(
             # annotation as a receptor or ligand is based on the annotation of the complex
             b_features[["type_B"]] <- ifelse(complex_b[["receptor"]], "R", "L")
             # replace any spaces in the partner name with an underscore
-            b_features[["name_B"]] <- gsub(" ", "_", partner_b)
+            b_features[["name_B"]] <- gsub(" ", "_", partner_b, fixed = TRUE)
         } else if (partner_b %in% proteins[["uniprot"]]) {
             protein_b <- proteins[proteins[["uniprot"]] == partner_b, ]
             component_b <- protein_b[["uniprot"]]
@@ -215,7 +236,7 @@ create_rl_map_cellphonedb <- function(
             gene_a <- paste(gene_b, collapse = ";")
             b_features[["gene_B"]] <- gene_b
             b_features[["type_B"]] <- ifelse(protein_b[["receptor"]], "R", "L")
-            b_features[["name_B"]] <- gene_b
+            b_features[["name_B"]] <- gsub(" ", "_", gene_b, fixed = TRUE)
         } else {
             next
         }

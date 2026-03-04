@@ -52,6 +52,27 @@ data(CellPhoneDB)
 rl_map_tiny <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
  proteins = CellPhoneDB$proteins_tiny,
  interactions = CellPhoneDB$interactions_tiny,
- complexes =CellPhoneDB$complexes_tiny)
+ complexes = CellPhoneDB$complexes_tiny)
+
+\dontrun{
+rl_map_tiny_conv <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
+  proteins = CellPhoneDB$proteins_tiny,
+  interactions = CellPhoneDB$interactions_tiny,
+  gene_conv = c("HGNC", "MGI"),
+  gene_conv_host = "https://beta.ensembl.org")
+}
+
+# Using alternate conversion table instead of biomaRt
+ortho_table <- data.frame(
+  hs.ens = c("ENSG00000198888", "ENSG00000198763", "ENSG00000198804"),
+  hgnc = c("MT-ND1", "MT-ND2", "MT-CO1"),
+  mm.ens = c("ENSMUSG00000064341", "ENSMUSG00000064345", "ENSMUSG00000064351"),
+  mgi = c("mt-Nd1", "mt-Nd2", "mt-Co1"))
+
+rl_map_tiny_alt <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
+  proteins = CellPhoneDB$proteins_tiny,
+  interactions = CellPhoneDB$interactions_tiny,
+  complexes = CellPhoneDB$complexes_tiny, gene_conv = c("ENSG", "MGI"),
+  alternate_convert = TRUE, alternate_convert_table = ortho_table)
 
 }
