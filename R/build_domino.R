@@ -206,20 +206,3 @@ build_domino <- function(
   }
   return(dom)
 }
-
-#' Pulls all items from a list pooled into a single vector
-#'
-#' Helper function to convert from a nested series of lists to a single vector.
-#'
-#' @param list List to pull items from
-#' @param list_names Names of items in list to pool
-#' @return A vector contaning all items in the list by list_names
-#' @keywords internal
-#'
-lc <- function(list, list_names) {
-  vec <- c()
-  for (name in list_names) {
-    vec <- c(vec, list[[name]])
-  }
-  return(vec)
-}
