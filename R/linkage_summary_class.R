@@ -41,8 +41,8 @@ linkage_summary <- setClass(
 #' print(tiny_linkage)
 #'
 setMethod("print", "linkage_summary", function(x, ...) {
-    message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects\nin ",
-        length(unique(slot(x, "subject_meta")$group)), " groups and linkages between ",
+    message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects with ",
+        ncol(slot(x, "subject_meta")), " metadata annotations and linkages between ",
         max(lengths(slot(x, "subject_linkages"))), " clusters.")
 })
 
@@ -58,7 +58,7 @@ setMethod("print", "linkage_summary", function(x, ...) {
 #' tiny_linkage
 #'
 setMethod("show", "linkage_summary", function(object) {
-    message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects\nin ",
-        length(unique(slot(object, "subject_meta")$group)), " groups and linkages between ",
+    message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects with ",
+        ncol(slot(object, "subject_meta")), " metadata annotations and linkages between ",
         max(lengths(slot(object, "subject_linkages"))), " clusters.")
 })

@@ -205,7 +205,7 @@ create_rl_map_cellphonedb <- function(
                     res <- g[1]
                     g_col <- toString(g)
                     message(
-                        component_a, " has multiple encoding gene mapped in genes table.\n",
+                        component_b, " has multiple encoding gene mapped in genes table.\n",
                         g_col, "\n",
                         "The first mapping gene is used: ", res
                     )
@@ -233,7 +233,7 @@ create_rl_map_cellphonedb <- function(
                     gene_b <- unique(conv_dict[conv_dict[, 1] %in% gene_b, 2])
                 }
             }
-            gene_a <- paste(gene_b, collapse = ";")
+            gene_b <- paste(gene_b, collapse = ";")
             b_features[["gene_B"]] <- gene_b
             b_features[["type_B"]] <- ifelse(protein_b[["receptor"]], "R", "L")
             b_features[["name_B"]] <- gsub(" ", "_", gene_b, fixed = TRUE)
