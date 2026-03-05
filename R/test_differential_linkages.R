@@ -45,10 +45,15 @@ test_differential_linkages <- function(
     linkage_summary, cluster, group.by, linkage = "rec_lig", subject_names = NULL,
     test_name = "fishers.exact"
 ) {
-    valid_tests <- "fishers.exact"
-    if (!test_name %in% valid_tests) {
-        stop("test_name invalid")
-    }
+
+    check_arg(linkage_summary, allow_class = "linkage_summary", allow_len = 1)
+    check_arg(cluster, allow_class = "character", allow_len = 1)
+    check_arg(group.by, allow_class = "character", allow_len = 1)
+    check_arg(linkage, allow_class = "character", allow_len = 1,
+        allow_values = c("tfs", "rec", "incoming_lig", "tfs_rec", "rec_lig"))
+    check_arg(subject_names, allow_class = c("factor", "character", "NULL"))
+    check_arg(test_name, allow_class = "character", allow_len = 1, allow_values = "fishers.exact")
+    
     if (is.null(subject_names)) {
         subject_names <- linkage_summary@subject_names
     }

@@ -56,6 +56,10 @@
 #'     subject_names = meta_df$ID
 #' )
 summarize_linkages <- function(domino_results, subject_meta, subject_names = NULL) {
+    
+    check_arg(domino_results, allow_class = "list", need_names = TRUE)
+    check_arg(subject_meta, allow_class = "data.frame")
+    
     if (!is(domino_results, "list")) {
         stop("domino_results must be provided as a named list where names correspond to subject names")
     }
