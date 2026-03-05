@@ -25,6 +25,12 @@ circos_ligand_receptor <- function(
     dom, receptor, ligand_expression_threshold = 0.01, cell_idents = NULL,
     cell_colors = NULL
 ) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(receptor, allow_class = "character", allow_len = 1)
+    check_arg(ligand_expression_threshold, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    check_arg(cell_idents, allow_class = c("character", "NULL"))
+    check_arg(cell_colors, allow_class = c("character", "NULL"))
+
     # pull signaling information from the domino result
     ligands <- dom@linkages$rec_lig[[receptor]]
 

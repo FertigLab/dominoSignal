@@ -16,7 +16,7 @@ table_convert_genes <- function(genes, from, to, conversion_table) {
     check_arg(genes, allow_class = c("character", "vector"))
     check_arg(from, allow_values = c("ENSMUSG", "ENSG", "MGI", "HGNC"))
     check_arg(to, allow_values = c("MGI", "HGNC"))
-    check_arg(conversion_table, allow_class = "data.frame")
+    check_arg(conversion_table, allow_class = c("data.frame", "matrix"))
     stopifnot(`Conversion table must be provided with at least two of column names mm.ens, hs.ens, mgi and/or hgnc` =
             (length(which(colnames(conversion_table) %in% c(
                 "mm.ens", "hs.ens", "mgi",
