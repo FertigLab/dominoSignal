@@ -38,6 +38,14 @@ signaling_heatmap <- function(
     dom, clusts = NULL, min_thresh = -Inf, max_thresh = Inf, scale = "none",
     normalize = "none", ...
 ) {
+
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(clusts, allow_class = c("character", "NULL"))
+    check_arg(min_thresh, allow_class = "numeric", allow_len = 1)
+    check_arg(max_thresh, allow_class = "numeric", allow_len = 1)
+    check_arg(scale, allow_class = "character", allow_len = 1, allow_values = c("none", "sqrt", "log"))
+    check_arg(normalize, allow_class = "character", allow_len = 1, allow_values = c("none", "rec_norm", "lig_norm"))
+
     if (!dom@misc[["build"]]) {
         stop("Please run build_domino prior to generate signaling network.")
     }
@@ -111,6 +119,16 @@ incoming_signaling_heatmap <- function(
     dom, rec_clust, clusts = NULL, min_thresh = -Inf, max_thresh = Inf,
     scale = "none", normalize = "none", title = TRUE, ...
 ) {
+
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(rec_clust, allow_class = "character", allow_len = 1, allow_values = dom_clusters(dom))
+    check_arg(clusts, allow_class = c("character", "NULL"))
+    check_arg(min_thresh, allow_class = "numeric", allow_len = 1)
+    check_arg(max_thresh, allow_class = "numeric", allow_len = 1)
+    check_arg(scale, allow_class = "character", allow_len = 1, allow_values = c("none", "sqrt", "log"))
+    check_arg(normalize, allow_class = "character", allow_len = 1, allow_values = c("none", "rec_norm", "lig_norm"))
+    check_arg(title, allow_class = c("character", "logical"), allow_len = 1)
+
     if (!dom@misc[["build"]]) {
         stop("Please run build_domino prior to generate signaling network.")
     }
@@ -186,6 +204,8 @@ incoming_signaling_heatmap <- function(
 #' Creates a heatmap of transcription factor activation scores by cells grouped by cluster.
 #'
 #' @param dom Domino object with network built ([build_domino()])
+#' @param feats Either a vector of features to include in the heatmap or 'all' for all features.
+#'    If left NULL then the features selected for the signaling network will be shown.
 #' @param bool Boolean indicating whether the heatmap should be continuous or boolean.
 #'   If boolean then bool_thresh will be used to determine how to define activity as positive or negative.
 #' @param bool_thresh Numeric indicating the threshold separating 'on' or 'off' for feature activity if
@@ -193,8 +213,6 @@ incoming_signaling_heatmap <- function(
 #' @param title Either a string to use as the title or a boolean describing whether to include a title.
 #'    In order to pass the 'main' parameter to  [ComplexHeatmap::Heatmap()]  you must set title to FALSE.
 #' @param norm Boolean indicating whether or not to normalize the transcrption factors to their max value.
-#' @param feats Either a vector of features to include in the heatmap or 'all' for all features.
-#'    If left NULL then the features selected for the signaling network will be shown.
 #' @param ann_cols Boolean indicating whether to include cell cluster as a column annotation.
 #'  Colors can be defined with cols. If FALSE then custom annotations can be passed to [ComplexHeatmap::Heatmap()].
 #' @param cols Named vector of colors to annotate cells by cluster color. Values are taken as colors and names as
@@ -219,8 +237,26 @@ incoming_signaling_heatmap <- function(
 #'
 feat_heatmap <- function(
     dom, feats = NULL, bool = FALSE, bool_thresh = 0.2, title = TRUE, norm = FALSE,
-    cols = NULL, ann_cols = TRUE, min_thresh = NULL, max_thresh = NULL, ...
+    ann_cols = TRUE, cols = NULL, min_thresh = NULL, max_thresh = NULL, ...
 ) {
+
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(feats, allow_class = c("character", "NULL"))
+    check_arg(bool, allow_class = "logical", allow_len = 1)
+    check_arg(bool_thresh, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
+    check_arg(title, allow_class = c("character", "logical"), allow_len = 1)
+    check_arg(norm, allow_class = "logical", allow_len = 1)
+    check_arg(ann_cols, allow_class = "logical", allow_len = 1)
+    if (!is.null(cols)) {
+        check_arg(cols, allow_class = "character", need_names = TRUE)
+    }
+    if (!is.null(min_thresh)) {
+        check_arg(min_thresh, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
+    }
+    if (!is.null(max_thresh)) {
+        check_arg(max_thresh, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
+    }
+
     if (!length(dom@clusters)) {
         warning("This domino object wasn't built with clusters. Cells will not be ordered.")
         ann_cols <- FALSE

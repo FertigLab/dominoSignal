@@ -22,7 +22,7 @@
 count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "rec_lig", subject_names = NULL) {
     check_arg(linkage_summary, allow_class = "linkage_summary", allow_len = 1)
     check_arg(cluster, allow_class = "character", allow_len = 1)
-    check_arg(group.by, allow_class = c("character", "NULL"), allow_len = 1)
+    check_arg(group.by, allow_class = c("character", "NULL"), allow_len = c(0, 1))
     check_arg(linkage, allow_class = "character", allow_len = 1)
     check_arg(subject_names, allow_class = c("factor", "character", "NULL"))
 

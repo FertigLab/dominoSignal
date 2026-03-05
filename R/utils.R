@@ -8,7 +8,7 @@
 #' @param allow_range range of minimum and maximum values i.e. c(1, 5)
 #' @param allow_values vector of allowed values
 #' @param need_vars vector of required variables
-#' @param need_colnames vogical for whether colnames are required
+#' @param need_colnames logical for whether colnames are required
 #' @param need_rownames logical for whether rownames are required
 #' @param need_names logical for whether names are required
 #' @return Logical indicating whether the argument meets the requirements
@@ -62,6 +62,7 @@ check_arg <- function(arg, allow_class = NULL, allow_len = NULL,
             argname, toString(allow_values)
         ))
     }
+    return(invisible(TRUE))
 }
 
 #' Read in data if an object looks like path to it

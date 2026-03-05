@@ -29,7 +29,7 @@ check_arg(
 
 \item{need_vars}{vector of required variables}
 
-\item{need_colnames}{vogical for whether colnames are required}
+\item{need_colnames}{logical for whether colnames are required}
 
 \item{need_rownames}{logical for whether rownames are required}
 
