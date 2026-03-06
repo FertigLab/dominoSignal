@@ -14,12 +14,13 @@ NULL
 #' @return A domino object with clusters renamed in all applicable slots.
 #' @export
 #' @examples
-#' example(build_domino, echo = FALSE)
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
 #' new_clust <- c(
 #'     "CD8_T_cell" = "CD8+ T Cells",
 #'     "CD14_monocyte" = "CD14+ Monocytes", "B_cell" = "B Cells"
 #' )
-#' pbmc_dom_built_tiny <- rename_clusters(pbmc_dom_built_tiny, new_clust)
+#' pbmc_dom_built_tiny <- rename_clusters(dom, new_clust)
 #'
 rename_clusters <- function(dom, clust_conv, warning = FALSE) {
     check_arg(dom, allow_class = "domino", allow_len = 1)
@@ -87,10 +88,10 @@ rename_clusters <- function(dom, clust_conv, warning = FALSE) {
 #' @return An updated RL signaling data frame
 #' @export
 #' @examples
-#' example(create_rl_map_cellphonedb, echo = FALSE)
+#' data(CellPhoneDB)
 #' lr_name <- data.frame("abbrev" = c("L", "R"), "full" = c("Ligand", "Receptor"))
 #' rl_map_expanded <- add_rl_column(
-#'     map = rl_map_tiny, map_ref = "type_A",
+#'     map = CellPhoneDB$rl_map_tiny, map_ref = "type_A",
 #'     conv = lr_name, new_name = "type_A_full"
 #' )
 #'

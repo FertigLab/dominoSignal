@@ -16,7 +16,8 @@ A matrix containing the z-scored gene expression values for each gene (row) by c
 A function to pull z-scored expression from a domino object
 }
 \examples{
-example(build_domino, echo = FALSE)
-zscores <- dom_zscores(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+zscores <- dom_zscores(dom)
 
 }

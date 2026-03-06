@@ -40,12 +40,13 @@ NULL
 #' @return An igraph plot rendered to the active graphics device
 #' @export signaling_network
 #' @examples
-#' example(build_domino, echo = FALSE)
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
 #' # basic usage
-#' signaling_network(pbmc_dom_built_tiny, edge_weight = 2)
+#' signaling_network(dom, edge_weight = 2)
 #' # scaling, thresholds, layouts, selecting clusters
 #' signaling_network(
-#'     pbmc_dom_built_tiny,
+#'     dom,
 #'     showOutgoingSignalingClusts = "CD14_monocyte",
 #'     scale = "none", normalize = "none", layout = "fr", scale_by = "none",
 #'     vert_scale = 5, edge_weight = 2
@@ -228,9 +229,10 @@ signaling_network <- function(
 #' @export gene_network
 #' @examples
 #' # basic usage
-#' example(build_domino, echo = FALSE)
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
 #' gene_network(
-#'     pbmc_dom_built_tiny,
+#'     dom,
 #'     clust = "CD8_T_cell",
 #'     OutgoingSignalingClust = "CD14_monocyte"
 #' )

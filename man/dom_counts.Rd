@@ -16,7 +16,8 @@ A matrix containing the gene expression values for each gene (row) by cell (colu
 A function to pull gene expression from a domino object
 }
 \examples{
-example(build_domino, echo = FALSE)
-counts <- dom_counts(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+counts <- dom_counts(dom)
 
 }

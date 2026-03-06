@@ -52,8 +52,9 @@ the cl_signaling_matrices slot of a domino option as an alternative to this
 plotting function.
 }
 \examples{
-example(build_domino, echo = FALSE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
 # incoming signaling of the CD8  T cells
-incoming_signaling_heatmap(pbmc_dom_built_tiny, "CD8_T_cell")
+incoming_signaling_heatmap(dom, "CD8_T_cell")
 
 }

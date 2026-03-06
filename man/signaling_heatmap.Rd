@@ -41,12 +41,13 @@ matrix can be accessed directly in the signaling slot of a domino object using
 the \code{\link[=dom_signaling]{dom_signaling()}} function.
 }
 \examples{
-example(build_domino, echo = FALSE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
 # basic usage
-signaling_heatmap(pbmc_dom_built_tiny)
+signaling_heatmap(dom)
 # scale
-signaling_heatmap(pbmc_dom_built_tiny, scale = "sqrt")
+signaling_heatmap(dom, scale = "sqrt")
 # normalize
-signaling_heatmap(pbmc_dom_built_tiny, normalize = "rec_norm")
+signaling_heatmap(dom, normalize = "rec_norm")
 
 }

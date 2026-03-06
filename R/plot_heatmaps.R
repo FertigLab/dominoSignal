@@ -26,13 +26,14 @@ NULL
 #' @return A heatmap rendered to the active graphics device
 #' @export signaling_heatmap
 #' @examples
-#' example(build_domino, echo = FALSE)
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
 #' # basic usage
-#' signaling_heatmap(pbmc_dom_built_tiny)
+#' signaling_heatmap(dom)
 #' # scale
-#' signaling_heatmap(pbmc_dom_built_tiny, scale = "sqrt")
+#' signaling_heatmap(dom, scale = "sqrt")
 #' # normalize
-#' signaling_heatmap(pbmc_dom_built_tiny, normalize = "rec_norm")
+#' signaling_heatmap(dom, normalize = "rec_norm")
 #'
 signaling_heatmap <- function(
     dom, clusts = NULL, min_thresh = -Inf, max_thresh = Inf, scale = "none",
@@ -111,9 +112,10 @@ signaling_heatmap <- function(
 #' @return a Heatmap rendered to the active graphics device
 #' @export incoming_signaling_heatmap
 #' @examples
-#' example(build_domino, echo = FALSE)
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
 #' # incoming signaling of the CD8  T cells
-#' incoming_signaling_heatmap(pbmc_dom_built_tiny, "CD8_T_cell")
+#' incoming_signaling_heatmap(dom, "CD8_T_cell")
 #'
 incoming_signaling_heatmap <- function(
     dom, rec_clust, clusts = NULL, min_thresh = -Inf, max_thresh = Inf,
@@ -226,11 +228,12 @@ incoming_signaling_heatmap <- function(
 #' @export feat_heatmap
 #' @examples
 #' # basic usage
-#' example(build_domino, echo = FALSE)
-#' feat_heatmap(pbmc_dom_built_tiny)
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
+#' feat_heatmap(dom)
 #' # using thresholds
 #' feat_heatmap(
-#'     pbmc_dom_built_tiny,
+#'     dom,
 #'     min_thresh = 0.1,
 #'     max_thresh = 0.6, norm = TRUE, bool = FALSE
 #' )
@@ -378,13 +381,14 @@ feat_heatmap <- function(
 #' @return A heatmap rendered to the active graphics device
 #' @export cor_heatmap
 #' @examples
-#' example(build_domino, echo = FALSE)
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
 #' # basic usage
-#' cor_heatmap(pbmc_dom_built_tiny, title = "PBMC R-TF Correlations")
+#' cor_heatmap(dom, title = "PBMC R-TF Correlations")
 #' # show correlations above a specific value
-#' cor_heatmap(pbmc_dom_built_tiny, bool = TRUE, bool_thresh = 0.1)
+#' cor_heatmap(dom, bool = TRUE, bool_thresh = 0.1)
 #' # identify combinations that are connected
-#' cor_heatmap(pbmc_dom_built_tiny, bool = FALSE, mark_connections = TRUE)
+#' cor_heatmap(dom, bool = FALSE, mark_connections = TRUE)
 #'
 cor_heatmap <- function(
     dom, bool = FALSE, bool_thresh = 0.15, title = TRUE, feats = NULL, recs = NULL,
