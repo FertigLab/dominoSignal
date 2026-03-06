@@ -45,7 +45,7 @@
 #'
 #' pbmc_dom_tiny <- create_domino(
 #'  rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
-#'  counts = PBMC$RNA_count_tiny, z_scores = PBMC$RNA_zscore_tiny,
+#'  counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
 #'  clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
 #'  use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE,
 #'  verbose = FALSE
@@ -53,7 +53,7 @@
 #'
 #' pbmc_dom_tiny_no_clusters <- create_domino(
 #'  rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
-#'  counts = PBMC$RNA_count_tiny, z_scores =PBMC$RNA_zscore_tiny,
+#'  counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
 #'  clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
 #'  use_clusters = FALSE, use_complexes = FALSE,
 #'  rec_min_thresh = 0.1, remove_rec_dropout = TRUE,

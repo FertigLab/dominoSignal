@@ -51,8 +51,8 @@ test_that("create_domino fails on wrong input arg type.", {
 
   auc_tiny <- SCENIC$auc_tiny
 
-  RNA_count_tiny <- PBMC$RNA_count_tiny
-  RNA_zscore_tiny <- PBMC$RNA_zscore_tiny
+  RNA_count_tiny <- PBMC$count_tiny
+  RNA_zscore_tiny <- PBMC$zscore_tiny
   clusters_tiny <- PBMC$clusters_tiny
 
   #bad rl map

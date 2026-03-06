@@ -77,9 +77,10 @@ name_features <- c(
     "integrin_a6b4_complex", "NRG1"
 )
 
-# Create 3 downsampled data sets with subsetted clusters and featuers
-sub_celltypes <- c("CD8_T_cell", "CD14_monocyte", "B_cell")
-n_cells <- 120
+cell_types_dwn <- c("CD8_T_cell", "CD14_monocyte", "B_cell")
+n <- 120
+
+cell_list <- list()
 
 set.seed(123)
 for (i in seq_along(cell_types_dwn)) {
@@ -96,6 +97,7 @@ names(clusters_tiny) <- barcodes_dwn
 counts <- assay(pbmc, "counts")
 z_scores <- t(scale(t(assay(pbmc, "logcounts"))))
 
+# And subset to features and cells of interest
 RNA_count_tiny <- counts[
     rownames(assay(pbmc, "counts")) %in% RNA_features,
     colnames(assay(pbmc, "counts")) %in% barcodes_dwn

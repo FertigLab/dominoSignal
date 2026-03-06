@@ -7,8 +7,8 @@
 \format{
 A list of::
 \describe{
-\item{RNA_count_tiny}{A subset of PBMC RNA-seq data: counts assay}
-\item{RNA_zscore_tiny}{A subset of PBMC RNA-seq data: zscore assay}
+\item{count_tiny}{A subset of PBMC RNA-seq data: counts assay}
+\item{zscore_tiny}{A subset of PBMC RNA-seq data: zscore assay}
 \item{clusters_tiny}{A subset of PBMC RNA-seq data: clusters as defined by cell_type}
 }
 }

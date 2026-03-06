@@ -37,8 +37,8 @@ clusters_tiny_alt <- as.factor(clusters_tiny_alt)
 pbmc_dom_tiny_alt <- create_domino(
     rl_map = rl_map_tiny,
     features = SCENIC$auc_tiny,
-    counts = PBMC$RNA_count_tiny,
-    z_scores = PBMC$RNA_zscore_tiny,
+    counts = PBMC$count_tiny,
+    z_scores = PBMC$zscore_tiny,
     clusters = clusters_tiny_alt,
     tf_targets = regulon_list_tiny,
     use_clusters = TRUE,

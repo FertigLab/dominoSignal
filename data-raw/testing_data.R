@@ -87,7 +87,7 @@ sub_celltypes <- c("CD8_T_cell", "CD14_monocyte", "B_cell")
 n_cells <- 110
 n_objects <- 3
 
-set.seed(123)
+set.seed(20260306)
 
 # Get cell barcodes by cell type
 cells_by_type <- setNames(lapply(sub_celltypes, function(clust) {
@@ -194,8 +194,18 @@ pbmc_dom_built_tiny_list <- lapply(pbmc_dom_tiny_list, dominoSignal::build_domin
 )
 
 # Shorter names for development:
-counts_tiny <- RNA_count_tiny
-zscores_tiny <- RNA_zscore_tiny
+tiny_counts1 <- dom_inputs[[1]]$counts
+tiny_counts2 <- dom_inputs[[2]]$counts
+tiny_counts3 <- dom_inputs[[3]]$counts
+tiny_zscores1 <- dom_inputs[[1]]$z_scores
+tiny_zscores2 <- dom_inputs[[2]]$z_scores
+tiny_zscores3 <- dom_inputs[[3]]$z_scores
+tiny_clusters1 <- dom_inputs[[1]]$clusters
+tiny_clusters2 <- dom_inputs[[2]]$clusters
+tiny_clusters3 <- dom_inputs[[3]]$clusters
+tiny_auc1 <- dom_inputs[[1]]$auc
+tiny_auc2 <- dom_inputs[[2]]$auc
+tiny_auc3 <- dom_inputs[[3]]$auc
 tiny_created_dom1 <- pbmc_dom_tiny_list[[1]]
 tiny_created_dom2 <- pbmc_dom_tiny_list[[2]]
 tiny_created_dom3 <- pbmc_dom_tiny_list[[3]]
@@ -204,8 +214,8 @@ tiny_dom2 <- pbmc_dom_built_tiny_list[[2]]
 tiny_dom3 <- pbmc_dom_built_tiny_list[[3]]
 
 # Save these to sysdata for lazy loading in development and testing; not exported for users
-usethis::use_data(counts_tiny, zscores_tiny, clusters_tiny, rl_map_tiny, regulons_tiny,
-    regulon_list_tiny, auc_tiny, complexes_tiny, genes_tiny, proteins_tiny, interactions_tiny,
-    tiny_created_dom1, tiny_created_dom2, tiny_created_dom3, tiny_dom1, tiny_dom2, tiny_dom3,
-    v0.2.1, internal = TRUE, overwrite = TRUE
+usethis::use_data(tiny_counts1, tiny_counts2, tiny_counts3, tiny_zscores1, tiny_zscores2, tiny_zscores3,
+    tiny_clusters1, tiny_clusters2, tiny_clusters3, rl_map_tiny, regulons_tiny, regulon_list_tiny, tiny_auc1,
+    tiny_auc2, tiny_auc3, complexes_tiny, genes_tiny, proteins_tiny, interactions_tiny, tiny_created_dom1,
+    tiny_created_dom2, tiny_created_dom3, tiny_dom1, tiny_dom2, tiny_dom3, v0.2.1, internal = TRUE, overwrite = TRUE
 )
