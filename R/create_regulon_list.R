@@ -12,6 +12,8 @@
 #' regulon_list_tiny <- create_regulon_list_scenic(regulons = SCENIC$regulons_tiny)
 #'
 create_regulon_list_scenic <- function(regulons) {
+    check_arg(regulons, allow_class = c("data.frame", "character"))
+    
     if (is(regulons, "character")) {
         regulons <- read.csv(regulons)
     }

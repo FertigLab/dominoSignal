@@ -56,6 +56,33 @@ signaling_network <- function(
     showIncomingSignalingClusts = NULL, min_thresh = -Inf, max_thresh = Inf, normalize = "none", scale = "sq",
     layout = "circle", scale_by = "rec_sig", vert_scale = 3, plot_title = NULL, ...
 ) {
+
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    if (!is.null(cols)) {
+        check_arg(cols, allow_class = "character", need_names = TRUE)
+    }
+    check_arg(edge_weight, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    if (!is.null(clusts)) {
+        check_arg(clusts, allow_class = "character", allow_values = dom_clusters(dom))
+    }
+    if (!is.null(showOutgoingSignalingClusts)) {
+        check_arg(showOutgoingSignalingClusts, allow_class = "character", allow_values = dom_clusters(dom))
+    }
+    if (!is.null(showIncomingSignalingClusts)) {
+        check_arg(showIncomingSignalingClusts, allow_class = "character", allow_values = dom_clusters(dom))
+    }
+    check_arg(min_thresh, allow_class = "numeric", allow_len = 1)
+    check_arg(max_thresh, allow_class = "numeric", allow_len = 1)
+    check_arg(normalize, allow_class = "character", allow_len = 1, allow_values = c("none", "rec_norm", "lig_norm"))
+    check_arg(scale, allow_class = "character", allow_len = 1, allow_values = c("none", "sqrt", "log", "sq"))
+    check_arg(layout, allow_class = "character", allow_len = 1,
+        allow_values = c("random", "sphere", "circle", "fr", "kk"))
+    check_arg(scale_by, allow_class = "character", allow_len = 1, allow_values = c("lig_sig", "rec_sig", "none"))
+    check_arg(vert_scale, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    if (!is.null(plot_title)) {
+        check_arg(plot_title, allow_class = "character", allow_len = 1)
+    }
+
     if (!length(dom@clusters)) {
         stop("This domino object was not built with clusters so there is no intercluster signaling.")
     }
@@ -213,6 +240,24 @@ gene_network <- function(
     class_cols = c(lig = "#FF685F", rec = "#47a7ff", feat = "#39C740"),
     cols = NULL, lig_scale = 1, layout = "grid", ...
 ) {
+
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    if (!is.null(clust)) {
+        check_arg(clust, allow_class = "character", allow_values = dom_clusters(dom))
+    }
+    if (!is.null(OutgoingSignalingClust)) {
+        check_arg(OutgoingSignalingClust, allow_class = "character", allow_values = dom_clusters(dom))
+    }
+    check_arg(class_cols, allow_class = "character", allow_len = 3, need_names = TRUE)
+    if (!is.null(cols)) {
+        check_arg(cols, allow_class = "character", need_names = TRUE)
+    }
+    if (!isFALSE(lig_scale)) {
+        check_arg(lig_scale, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    }
+    check_arg(layout, allow_class = "character", allow_len = 1,
+        allow_values = c("grid", "random", "sphere", "circle", "fr", "kk"))
+
     if (!dom@misc[["build"]]) {
         warning("Please build a signaling network with build_domino prior to plotting.")
     }

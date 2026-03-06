@@ -68,6 +68,10 @@ create_rl_map_cellphonedb <- function(
     check_arg(database_name, "character", allow_len = 1)
     check_arg(gene_conv, c("NULL", "character"), allow_len = c(0, 2))
     check_arg(gene_conv_host, "character", allow_len = 1)
+    check_arg(alternate_convert, "logical", allow_len = 1)
+    if (alternate_convert && !inherits(alternate_convert_table, "data.frame")) {
+        stop("alternate_convert_table must be provided as a data frame if alternate_convert is TRUE")
+    }
 
     # Read in files if needed:
     genes <- read_if_char(genes)

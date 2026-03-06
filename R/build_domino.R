@@ -29,6 +29,14 @@ build_domino <- function(
     dom, max_tf_per_clust = 5, min_tf_pval = 0.01, max_rec_per_tf = 5, rec_tf_cor_threshold = 0.15,
     min_rec_percentage = 0.1
 ) {
+    # Check inputs:
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(max_tf_per_clust, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    check_arg(min_tf_pval, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    check_arg(max_rec_per_tf, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    check_arg(rec_tf_cor_threshold, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
+    check_arg(min_rec_percentage, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
+
     if (!dom@misc[["create"]]) {
         stop("Please run domino_create to create the domino object.")
     }

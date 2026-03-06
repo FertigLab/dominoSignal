@@ -22,6 +22,10 @@ NULL
 #' pbmc_dom_built_tiny <- rename_clusters(pbmc_dom_built_tiny, new_clust)
 #'
 rename_clusters <- function(dom, clust_conv, warning = FALSE) {
+    check_arg(dom, allow_class = "domino", allow_len = 1)
+    check_arg(clust_conv, allow_class = "character", need_names = TRUE)
+    check_arg(warning, allow_class = "logical", allow_len = 1)
+    
     if (is.null(dom@clusters)) {
         stop("There are no clusters in this domino object")
     }
@@ -91,6 +95,11 @@ rename_clusters <- function(dom, clust_conv, warning = FALSE) {
 #' )
 #'
 add_rl_column <- function(map, map_ref, conv, new_name) {
+    check_arg(map, allow_class = "data.frame")
+    check_arg(map_ref, allow_class = "character", allow_len = 1)
+    check_arg(conv, allow_class = "data.frame")
+    check_arg(new_name, allow_class = "character", allow_len = 1)
+    
     map_in_ref <- match(map[[map_ref]], conv[, 1])
     not_in_ref <- which(is.na(map_in_ref))
     if (length(not_in_ref) > 0) {

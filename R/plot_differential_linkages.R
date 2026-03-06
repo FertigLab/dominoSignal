@@ -25,17 +25,14 @@
 plot_differential_linkages <- function(
     differential_linkages, test_statistic, stat_range = c(0, 1),
     stat_ranking = c("ascending", "descending"), group_palette = NULL) {
+    
+    stat_ranking <- match.arg(stat_ranking)
 
-    if (!test_statistic %in% colnames(differential_linkages)) {
-        stop("test statistic '", test_statistic, "' not present in colnames(differential_linkages)")
-    }
-    if (identical(stat_ranking, c("ascending", "descending"))) {
-        warning("stat_ranking order not specified. Defaulting to ascending order")
-        stat_ranking <- "ascending"
-    }
-    if (!stat_ranking %in% c("ascending", "descending")) {
-        stop("stat_ranking must be 'ascending' or 'descending'")
-    }
+    check_arg(test_statistic, allow_class = "character", allow_len = 1)
+    check_arg(differential_linkages, allow_class = "data.frame", need_vars = test_statistic)
+    check_arg(stat_range, allow_class = "numeric", allow_len = 2, allow_range = c(0, 1))
+    check_arg(stat_ranking, allow_class = "character", allow_len = 1, allow_values = c("ascending", "descending"))
+
     # limit to features within stat range
     dframe <- differential_linkages[differential_linkages[[test_statistic]] >= stat_range[1] &
             differential_linkages[[test_statistic]] <= stat_range[2], ]
