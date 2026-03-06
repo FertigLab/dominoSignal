@@ -25,6 +25,8 @@
 plot_differential_linkages <- function(
     differential_linkages, test_statistic, stat_range = c(0, 1),
     stat_ranking = c("ascending", "descending"), group_palette = NULL) {
+    
+    stat_ranking <- match.arg(stat_ranking)
 
     check_arg(test_statistic, allow_class = "character", allow_len = 1)
     check_arg(differential_linkages, allow_class = "data.frame", need_vars = test_statistic)

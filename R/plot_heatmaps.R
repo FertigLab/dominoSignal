@@ -237,7 +237,7 @@ incoming_signaling_heatmap <- function(
 #'
 feat_heatmap <- function(
     dom, feats = NULL, bool = FALSE, bool_thresh = 0.2, title = TRUE, norm = FALSE,
-    ann_cols = TRUE, cols = NULL, min_thresh = NULL, max_thresh = NULL, ...
+    cols = NULL, ann_cols = TRUE, min_thresh = NULL, max_thresh = NULL, ...
 ) {
 
     check_arg(dom, allow_class = "domino", allow_len = 1)
@@ -266,7 +266,7 @@ feat_heatmap <- function(
     cl <- sort(cl)
     if (norm && (!is.null(min_thresh) || !is.null(max_thresh))) {
         warning("You are using norm with min_thresh and max_thresh. ",
-        "Note that values will be thresholded AFTER normalization.")
+            "Note that values will be thresholded AFTER normalization.")
     }
     if (norm) {
         mat <- do_norm(mat, "row")

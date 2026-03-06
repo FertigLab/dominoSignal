@@ -119,7 +119,7 @@ mean_ligand_expression <- function(x, ligands, cell_ident, cell_barcodes, destin
 #'
 do_norm <- function(mat, dir) {
     check_arg(mat, allow_class = c("matrix", "data.frame"))
-    check_arg(dir, allow_class = "character", allow_len = 1)
+    check_arg(dir, allow_class = "character", allow_len = 1, allow_values = c("row", "col"))
 
     if (dir == "row") {
         mat <- t(apply(mat, 1, function(x) {

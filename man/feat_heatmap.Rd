@@ -11,8 +11,8 @@ feat_heatmap(
   bool_thresh = 0.2,
   title = TRUE,
   norm = FALSE,
-  ann_cols = TRUE,
   cols = NULL,
+  ann_cols = TRUE,
   min_thresh = NULL,
   max_thresh = NULL,
   ...
@@ -35,11 +35,11 @@ In order to pass the 'main' parameter to  \code{\link[ComplexHeatmap:Heatmap]{Co
 
 \item{norm}{Boolean indicating whether or not to normalize the transcrption factors to their max value.}
 
-\item{ann_cols}{Boolean indicating whether to include cell cluster as a column annotation.
-Colors can be defined with cols. If FALSE then custom annotations can be passed to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap()}}.}
-
 \item{cols}{Named vector of colors to annotate cells by cluster color. Values are taken as colors and names as
 cluster. If left as NULL then default ggplot colors will be generated.}
+
+\item{ann_cols}{Boolean indicating whether to include cell cluster as a column annotation.
+Colors can be defined with cols. If FALSE then custom annotations can be passed to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap()}}.}
 
 \item{min_thresh}{Minimum threshold for color scaling if not a boolean heatmap}
 
