@@ -1,30 +1,33 @@
 test_that("rename_clusters function works correctly", {
     # Test domino object:
-    data(CellPhoneDB)
-    rl_map_tiny <- create_rl_map_cellphonedb(
-        genes = CellPhoneDB$genes_tiny,
-        proteins = CellPhoneDB$proteins_tiny,
-        interactions = CellPhoneDB$interactions_tiny,
-        complexes = CellPhoneDB$complexes_tiny
-    )
+    # data(CellPhoneDB)
+    # rl_map_tiny <- create_rl_map_cellphonedb(
+    #     genes = CellPhoneDB$genes_tiny,
+    #     proteins = CellPhoneDB$proteins_tiny,
+    #     interactions = CellPhoneDB$interactions_tiny,
+    #     complexes = CellPhoneDB$complexes_tiny
+    # )
 
-    data(SCENIC)
-    regulon_list_tiny <- create_regulon_list_scenic(
-        regulons = SCENIC$regulons_tiny
-    )
+    # data(SCENIC)
+    # regulon_list_tiny <- create_regulon_list_scenic(
+    #     regulons = SCENIC$regulons_tiny
+    # )
 
-    data(PBMC)
-    pbmc_dom_tiny <- create_domino(
-        rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
-        counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
-        clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
-        use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
-    )
+    # data(PBMC)
+    # pbmc_dom_tiny <- create_domino(
+    #     rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
+    #     counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
+    #     clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
+    #     use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
+    # )
 
-    dom <- build_domino(
-        dom = pbmc_dom_tiny, min_tf_pval = 0.05, max_tf_per_clust = Inf,
-        max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
-    )
+    # dom <- build_domino(
+    #     dom = pbmc_dom_tiny, min_tf_pval = 0.05, max_tf_per_clust = Inf,
+    #     max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
+    # )
+
+    data(DominoObjects)
+    dom <- DominoObjects$built_dom_tiny
 
     # Define the cluster conversion, Z/new_clust does not match data intentionally
     clust_conv <- c("W", "X", "Y", "Z")

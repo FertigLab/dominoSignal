@@ -61,12 +61,13 @@ test_that("check_arg works for class", {
 
 test_that("resolve_complexes maps complex names to component genes, resolve_names maps ligand name to gene name", {
     data(CellPhoneDB)
-    rl_map_tiny <- create_rl_map_cellphonedb(
-        genes = CellPhoneDB$genes_tiny,
-        proteins = CellPhoneDB$proteins_tiny,
-        interactions = CellPhoneDB$interactions_tiny,
-        complexes = CellPhoneDB$complexes_tiny
-    )
+    rl_map_tiny# <- CellPhoneDB$rl_map_tiny
+    # rl_map_tiny <- create_rl_map_cellphonedb(
+    #     genes = CellPhoneDB$genes_tiny,
+    #     proteins = CellPhoneDB$proteins_tiny,
+    #     interactions = CellPhoneDB$interactions_tiny,
+    #     complexes = CellPhoneDB$complexes_tiny
+    # )
     entry_for_resolve_names <- c(
         int_pair = "12oxoLeukotrieneB4_byPTGR1 & LTB4R",
         name_A = "12oxoLeukotrieneB4_byPTGR1", uniprot_A = "Q14914", gene_A = "PTGR1", type_A = "L",
@@ -78,10 +79,11 @@ test_that("resolve_complexes maps complex names to component genes, resolve_name
     rl_map_tiny <- rbind(rl_map_tiny, entry_for_resolve_names)
 
     data(SCENIC)
-    regulon_list_tiny <- create_regulon_list_scenic(
-        regulons = SCENIC$regulons_tiny
-    )
-
+    # regulon_list_tiny <- create_regulon_list_scenic(
+    #     regulons = SCENIC$regulons_tiny
+    # )
+    regulon_list_tiny# <- SCENIC$regulon_list_tiny
+    
     data(PBMC)
     pbmc_dom_tiny <- create_domino(
         rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
@@ -131,31 +133,34 @@ test_that("avg_exp_for_complexes returns list with average expression of compone
 })
 
 test_that("mean_exp_by_cluster returns gene expression averaged over clusters.", {
-    data(CellPhoneDB)
-    rl_map_tiny <- create_rl_map_cellphonedb(
-        genes = CellPhoneDB$genes_tiny,
-        proteins = CellPhoneDB$proteins_tiny,
-        interactions = CellPhoneDB$interactions_tiny,
-        complexes = CellPhoneDB$complexes_tiny
-    )
+    # data(CellPhoneDB)
+    # rl_map_tiny <- create_rl_map_cellphonedb(
+    #     genes = CellPhoneDB$genes_tiny,
+    #     proteins = CellPhoneDB$proteins_tiny,
+    #     interactions = CellPhoneDB$interactions_tiny,
+    #     complexes = CellPhoneDB$complexes_tiny
+    # )
 
-    data(SCENIC)
-    regulon_list_tiny <- create_regulon_list_scenic(
-        regulons = SCENIC$regulons_tiny
-    )
+    # data(SCENIC)
+    # regulon_list_tiny <- create_regulon_list_scenic(
+    #     regulons = SCENIC$regulons_tiny
+    # )
 
-    data(PBMC)
-    pbmc_dom_tiny <- create_domino(
-        rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
-        counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
-        clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
-        use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
-    )
+    # data(PBMC)
+    # pbmc_dom_tiny <- create_domino(
+    #     rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
+    #     counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
+    #     clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
+    #     use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
+    # )
 
-    dom <- build_domino(
-        dom = pbmc_dom_tiny, min_tf_pval = 0.05, max_tf_per_clust = Inf,
-        max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
-    )
+    # dom <- build_domino(
+    #     dom = pbmc_dom_tiny, min_tf_pval = 0.05, max_tf_per_clust = Inf,
+    #     max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
+    # )
+
+    data(DominoObjects)
+    dom <- DominoObjects$built_dom_tiny
 
     clust <- c("B_cell", "CD14_monocyte")
     genes <- c("CCL20", "IL7", "TGFB3")

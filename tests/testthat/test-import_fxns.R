@@ -40,16 +40,16 @@ test_that("create_rl_map_cellphonedb fails on wrong input arg type.", {
 
 
 test_that("create_domino fails on wrong input arg type.", {
-  data(PBMC)
-  data(SCENIC)
-  data(CellPhoneDB)
+    data(PBMC)
+    data(SCENIC)
+    data(CellPhoneDB)
 
-  rl_map_tiny <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
-    proteins = CellPhoneDB$proteins_tiny,
-    interactions = CellPhoneDB$interactions_tiny,
-    complexes = CellPhoneDB$complexes_tiny)
+#   rl_map_tiny <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
+#     proteins = CellPhoneDB$proteins_tiny,
+#     interactions = CellPhoneDB$interactions_tiny,
+#     complexes = CellPhoneDB$complexes_tiny)
 
-  auc_tiny <- SCENIC$auc_tiny
+    auc_tiny <- SCENIC$auc_tiny
 
   RNA_count_tiny <- PBMC$count_tiny
   RNA_zscore_tiny <- PBMC$zscore_tiny
