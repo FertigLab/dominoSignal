@@ -2,33 +2,6 @@ test_that("domino object interpretation by obtain_circos_expression", {
     # start temporary graphics device for testing to preserve package enviroment
     png(filename = file.path(tempdir(), "ts.png"))
 
-    # # testing domino object
-    # data(CellPhoneDB)
-    # rl_map_tiny <- create_rl_map_cellphonedb(
-    #     genes = CellPhoneDB$genes_tiny,
-    #     proteins = CellPhoneDB$proteins_tiny,
-    #     interactions = CellPhoneDB$interactions_tiny,
-    #     complexes = CellPhoneDB$complexes_tiny
-    # )
-
-    # data(SCENIC)
-    # regulon_list_tiny <- create_regulon_list_scenic(
-    #     regulons = SCENIC$regulons_tiny
-    # )
-
-    # data(PBMC)
-    # pbmc_dom_tiny <- create_domino(
-    #     rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
-    #     counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
-    #     clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
-    #     use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
-    # )
-
-    # dom <- build_domino(
-    #     dom = pbmc_dom_tiny, min_tf_pval = 0.05, max_tf_per_clust = Inf,
-    #     max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
-    # )
-
     data(DominoObjects)
     dom <- DominoObjects$built_dom_tiny
 
@@ -77,18 +50,8 @@ test_that("Cell types with hyphenated names can be plotted", {
 
 test_that("Plots for receptors that have ligands in the rl_map but not the signaling matrix do not fail", {
     # testing domino object
-    data(CellPhoneDB)
-    # rl_map_tiny <- create_rl_map_cellphonedb(
-    #     genes = CellPhoneDB$genes_tiny,
-    #     proteins = CellPhoneDB$proteins_tiny,
-    #     interactions = CellPhoneDB$interactions_tiny,
-    #     complexes = CellPhoneDB$complexes_tiny
-    # )
-
-    rl_map_tiny <- CellPhoneDB$rl_map_tiny
-    # add ligands to one of the existing receptors in the rl_map
-    # CXCR3: 3 ligands (CCL20, CCX, CCY)
-    # CCX and CCY are not in the signaling matrix
+    data(SCENIC)
+    data(PBMC)
 
     rl_map_append <- rbind(
         rl_map_tiny,
@@ -109,13 +72,6 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
         )
     )
 
-
-    data(SCENIC)
-    # regulon_list_tiny <- create_regulon_list_scenic(
-    #     regulons = SCENIC$regulons_tiny
-    # )
-
-    data(PBMC)
     pbmc_dom_tiny <- create_domino(
         rl_map = rl_map_append, features = SCENIC$auc_tiny,
         counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,

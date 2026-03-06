@@ -16,7 +16,7 @@ A printed description of subject numbers, group numbers, and cluster numbers in 
 Shows content overview of linkage_summary object
 }
 \examples{
-tiny_linkage <- mock_linkage_summary()
-tiny_linkage
+data(LinkageSummary)
+LinkageSummary
 
 }
