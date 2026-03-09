@@ -1,3 +1,26 @@
+test_that("plot_circos functions run", {
+    dom <- DominoObjects$built_dom_tiny
+    receptor <- "CXCR3"
+    ligands <- "CCL20"
+
+    expect_no_error(circos_ligand_receptor(tiny_dom1, receptor = receptor))
+    expect_no_error(obtain_circos_expression(tiny_dom1, receptor = receptor, ligands = ligands))
+
+    circos_df <- data.frame(
+        origin = c("A_L1", "B_L1"),
+        destination = "R1",
+        mean.expression = c(0.5, 0.2),
+        sender = c("A", "B"),
+        ligand = c("L1", "L1"),
+        receptor = "R1",
+        scaled.mean.expression = c(1, 0.4),
+        ligand.arc = c(0.5, 0.5),
+        receptor.arc = c(1, 1),
+        stringsAsFactors = FALSE
+    )
+    expect_no_error(render_circos_ligand_receptor(circos_df, receptor = "R1"))
+})
+
 test_that("domino object interpretation by obtain_circos_expression", {
     # start temporary graphics device for testing to preserve package enviroment
     png(filename = file.path(tempdir(), "ts.png"))

@@ -156,7 +156,7 @@ signaling_network <- function(
             weight[paste0(lig_cl, "|", rec_cl)] <- mat[rcl, lcl]
         }
     }
-    graph <- igraph::graph(links)
+    graph <- igraph::make_graph(links)
     # Get vert colors and scale size if desired.
     igraph::V(graph)$label.dist <- 1.5
     igraph::V(graph)$label.color <- "black"
@@ -344,7 +344,7 @@ gene_network <- function(
     }
     all_ligs <- unique(all_ligs)
     # Make the graph
-    graph <- igraph::graph(links)
+    graph <- igraph::make_graph(links)
     graph <- igraph::simplify(graph, remove.multiple = TRUE, remove.loops = FALSE)
     v_cols <- rep("#BBBBBB", length(igraph::V(graph)))
     names(v_cols) <- names(igraph::V(graph))

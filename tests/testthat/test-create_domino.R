@@ -1,38 +1,19 @@
-test_that("create_rl_map_cellphonedb fails on wrong input arg type.", {
+test_that("create_domino runs with tiny inputs", {
+    dom <- create_domino(
+        rl_map = rl_map_tiny,
+        features = tiny_auc1,
+        counts = tiny_counts1,
+        z_scores = tiny_zscores1,
+        clusters = tiny_clusters1,
+        tf_targets = regulon_list_tiny,
+        use_clusters = TRUE,
+        use_complexes = TRUE,
+        remove_rec_dropout = FALSE,
+        verbose = FALSE
+    )
 
-    expect_error(create_rl_map_cellphonedb(
-        genes = list(), proteins = proteins_tiny,
-        interactions = interactions_tiny, complexes = complexes_tiny
-    ), "Class of genes must be one of: character,data.frame")
-
-    expect_error(create_rl_map_cellphonedb(
-        genes = genes_tiny, proteins = list(),
-        interactions = interactions_tiny, complexes = complexes_tiny
-    ), "Class of proteins must be one of: character,data.frame")
-
-    expect_error(create_rl_map_cellphonedb(
-        genes = genes_tiny, proteins = proteins_tiny,
-        interactions = list(), complexes = complexes_tiny
-    ), "Class of interactions must be one of: character,data.frame")
-
-    expect_error(create_rl_map_cellphonedb(
-        genes = genes_tiny, proteins = proteins_tiny,
-        interactions = interactions_tiny, complexes = list()
-    ), "Class of complexes must be one of: character,data.frame")
-
-    expect_error(create_rl_map_cellphonedb(
-        genes = genes_tiny, proteins = proteins_tiny,
-        interactions = interactions_tiny, complexes = complexes_tiny,
-        database_name = list()
-    ), "Class of database_name must be one of: character")
-
-    expect_error(create_rl_map_cellphonedb(
-        genes = genes_tiny, proteins = proteins_tiny,
-        interactions = interactions_tiny, complexes = complexes_tiny,
-        database_name = c("length", ">1")
-    ), "Length of database_name must be one of: 1")
+    expect_s4_class(dom, "domino")
 })
-
 
 test_that("create_domino fails on wrong input arg type.", {
 

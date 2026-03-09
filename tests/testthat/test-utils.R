@@ -25,7 +25,7 @@ test_that("read if char tries to read a file", {
     expect_error(read_if_char(c("a", "b")), "Length of obj must be one of: 1")
 })
 
-test_that("mandatory field absence yields error, presence does not", {
+test_that("mandatory field absence in check_arg yields error, presence does not", {
     expect_error(check_arg(
         arg = data.frame(a = c(1, 2), b = c(3, 4)),
         allow_class = "data.frame",
@@ -38,7 +38,7 @@ test_that("mandatory field absence yields error, presence does not", {
     ))
 })
 
-test_that("range checker works", {
+test_that("range checker in check_arg works", {
     expect_error(
         check_arg(1, allow_class = "numeric", allow_range = c(2, 5)),
         "All values in 1 must be between 2 and 5"
@@ -122,15 +122,22 @@ test_that("avg_exp_for_complexes returns list with average expression of compone
 
 test_that("mean_exp_by_cluster returns gene expression averaged over clusters.", {
     
-    data(DominoObjects)
-    dom <- DominoObjects$built_dom_tiny
-
     clust <- c("B_cell", "CD14_monocyte")
     genes <- c("CCL20", "IL7", "TGFB3")
     mean_exp <- data.frame(
-        B_cell = c(0.000000, 0.16609099, 0.000000),
-        CD14_monocyte = c(0.20959562, 0.0000000, 0.13001233),
+        B_cell = c(0.000000, 0.3533981, 0.000000),
+        CD14_monocyte = c(0.0000000, 0.0000000, 0.1461621),
         row.names = c("CCL20", "IL7", "TGFB3")
     )
-    expect_equal(mean_exp_by_cluster(dom = dom, clusts = clust, genes = genes), mean_exp)
+    expect_equal(mean_exp_by_cluster(dom = tiny_dom1, clusts = clust, genes = genes), mean_exp, tolerance = 1e-06)
+})
+
+test_that("lc function runs", {
+    expect_equal(lc(list(a = 1:2, b = 3:4), "a"), 1:2)
+})
+
+test_that("ggplot_col_gen function runs", {
+    cols <- ggplot_col_gen(4)
+    expect_type(cols, "character")
+    expect_length(cols, 4)
 })
