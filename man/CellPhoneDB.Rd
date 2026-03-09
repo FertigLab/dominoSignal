@@ -11,6 +11,7 @@ A list of:
 \item{proteins_tiny}{A subset of CellPhoneDB protein_input.csv}
 \item{complexes_tiny}{A subset of CellPhoneDB complex_input.csv}
 \item{interactions_tiny}{A subset of CellPhoneDB interaction_input.csv}
+\item{rl_map_tiny}{A subset of CellPhoneDB data formatted as a domino rl_map}
 }
 }
 \source{

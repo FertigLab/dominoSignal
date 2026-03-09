@@ -20,8 +20,9 @@ the cluster label for each individual cell
 A function to pull cluster information from a domino object
 }
 \examples{
-example(build_domino, echo = FALSE)
-cluster_names <- dom_clusters(pbmc_dom_built_tiny)
-cell_cluster_label <- dom_clusters(pbmc_dom_built_tiny, labels = TRUE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+cluster_names <- dom_clusters(dom)
+cell_cluster_label <- dom_clusters(dom, labels = TRUE)
 
 }

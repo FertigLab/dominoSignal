@@ -36,8 +36,9 @@ NULL
 #' }
 #' @export
 #' @examples
+#' data(LinkageSummary)
 #' tiny_differential_linkage_c1 <- test_differential_linkages(
-#'     linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",
+#'     linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
 #'     linkage = "rec", test_name = "fishers.exact"
 #' )
 #'

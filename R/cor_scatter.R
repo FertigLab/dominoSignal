@@ -11,8 +11,9 @@
 #' @return A ggplot scatter plot rendered in the active graphics device
 #' @export cor_scatter
 #' @examples
-#' example(build_domino, echo = FALSE)
-#' cor_scatter(pbmc_dom_built_tiny, "FLI1","CXCR3")
+#' data(DominoObjects)
+#' dom <- DominoObjects$built_dom_tiny
+#' cor_scatter(dom, "FLI1","CXCR3")
 #'
 cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
 

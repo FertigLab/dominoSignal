@@ -37,8 +37,8 @@ linkage_summary <- setClass(
 #' @return A printed description of the number of subjects, groups, and clusters in the linkage summary object
 #' @export
 #' @examples
-#' tiny_linkage <- mock_linkage_summary()
-#' print(tiny_linkage)
+#' data(LinkageSummary)
+#' print(LinkageSummary$linkage_sum_tiny)
 #'
 setMethod("print", "linkage_summary", function(x, ...) {
     message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects with ",
@@ -54,8 +54,8 @@ setMethod("print", "linkage_summary", function(x, ...) {
 #' @return A printed description of subject numbers, group numbers, and cluster numbers in the linkage summary object
 #' @export
 #' @examples
-#' tiny_linkage <- mock_linkage_summary()
-#' tiny_linkage
+#' data(LinkageSummary)
+#' LinkageSummary$linkage_sum_tiny
 #'
 setMethod("show", "linkage_summary", function(object) {
     message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects with ",

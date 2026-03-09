@@ -18,7 +18,7 @@ A printed description of the number of subjects, groups, and clusters in the lin
 Prints a description of a linkage summary object
 }
 \examples{
-tiny_linkage <- mock_linkage_summary()
-print(tiny_linkage)
+data(LinkageSummary)
+print(LinkageSummary$linkage_sum_tiny)
 
 }

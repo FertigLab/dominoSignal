@@ -57,11 +57,12 @@ Creates a heatmap of transcription factor activation scores by cells grouped by 
 }
 \examples{
 # basic usage
-example(build_domino, echo = FALSE)
-feat_heatmap(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+feat_heatmap(dom)
 # using thresholds
 feat_heatmap(
-    pbmc_dom_built_tiny,
+    dom,
     min_thresh = 0.1,
     max_thresh = 0.6, norm = TRUE, bool = FALSE
 )

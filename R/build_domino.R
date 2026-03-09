@@ -17,11 +17,12 @@
 #' @return A domino object with a signaling network built
 #' @export
 #' @examples
-#' example(create_domino, echo = FALSE)
+#' data(DominoObjects)
+#' dom <- DominoObjects$dom_tiny
 #'
 #' # a relaxed example
 #' pbmc_dom_built_tiny <- build_domino(
-#'     dom = pbmc_dom_tiny, min_tf_pval = .05, max_tf_per_clust = Inf,
+#'     dom = dom, min_tf_pval = .05, max_tf_per_clust = Inf,
 #'     max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01
 #' )
 #'

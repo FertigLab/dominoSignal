@@ -17,7 +17,8 @@ in each cluster (columns)
 A function to pull differential expression p-values from a domino object
 }
 \examples{
-example(build_domino, echo = FALSE)
-de_mat <- dom_de(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+de_mat <- dom_de(dom)
 
 }

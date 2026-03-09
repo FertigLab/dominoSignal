@@ -9,6 +9,7 @@ A list of:
 \describe{
 \item{auc_tiny}{A subset of SCENIC AUCs}
 \item{regulons_tiny}{A subset of SCENIC regulons}
+\item{regulon_list_tiny}{A subset of SCENIC regulons formatted as a regulon_list}
 }
 }
 \source{

@@ -35,8 +35,9 @@ columns named by the unique values of the group.by variable.
 Count occurrences of linkages across multiple domino results from a linkage summary
 }
 \examples{
+data(LinkageSummary)
 count_linkage(
-  linkage_summary = mock_linkage_summary(), cluster = "C1", 
+  linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
   group.by = "group", linkage = "rec")
 
 }

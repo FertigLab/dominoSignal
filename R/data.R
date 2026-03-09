@@ -6,6 +6,7 @@
 #' \describe{
 #'  \item{auc_tiny}{A subset of SCENIC AUCs}
 #'  \item{regulons_tiny}{A subset of SCENIC regulons}
+#'  \item{regulon_list_tiny}{A subset of SCENIC regulons formatted as a regulon_list}
 #' }
 #'
 #' @source <https://zenodo.org/records/10951634/files>
@@ -19,8 +20,8 @@
 #'
 #' @format A list of::
 #' \describe{
-#'  \item{RNA_count_tiny}{A subset of PBMC RNA-seq data: counts assay}
-#'  \item{RNA_zscore_tiny}{A subset of PBMC RNA-seq data: zscore assay}
+#'  \item{count_tiny}{A subset of PBMC RNA-seq data: counts assay}
+#'  \item{zscore_tiny}{A subset of PBMC RNA-seq data: zscore assay}
 #'  \item{clusters_tiny}{A subset of PBMC RNA-seq data: clusters as defined by cell_type}
 #' }
 #'
@@ -40,8 +41,29 @@
 #'  \item{proteins_tiny}{A subset of CellPhoneDB protein_input.csv}
 #'  \item{complexes_tiny}{A subset of CellPhoneDB complex_input.csv}
 #'  \item{interactions_tiny}{A subset of CellPhoneDB interaction_input.csv}
+#'  \item{rl_map_tiny}{A subset of CellPhoneDB data formatted as a domino rl_map}
 #' }
 #' 
 #' @source <https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz>
 #' @usage data("CellPhoneDB")
 "CellPhoneDB"
+
+#' Example domino objects
+#' 
+#' A list of two domino objects, one from [create_domino()] and one from [build_domino()] outputs.
+#' \describe{
+#'  \item{dom_tiny}{A domino object created using [create_domino()] with the tiny datasets.}
+#'  \item{built_dom_tiny}{A domino object created using [build_domino()] with the tiny datasets.}
+#' }
+#' @usage data("DominoObjects")
+"DominoObjects"
+
+#' Example linkage summary
+#' 
+#' A list containing a linkage summary object and a differential linkage result from a mock dataset
+#' \describe{
+#' \item{linkage_sum_tiny}{A linkage summary object created with mock data.}
+#' \item{linkage_diff_tiny}{Results from running [test_differential_linkages()] on the mock linkage summary object.}
+#' }
+#' @usage data("LinkageSummary")
+"LinkageSummary"

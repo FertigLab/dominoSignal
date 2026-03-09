@@ -48,9 +48,10 @@ will be included in the plot.
 }
 \examples{
 # basic usage
-example(build_domino, echo = FALSE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
 gene_network(
-    pbmc_dom_built_tiny,
+    dom,
     clust = "CD8_T_cell",
     OutgoingSignalingClust = "CD14_monocyte"
 )

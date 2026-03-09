@@ -15,8 +15,9 @@
 #'  columns named by the unique values of the group.by variable.
 #' @export
 #' @examples
+#' data(LinkageSummary)
 #' count_linkage(
-#'   linkage_summary = mock_linkage_summary(), cluster = "C1", 
+#'   linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
 #'   group.by = "group", linkage = "rec")
 #' 
 count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "rec_lig", subject_names = NULL) {

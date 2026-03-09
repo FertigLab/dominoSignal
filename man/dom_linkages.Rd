@@ -29,8 +29,9 @@ transcription factors, and clusters
 A function to pull linkages from a domino object
 }
 \examples{
-example(build_domino, echo = FALSE)
-complexes <- dom_linkages(pbmc_dom_built_tiny, "complexes")
-tf_rec_by_cluster <- dom_linkages(pbmc_dom_built_tiny, "tf-receptor", TRUE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+complexes <- dom_linkages(dom, "complexes")
+tf_rec_by_cluster <- dom_linkages(dom, "tf-receptor", TRUE)
 
 }

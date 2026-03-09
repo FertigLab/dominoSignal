@@ -33,12 +33,13 @@ Creates a chord plot of expression of ligands that can activate a specified
 receptor where chord widths correspond to mean ligand expression by the cluster.
 }
 \examples{
-example(build_domino, echo = FALSE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
 # basic usage
-circos_ligand_receptor(pbmc_dom_built_tiny, receptor = "CXCR3")
+circos_ligand_receptor(dom, receptor = "CXCR3")
 # specify colors
 cols <- c("red", "orange", "green")
-names(cols) <- dom_clusters(pbmc_dom_built_tiny)
-circos_ligand_receptor(pbmc_dom_built_tiny, receptor = "CXCR3", cell_colors = cols)
+names(cols) <- dom_clusters(dom)
+circos_ligand_receptor(dom, receptor = "CXCR3", cell_colors = cols)
 
 }
