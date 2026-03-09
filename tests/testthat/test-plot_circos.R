@@ -89,9 +89,9 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
     )
 
     pbmc_dom_tiny <- create_domino(
-        rl_map = rl_map_append, features = tiny_auc1,
-        counts = tiny_counts1, z_scores = tiny_zscores1,
-        clusters = tiny_clusters1, tf_targets = regulon_list_tiny,
+        rl_map = rl_map_append, features = tiny_auc2,
+        counts = tiny_counts2, z_scores = tiny_zscores2,
+        clusters = tiny_clusters2, tf_targets = regulon_list_tiny,
         use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
     )
 
@@ -99,6 +99,8 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
         dom = pbmc_dom_tiny, min_tf_pval = 0.05, max_tf_per_clust = Inf,
         max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
     )
+    # Need to adapt to testthat(3) handling of messages at some point
+    testthat::local_edition(2)
 
     expect_message(
         obtain_circos_expression(dom = dom, receptor = "CXCR3", ligands = c("CCL20", "CCX", "CCY")),
@@ -118,4 +120,5 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
         obtain_circos_expression(dom = dom, receptor = "CXCR3", ligands = c("CCX", "CCY")),
         "No ligands of receptor CXCR3 present in signaling matrix."
     )
+
 })
