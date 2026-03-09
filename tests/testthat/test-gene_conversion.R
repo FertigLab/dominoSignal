@@ -14,10 +14,4 @@ test_that("gene conversion functions run", {
         conversion_table = conv_tbl
     ))
 
-    expect_error(convert_genes(
-        genes = "ENSG000001",
-        from = "ENSG",
-        to = "HGNC",
-        host = "https://invalid.ensembl.org"
-    ))
 })

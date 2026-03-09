@@ -1,5 +1,4 @@
 test_that("plot_circos functions run", {
-    dom <- DominoObjects$built_dom_tiny
     receptor <- "CXCR3"
     ligands <- "CCL20"
 
@@ -25,18 +24,15 @@ test_that("domino object interpretation by obtain_circos_expression", {
     # start temporary graphics device for testing to preserve package enviroment
     png(filename = file.path(tempdir(), "ts.png"))
 
-    data(DominoObjects)
-    dom <- DominoObjects$built_dom_tiny
-
     # parent function runs to completion without error
-    expect_no_error(circos_ligand_receptor(dom, receptor = "CXCR3"))
+    expect_no_error(circos_ligand_receptor(tiny_dom1, receptor = "CXCR3"))
 
     # specification of a single ligand
-    circos_df_ccl20 <- obtain_circos_expression(dom, receptor = "CXCR3", ligands = "CCL20")
+    circos_df_ccl20 <- obtain_circos_expression(tiny_dom1, receptor = "CXCR3", ligands = "CCL20")
     expect_equal(unique(circos_df_ccl20$ligand), "CCL20")
 
     # fail without specification of a ligands
-    expect_error(obtain_circos_expression(dom, receptor = "CXCR3"), "argument \"ligands\" is missing, with no default")
+    expect_error(obtain_circos_expression(tiny_dom1, receptor = "CXCR3"), "argument \"ligands\" is missing, with no default")
 
     dev.off()
 })
@@ -72,10 +68,7 @@ test_that("Cell types with hyphenated names can be plotted", {
 })
 
 test_that("Plots for receptors that have ligands in the rl_map but not the signaling matrix do not fail", {
-    # testing domino object
-    data(SCENIC)
-    data(PBMC)
-
+    # Manually add ligand receptor interactions not presenting signaling
     rl_map_append <- rbind(
         rl_map_tiny,
         data.frame(
@@ -96,9 +89,9 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
     )
 
     pbmc_dom_tiny <- create_domino(
-        rl_map = rl_map_append, features = SCENIC$auc_tiny,
-        counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
-        clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
+        rl_map = rl_map_append, features = tiny_auc1,
+        counts = tiny_counts1, z_scores = tiny_zscores1,
+        clusters = tiny_clusters1, tf_targets = regulon_list_tiny,
         use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
     )
 
