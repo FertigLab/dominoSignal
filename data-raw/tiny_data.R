@@ -15,7 +15,7 @@ if (!dir.exists(pbmc_dir)) {
 
 # SingleCellExperiment object of preprocessed PBMC3K data
 download.file(
-    url = file.path(data_url, "/pbmc3k_sce.rds"),
+    url = file.path(data_url, "pbmc3k_sce.rds"),
     destfile = file.path(pbmc_dir, "/pbmc3k_sce.rds"),
     mode = "wb"
 )
@@ -27,12 +27,12 @@ if (!dir.exists(scenic_dir)) {
     dir.create(scenic_dir)
 }
 download.file(
-    url = file.path(data_url, "/auc_pbmc_3k.csv"),
+    url = file.path(data_url, "auc_pbmc_3k.csv"),
     destfile = file.path(scenic_dir, "/auc_pbmc_3k.csv"),
     mode = "wb"
 )
 download.file(
-    url = file.path(data_url, "/regulons_pbmc_3k.csv"),
+    url = file.path(data_url, "regulons_pbmc_3k.csv"),
     destfile = file.path(scenic_dir, "/regulons_pbmc_3k.csv"),
     mode = "wb"
 )

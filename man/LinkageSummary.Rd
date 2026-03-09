@@ -13,7 +13,7 @@ data("LinkageSummary")
 \description{
 A list containing a linkage summary object and a differential linkage result from a mock dataset
 \describe{
-\item{linkage_sum_tiny}{A linkage summary object created using with mock data.}
+\item{linkage_sum_tiny}{A linkage summary object created with mock data.}
 \item{linkage_diff_tiny}{Results from running \code{\link[=test_differential_linkages]{test_differential_linkages()}} on the mock linkage summary object.}
 }
 }

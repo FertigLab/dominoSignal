@@ -53,7 +53,7 @@
 #' A list of two domino objects, one from [create_domino()] and one from [build_domino()] outputs.
 #' \describe{
 #'  \item{dom_tiny}{A domino object created using [create_domino()] with the tiny datasets.}
-#'  \item{dom_tiny_built}{A domino object created using [build_domino()] with the tiny datasets.}
+#'  \item{built_dom_tiny}{A domino object created using [build_domino()] with the tiny datasets.}
 #' }
 #' @usage data("DominoObjects")
 "DominoObjects"
@@ -62,7 +62,7 @@
 #' 
 #' A list containing a linkage summary object and a differential linkage result from a mock dataset
 #' \describe{
-#' \item{linkage_sum_tiny}{A linkage summary object created using with mock data.}
+#' \item{linkage_sum_tiny}{A linkage summary object created with mock data.}
 #' \item{linkage_diff_tiny}{Results from running [test_differential_linkages()] on the mock linkage summary object.}
 #' }
 #' @usage data("LinkageSummary")

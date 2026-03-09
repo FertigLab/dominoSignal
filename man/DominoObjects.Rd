@@ -14,7 +14,7 @@ data("DominoObjects")
 A list of two domino objects, one from \code{\link[=create_domino]{create_domino()}} and one from \code{\link[=build_domino]{build_domino()}} outputs.
 \describe{
 \item{dom_tiny}{A domino object created using \code{\link[=create_domino]{create_domino()}} with the tiny datasets.}
-\item{dom_tiny_built}{A domino object created using \code{\link[=build_domino]{build_domino()}} with the tiny datasets.}
+\item{built_dom_tiny}{A domino object created using \code{\link[=build_domino]{build_domino()}} with the tiny datasets.}
 }
 }
 \keyword{datasets}
