@@ -19,6 +19,6 @@ Prints a description of a linkage summary object
 }
 \examples{
 data(LinkageSummary)
-print(LinkageSummary)
+print(LinkageSummary$linkage_sum_tiny)
 
 }

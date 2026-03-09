@@ -5,12 +5,16 @@
 \alias{LinkageSummary}
 \title{Example linkage summary}
 \format{
-An object of class \code{linkage_summary} of length 1.
+An object of class \code{list} of length 2.
 }
 \usage{
 data("LinkageSummary")
 }
 \description{
-A mock linkage summary object with made up data to show the structure of the object class
+A list containing a linkage summary object and a differential linkage result from a mock dataset
+\describe{
+\item{linkage_sum_tiny}{A linkage summary object created using with mock data.}
+\item{linkage_diff_tiny}{Results from running \code{\link[=test_differential_linkages]{test_differential_linkages()}} on the mock linkage summary object.}
+}
 }
 \keyword{datasets}

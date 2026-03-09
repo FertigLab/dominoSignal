@@ -142,6 +142,7 @@ regulon_list_tiny <- dominoSignal::create_regulon_list_scenic(
     regulons = regulons_tiny
 )
 
+# Create and build domino object
 pbmc_dom_tiny <- dominoSignal::create_domino(
     rl_map = rl_map_tiny,
     features = auc_tiny,
@@ -273,6 +274,11 @@ linkage_sum_tiny <- new("linkage_summary",
     )
 )
 
+# A differential linkage object:
+tiny_differential_linkage <- test_differential_linkages(
+    linkage_summary = linkage_sum_tiny, cluster = "C1", group.by = "group",
+    linkage = "rec", test_name = "fishers.exact")
+
 # save all data to be used in examples and for users to explore (exported)
 CellPhoneDB <- list(
     complexes_tiny = complexes_tiny,
@@ -303,5 +309,7 @@ DominoObjects <- list(
 )
 save(DominoObjects, file = file.path("data", "DominoObjects.RData"))
 
-LinkageSummary <- linkage_sum_tiny
+LinkageSummary <- list(
+    linkage_sum_tiny = linkage_sum_tiny,
+    linkage_diff_tiny = tiny_differential_linkage)
 save(LinkageSummary, file = file.path("data", "LinkageSummary.RData"))

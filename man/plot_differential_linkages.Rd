@@ -34,10 +34,9 @@ that showed active linkage of the features.
 Plot differential linkages among domino results ranked by a comparative statistic
 }
 \examples{
-example(build_domino, echo = FALSE)
-example(test_differential_linkages, echo = FALSE)
+data(LinkageSummary)
 plot_differential_linkages(
-    differential_linkages = tiny_differential_linkage_c1,
+    differential_linkages = LinkageSummary$linkage_diff_tiny,
     test_statistic = "p.value",
     stat_ranking = "ascending"
 )

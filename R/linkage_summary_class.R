@@ -38,7 +38,7 @@ linkage_summary <- setClass(
 #' @export
 #' @examples
 #' data(LinkageSummary)
-#' print(LinkageSummary)
+#' print(LinkageSummary$linkage_sum_tiny)
 #'
 setMethod("print", "linkage_summary", function(x, ...) {
     message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects with ",
@@ -55,7 +55,7 @@ setMethod("print", "linkage_summary", function(x, ...) {
 #' @export
 #' @examples
 #' data(LinkageSummary)
-#' LinkageSummary
+#' LinkageSummary$linkage_sum_tiny
 #'
 setMethod("show", "linkage_summary", function(object) {
     message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects with ",

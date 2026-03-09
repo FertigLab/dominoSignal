@@ -17,7 +17,7 @@
 #' @examples
 #' data(LinkageSummary)
 #' count_linkage(
-#'   linkage_summary = LinkageSummary, cluster = "C1", 
+#'   linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
 #'   group.by = "group", linkage = "rec")
 #' 
 count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "rec_lig", subject_names = NULL) {

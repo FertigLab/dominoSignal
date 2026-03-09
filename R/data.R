@@ -60,7 +60,10 @@
 
 #' Example linkage summary
 #' 
-#' A mock linkage summary object with made up data to show the structure of the object class
-#' 
+#' A list containing a linkage summary object and a differential linkage result from a mock dataset
+#' \describe{
+#' \item{linkage_sum_tiny}{A linkage summary object created using with mock data.}
+#' \item{linkage_diff_tiny}{Results from running [test_differential_linkages()] on the mock linkage summary object.}
+#' }
 #' @usage data("LinkageSummary")
 "LinkageSummary"

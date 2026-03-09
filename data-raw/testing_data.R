@@ -193,6 +193,24 @@ pbmc_dom_built_tiny_list <- lapply(pbmc_dom_tiny_list, dominoSignal::build_domin
     min_rec_percentage = 0.01
 )
 
+dom_ls <- list(
+    dom1 = pbmc_dom_built_tiny_list[[1]],
+    dom2 = pbmc_dom_built_tiny_list[[2]],
+    dom3 = pbmc_dom_built_tiny_list[[3]])
+
+meta_df <- data.frame("ID" = paste0("dom", 1:3), "group" = c("A", "A", "B"), stringsAsFactors = FALSE)
+
+tiny_linkage_summary <- summarize_linkages(
+    domino_results = dom_ls, subject_meta = meta_df,
+    subject_names = meta_df$ID
+)
+
+# A differential linkage object:
+tiny_differential_linkage <- test_differential_linkages(
+    linkage_summary = tiny_linkage_summary, cluster = "B_cell", group.by = "group",
+    linkage = "rec", test_name = "fishers.exact")
+
+
 # Shorter names for development:
 tiny_counts1 <- dom_inputs[[1]]$counts
 tiny_counts2 <- dom_inputs[[2]]$counts
@@ -217,5 +235,6 @@ tiny_dom3 <- pbmc_dom_built_tiny_list[[3]]
 usethis::use_data(tiny_counts1, tiny_counts2, tiny_counts3, tiny_zscores1, tiny_zscores2, tiny_zscores3,
     tiny_clusters1, tiny_clusters2, tiny_clusters3, rl_map_tiny, regulons_tiny, regulon_list_tiny, tiny_auc1,
     tiny_auc2, tiny_auc3, complexes_tiny, genes_tiny, proteins_tiny, interactions_tiny, tiny_created_dom1,
-    tiny_created_dom2, tiny_created_dom3, tiny_dom1, tiny_dom2, tiny_dom3, v0.2.1, internal = TRUE, overwrite = TRUE
+    tiny_created_dom2, tiny_created_dom3, tiny_dom1, tiny_dom2, tiny_dom3, tiny_linkage_summary,
+    tiny_differential_linkage, v0.2.1, internal = TRUE, overwrite = TRUE
 )
