@@ -54,9 +54,10 @@ force directed layout, and 'kk' for Kamada Kawai for directed layout}
 
 \item{scale_by}{how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed
 incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all
-incoming or outgoing signaling}
+incoming or outgoing signaling.
+Vertices with no incoming/outgoing signaling due to other parameters are given a size of 0.}
 
-\item{vert_scale}{integer used to scale size of vertices with our without variable scaling from size_verts_by.}
+\item{vert_scale}{integer used to scale size of vertices with or without variable scaling from size_verts_by.}
 
 \item{plot_title}{text for the plot's title.}
 
