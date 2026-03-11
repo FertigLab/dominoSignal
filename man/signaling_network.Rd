@@ -57,7 +57,7 @@ incoming signaling, and 'none'. In the former two cases the values are scaled wi
 incoming or outgoing signaling.
 Vertices with no incoming/outgoing signaling due to other parameters are given a size of 0.}
 
-\item{vert_scale}{integer used to scale size of vertices with or without variable scaling from size_verts_by.}
+\item{vert_scale}{integer used to scale size of vertices with or without variable scaling from scale_by parameter.}
 
 \item{plot_title}{text for the plot's title.}
 

@@ -35,7 +35,7 @@ NULL
 #'   incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all
 #'   incoming or outgoing signaling.
 #'   Vertices with no incoming/outgoing signaling due to other parameters are given a size of 0.
-#' @param vert_scale integer used to scale size of vertices with or without variable scaling from size_verts_by.
+#' @param vert_scale integer used to scale size of vertices with or without variable scaling from scale_by parameter.
 #' @param plot_title text for the plot's title.
 #' @param ... other parameters to be passed to plot when used with an igraph object.
 #' @return An igraph plot rendered to the active graphics device
@@ -322,14 +322,10 @@ gene_network <- function(
         for (cl in cl_with_signaling) {
             if (!is.null(outgoing_cls)) {
                 mat <- dom@cl_signaling_matrices[[cl]][, outgoing_cls, drop = FALSE]
-                if (is.null(dim(mat))) {
-                    allowed_ligs <- names(mat[mat > 0])
-                    all_sums <- mat[mat > 0]
-                } else {
-                    # Remove ligands with 0s for all clusters
-                    allowed_ligs <- rownames(mat[rowSums(mat) > 0, , drop = FALSE]) 
-                    all_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
-                }
+                
+                # Remove ligands with 0s for all clusters
+                allowed_ligs <- rownames(mat[rowSums(mat) > 0, , drop = FALSE]) 
+                all_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
             } else {
                 allowed_ligs <- rownames(dom@cl_signaling_matrices[[cl]])
             }

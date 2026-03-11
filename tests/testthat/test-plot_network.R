@@ -5,7 +5,7 @@ test_that("signaling_network function runs", {
 
 test_that("signaling_network returns error if no signaling is found", {
     expect_error(signaling_network(tiny_dom1, showOutgoingSignalingClusts = "CD14_monocyte",
-            showIncomingSignalingClusts = "CD8_T_cell"))
+            showIncomingSignalingClusts = "CD8_T_cell"), regexp = "No signaling found")
 })
 
 test_that("signaling_network returns a graph with scaled vertices even if scaling results in NA values", {
@@ -23,7 +23,7 @@ test_that("gene_network can handle multiple clusters for incoming and outgoing s
             OutgoingSignalingClust = levels(tiny_dom1@clusters)[2:3], layout = "grid"))
     
     gn_plot <- gene_network(tiny_dom1, clust = levels(tiny_dom1@clusters)[1:2], 
-            OutgoingSignalingClust = levels(tiny_dom1@clusters)[2:3], layout = "grid")
+        OutgoingSignalingClust = levels(tiny_dom1@clusters)[2:3], layout = "grid")
     expect_named(gn_plot, c("graph", "layout"))
     expect_s3_class(gn_plot[[1]], "igraph")
     expect_contains(class(gn_plot[[2]]), "matrix")
