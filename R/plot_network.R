@@ -33,8 +33,9 @@ NULL
 #'   force directed layout, and 'kk' for Kamada Kawai for directed layout
 #' @param scale_by how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed
 #'   incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all
-#'   incoming or outgoing signaling
-#' @param vert_scale integer used to scale size of vertices with our without variable scaling from size_verts_by.
+#'   incoming or outgoing signaling.
+#'   Vertices with no incoming/outgoing signaling due to other parameters are given a size of 0.
+#' @param vert_scale integer used to scale size of vertices with or without variable scaling from scale_by parameter.
 #' @param plot_title text for the plot's title.
 #' @param ... other parameters to be passed to plot when used with an igraph object.
 #' @return An igraph plot rendered to the active graphics device
@@ -108,8 +109,7 @@ signaling_network <- function(
         mat <- mat[paste0("R_", showIncomingSignalingClusts), , drop = FALSE]
     }
     if (!any(mat > 0)) {
-        warning("No signaling found")
-        return(NULL)
+        stop("No signaling found")
     }
     if (is.null(cols)) {
         cols <- ggplot_col_gen(nlevels(dom@clusters))
@@ -161,17 +161,19 @@ signaling_network <- function(
     igraph::V(graph)$label.dist <- 1.5
     igraph::V(graph)$label.color <- "black"
     v_cols <- cols[names(igraph::V(graph))]
-    if (scale_by == "lig_sig" && all(gsub("L_", "", colnames(mat), fixed = TRUE) %in% names(igraph::V(graph)))) {
+    if (scale_by == "lig_sig") {
         vals <- asinh(colSums(mat))
         vals <- vals[paste0("L_", names(igraph::V(graph)))]
         igraph::V(graph)$size <- vals * vert_scale
-    } else if (scale_by == "rec_sig" && all(gsub("R_", "", rownames(mat), fixed = TRUE) %in% names(igraph::V(graph)))) {
+    } else if (scale_by == "rec_sig") {
         vals <- asinh(rowSums(mat))
         vals <- vals[paste0("R_", names(igraph::V(graph)))]
         igraph::V(graph)$size <- vals * vert_scale
     } else {
         igraph::V(graph)$size <- vert_scale
     }
+    # Address any NA vertex sizes if scale_by parameter doesn't provide a valid size
+    igraph::V(graph)$size[is.na(igraph::V(graph)$size)] <- 0
     # Get vert angle for labeling circos plot
     if (layout == "circle") {
         v_angles <- seq_along(igraph::V(graph))
@@ -312,18 +314,18 @@ gene_network <- function(
     # Recs to ligs
     if (length(dom@clusters)) {
         allowed_ligs <- character(0)
+        if (!is.null(OutgoingSignalingClust)) {
+            outgoing_cls <- paste0("L_", OutgoingSignalingClust)
+        } else {
+            outgoing_cls <- NULL
+        }
         for (cl in cl_with_signaling) {
-            if (!is.null(OutgoingSignalingClust)) {
-                OutgoingSignalingClust <- paste0("L_", OutgoingSignalingClust)
-                mat <- dom@cl_signaling_matrices[[cl]][, OutgoingSignalingClust]
-                if (is.null(dim(mat))) {
-                    allowed_ligs <- names(mat[mat > 0])
-                    all_sums <- mat[mat > 0]
-                } else {
-                    # Remove ligands with 0s for all clusters
-                    allowed_ligs <- rownames(mat[rowSums(mat) > 0, ]) 
-                    all_sums <- rowSums(mat[rowSums(mat) > 0, ])
-                }
+            if (!is.null(outgoing_cls)) {
+                mat <- dom@cl_signaling_matrices[[cl]][, outgoing_cls, drop = FALSE]
+                
+                # Remove ligands with 0s for all clusters
+                allowed_ligs <- rownames(mat[rowSums(mat) > 0, , drop = FALSE]) 
+                all_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
             } else {
                 allowed_ligs <- rownames(dom@cl_signaling_matrices[[cl]])
             }
@@ -391,6 +393,7 @@ gene_network <- function(
             stop("Do not recognize layout input")
         )
     }
-    plot(graph, layout = l, main = paste0("Signaling ", OutgoingSignalingClust, " to ", clust), ...)
+    plot(graph, layout = l, main = paste0("Signaling from ", toString(OutgoingSignalingClust),
+            " to ", toString(clust)), ...)
     return(invisible(list(graph = graph, layout = l)))
 }

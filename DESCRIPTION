@@ -45,7 +45,7 @@ Suggests:
     patchwork,
     rmarkdown,
     Seurat,
-    testthat,
+    testthat (>= 3.0.0),
     formatR,
     BiocFileCache,
     SingleCellExperiment
@@ -53,3 +53,4 @@ VignetteBuilder: knitr
 Language: en-US
 Roxygen: list(markdown = TRUE)
 URL: https://FertigLab.github.io/dominoSignal/
+Config/testthat/edition: 3
