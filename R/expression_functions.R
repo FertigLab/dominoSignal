@@ -9,8 +9,10 @@ NULL
 #' @return A list containing average expression for any complexes
 #' @keywords internal
 avg_exp_for_complexes <- function(exp_mat, complexes_list) {
-    check_arg(exp_mat, allow_class = c("matrix", "data.frame"))
+    check_arg(exp_mat, allow_class = c("matrix", "data.frame"), need_rownames = TRUE, need_colnames = TRUE)
     check_arg(complexes_list, allow_class = "list")
+    # dplyr verbs require a data frame; coerce here so callers can pass either
+    exp_mat <- as.data.frame(exp_mat)
     # Trim the complexes list to only include those with genes in the data
     trim_list <- complexes_list %>%
         purrr::keep(~ {
