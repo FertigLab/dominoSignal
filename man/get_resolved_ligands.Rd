@@ -7,10 +7,12 @@
 get_resolved_ligands(dom)
 }
 \arguments{
-\item{dom}{A built domino object}
+\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
 }
 \value{
-A list of ligands and complexes with resolved names
+A named list with two elements:
+\item{lig_names}{Character vector of unique ligand gene names or aliases}
+\item{complex_names}{Named list mapping complex names to component gene vectors}
 }
 \description{
 Get ligands with resolved names

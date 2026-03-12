@@ -20,8 +20,8 @@ test_that("bool conversion function works", {
 test_that("read if char tries to read a file", {
     # Handling the warning that follows the error with suppressWarnings()
     # Since error should prevent warning in normal circumstances (but not in test)
-    expect_error(read_if_char(
-        file.path(".", "file_that_not_exists.csv") |> suppressWarnings()),
+    expect_error(suppressWarnings(read_if_char(
+        file.path(".", "file_that_not_exists.csv"))),
     "cannot open the connection")
         
     expect_error(read_if_char(c("a", "b")), "Length of obj must be one of: 1")

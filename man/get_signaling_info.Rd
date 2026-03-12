@@ -7,16 +7,19 @@
 get_signaling_info(dom, rec_clusters, cl_ligands_sub, exp_type)
 }
 \arguments{
-\item{dom}{A built domino object}
+\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
 
-\item{rec_clusters}{A cluster name or vector for which incoming signal is desired}
+\item{rec_clusters}{Character or factor vector of cluster names for which to compute incoming receptor/TF signals}
 
-\item{cl_ligands_sub}{A data frame of ligand expression for outgoing clusters}
+\item{cl_ligands_sub}{Data frame with columns 'ligand', 'cluster', 'mean_counts'; using \code{\link[reshape2:melt]{reshape2::melt()}} on the output of \code{\link[=get_ligand_expression]{get_ligand_expression()}} is a convenient way to get this}
 
-\item{exp_type}{A character vector of length 1, either "counts" or "z_scores"}
+\item{exp_type}{Character of length 1: either "counts" or "z_scores" to specify expression type}
 }
 \value{
-A data frame of signaling information
+Data frame with columns:
+ligand, receptor, transcription_factor, ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
+Each row represents a ligand-receptor-TF triplet with receiver cluster, and corresonding expression values.
+Returns empty data frame if no interactions found.
 }
 \description{
 Get ligand-receptor signaling information

@@ -4,8 +4,10 @@ NULL
 
 
 #' Get ligands with resolved names
-#' @param dom A built domino object
-#' @return A list of ligands and complexes with resolved names
+#' @param dom A built domino object (as output by [build_domino()])
+#' @return A named list with two elements:
+#'   \item{lig_names}{Character vector of unique ligand gene names or aliases}
+#'   \item{complex_names}{Named list mapping complex names to component gene vectors}
 #' @keywords internal
 get_resolved_ligands <- function(dom) {
     
@@ -16,21 +18,22 @@ get_resolved_ligands <- function(dom) {
     all_lig <- all_lig[nzchar(all_lig, keepNA = TRUE)]
     all_lig_names_resolved <- resolve_names(dom, all_lig)
 
-    if (length(dom@linkages$complexes) > 0) {
-        lig_complexes_resolved_list <- resolve_complexes(dom, all_lig_names_resolved)
-        all_lig_names_resolved <- unlist(lig_complexes_resolved_list)
-    }
+    lig_complexes_resolved_list <- resolve_complexes(dom, all_lig_names_resolved)
+    all_lig_names_resolved <- unlist(lig_complexes_resolved_list)
 
     return(list("lig_names" = unique(all_lig_names_resolved), "complex_names" = lig_complexes_resolved_list))
 }
 
 #' Get ligand expression matrix for outgoing clusters
-#' @param dom A built domino object
-#' @param send_clusters A cluster name or vector for which the outgoing signal is desired
-#' @param lig_genes A vector of ligand genes
-#' @param complexes A list of complexes with names as complex and values as component genes
-#' @param exp_type A character vector of length 1, either "counts" or "z_scores"
-#' @return A matrix of ligand expression for outgoing clusters
+#' @param dom A built domino object (as output by [build_domino()])
+#' @param send_clusters Character or factor vector of cluster names for which to compute outgoing ligand signals
+#' @param lig_genes Character vector of ligand gene names; should intersect with expression matrix rownames
+#' @param complexes Named list where names are complex identifiers and values are character vectors of component genes.
+#'   Used to aggregate expression for multi-gene complexes. Empty list is acceptable.
+#'   The output of [get_resolved_ligands()] can be used here.
+#' @param exp_type Character of length 1: either "counts" or "z_scores" to specify expression type
+#' @return Matrix with ligands/complexes as rows and send_clusters as columns; entries are mean expression.
+#'   Missing ligands and empty clusters yield NA; row and column names are preserved.
 #' @keywords internal
 get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_type) {
     
@@ -46,6 +49,15 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
         stop("Invalid exp_type. Must be either 'counts' or 'z_scores'.")
     )
 
+    if (!all(lig_genes %in% rownames(expr_mat))) {
+            message("Some ligands not found in expression matrix: ",
+                toString(setdiff(lig_genes, rownames(expr_mat))))
+            lig_genes <- intersect(lig_genes, rownames(expr_mat))
+            if (length(lig_genes) == 0) {
+                stop("No ligands found in expression matrix")
+            }
+        }
+
     cl_ligands <- matrix(NA_real_, nrow = length(lig_genes), ncol = length(send_clusters),
         dimnames = list(lig_genes, send_clusters))
 
@@ -59,6 +71,7 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
         cl_ligands_coll_list <- avg_exp_for_complexes(cl_ligands, complexes)
         if (length(cl_ligands_coll_list) > 0) {
             cl_ligands <- Reduce(rbind, cl_ligands_coll_list)
+            rownames(cl_ligands) <- names(cl_ligands_coll_list)
         }
     }
 
@@ -68,11 +81,14 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
 }
 
 #' Get ligand-receptor signaling information
-#' @param dom A built domino object
-#' @param rec_clusters A cluster name or vector for which incoming signal is desired
-#' @param cl_ligands_sub A data frame of ligand expression for outgoing clusters
-#' @param exp_type A character vector of length 1, either "counts" or "z_scores"
-#' @return A data frame of signaling information
+#' @param dom A built domino object (as output by [build_domino()])
+#' @param rec_clusters Character or factor vector of cluster names for which to compute incoming receptor/TF signals
+#' @param cl_ligands_sub Data frame with columns 'ligand', 'cluster', 'mean_counts'; using [reshape2::melt()] on the output of [get_ligand_expression()] is a convenient way to get this
+#' @param exp_type Character of length 1: either "counts" or "z_scores" to specify expression type
+#' @return Data frame with columns:
+#'   ligand, receptor, transcription_factor, ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
+#'   Each row represents a ligand-receptor-TF triplet with receiver cluster, and corresonding expression values.
+#'   Returns empty data frame if no interactions found.
 #' @keywords internal
 get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
 
@@ -137,6 +153,7 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
     }
 
     if (length(row_list) == 0) {
+        message("No interactions found for the specified clusters and expression type.")
         return(data.frame())
     }       
 
@@ -146,20 +163,21 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
 
 #' Turn domino object signaling information into a data frame
 #'
-#' This function takes a domino object and returns a data frame of signaling information with
-#' columns for ligand, receptor, transcription factor, ligand expression, receptor expression,
-#' transcription factor expression, sending cluster, and receiving cluster. Expression values are
-#' averaged counts across cells in a given cluster (sending for the ligand, receiving for the receptor
-#' and transcription factor).
+#' Constructs a data frame of ligand-receptor-TF signaling triplets from a built domino object.
+#' Expression values are averaged across cells within each cluster (ligands from sending clusters,
+#' receptors and TFs from receiving clusters).
 #'
-#' @param dom A domino object
-#' @param send_clusters Cluster name(s) for which the outgoing signal is desired
-#' @param rec_clusters Cluster name(s) for which incoming signal is desired
-#' @param exp_type A character vector of length 1, either "counts" or "z_scores", to indicate desired
-#'  expression type
-#' @return A data.frame of signaling information, with columns for ligand, receptor,
-#'  transcription factor, ligand expression, receptor expression,
-#'  transcription factor expression, sending cluster, and receiving cluster
+#' @param dom A built domino object (as output by [build_domino()])
+#' @param send_clusters Character/factor vector of cluster names for ligand signals.
+#'   If NULL (default), uses all clusters in dom.
+#' @param rec_clusters Character/factor vector of cluster names for receptor/TF signals.
+#'   If NULL (default), uses all clusters in dom.
+#' @param exp_type Character of length 1: either "counts" or "z_scores" for expression type
+#' @return Data frame with columns: ligand, receptor, transcription_factor,
+#'   ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
+#'   Each row is a ligand-receptor-TF triplet from a sender-to-receiver cluster pair with
+#'   corresponding mean expression values.
+#'   Empty data frame returned if no valid interactions found.
 #' @export
 #' @examples
 #' data("DominoObjects")
@@ -170,10 +188,10 @@ dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type =
 
     check_arg(dom, allow_class = "domino", allow_len = 1)
     if (!is.null(send_clusters)) {
-        check_arg(send_clusters, allow_class = "character", allow_values = dom_clusters(dom))
+        check_arg(send_clusters, allow_class = c("character", "factor"), allow_values = dom_clusters(dom))
     }
     if (!is.null(rec_clusters)) {
-        check_arg(rec_clusters, allow_class = "character", allow_values = dom_clusters(dom))
+        check_arg(rec_clusters, allow_class = c("character", "factor"), allow_values = dom_clusters(dom))
     }
     check_arg(exp_type, allow_class = "character", allow_values = c("counts", "z_scores"), allow_len = 1)
 

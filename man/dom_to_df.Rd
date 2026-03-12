@@ -12,26 +12,27 @@ dom_to_df(
 )
 }
 \arguments{
-\item{dom}{A domino object}
+\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
 
-\item{send_clusters}{Cluster name(s) for which the outgoing signal is desired}
+\item{send_clusters}{Character/factor vector of cluster names for ligand signals.
+If NULL (default), uses all clusters in dom.}
 
-\item{rec_clusters}{Cluster name(s) for which incoming signal is desired}
+\item{rec_clusters}{Character/factor vector of cluster names for receptor/TF signals.
+If NULL (default), uses all clusters in dom.}
 
-\item{exp_type}{A character vector of length 1, either "counts" or "z_scores", to indicate desired
-expression type}
+\item{exp_type}{Character of length 1: either "counts" or "z_scores" for expression type}
 }
 \value{
-A data.frame of signaling information, with columns for ligand, receptor,
-transcription factor, ligand expression, receptor expression,
-transcription factor expression, sending cluster, and receiving cluster
+Data frame with columns: ligand, receptor, transcription_factor,
+ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
+Each row is a ligand-receptor-TF triplet from a sender-to-receiver cluster pair with
+corresponding mean expression values.
+Empty data frame returned if no valid interactions found.
 }
 \description{
-This function takes a domino object and returns a data frame of signaling information with
-columns for ligand, receptor, transcription factor, ligand expression, receptor expression,
-transcription factor expression, sending cluster, and receiving cluster. Expression values are
-averaged counts across cells in a given cluster (sending for the ligand, receiving for the receptor
-and transcription factor).
+Constructs a data frame of ligand-receptor-TF signaling triplets from a built domino object.
+Expression values are averaged across cells within each cluster (ligands from sending clusters,
+receptors and TFs from receiving clusters).
 }
 \examples{
 data("DominoObjects")

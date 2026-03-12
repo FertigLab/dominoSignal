@@ -58,7 +58,7 @@ check_arg <- function(arg, allow_class = NULL, allow_len = NULL,
 
     if (!is.null(allow_values) && !all(arg %in% allow_values)) {
         stop(sprintf(
-            "All values in %s must be one of: %s",
+            "All values in %s must be: %s",
             argname, toString(allow_values)
         ))
     }

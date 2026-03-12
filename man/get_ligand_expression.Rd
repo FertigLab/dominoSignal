@@ -7,18 +7,21 @@
 get_ligand_expression(dom, send_clusters, lig_genes, complexes, exp_type)
 }
 \arguments{
-\item{dom}{A built domino object}
+\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
 
-\item{send_clusters}{A cluster name or vector for which the outgoing signal is desired}
+\item{send_clusters}{Character or factor vector of cluster names for which to compute outgoing ligand signals}
 
-\item{lig_genes}{A vector of ligand genes}
+\item{lig_genes}{Character vector of ligand gene names; should intersect with expression matrix rownames}
 
-\item{complexes}{A list of complexes with names as complex and values as component genes}
+\item{complexes}{Named list where names are complex identifiers and values are character vectors of component genes.
+Used to aggregate expression for multi-gene complexes. Empty list is acceptable.
+The output of \code{\link[=get_resolved_ligands]{get_resolved_ligands()}} can be used here.}
 
-\item{exp_type}{A character vector of length 1, either "counts" or "z_scores"}
+\item{exp_type}{Character of length 1: either "counts" or "z_scores" to specify expression type}
 }
 \value{
-A matrix of ligand expression for outgoing clusters
+Matrix with ligands/complexes as rows and send_clusters as columns; entries are mean expression.
+Missing ligands and empty clusters yield NA; row and column names are preserved.
 }
 \description{
 Get ligand expression matrix for outgoing clusters

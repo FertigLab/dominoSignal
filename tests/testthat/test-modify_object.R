@@ -1,7 +1,4 @@
 test_that("add_rl_column function runs", {
-
-    
-
     map <- data.frame(a = c("x", "y"), b = c("A", "B"), stringsAsFactors = FALSE)
     conv <- data.frame(old = c("x", "y"), new = c("x1", "y1"), stringsAsFactors = FALSE)
     expect_no_error(add_rl_column(map = map, map_ref = "a", conv = conv, new_name = "mapped"))
