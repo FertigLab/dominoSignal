@@ -83,7 +83,7 @@ test_that("get_ligand_expression handles extra ligands", {
     expect_equal(colnames(ligand_exp), levels(tiny_dom1@clusters)[1:2])
     expect_true(all(rownames(ligand_exp) %in% c(lig_names, names(complex_names))))
     expect_message(get_ligand_expression(tiny_dom1, levels(tiny_dom1@clusters)[1:2], lig_names, complex_names,
-        exp_type = "counts"), "Some ligands not found in expression matrix: EXTRA_LIGAND")
+            exp_type = "counts"), "Some ligands not found in expression matrix: EXTRA_LIGAND")
 })
 
 test_that("get_ligand_expression returns appropriate values for exp_type", {
@@ -105,7 +105,7 @@ test_that("get_signaling_info returns expected format", {
         cl_ligands_sub = ligs, exp_type = "counts")
     expect_s3_class(signaling_info, "data.frame")
     expect_named(signaling_info, c("ligand", "receptor", "transcription_factor", "ligand_exp", "rec_exp",
-        "tf_auc", "sending_cl", "receiving_cl"))
+            "tf_auc", "sending_cl", "receiving_cl"))
     expect_true(all(signaling_info$ligand %in% ligs$ligand))
     expect_true(all(signaling_info$sending_cl %in% ligs$cluster))
     expect_true(all(signaling_info$receiving_cl %in% ligs$cluster))
@@ -154,9 +154,9 @@ test_that("get_signaling_info handles single and plural parameters", {
         cluster = rep(c("CD8_T_cell", "CD14_monocyte", "B_cell"), each = 2),
         mean_counts = c(0, 0.01, 0, 0, 0.0045, 0), stringsAsFactors = FALSE)
     expect_no_error(get_signaling_info(tiny_dom1, c("B_cell", "CD8_T_cell"), cl_ligands_sub = ligs,
-        exp_type = "counts"))
+            exp_type = "counts"))
     expect_no_error(get_signaling_info(tiny_dom1, c("B_cell", "CD14_monocyte"), cl_ligands_sub = ligs[1, ],
-        exp_type = "z_scores"))
+            exp_type = "z_scores"))
 })
 
 test_that("get_signaling_info only returns signaling for provided ligands", {

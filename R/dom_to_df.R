@@ -50,13 +50,13 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
     )
 
     if (!all(lig_genes %in% rownames(expr_mat))) {
-            message("Some ligands not found in expression matrix: ",
-                toString(setdiff(lig_genes, rownames(expr_mat))))
-            lig_genes <- intersect(lig_genes, rownames(expr_mat))
-            if (length(lig_genes) == 0) {
-                stop("No ligands found in expression matrix")
-            }
+        message("Some ligands not found in expression matrix: ",
+            toString(setdiff(lig_genes, rownames(expr_mat))))
+        lig_genes <- intersect(lig_genes, rownames(expr_mat))
+        if (length(lig_genes) == 0) {
+            stop("No ligands found in expression matrix")
         }
+    }
 
     cl_ligands <- matrix(NA_real_, nrow = length(lig_genes), ncol = length(send_clusters),
         dimnames = list(lig_genes, send_clusters))
@@ -83,7 +83,8 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
 #' Get ligand-receptor signaling information
 #' @param dom A built domino object (as output by [build_domino()])
 #' @param rec_clusters Character or factor vector of cluster names for which to compute incoming receptor/TF signals
-#' @param cl_ligands_sub Data frame with columns 'ligand', 'cluster', 'mean_counts'; using [reshape2::melt()] on the output of [get_ligand_expression()] is a convenient way to get this
+#' @param cl_ligands_sub Data frame with columns 'ligand', 'cluster', 'mean_counts';
+#'  using [reshape2::melt()] on the output of [get_ligand_expression()] is a convenient way to get this
 #' @param exp_type Character of length 1: either "counts" or "z_scores" to specify expression type
 #' @return Data frame with columns:
 #'   ligand, receptor, transcription_factor, ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
@@ -106,48 +107,42 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
     tf_mat <- dom_tf_activation(dom)
     row_list <- list()
 
-    for (cl in rec_clusters) {
-        for (tf in names(dom@linkages$clust_tf_rec[[cl]])) {
-            recs <- dom@linkages$clust_tf_rec[[cl]][[tf]]
+    # Helper function to return NA for empty indices and mean where available
+    mean_or_na <- function(mat, rows, cols) {
+        if (length(cols) == 0) return(NA_real_)
+        mean(mat[rows, cols, drop = FALSE])
+    }
 
+    for (cl in rec_clusters) {
+        rec_idx <- which(dom@clusters == cl)
+        tf_idx <- dom@linkages$clust_tf_rec[[cl]]
+        if (length(tf_idx) == 0) next
+        for (tf in names(tf_idx)) {
+            recs <- tf_idx[[tf]]
             if (length(recs) == 0) next
 
-            rec_idx <- which(dom@clusters == cl)
-
-            if (length(rec_idx) > 0) {
-                tf_sig <- mean(tf_mat[tf, rec_idx, drop = FALSE])
-            } else {
-                tf_sig <- NA
-            }
+            tf_sig <- mean_or_na(tf_mat, tf, rec_idx)
 
             for (rec in recs) {
                 rec_sep <- unlist(resolve_complexes(dom, rec))
-
-                if (length(rec_idx) > 0) {
-                    rec_sig <- mean(expr_mat[rec_sep, rec_idx, drop = FALSE])
-                } else {
-                    rec_sig <- NA
-                }
+                rec_sig <- mean_or_na(expr_mat, rec_sep, rec_idx)
 
                 ligs <- resolve_names(dom, dom@linkages$rec_lig[[rec]])
+                if (length(ligs) == 0) next
 
-                if (length(ligs) > 0) {
-                    df_tmp <- cl_ligands_sub[cl_ligands_sub$ligand %in% ligs, ]
+                df_tmp <- cl_ligands_sub[cl_ligands_sub$ligand %in% ligs, ]
+                if (nrow(df_tmp) == 0) next
 
-                    if (nrow(df_tmp) > 0) {
-                        new_row <- data.frame(
-                            ligand = df_tmp$ligand,
-                            receptor = rec,
-                            transcription_factor = tf,
-                            ligand_exp = df_tmp$mean_counts,
-                            rec_exp = rec_sig,
-                            tf_auc = tf_sig,
-                            sending_cl = df_tmp$cluster,
-                            receiving_cl = cl
-                        )
-                        row_list <- c(row_list, list(new_row))
-                    }
-                }
+                row_list[[length(row_list) + 1]] <- data.frame(
+                    ligand = df_tmp$ligand,
+                    receptor = rec,
+                    transcription_factor = tf,
+                    ligand_exp = df_tmp$mean_counts,
+                    rec_exp = rec_sig,
+                    tf_auc = tf_sig,
+                    sending_cl = df_tmp$cluster,
+                    receiving_cl = cl
+                )
             }
         }
     }
@@ -157,8 +152,7 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
         return(data.frame())
     }       
 
-    dframe <- purrr::list_rbind(row_list)
-    return(dframe)
+    return(purrr::list_rbind(row_list))
 }
 
 #' Turn domino object signaling information into a data frame

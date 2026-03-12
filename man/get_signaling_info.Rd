@@ -11,7 +11,8 @@ get_signaling_info(dom, rec_clusters, cl_ligands_sub, exp_type)
 
 \item{rec_clusters}{Character or factor vector of cluster names for which to compute incoming receptor/TF signals}
 
-\item{cl_ligands_sub}{Data frame with columns 'ligand', 'cluster', 'mean_counts'; using \code{\link[reshape2:melt]{reshape2::melt()}} on the output of \code{\link[=get_ligand_expression]{get_ligand_expression()}} is a convenient way to get this}
+\item{cl_ligands_sub}{Data frame with columns 'ligand', 'cluster', 'mean_counts';
+using \code{\link[reshape2:melt]{reshape2::melt()}} on the output of \code{\link[=get_ligand_expression]{get_ligand_expression()}} is a convenient way to get this}
 
 \item{exp_type}{Character of length 1: either "counts" or "z_scores" to specify expression type}
 }
