@@ -29,7 +29,7 @@ test_that("get_resolved_ligands returns unique ligands and complexes", {
     ligs <- get_resolved_ligands(tiny_dom1)
     expect_type(ligs$lig_names, "character")
     expect_length(ligs$lig_names, length(unique(ligs$lig_names)))
-    expect_gt(all(lengths(ligs$complex_names)), 0)
+    expect_true(all(lengths(ligs$complex_names) > 0))
     expect_true(all(unlist(ligs$complex_names) %in% ligs$lig_names))
 })
 
@@ -124,9 +124,10 @@ test_that("get_signaling_info computes correct values for rec_exp and tf_auc", {
         cl_ligands_sub = ligs, exp_type = "z_scores")
     test_row_zscores <- signaling_info_zscores[1, ]
 
-    expect_rec_counts <- mean(dom_counts(tiny_dom1)[test_row_counts$receptor,
+    rec_sep <- unlist(resolve_complexes(tiny_dom1, test_row_counts$receptor))
+    expect_rec_counts <- mean(dom_counts(tiny_dom1)[rec_sep,
             which(tiny_dom1@clusters == test_row_counts$receiving_cl)])
-    expect_rec_zscores <- mean(dom_zscores(tiny_dom1)[test_row_zscores$receptor,
+    expect_rec_zscores <- mean(dom_zscores(tiny_dom1)[rec_sep,
             which(tiny_dom1@clusters == test_row_zscores$receiving_cl)])
     expect_tf_auc <- mean(dom_tf_activation(tiny_dom1)[test_row_counts$transcription_factor,
             which(tiny_dom1@clusters == test_row_counts$receiving_cl)])

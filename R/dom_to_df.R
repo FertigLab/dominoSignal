@@ -88,14 +88,14 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
 #' @param exp_type Character of length 1: either "counts" or "z_scores" to specify expression type
 #' @return Data frame with columns:
 #'   ligand, receptor, transcription_factor, ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
-#'   Each row represents a ligand-receptor-TF triplet with receiver cluster, and corresonding expression values.
+#'   Each row represents a ligand-receptor-TF triplet with receiver cluster, and corresponding expression values.
 #'   Returns empty data frame if no interactions found.
 #' @keywords internal
 get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
 
     check_arg(dom, allow_class = "domino", allow_len = 1)
     check_arg(rec_clusters, allow_class = c("character", "factor"), allow_values = dom_clusters(dom))
-    check_arg(cl_ligands_sub, allow_class = "data.frame")
+    check_arg(cl_ligands_sub, allow_class = "data.frame", need_vars = c("ligand", "cluster", "mean_counts"))
     check_arg(exp_type, allow_class = "character", allow_values = c("counts", "z_scores"), allow_len = 1)
 
     expr_mat <- switch(exp_type,

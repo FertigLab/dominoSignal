@@ -19,7 +19,7 @@ using \code{\link[reshape2:melt]{reshape2::melt()}} on the output of \code{\link
 \value{
 Data frame with columns:
 ligand, receptor, transcription_factor, ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
-Each row represents a ligand-receptor-TF triplet with receiver cluster, and corresonding expression values.
+Each row represents a ligand-receptor-TF triplet with receiver cluster, and corresponding expression values.
 Returns empty data frame if no interactions found.
 }
 \description{
