@@ -34,9 +34,10 @@ test_that("get_resolved_ligands returns unique ligands and complexes", {
 })
 
 test_that("get_resolved_ligands handles objects with no complexes", {
-    tiny_dom3@linkages$complexes <- list()
-    expect_no_error(get_resolved_ligands(tiny_dom3))
-    resolved_ligs <- get_resolved_ligands(tiny_dom3)
+    test_dom <- tiny_dom3
+    test_dom@linkages$complexes <- list()
+    expect_no_error(get_resolved_ligands(test_dom))
+    resolved_ligs <- get_resolved_ligands(test_dom)
     expect_length(resolved_ligs, 2)
     expect_named(resolved_ligs$complex_names, resolved_ligs$lig_names)
 })
@@ -57,15 +58,16 @@ test_that("get_ligand_expression returns a matrix with the expected clusters", {
 })
 
 test_that("get_ligand_expression handles clusters with no cells", {
-    tiny_dom1@clusters <- factor(tiny_dom1@clusters, levels = c(levels(tiny_dom1@clusters), "empty_cluster"))
+    test_dom <- tiny_dom1
+    test_dom@clusters <- factor(test_dom@clusters, levels = c(levels(test_dom@clusters), "empty_cluster"))
     lig_names <- c("ITGB4", "ITGA6", "CCL20")
     complex_names <- list(integrin_a6b4_complex = c("ITGB4", "ITGA6"), CCL20 = "CCL20")
-    ligand_empty_alone <- get_ligand_expression(tiny_dom1, "empty_cluster", lig_names, complex_names,
+    ligand_empty_alone <- get_ligand_expression(test_dom, "empty_cluster", lig_names, complex_names,
         exp_type = "z_scores")
     expect_true(is.matrix(ligand_empty_alone))
     expect_true(all(is.na(ligand_empty_alone[ , "empty_cluster"])))
 
-    ligand_empty_plus <- get_ligand_expression(tiny_dom1, c("empty_cluster", "B_cell"),
+    ligand_empty_plus <- get_ligand_expression(test_dom, c("empty_cluster", "B_cell"),
         lig_names, complex_names, exp_type = "counts")
     expect_true(is.matrix(ligand_empty_plus))
     expect_equal(colnames(ligand_empty_plus), c("empty_cluster", "B_cell"))
@@ -139,14 +141,15 @@ test_that("get_signaling_info computes correct values for rec_exp and tf_auc", {
 })
 
 test_that("get_signaling_info returns empty data frame when no interactions are found", {
-    tiny_dom1@linkages$clust_tf_rec[["B_cell"]] <- list()
+    test_dom <- tiny_dom1
+    test_dom@linkages$clust_tf_rec[["B_cell"]] <- list()
     ligs <- data.frame(ligand = rep(c("integrin_a6b4_complex", "CCL20"), n = 3),
         cluster = rep(c("CD8_T_cell", "CD14_monocyte", "B_cell"), each = 2),
         mean_counts = c(0, 0.01, 0, 0, 0.0045, 0), stringsAsFactors = FALSE)
-    signaling_info <- get_signaling_info(tiny_dom1, rec_clusters = "B_cell", cl_ligands_sub = ligs, exp_type = "counts")
+    signaling_info <- get_signaling_info(test_dom, rec_clusters = "B_cell", cl_ligands_sub = ligs, exp_type = "counts")
     expect_s3_class(signaling_info, "data.frame")
     expect_length(signaling_info, 0)
-    expect_message(get_signaling_info(tiny_dom1, rec_clusters = "B_cell", cl_ligands_sub = ligs, exp_type = "counts"),
+    expect_message(get_signaling_info(test_dom, rec_clusters = "B_cell", cl_ligands_sub = ligs, exp_type = "counts"),
         "No interactions found for the specified clusters and expression type.")
 })
 

@@ -15,7 +15,7 @@ get_resolved_ligands <- function(dom) {
 
     all_lig <- unlist(dom@linkages$rec_lig)
     all_lig <- unique(all_lig)
-    all_lig <- all_lig[nzchar(all_lig, keepNA = TRUE)]
+    all_lig <- all_lig[nzchar(all_lig)]
     all_lig_names_resolved <- resolve_names(dom, all_lig)
 
     lig_complexes_resolved_list <- resolve_complexes(dom, all_lig_names_resolved)
