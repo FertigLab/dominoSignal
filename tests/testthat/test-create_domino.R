@@ -100,6 +100,6 @@ test_that("create_domino fails on wrong input arg type.", {
             clusters = tiny_clusters1,
             tf_selection_method = "non-existent"
         ),
-        "All values in tf_selection_method must be one of: clusters, variable, all"
+        "All values in tf_selection_method must be: clusters, variable, all"
     )
 })
