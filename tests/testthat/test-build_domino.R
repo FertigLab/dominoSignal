@@ -19,7 +19,7 @@ test_that("build_domino does not fail with no TFs with p-value below threshold",
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 1e-20,
-        min_rec_percentage = Inf
+        min_rec_percentage = 1
     ))
 
     # TODO: Return warning/message to user if this happens:
