@@ -11,3 +11,16 @@ test_that("build_domino runs with tiny object", {
         "domino"
     )
 })
+
+test_that("build_domino does not fail with no TFs with p-value below threshold", {
+    expect_no_error(build_domino(
+        dom = tiny_created_dom1,
+        min_tf_pval = 0,
+        max_tf_per_clust = Inf,
+        max_rec_per_tf = Inf,
+        rec_tf_cor_threshold = 1e-20,
+        min_rec_percentage = 1
+    ))
+
+    # TODO: Return warning/message to user if this happens:
+})
