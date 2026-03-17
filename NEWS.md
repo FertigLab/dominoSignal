@@ -1,3 +1,36 @@
+# dominoSignal v1.0.5
+
+- circos_ligand_receptor will not fail in cases where the rl_map of a domino objects includes ligands for a receptor where the ligands are not present in the expression matrix. A message is returned if ligands from the rl_map had to be excluded from the plot
+
+# dominoSignal v1.0.4
+
+- refactorization of circos_ligand_receptor function to remove use of grepl-based regular expressions to reformat cell and molecule names from a domino object into a data frame for plotting a receptor circos plot. Component functions for creating the data frame of ligand expression centered on a single receptor and to render this data frame as a circos plot are now included in the package as "obtain_circos_expression" and "render_circos_ligand_receptor", respectively.
+
+# dominoSignal v1.0.3
+
+- Added functions for calculation of mean gene expression among components of a complex using purrr functions
+
+
+# dominoSignal v1.0.2
+
+## Pkgdown Site Customization Scripts
+
+- Restored _pkgdown.yml and index scripts that specify site building parameters for https://FertigLab.github.io/dominoSignal to improve formatting.
+
+# dominoSignal v1.0.1
+
+## Receptor Complex Bugfix
+
+- Resolved issue where if create_domino was run with complexes=TRUE and no complexes were found to have active signaling, the full signaling matrix would be replaced by a NULL value.
+
+## GitHub Actions
+
+- Restoration of .github/workflows scripts for automatic build checks.
+
+# dominoSignal v1.0.0
+
+- Version number update to signify acceptance to bioconductor in release 3.20
+
 # dominoSignal v0.99.4
 
 ## Vignettes
