@@ -1,3 +1,7 @@
+# dominoSignal v1.4.1
+
+- Update maintainer information
+
 # dominoSignal v1.0.5
 
 - circos_ligand_receptor will not fail in cases where the rl_map of a domino objects includes ligands for a receptor where the ligands are not present in the expression matrix. A message is returned if ligands from the rl_map had to be excluded from the plot
