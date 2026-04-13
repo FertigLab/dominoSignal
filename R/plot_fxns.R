@@ -188,7 +188,7 @@ incoming_signaling_heatmap <- function(
 #' @param normalize options to normalize the signaling matrix. Accepted inputs are 'none' for no normalization, 'rec_norm' to normalize to the maximum value with each receptor cluster, or 'lig_norm' to normalize to the maximum value within each ligand cluster
 #' @param scale how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root, 'log' for log10, or 'sq' for square
 #' @param layout type of layout to use. Options are 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold force directed layout, and 'kk' for Kamada Kawai for directed layout
-#' @param scale_by how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all incoming or outgoing signaling
+#' @param scale_by how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all incoming or outgoing signaling. Vertices with no incoming/outgoing signaling due to the other parameters are given a size of 0.
 #' @param vert_scale integer used to scale size of vertices with our without variable scaling from size_verts_by.
 #' @param plot_title text for the plot's title.
 #' @param ... other parameters to be passed to plot when used with an igraph object.
@@ -280,17 +280,19 @@ signaling_network <- function(
   igraph::V(graph)$label.dist <- 1.5
   igraph::V(graph)$label.color <- "black"
   v_cols <- cols[names(igraph::V(graph))]
-  if (scale_by == "lig_sig" & all(gsub("L_", "", colnames(mat)) %in% names(igraph::V(graph)))) {
+  if (scale_by == "lig_sig") {
     vals <- asinh(colSums(mat))
     vals <- vals[paste0("L_", names(igraph::V(graph)))]
     igraph::V(graph)$size <- vals * vert_scale
-  } else if (scale_by == "rec_sig" & all(gsub("R_", "", rownames(mat)) %in% names(igraph::V(graph)))) {
+  } else if (scale_by == "rec_sig") {
     vals <- asinh(rowSums(mat))
     vals <- vals[paste0("R_", names(igraph::V(graph)))]
     igraph::V(graph)$size <- vals * vert_scale
   } else {
     igraph::V(graph)$size <- vert_scale
   }
+  # Address any NA vertex sizes if scale_by parameter doesn't provide a valid size
+  igraph::V(graph)$size[is.na(igraph::V(graph)$size)] <- 0
   # Get vert angle for labeling circos plot
   if (layout == "circle") {
     v_angles <- seq(length(igraph::V(graph)))
