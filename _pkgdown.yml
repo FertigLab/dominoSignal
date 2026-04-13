@@ -80,8 +80,10 @@ reference:
   - count_linkage
   - mean_ligand_expression
   - print,domino-method
+  - print,linkage_summary-method
   - rename_clusters
   - show,domino-method
+  - show,linkage_summary-method
 - title: "Example Data"
   desc: >
     Example data used for testing and demonstration purposes
@@ -96,18 +98,18 @@ navbar:
   structure:
     left:  [intro, articles, reference, news]
     right: [search, github]
-    components:
-      articles:
-        text: Tutorials
-        menu:
-        - text: SCENIC for TF Scoring
-          href: vignettes/articles/tf_scenic_vignette.html
-        - text: Using CellphoneDB
-          href: vignettes/articles/cellphonedb_vignette.html
-        - text: Domino Object Structure
-          href: vignettes/domino_object_vignette.html
-        - text: Plotting and Visualization
-          href: vignettes/plotting_vignette.html
+  components:
+    articles:
+      text: Tutorials
+      menu:
+      - text: SCENIC for TF Scoring
+        href: articles/tf_scenic_vignette.html
+      - text: Using CellphoneDB
+        href: articles/cellphonedb_vignette.html
+      - text: Domino Object Structure
+        href: articles/domino_object_vignette.html
+      - text: Plotting and Visualization
+        href: articles/plotting_vignette.html
 
 home:
   title: Cell Communication from Single Cell RNA Sequencing Data

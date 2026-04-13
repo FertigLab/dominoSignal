@@ -21,7 +21,7 @@ options(timeout = 600)
 ```
 
 
-In this tutorial, we will go into more detail on the structure of a domino object and the ways in which to access the data stored within. We will be using the domino object we built on the [Getting Started](https://fertiglab.github.io/dominoSignal) page. If you have not yet built a domino object, you can do so by following the instructions on the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal) page.
+In this tutorial, we will go into more detail on the structure of a domino object and the ways in which to access the data stored within. We will be using the domino object we built on the [Getting Started](https://fertiglab.github.io/dominoSignal) page. If you have not yet built a domino object, you can do so by following the instructions on the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page.
 
 <details><summary>Instructions to load data</summary>
 
@@ -233,7 +233,7 @@ dom_info(dom)
 
 ## Continued Development
 
-Since dominoSignal is a package still being developed, there are new functions and features that will be implemented in future versions. In the meantime, we have put together further information on [plotting](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette) and an example analysis can be viewed on our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal) page. Additionally, if you find any bugs, have further questions, or want to share an idea, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
+Since dominoSignal is a package still being developed, there are new functions and features that will be implemented in future versions. In the meantime, we have put together further information on [plotting](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html) and an example analysis can be viewed on our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page. Additionally, if you find any bugs, have further questions, or want to share an idea, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
 
 <details><summary>Vignette Build Information</summary>
 Date last built and session information:
