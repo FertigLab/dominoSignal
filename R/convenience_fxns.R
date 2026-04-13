@@ -74,8 +74,8 @@ rename_clusters <- function(dom, clust_conv, warning = FALSE) {
 #' converted gene table
 #'
 #' @param genes the genes to convert
-#' @param from  gene symbol type of the input (ENSG, ENSMUSG, HGNC, MGI)
-#' @param to    desired gene symbol type for the output (HGNC, MGI)
+#' @param from  gene symbol type of the input (one of ENSG, ENSMUSG, HGNC, MGI)
+#' @param to    desired gene symbol type for the output (one of HGNC, MGI)
 #' @param conversion_table a data frame with column names corresponding to gene symbol types (mm.ens, hs.ens, mgi, hgnc)
 #' and rows corresponding to the gene symbols themselves
 #' @return A data frame of genes with original and corresponding converted symbols
