@@ -122,3 +122,38 @@ setMethod("show", "domino", function(object) {
     )
   }
 })
+
+#' Print linkage summary object
+#'
+#' Prints a description of a linkage summary object
+#'
+#' @param x A linkage summary object
+#' @param ... Additional arguments to be passed to other methods
+#' @return A printed description of the number of subjects, groups, and clusters in the linkage summary object
+#' @export
+#' @examples
+#' link_sum <- mock_linkage_summary()
+#' print(link_sum)
+#'
+setMethod("print", "linkage_summary", function(x, ...) {
+    message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects with ",
+        ncol(slot(x, "subject_meta")), " metadata annotations and linkages between ",
+        max(lengths(slot(x, "subject_linkages"))), " clusters.")
+})
+
+#' Show linkage_summary object information
+#'
+#' Shows content overview of linkage_summary object
+#'
+#' @param object A linkage_summary object
+#' @return A printed description of subject numbers, group numbers, and cluster numbers in the linkage summary object
+#' @export
+#' @examples 
+#' link_sum <- mock_linkage_summary()
+#' show(link_sum)
+#'
+setMethod("show", "linkage_summary", function(object) {
+    message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects with ",
+        ncol(slot(object, "subject_meta")), " metadata annotations and linkages between ",
+        max(lengths(slot(object, "subject_linkages"))), " clusters.")
+})
