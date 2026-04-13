@@ -406,16 +406,20 @@ gene_network <- function(dom, clust = NULL, OutgoingSignalingClust = NULL,
   # Recs to ligs
   if (length(dom@clusters)) {
     allowed_ligs <- c()
+    if (!is.null(OutgoingSignalingClust)) {
+        outgoing_cls <- paste0("L_", OutgoingSignalingClust)
+    } else {
+        outgoing_cls <- NULL
+    }
     for (cl in cl_with_signaling) {
-      if (!is.null(OutgoingSignalingClust)) {
-        OutgoingSignalingClust <- paste0("L_", OutgoingSignalingClust)
-        mat <- dom@cl_signaling_matrices[[cl]][, OutgoingSignalingClust]
+      if (!is.null(outgoing_cls)) {
+        mat <- dom@cl_signaling_matrices[[cl]][, outgoing_cls, drop = FALSE]
         if (is.null(dim(mat))) {
           allowed_ligs <- names(mat[mat > 0])
           all_sums <- mat[mat > 0]
         } else {
-          allowed_ligs <- rownames(mat[rowSums(mat) > 0, ]) # I remove any ligands with zeroes for all clusters
-          all_sums <- rowSums(mat[rowSums(mat) > 0, ])
+          allowed_ligs <- rownames(mat[rowSums(mat) > 0, , drop = FALSE]) # Remove ligands with 0s for all clusters
+          all_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
         }
       } else {
         allowed_ligs <- rownames(dom@cl_signaling_matrices[[cl]])
@@ -485,7 +489,8 @@ gene_network <- function(dom, clust = NULL, OutgoingSignalingClust = NULL,
   } else if (layout == "kk") {
     l <- igraph::layout_with_kk(graph)
   }
-  plot(graph, layout = l, main = paste0("Signaling ", OutgoingSignalingClust, " to ", clust), ...)
+  plot(graph, layout = l, main = paste0("Signaling from ", toString(OutgoingSignalingClust),
+        " to ", toString(clust)), ...)
   return(invisible(list(graph = graph, layout = l)))
 }
 
