@@ -76,6 +76,10 @@ pbmc_loom <- loomR::create(
     filename = paste0(input_dir, "/pbmc3k_counts.loom"),
     data = pbmc_counts
 )
+# Depending on the version of loomR, you may need to manually add CellId and Gene attributes:
+pbmc_loom$add.row.attribute(list(Gene = rownames(pbmc)))
+pbmc_loom$add.col.attribute(list(CellID = colnames(pbmc)))
+
 # connection to the loom file must be closed to complete file creation
 pbmc_loom$close_all()
 ```

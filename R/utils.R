@@ -11,7 +11,7 @@ NULL
 #' @return  A vector of unique databases used in building the domino object OR
 #'          a data frame that includes the database information used in the domino object creation
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' database_name <- dom_database(pbmc_dom_built_tiny)
@@ -33,7 +33,7 @@ dom_database <- function(dom, name_only = TRUE) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the z-scored gene expression values for each gene (row) by cell (column)
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' zscores <- dom_zscores(pbmc_dom_built_tiny)
@@ -49,7 +49,7 @@ dom_zscores <- function(dom) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the gene expression values for each gene (row) by cell (column)
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' counts <- dom_counts(pbmc_dom_built_tiny)
@@ -66,7 +66,7 @@ dom_counts <- function(dom) {
 #' @param labels a boolean for whether to return the cluster labels for each cell or the clusters used for inferring communication
 #' @return  A vector containing either the names of the clusters used OR factors of the cluster label for each individual cell
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' cluster_names <- dom_clusters(pbmc_dom_built_tiny)
@@ -88,7 +88,7 @@ dom_clusters <- function(dom, labels = FALSE) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the transcription factor activation scores for each TF (row) by cell (column)
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' tf_activation <- dom_tf_activation(pbmc_dom_built_tiny)
@@ -105,7 +105,7 @@ dom_tf_activation <- function(dom) {
 #' @param type either "rl" or "complex", to select between the receptor-ligand or complex correlation matrix
 #' @return  A matrix containing the correlation values for each receptor (row) by transcription factor (column)
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' cor_matrix <- dom_correlations(pbmc_dom_built_tiny, "rl")
@@ -134,7 +134,7 @@ dom_correlations <- function(dom, type = "rl") {
 #' @param by_cluster a boolean to indicate whether the linkages should be returned overall or by cluster
 #' @return  A list containing linkages between some combination of receptors, ligands, transcription factors, and clusters
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' complexes <- dom_linkages(pbmc_dom_built_tiny, "complexes")
@@ -179,7 +179,7 @@ dom_linkages <- function(dom, link_type = c(
 #' @return  A data frame containing the signaling score through each ligand (row) by each cluster (column) OR
 #'          a data frame containing the global summed signaling scores between receptors (rows) and ligands (columns) of each cluster
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' monocyte_signaling <- dom_signaling(pbmc_dom_built_tiny, cluster = "CD14_monocyte")
@@ -199,7 +199,7 @@ dom_signaling <- function(dom, cluster = NULL) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the p-values for differential expression of transcription factors (rows) in each cluster (columns)
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' de_mat <- dom_de(pbmc_dom_built_tiny)
@@ -216,7 +216,7 @@ dom_de <- function(dom) {
 #' @return  A list containing booleans for whether the object has been created and built and a list of the
 #'          build parameters that were used in [build_domino()] to infer the signaling network
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' build_details <- dom_info(pbmc_dom_built_tiny)
@@ -241,7 +241,7 @@ dom_info <- function(dom) {
 #' @param clusters vector indicating clusters to collate network items from. If left as NULL then all clusters will be included.
 #' @return A vector containing all features, receptors, or ligands in the data set or a list containing all three.
 #' @export
-#' @family {Accessor functions}
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' monocyte_receptors <- dom_network_items(pbmc_dom_built_tiny, "CD14_monocyte", "receptors")

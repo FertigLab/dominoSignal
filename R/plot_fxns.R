@@ -22,7 +22,7 @@ NULL
 #' @param ... other parameters to pass to  [ComplexHeatmap::Heatmap()]
 #' @return A heatmap rendered to the active graphics device
 #' @export signaling_heatmap
-#' @family {Heatmap plotting functions}
+#' @family {heatmaps}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -94,7 +94,7 @@ signaling_heatmap <- function(
 #' @param ... Other parameters to pass to  [ComplexHeatmap::Heatmap()]. Note that to use the 'column_title' parameter of  [ComplexHeatmap::Heatmap()]  you must set title = FALSE
 #' @return a Heatmap rendered to the active graphics device
 #' @export incoming_signaling_heatmap
-#' @family {Heatmap plotting functions}
+#' @family {heatmaps}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' #incoming signaling of the CD8  T cells
@@ -196,7 +196,7 @@ incoming_signaling_heatmap <- function(
 #' @param ... other parameters to be passed to plot when used with an igraph object.
 #' @return An igraph plot rendered to the active graphics device
 #' @export signaling_network
-#' @family {Network plotting functions}
+#' @family {networks}
 #' @examples 
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -349,7 +349,7 @@ signaling_network <- function(
 #' @param ... Other parameters to pass to plot() with an [igraph](https://r.igraph.org/) object. See [igraph](https://r.igraph.org/) manual for options.
 #' @return An igraph plot rendered to the active graphics device
 #' @export gene_network
-#' @family {Network plotting functions}
+#' @family {networks}
 #' @examples
 #' #basic usage
 #' example(build_domino, echo = FALSE)
@@ -517,7 +517,7 @@ gene_network <- function(dom, clust, OutgoingSignalingClust = NULL,
 #' @param ... Other parameters to pass to  [ComplexHeatmap::Heatmap()] . Note that to use the 'main' parameter of  [ComplexHeatmap::Heatmap()]  you must set title = FALSE and to use 'annCol' or 'annColors' ann_cols must be FALSE.
 #' @return A heatmap rendered to the active graphics device
 #' @export feat_heatmap
-#' @family {Heatmap plotting functions}
+#' @family {heatmaps}
 #' @examples 
 #' #basic usage
 #' example(build_domino, echo = FALSE)
@@ -643,7 +643,7 @@ feat_heatmap <- function(
 #' @param ... Other parameters to pass to  [ComplexHeatmap::Heatmap()] . Note that to use the 'main' parameter of  [ComplexHeatmap::Heatmap()]  you must set title = FALSE and to use 'annCol' or 'annColors' ann_cols must be FALSE.
 #' @return A heatmap rendered to the active graphics device
 #' @export cor_heatmap
-#' @family {Heatmap plotting functions}
+#' @family {heatmaps}
 #' @examples 
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -741,7 +741,7 @@ cor_heatmap <- function(
 #' @param ... Other parameters to pass to [ggpubr::ggscatter()].
 #' @return A ggplot scatter plot rendered in the active graphics device
 #' @export cor_scatter
-#' @family {Plotting functions}
+#' @family {misc_plotting}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' cor_scatter(pbmc_dom_built_tiny, "FLI1","CXCR3")
@@ -772,7 +772,7 @@ cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
 #' @param cell_colors Named vector of color names or hex codes where names correspond to the plotted cell types and values to the colors.
 #' @return Renders a circos plot to the active graphics device
 #' @export circos_ligand_receptor
-#' @family {Plotting functions}
+#' @family {misc_plotting}
 #' @examples 
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -1021,8 +1021,8 @@ render_circos_ligand_receptor <- function(
 #' @param group_palette a named vector of colors to use for each group being compared
 #' @return A heatmap-class object of features ranked by test_statistic annotated with the proportion of subjects that showed active linkage of the features.
 #' @export
-#' @family {Plotting functions}
-#' @family {Differential linkages}
+#' @family {misc_plotting}
+#' @family {differentials}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' example(test_differential_linkages, echo = FALSE)

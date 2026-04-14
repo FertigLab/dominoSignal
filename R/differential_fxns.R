@@ -11,7 +11,7 @@ NULL
 #' @param subject_names vector of subject names in domino_results. If NULL, defaults to first column of subject_meta.
 #' @return A linkage summary class object consisting of nested lists of the active transcription factors, active receptors, and incoming ligands for each cluster across multiple domino results
 #' @export
-#' @family {Differential linkages}
+#' @family {differentials}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' 
@@ -143,7 +143,7 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
 #' @param subject_names a vector of subject_names from the linkage_summary. NOTE: all subject_names in the linkage summary are included in counting.
 #' @return A data frame with columns for the unique linkage features and the counts of how many times the linkage occured across the compared domino results. If group.by is used, counts of the linkages are also provided as columns named by the unique values of the group.by variable.
 #' @export
-#' @family {Differential linkages}
+#' @family {differentials}
 #' @examples
 #' count_linkage(
 #'   linkage_summary = mock_linkage_summary(), cluster = "C1", 
@@ -206,7 +206,7 @@ count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "
 #'  \item{'X_n'} : total number of subjects in each category of group.by (X)
 #' }
 #' @export
-#' @family {Differential linkages}
+#' @family {differentials}
 #' @examples
 #' tiny_differential_linkage_c1 <- test_differential_linkages(
 #'   linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",

@@ -9,14 +9,14 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  echo = TRUE,
-  message = FALSE,
-  warning = FALSE,
-  fig.cap = "",
-  tidy = TRUE,
-  global.device = TRUE
+    collapse = TRUE,
+    comment = "#>",
+    echo = TRUE,
+    message = FALSE,
+    warning = FALSE,
+    fig.cap = "",
+    tidy = TRUE,
+    global.device = TRUE
 )
 options(timeout = 300)
 ```
@@ -27,10 +27,9 @@ In addition to the numerous plotting options available in the original [Domino](
 ```{r setup, eval = TRUE}
 set.seed(42)
 library(dominoSignal)
-library(patchwork)
 ```
 
-In this tutorial, we will use the domino object we built on the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page. If you have not yet built a domino object, you can do so by following the instructions on the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page.
+In this tutorial, we will use the domino object we built on the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page. If you have not yet built a domino object, you can do so by following the instructions on that page.
 
 <details><summary>Instructions to load data</summary>
 
@@ -163,7 +162,7 @@ signaling_heatmap(dom, normalize = "rec_norm")
 ```{r genenetwork}
 #| fig.alt: >
 #|  Network plot with columns for ligand, receptor, and transcription factor showing
-#\  linkages from the CD14 monocyte cluster to the CD16 monocyte cluster.
+#|  linkages from the CD14 monocyte cluster to the CD16 monocyte cluster.
 gene_network(dom, clust = "CD16_monocyte", OutgoingSignalingClust = "CD14_monocyte")
 ```
 

@@ -3,6 +3,9 @@ url: https://FertigLab.github.io/dominoSignal
 deploy:
   install_metadata: true
 
+development:
+  mode: "devel"
+
 template:
   bootstrap: 5
   theme: a11y-light
@@ -19,6 +22,8 @@ template:
     code-bg: "#FEFEFE"
     link-color: "#8963BA"
     border-color: "#F4F0FA"
+    body-secondary-color: "#1D132BCC"
+    danger: "#7A0235"
     code_font: { google: "Fira Code" }
     border-width: 2px
 
@@ -106,10 +111,14 @@ navbar:
         href: articles/tf_scenic_vignette.html
       - text: Using CellphoneDB
         href: articles/cellphonedb_vignette.html
-      - text: Domino Object Structure
+      - text: domino Object Structure
         href: articles/domino_object_vignette.html
       - text: Plotting and Visualization
         href: articles/plotting_vignette.html
+    github:
+      icon: fa-github
+      href: https://github.com/FertigLab/dominoSignal
+      aria-label: "View Github repository"
 
 home:
   title: Cell Communication from Single Cell RNA Sequencing Data
