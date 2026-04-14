@@ -23,7 +23,6 @@ A data frame of ligand expression targeting the specified receptor
 \description{
 Creates a data frame of mean ligand expression for use in plotting a circos
 plot of ligand expression and saving tables of mean expression.
-us
 }
 \examples{
 example(build_domino, echo = FALSE)

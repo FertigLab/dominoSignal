@@ -9,7 +9,7 @@ cor_scatter(dom, tf, rec, remove_rec_dropout = TRUE, ...)
 \arguments{
 \item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
 
-\item{tf}{Target TF for plottting AUC score}
+\item{tf}{Target TF for plotting AUC score}
 
 \item{rec}{Target receptor for plotting expression}
 
@@ -28,3 +28,9 @@ example(build_domino, echo = FALSE)
 cor_scatter(pbmc_dom_built_tiny, "FLI1","CXCR3")
 
 }
+\seealso{
+Other {misc_plotting}: 
+\code{\link{circos_ligand_receptor}()},
+\code{\link{plot_differential_linkages}()}
+}
+\concept{{misc_plotting}}

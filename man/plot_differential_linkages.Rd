@@ -39,3 +39,15 @@ plot_differential_linkages(
 )
 
 }
+\seealso{
+Other {misc_plotting}: 
+\code{\link{circos_ligand_receptor}()},
+\code{\link{cor_scatter}()}
+
+Other {differentials}: 
+\code{\link{count_linkage}()},
+\code{\link{summarize_linkages}()},
+\code{\link{test_differential_linkages}()}
+}
+\concept{{differentials}}
+\concept{{misc_plotting}}

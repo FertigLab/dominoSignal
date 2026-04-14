@@ -18,13 +18,13 @@ build_domino(
 
 \item{max_tf_per_clust}{Maximum number of transcription factors called active in a cluster.}
 
-\item{min_tf_pval}{Minimum p-value from differential feature score test to call a transcription factor active in a cluster.}
+\item{min_tf_pval}{Maximum p-value from differential feature score test to call a transcription factor active in a cluster, serving as a significance threshold.}
 
 \item{max_rec_per_tf}{Maximum number of receptors to link to each transcription factor.}
 
 \item{rec_tf_cor_threshold}{Minimum Spearman correlation used to consider a receptor linked with a transcription factor. Increasing this will decrease the number of receptors linked to each transcription factor.}
 
-\item{min_rec_percentage}{Minimum percentage of cells in cluster expressing a receptor for the receptor to be linked to trancription factors in that cluster.}
+\item{min_rec_percentage}{Minimum percentage of cells in cluster expressing a receptor for the receptor to be linked to transcription factors in that cluster.}
 }
 \value{
 A domino object with a signaling network built
@@ -43,4 +43,7 @@ pbmc_dom_built_tiny <- build_domino(
  max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01
 )
 
+}
+\seealso{
+\code{\link[=create_domino]{create_domino()}} to create a domino object
 }

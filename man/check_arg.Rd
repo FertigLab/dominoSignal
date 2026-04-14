@@ -10,7 +10,7 @@ check_arg(
   allow_len = NULL,
   allow_range = NULL,
   allow_values = NULL,
-  need_vars = c(NULL),
+  need_vars = NULL,
   need_colnames = FALSE,
   need_rownames = FALSE,
   need_names = FALSE
@@ -29,7 +29,7 @@ check_arg(
 
 \item{need_vars}{vector of required variables}
 
-\item{need_colnames}{vogical for whether colnames are required}
+\item{need_colnames}{logical for whether colnames are required}
 
 \item{need_rownames}{logical for whether rownames are required}
 

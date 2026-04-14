@@ -25,3 +25,17 @@ database_name <- dom_database(pbmc_dom_built_tiny)
 full_database <- dom_database(pbmc_dom_built_tiny, name_only = FALSE)
 
 }
+\seealso{
+Other {access}: 
+\code{\link{dom_clusters}()},
+\code{\link{dom_correlations}()},
+\code{\link{dom_counts}()},
+\code{\link{dom_de}()},
+\code{\link{dom_info}()},
+\code{\link{dom_linkages}()},
+\code{\link{dom_network_items}()},
+\code{\link{dom_signaling}()},
+\code{\link{dom_tf_activation}()},
+\code{\link{dom_zscores}()}
+}
+\concept{{access}}

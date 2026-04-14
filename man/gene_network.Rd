@@ -6,7 +6,7 @@
 \usage{
 gene_network(
   dom,
-  clust = NULL,
+  clust,
   OutgoingSignalingClust = NULL,
   class_cols = c(lig = "#FF685F", rec = "#47a7ff", feat = "#39C740"),
   cols = NULL,
@@ -18,7 +18,7 @@ gene_network(
 \arguments{
 \item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
 
-\item{clust}{Receptor cluster to create the gene association network for. A vector of clusters may be provided.}
+\item{clust}{Receptor cluster to create the gene association network for. A vector of clusters may be provided. This is a required parameter.}
 
 \item{OutgoingSignalingClust}{Vector of clusters to plot the outgoing signaling from}
 
@@ -49,3 +49,8 @@ gene_network(
  OutgoingSignalingClust = "CD14_monocyte")
 
 }
+\seealso{
+Other {networks}: 
+\code{\link{signaling_network}()}
+}
+\concept{{networks}}

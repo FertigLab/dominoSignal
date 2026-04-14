@@ -11,7 +11,7 @@ an instance of class \code{linkage_summary}
 \description{
 The linkage summary class contains linkages established in multiple domino
 objects through gene regulatory network inference and reference to receptor-
-ligand data bases. A data frame summarizing meta features that describe the
+ligand databases. A data frame summarizing meta features that describe the
 domino objects compared in the linkage summary facilitates comparisons of
 established linkages and differential signaling interactions across categorical
 sample covariates.
@@ -23,6 +23,6 @@ sample covariates.
 
 \item{\code{subject_meta}}{data.frame with each row describing one subject and columns describing features of the subjects by which to draw comparisons of signaling networks}
 
-\item{\code{subject_linkages}}{nested list of linkages inferred for each subject. Lists are stored in a heirarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs), linkages between transcription factors and receptors (tfs_rec), active receptors (rec), possible receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)}
+\item{\code{subject_linkages}}{nested list of linkages inferred for each subject. Lists are stored in a hierarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs), linkages between transcription factors and receptors (tfs_rec), active receptors (rec), possible receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)}
 }}
 

@@ -7,7 +7,7 @@
 \format{
 A list of:
 \describe{
-\item{genes_tiny}{A subet of CellPhoneDB gene_input.csv}
+\item{genes_tiny}{A subset of CellPhoneDB gene_input.csv}
 \item{proteins_tiny}{A subset of CellPhoneDB protein_input.csv}
 \item{complexes_tiny}{A subset of CellPhoneDB complex_input.csv}
 \item{interactions_tiny}{A subset of CellPhoneDB interaction_input.csv}

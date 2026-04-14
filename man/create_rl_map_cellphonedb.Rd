@@ -27,7 +27,7 @@ create_rl_map_cellphonedb(
 
 \item{database_name}{name of the database being used, stored in output}
 
-\item{gene_conv}{a tuple of (from, to) or (source, target) if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC}
+\item{gene_conv}{character vector of length 2 formatted as (from, to) or (source, target) if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC}
 
 \item{gene_conv_host}{host for conversion; default ensembl, could also use mirrors if desired}
 

@@ -10,7 +10,7 @@
 \item{object}{A linkage_summary object}
 }
 \value{
-A printed description of subject numbers, group numbers, and cluster numbers in the linkage summary object
+A printed description of the number of subjects, groups, and clusters in the linkage summary object
 }
 \description{
 Shows content overview of linkage_summary object
