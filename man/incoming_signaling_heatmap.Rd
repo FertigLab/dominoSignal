@@ -52,3 +52,10 @@ example(build_domino, echo = FALSE)
 incoming_signaling_heatmap(pbmc_dom_built_tiny, "CD8_T_cell")
 
 }
+\seealso{
+Other {heatmaps}: 
+\code{\link{cor_heatmap}()},
+\code{\link{feat_heatmap}()},
+\code{\link{signaling_heatmap}()}
+}
+\concept{{heatmaps}}

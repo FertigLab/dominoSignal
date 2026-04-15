@@ -21,7 +21,7 @@ circos_ligand_receptor(
 
 \item{cell_idents}{Vector of cell types from cluster assignments in the domino object to be included in the plot.}
 
-\item{cell_colors}{Named vector of color names or hex codes where names correspond to the plotted cell types and the color values}
+\item{cell_colors}{Named vector of color names or hex codes where names correspond to the plotted cell types and values to the colors.}
 }
 \value{
 Renders a circos plot to the active graphics device
@@ -40,3 +40,9 @@ names(cols) = dom_clusters(pbmc_dom_built_tiny)
 circos_ligand_receptor(pbmc_dom_built_tiny, receptor = "CXCR3", cell_colors = cols)
 
 }
+\seealso{
+Other {misc_plotting}: 
+\code{\link{cor_scatter}()},
+\code{\link{plot_differential_linkages}()}
+}
+\concept{{misc_plotting}}

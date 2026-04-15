@@ -57,3 +57,10 @@ feat_heatmap(
  max_thresh = 0.6, norm = TRUE, bool = FALSE)
 
 }
+\seealso{
+Other {heatmaps}: 
+\code{\link{cor_heatmap}()},
+\code{\link{incoming_signaling_heatmap}()},
+\code{\link{signaling_heatmap}()}
+}
+\concept{{heatmaps}}

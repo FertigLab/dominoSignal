@@ -16,7 +16,8 @@ dom_linkages(
 
 \item{link_type}{one value (out of "complexes", "receptor-ligand",
 "tf-target", "tf-receptor", "receptor", "incoming-ligand") used
-to select the desired type of linkage}
+to select the desired type of linkage. Note that "receptor" and
+"incoming-ligand" are only available when by_cluster is set to TRUE.}
 
 \item{by_cluster}{a boolean to indicate whether the linkages should be returned overall or by cluster}
 }
@@ -32,3 +33,17 @@ complexes <- dom_linkages(pbmc_dom_built_tiny, "complexes")
 tf_rec_by_cluster <- dom_linkages(pbmc_dom_built_tiny, "tf-receptor", TRUE)
 
 }
+\seealso{
+Other {access}: 
+\code{\link{dom_clusters}()},
+\code{\link{dom_correlations}()},
+\code{\link{dom_counts}()},
+\code{\link{dom_database}()},
+\code{\link{dom_de}()},
+\code{\link{dom_info}()},
+\code{\link{dom_network_items}()},
+\code{\link{dom_signaling}()},
+\code{\link{dom_tf_activation}()},
+\code{\link{dom_zscores}()}
+}
+\concept{{access}}
