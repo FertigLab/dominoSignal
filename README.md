@@ -34,4 +34,5 @@ If you use our package in your analysis, please cite us:
 > Cherry C, Mitchell J, Nagaraj S, Krishnan K, Lvovs D, Fertig E, Elisseeff J (2026). dominoSignal: Cell Communication Analysis for Single Cell RNA Sequencing. R package version 1.6.0.
 
 ### Contact Us
+
 If you find any bugs or have questions, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
