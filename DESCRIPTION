@@ -1,13 +1,13 @@
 Package: dominoSignal
 Title: Cell Communication Analysis for Single Cell RNA Sequencing
-Version: 1.5.0
+Version: 1.5.1
 Authors@R: c(
     person("Christopher", "Cherry", role = c("aut"), email = "ccherry.6574@gmail.com", comment = c(ORCID = "0000-0002-5481-0055")),
-    person("Jacob T", "Mitchell", role = c("aut", "cre"), email = "jmitch81@jhmi.edu", comment = c(ORCID = "0000-0002-5370-9692")),
-    person("Sushma", "Nagaraj", role = c("aut"), email = "snagara5@jhmi.edu", comment = c(ORCID = "0000-0001-5166-1309")),
-    person("Kavita", "Krishnan", role = c("aut"), email = "kkrishnan@jhmi.edu", comment = c(ORCID = "0000-0003-1345-0249")),
-    person("Dmitrijs", "Lvovs", role = c("aut"), email = "dlvovs1@jhmi.edu"),
-    person("Elana", "Fertig", role = "ctb", email = "ejfertig@jhmi.edu", comment = c(ORCID = "0000-0003-3204-342X")),
+    person("Jacob T", "Mitchell", role = c("aut"), email = "jmitch81@jhmi.edu", comment = c(ORCID = "0000-0002-5370-9692")),
+    person("Sushma", "Nagaraj", role = c("aut"), email = "snagaraj@som.umaryland.edu", comment = c(ORCID = "0000-0001-5166-1309")),
+    person("Kavita", "Krishnan", role = c("aut", "cre"), email = "kkrishnan@som.umaryland.edu", comment = c(ORCID = "0000-0003-1345-0249")),
+    person("Dmitrijs", "Lvovs", role = c("aut"), email = "dlvovs@som.umaryland.edu"),
+    person("Elana", "Fertig", role = "ctb", email = "ejfertig@som.umaryland.edu", comment = c(ORCID = "0000-0003-3204-342X")),
     person("Jennifer", "Elisseeff", role = "ctb", email = "jhe@jhu.edu", comment = c(ORCID = "0000-0002-5066-1996"))
     )
 Description: 
@@ -34,7 +34,7 @@ Imports:
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 biocViews:
     SystemsBiology,
     SingleCell,
@@ -51,5 +51,4 @@ Suggests:
     SingleCellExperiment
 VignetteBuilder: knitr
 Language: en-US
-Roxygen: list(markdown = TRUE)
-URL: https://fertiglab.github.io/dominoSignal/
+URL: https://FertigLab.github.io/dominoSignal/

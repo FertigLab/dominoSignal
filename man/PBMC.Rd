@@ -5,7 +5,7 @@
 \alias{PBMC}
 \title{PBMC RNAseq data subset}
 \format{
-A list of::
+A list of:
 \describe{
 \item{RNA_count_tiny}{A subset of PBMC RNA-seq data: counts assay}
 \item{RNA_zscore_tiny}{A subset of PBMC RNA-seq data: zscore assay}

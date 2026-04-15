@@ -49,3 +49,10 @@ cor_heatmap(pbmc_dom_built_tiny, bool = TRUE, bool_thresh = 0.1)
 cor_heatmap(pbmc_dom_built_tiny, bool = FALSE, mark_connections = TRUE)
  
 }
+\seealso{
+Other {heatmaps}: 
+\code{\link{feat_heatmap}()},
+\code{\link{incoming_signaling_heatmap}()},
+\code{\link{signaling_heatmap}()}
+}
+\concept{{heatmaps}}

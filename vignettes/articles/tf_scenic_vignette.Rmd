@@ -76,6 +76,10 @@ pbmc_loom <- loomR::create(
     filename = paste0(input_dir, "/pbmc3k_counts.loom"),
     data = pbmc_counts
 )
+# Depending on the version of loomR, you may need to manually add CellId and Gene attributes:
+pbmc_loom$add.row.attribute(list(Gene = rownames(pbmc)))
+pbmc_loom$add.col.attribute(list(CellID = colnames(pbmc)))
+
 # connection to the loom file must be closed to complete file creation
 pbmc_loom$close_all()
 ```
@@ -148,7 +152,7 @@ singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic aucell \
     # cell x TF matrix of TF enrichment AUC values
 ```
 
-The csv files created in this analysis can be used as the TF activation inputs in a dominoSignal analysis. Please see our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal) page for more information on how to perform an analysis with dominoSignal. For a brief tutorial on the download of the necessary files for using CellPhoneDB, please see the [Using the CellPhoneDB database](https://fertiglab.github.io/dominoSignal/articles/articles/cellphonedb_vignette) vignette.
+The csv files created in this analysis can be used as the TF activation inputs in a dominoSignal analysis. Please see our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page for more information on how to perform an analysis with dominoSignal. For a brief tutorial on the download of the necessary files for using CellPhoneDB, please see the [Using the CellPhoneDB database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html) vignette.
 
 <details><summary>Vignette Build Information</summary>
 Date last built and session information:

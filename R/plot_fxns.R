@@ -22,6 +22,7 @@ NULL
 #' @param ... other parameters to pass to  [ComplexHeatmap::Heatmap()]
 #' @return A heatmap rendered to the active graphics device
 #' @export signaling_heatmap
+#' @family {heatmaps}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -93,6 +94,7 @@ signaling_heatmap <- function(
 #' @param ... Other parameters to pass to  [ComplexHeatmap::Heatmap()]. Note that to use the 'column_title' parameter of  [ComplexHeatmap::Heatmap()]  you must set title = FALSE
 #' @return a Heatmap rendered to the active graphics device
 #' @export incoming_signaling_heatmap
+#' @family {heatmaps}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' #incoming signaling of the CD8  T cells
@@ -188,12 +190,13 @@ incoming_signaling_heatmap <- function(
 #' @param normalize options to normalize the signaling matrix. Accepted inputs are 'none' for no normalization, 'rec_norm' to normalize to the maximum value with each receptor cluster, or 'lig_norm' to normalize to the maximum value within each ligand cluster
 #' @param scale how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root, 'log' for log10, or 'sq' for square
 #' @param layout type of layout to use. Options are 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold force directed layout, and 'kk' for Kamada Kawai for directed layout
-#' @param scale_by how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all incoming or outgoing signaling
-#' @param vert_scale integer used to scale size of vertices with our without variable scaling from size_verts_by.
+#' @param scale_by how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all incoming or outgoing signaling. Vertices with no incoming/outgoing signaling due to the other parameters are given a size of 0.
+#' @param vert_scale integer used to scale size of vertices with or without variable scaling from scale_by.
 #' @param plot_title text for the plot's title.
 #' @param ... other parameters to be passed to plot when used with an igraph object.
 #' @return An igraph plot rendered to the active graphics device
 #' @export signaling_network
+#' @family {networks}
 #' @examples 
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -201,7 +204,7 @@ incoming_signaling_heatmap <- function(
 #' # scaling, thresholds, layouts, selecting clusters
 #' signaling_network(
 #'  pbmc_dom_built_tiny, showOutgoingSignalingClusts = "CD14_monocyte", 
-#'  scale = "none", norm = "none", layout = "fr", scale_by = "none", 
+#'  scale = "none", normalize = "none", layout = "fr", scale_by = "none", 
 #'  vert_scale = 5, edge_weight = 2)
 #' 
 signaling_network <- function(
@@ -280,17 +283,19 @@ signaling_network <- function(
   igraph::V(graph)$label.dist <- 1.5
   igraph::V(graph)$label.color <- "black"
   v_cols <- cols[names(igraph::V(graph))]
-  if (scale_by == "lig_sig" & all(gsub("L_", "", colnames(mat)) %in% names(igraph::V(graph)))) {
+  if (scale_by == "lig_sig") {
     vals <- asinh(colSums(mat))
     vals <- vals[paste0("L_", names(igraph::V(graph)))]
     igraph::V(graph)$size <- vals * vert_scale
-  } else if (scale_by == "rec_sig" & all(gsub("R_", "", rownames(mat)) %in% names(igraph::V(graph)))) {
+  } else if (scale_by == "rec_sig") {
     vals <- asinh(rowSums(mat))
     vals <- vals[paste0("R_", names(igraph::V(graph)))]
     igraph::V(graph)$size <- vals * vert_scale
   } else {
     igraph::V(graph)$size <- vert_scale
   }
+  # Address any NA vertex sizes if scale_by parameter doesn't provide a valid size
+  igraph::V(graph)$size[is.na(igraph::V(graph)$size)] <- 0
   # Get vert angle for labeling circos plot
   if (layout == "circle") {
     v_angles <- seq(length(igraph::V(graph)))
@@ -335,7 +340,7 @@ signaling_network <- function(
 #' will be included in the plot.
 #'
 #' @param dom Domino object with network built ([build_domino()])
-#' @param clust Receptor cluster to create the gene association network for. A vector of clusters may be provided.
+#' @param clust Receptor cluster to create the gene association network for. A vector of clusters may be provided. This is a required parameter.
 #' @param OutgoingSignalingClust Vector of clusters to plot the outgoing signaling from
 #' @param class_cols Named vector of colors used to color classes of vertices. Values must be colors and names must be classes ('rec', 'lig', and 'feat' for receptors, ligands, and features.).
 #' @param cols Named vector of colors for individual genes. Genes not included in this vector will be colored according to class_cols.
@@ -344,6 +349,7 @@ signaling_network <- function(
 #' @param ... Other parameters to pass to plot() with an [igraph](https://r.igraph.org/) object. See [igraph](https://r.igraph.org/) manual for options.
 #' @return An igraph plot rendered to the active graphics device
 #' @export gene_network
+#' @family {networks}
 #' @examples
 #' #basic usage
 #' example(build_domino, echo = FALSE)
@@ -351,8 +357,8 @@ signaling_network <- function(
 #'  pbmc_dom_built_tiny, clust = "CD8_T_cell", 
 #'  OutgoingSignalingClust = "CD14_monocyte")
 #'
-gene_network <- function(dom, clust = NULL, OutgoingSignalingClust = NULL, 
-    class_cols = c(lig = "#FF685F",rec = "#47a7ff", feat = "#39C740"),
+gene_network <- function(dom, clust, OutgoingSignalingClust = NULL, 
+    class_cols = c(lig = "#FF685F", rec = "#47a7ff", feat = "#39C740"),
     cols = NULL, lig_scale = 1, layout = "grid", ...) {
   if (!dom@misc[["build"]]) {
     warning("Please build a signaling network with domino_build prior to plotting.")
@@ -406,16 +412,20 @@ gene_network <- function(dom, clust = NULL, OutgoingSignalingClust = NULL,
   # Recs to ligs
   if (length(dom@clusters)) {
     allowed_ligs <- c()
+    if (!is.null(OutgoingSignalingClust)) {
+        outgoing_cls <- paste0("L_", OutgoingSignalingClust)
+    } else {
+        outgoing_cls <- NULL
+    }
     for (cl in cl_with_signaling) {
-      if (!is.null(OutgoingSignalingClust)) {
-        OutgoingSignalingClust <- paste0("L_", OutgoingSignalingClust)
-        mat <- dom@cl_signaling_matrices[[cl]][, OutgoingSignalingClust]
+      if (!is.null(outgoing_cls)) {
+        mat <- dom@cl_signaling_matrices[[cl]][, outgoing_cls, drop = FALSE]
         if (is.null(dim(mat))) {
           allowed_ligs <- names(mat[mat > 0])
           all_sums <- mat[mat > 0]
         } else {
-          allowed_ligs <- rownames(mat[rowSums(mat) > 0, ]) # I remove any ligands with zeroes for all clusters
-          all_sums <- rowSums(mat[rowSums(mat) > 0, ])
+          allowed_ligs <- rownames(mat[rowSums(mat) > 0, , drop = FALSE]) # Remove ligands with 0s for all clusters
+          all_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
         }
       } else {
         allowed_ligs <- rownames(dom@cl_signaling_matrices[[cl]])
@@ -485,7 +495,8 @@ gene_network <- function(dom, clust = NULL, OutgoingSignalingClust = NULL,
   } else if (layout == "kk") {
     l <- igraph::layout_with_kk(graph)
   }
-  plot(graph, layout = l, main = paste0("Signaling ", OutgoingSignalingClust, " to ", clust), ...)
+  plot(graph, layout = l, main = paste0("Signaling from ", toString(OutgoingSignalingClust),
+        " to ", toString(clust)), ...)
   return(invisible(list(graph = graph, layout = l)))
 }
 
@@ -506,6 +517,7 @@ gene_network <- function(dom, clust = NULL, OutgoingSignalingClust = NULL,
 #' @param ... Other parameters to pass to  [ComplexHeatmap::Heatmap()] . Note that to use the 'main' parameter of  [ComplexHeatmap::Heatmap()]  you must set title = FALSE and to use 'annCol' or 'annColors' ann_cols must be FALSE.
 #' @return A heatmap rendered to the active graphics device
 #' @export feat_heatmap
+#' @family {heatmaps}
 #' @examples 
 #' #basic usage
 #' example(build_domino, echo = FALSE)
@@ -631,6 +643,7 @@ feat_heatmap <- function(
 #' @param ... Other parameters to pass to  [ComplexHeatmap::Heatmap()] . Note that to use the 'main' parameter of  [ComplexHeatmap::Heatmap()]  you must set title = FALSE and to use 'annCol' or 'annColors' ann_cols must be FALSE.
 #' @return A heatmap rendered to the active graphics device
 #' @export cor_heatmap
+#' @family {heatmaps}
 #' @examples 
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -722,12 +735,13 @@ cor_heatmap <- function(
 #' Create a correlation plot between transcription factor activation score and receptor expression
 #'
 #' @param dom Domino object with network built ([build_domino()])
-#' @param tf Target TF for plottting AUC score
+#' @param tf Target TF for plotting AUC score
 #' @param rec Target receptor for plotting expression
 #' @param remove_rec_dropout Whether to remove cells with zero expression for plot. This should match the same setting as in [build_domino()].
 #' @param ... Other parameters to pass to [ggpubr::ggscatter()].
 #' @return A ggplot scatter plot rendered in the active graphics device
 #' @export cor_scatter
+#' @family {misc_plotting}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' cor_scatter(pbmc_dom_built_tiny, "FLI1","CXCR3")
@@ -755,9 +769,10 @@ cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
 #' @param receptor Name of a receptor active in at least one cell type in the domino object
 #' @param ligand_expression_threshold Minimum mean expression value of a ligand by a cell type for a chord to be rendered between the cell type and the receptor
 #' @param cell_idents Vector of cell types from cluster assignments in the domino object to be included in the plot.
-#' @param cell_colors Named vector of color names or hex codes where names correspond to the plotted cell types and the color values
+#' @param cell_colors Named vector of color names or hex codes where names correspond to the plotted cell types and values to the colors.
 #' @return Renders a circos plot to the active graphics device
 #' @export circos_ligand_receptor
+#' @family {misc_plotting}
 #' @examples 
 #' example(build_domino, echo = FALSE)
 #' #basic usage
@@ -807,7 +822,7 @@ circos_ligand_receptor <- function(
 #' example(build_domino, echo = FALSE)
 #' #basic usage
 #' obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-#' 
+#' @keywords internal
 
 obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_threshold = 0.01, cell_idents = NULL){
   signaling_df <- NULL
@@ -890,7 +905,7 @@ obtain_circos_expression <- function(dom, receptor, ligands, ligand_expression_t
 #' #basic usage
 #' circos_df <- obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
 #' render_circos_ligand_receptor(signaling_df = circos_df, receptor = "CXCR3")
-#'
+#' @keywords internal
 
 render_circos_ligand_receptor <- function(
     signaling_df, receptor, cell_colors = NULL, ligand_expression_threshold = 0.01
@@ -1006,6 +1021,8 @@ render_circos_ligand_receptor <- function(
 #' @param group_palette a named vector of colors to use for each group being compared
 #' @return A heatmap-class object of features ranked by test_statistic annotated with the proportion of subjects that showed active linkage of the features.
 #' @export
+#' @family {misc_plotting}
+#' @family {differentials}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' example(test_differential_linkages, echo = FALSE)

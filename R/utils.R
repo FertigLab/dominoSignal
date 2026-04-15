@@ -11,6 +11,7 @@ NULL
 #' @return  A vector of unique databases used in building the domino object OR
 #'          a data frame that includes the database information used in the domino object creation
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' database_name <- dom_database(pbmc_dom_built_tiny)
@@ -32,6 +33,7 @@ dom_database <- function(dom, name_only = TRUE) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the z-scored gene expression values for each gene (row) by cell (column)
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' zscores <- dom_zscores(pbmc_dom_built_tiny)
@@ -47,6 +49,7 @@ dom_zscores <- function(dom) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the gene expression values for each gene (row) by cell (column)
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' counts <- dom_counts(pbmc_dom_built_tiny)
@@ -63,6 +66,7 @@ dom_counts <- function(dom) {
 #' @param labels a boolean for whether to return the cluster labels for each cell or the clusters used for inferring communication
 #' @return  A vector containing either the names of the clusters used OR factors of the cluster label for each individual cell
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' cluster_names <- dom_clusters(pbmc_dom_built_tiny)
@@ -84,6 +88,7 @@ dom_clusters <- function(dom, labels = FALSE) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the transcription factor activation scores for each TF (row) by cell (column)
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' tf_activation <- dom_tf_activation(pbmc_dom_built_tiny)
@@ -100,6 +105,7 @@ dom_tf_activation <- function(dom) {
 #' @param type either "rl" or "complex", to select between the receptor-ligand or complex correlation matrix
 #' @return  A matrix containing the correlation values for each receptor (row) by transcription factor (column)
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' cor_matrix <- dom_correlations(pbmc_dom_built_tiny, "rl")
@@ -123,10 +129,12 @@ dom_correlations <- function(dom, type = "rl") {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @param link_type one value (out of "complexes", "receptor-ligand",
 #'                  "tf-target", "tf-receptor", "receptor", "incoming-ligand") used
-#'                  to select the desired type of linkage
+#'                  to select the desired type of linkage. Note that "receptor" and
+#'  "incoming-ligand" are only available when by_cluster is set to TRUE.
 #' @param by_cluster a boolean to indicate whether the linkages should be returned overall or by cluster
 #' @return  A list containing linkages between some combination of receptors, ligands, transcription factors, and clusters
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' complexes <- dom_linkages(pbmc_dom_built_tiny, "complexes")
@@ -139,7 +147,7 @@ dom_linkages <- function(dom, link_type = c(
     links <- slot(dom, "linkages")
     if (by_cluster) {
         if (link_type == "tf-receptor") {
-            return(links$clust_tf)
+            return(links$clust_tf_rec)
         } else if(link_type == "receptor") {
             return(links$clust_rec) 
         } else if(link_type == "incoming-ligand") {
@@ -171,6 +179,7 @@ dom_linkages <- function(dom, link_type = c(
 #' @return  A data frame containing the signaling score through each ligand (row) by each cluster (column) OR
 #'          a data frame containing the global summed signaling scores between receptors (rows) and ligands (columns) of each cluster
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' monocyte_signaling <- dom_signaling(pbmc_dom_built_tiny, cluster = "CD14_monocyte")
@@ -179,7 +188,7 @@ dom_signaling <- function(dom, cluster = NULL) {
     if (is.null(cluster)) {
         as.data.frame(slot(dom, "signaling"))
     } else {
-        as.data.frame(slot(dom, "cl_signaling_matrices")[cluster])
+        as.data.frame(slot(dom, "cl_signaling_matrices")[[cluster]])
     }
 }
 
@@ -190,6 +199,7 @@ dom_signaling <- function(dom, cluster = NULL) {
 #' @param dom a domino object that has been created with [create_domino()]
 #' @return  A matrix containing the p-values for differential expression of transcription factors (rows) in each cluster (columns)
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' de_mat <- dom_de(pbmc_dom_built_tiny)
@@ -206,6 +216,7 @@ dom_de <- function(dom) {
 #' @return  A list containing booleans for whether the object has been created and built and a list of the
 #'          build parameters that were used in [build_domino()] to infer the signaling network
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' build_details <- dom_info(pbmc_dom_built_tiny)
@@ -230,6 +241,7 @@ dom_info <- function(dom) {
 #' @param clusters vector indicating clusters to collate network items from. If left as NULL then all clusters will be included.
 #' @return A vector containing all features, receptors, or ligands in the data set or a list containing all three.
 #' @export
+#' @family {access}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' monocyte_receptors <- dom_network_items(pbmc_dom_built_tiny, "CD14_monocyte", "receptors")
@@ -283,7 +295,7 @@ dom_network_items <- function(dom, clusters = NULL, return = NULL) {
 #' @param allow_range range of minimum and maximum values i.e. c(1, 5)
 #' @param allow_values vector of allowed values
 #' @param need_vars vector of required variables
-#' @param need_colnames vogical for whether colnames are required
+#' @param need_colnames logical for whether colnames are required
 #' @param need_rownames logical for whether rownames are required
 #' @param need_names logical for whether names are required
 #' @return Logical indicating whether the argument meets the requirements
@@ -291,7 +303,7 @@ dom_network_items <- function(dom, clusters = NULL, return = NULL) {
 #' 
 check_arg <- function(arg, allow_class = NULL, allow_len = NULL,
                       allow_range = NULL, allow_values = NULL,
-                      need_vars = c(NULL), need_colnames = FALSE,
+                      need_vars = NULL, need_colnames = FALSE,
                       need_rownames = FALSE, need_names = FALSE) {
   argname <- deparse(substitute(arg))
   classes <- paste(allow_class, collapse = ",")

@@ -3,6 +3,9 @@ url: https://FertigLab.github.io/dominoSignal
 deploy:
   install_metadata: true
 
+development:
+  mode: "devel"
+
 template:
   bootstrap: 5
   theme: a11y-light
@@ -19,6 +22,8 @@ template:
     code-bg: "#FEFEFE"
     link-color: "#8963BA"
     border-color: "#F4F0FA"
+    body-secondary-color: "#1D132BCC"
+    danger: "#7A0235"
     code_font: { google: "Fira Code" }
     border-width: 2px
 
@@ -80,8 +85,10 @@ reference:
   - count_linkage
   - mean_ligand_expression
   - print,domino-method
+  - print,linkage_summary-method
   - rename_clusters
   - show,domino-method
+  - show,linkage_summary-method
 - title: "Example Data"
   desc: >
     Example data used for testing and demonstration purposes
@@ -96,18 +103,22 @@ navbar:
   structure:
     left:  [intro, articles, reference, news]
     right: [search, github]
-    components:
-      articles:
-        text: Tutorials
-        menu:
-        - text: SCENIC for TF Scoring
-          href: vignettes/articles/tf_scenic_vignette.html
-        - text: Using CellphoneDB
-          href: vignettes/articles/cellphonedb_vignette.html
-        - text: Domino Object Structure
-          href: vignettes/domino_object_vignette.html
-        - text: Plotting and Visualization
-          href: vignettes/plotting_vignette.html
+  components:
+    articles:
+      text: Tutorials
+      menu:
+      - text: SCENIC for TF Scoring
+        href: articles/tf_scenic_vignette.html
+      - text: Using CellphoneDB
+        href: articles/cellphonedb_vignette.html
+      - text: domino Object Structure
+        href: articles/domino_object_vignette.html
+      - text: Plotting and Visualization
+        href: articles/plotting_vignette.html
+    github:
+      icon: fa-github
+      href: https://github.com/FertigLab/dominoSignal
+      aria-label: "View Github repository"
 
 home:
   title: Cell Communication from Single Cell RNA Sequencing Data

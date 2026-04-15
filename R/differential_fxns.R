@@ -6,11 +6,12 @@ NULL
 #' 
 #' Creates a [linkage_summary()] object storing the linkages learned in different domino objects as nested lists to facilitate comparisons of networks learned by domino across subject covariates.
 #' 
-#' @param domino_results list of domino result with one domino object per subject. Names from the list must match subject_names
-#' @param subject_meta data frame that includes the subject features by which the objects could be grouped. The first column should must be subject names
+#' @param domino_results list of domino result with one domino object per subject. Names from the list should match subject_names
+#' @param subject_meta data frame that includes the subject features by which the objects could be grouped. The first column must be subject names
 #' @param subject_names vector of subject names in domino_results. If NULL, defaults to first column of subject_meta.
 #' @return A linkage summary class object consisting of nested lists of the active transcription factors, active receptors, and incoming ligands for each cluster across multiple domino results
 #' @export
+#' @family {differentials}
 #' @examples
 #' example(build_domino, echo = FALSE)
 #' 
@@ -139,9 +140,10 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
 #' @param cluster the name of the cell cluster being compared across multiple domino results
 #' @param group.by the name of the column in `linkage_summary@subject_meta` by which to group subjects for counting. If NULL, only total counts of linkages for linkages in the cluster across all subjects is given.
 #' @param linkage a stored linkage from the domino object. Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
-#' @param subject_names a vector of subject_names from the linkage_summary to be compared. If NULL, all subject_names in the linkage summary are included in counting.
+#' @param subject_names a vector of subject_names from the linkage_summary. NOTE: all subject_names in the linkage summary are included in counting.
 #' @return A data frame with columns for the unique linkage features and the counts of how many times the linkage occured across the compared domino results. If group.by is used, counts of the linkages are also provided as columns named by the unique values of the group.by variable.
 #' @export
+#' @family {differentials}
 #' @examples
 #' count_linkage(
 #'   linkage_summary = mock_linkage_summary(), cluster = "C1", 
@@ -185,7 +187,7 @@ count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "
 #' @param cluster the name of the cell cluster being compared across multiple domino results
 #' @param group.by the name of the column in `linkage_summary@subject_meta` by which to group subjects for counting.
 #' @param linkage a stored linkage from the domino object. Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
-#' @param subject_names a vector of subject_names from the linkage_summary to be compared. If NULL, all subject_names in the linkage summary are included in counting.
+#' @param subject_names a vector of subject_names from the linkage_summary. NOTE: all subject_names in the linkage summary are included in counting.
 #' @param test_name the statistical test used for comparison.
 #' \itemize{
 #'  \item{'fishers.exact'} : Fisher's exact test for the dependence of the proportion of subjects with an active linkage in the cluster on which group the subject belongs to in the group.by variable. Provides an odds ratio, p-value, and a Benjamini-Hochberg FDR-adjusted p-value (p.adj) for each linkage tested.
@@ -204,6 +206,7 @@ count_linkage <- function(linkage_summary, cluster, group.by = NULL, linkage = "
 #'  \item{'X_n'} : total number of subjects in each category of group.by (X)
 #' }
 #' @export
+#' @family {differentials}
 #' @examples
 #' tiny_differential_linkage_c1 <- test_differential_linkages(
 #'   linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",

@@ -47,3 +47,10 @@ signaling_heatmap(pbmc_dom_built_tiny, scale = "sqrt")
 signaling_heatmap(pbmc_dom_built_tiny, normalize = "rec_norm")
 
 }
+\seealso{
+Other {heatmaps}: 
+\code{\link{cor_heatmap}()},
+\code{\link{feat_heatmap}()},
+\code{\link{incoming_signaling_heatmap}()}
+}
+\concept{{heatmaps}}

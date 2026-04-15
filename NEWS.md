@@ -1,110 +1,94 @@
-# dominoSignal v1.0.5
+# dominoSignal v1.6.0
 
-- circos_ligand_receptor will not fail in cases where the rl_map of a domino objects includes ligands for a receptor where the ligands are not present in the expression matrix. A message is returned if ligands from the rl_map had to be excluded from the plot
+## New Features
 
-# dominoSignal v1.0.4
+- Added `print()` and `show()` methods for `linkage_summary` objects to provide concise summary output.
 
-- refactorization of circos_ligand_receptor function to remove use of grepl-based regular expressions to reformat cell and molecule names from a domino object into a data frame for plotting a receptor circos plot. Component functions for creating the data frame of ligand expression centered on a single receptor and to render this data frame as a circos plot are now included in the package as "obtain_circos_expression" and "render_circos_ligand_receptor", respectively.
+## Bug Fixes
 
-# dominoSignal v1.0.3
+- Fixed `create_rl_map_cellphonedb()` handling of partner B complex mappings and gene assignment.
+- Fixed `gene_network()` to avoid repeated prefixing of outgoing cluster names and to correctly subset outgoing signaling matrices.
+- Fixed `signaling_network()` to assign undefined (`NA`) vertex sizes to 0 when scaling by signaling.
+- Fixed `dom_linkages()` with `by_cluster = TRUE` and `link_type = "tf-receptor"` to return `clust_tf_rec`.
+- Fixed `dom_signaling(cluster = ...)` to return the selected cluster matrix via list indexing.
 
-- Added functions for calculation of mean gene expression among components of a complex using purrr functions
+## Documentation
 
+- Added figure alt text to images in vignettes for accessibility.
+- Updated pkgdown and vignette links to use working URLs.
+- Updated README/index documentation links and citation text to current release metadata.
 
-# dominoSignal v1.0.2
+# dominoSignal v1.4.1
 
-## Pkgdown Site Customization Scripts
+- Updated maintainer information.
 
-- Restored _pkgdown.yml and index scripts that specify site building parameters for https://FertigLab.github.io/dominoSignal to improve formatting.
+# dominoSignal v1.2.0
 
-# dominoSignal v1.0.1
+## Bug Fixes
 
-## Receptor Complex Bugfix
-
-- Resolved issue where if create_domino was run with complexes=TRUE and no complexes were found to have active signaling, the full signaling matrix would be replaced by a NULL value.
-
-## GitHub Actions
-
-- Restoration of .github/workflows scripts for automatic build checks.
+- Fixed `circos_ligand_receptor()` to not fail when rl_map includes ligands not present in the expression matrix. Missing ligands are excluded with informative message.
+- Fixed `create_domino()` to prevent overwriting signaling matrix with `NULL` when `complexes = TRUE` but no complexes are found to have active signaling.
 
 # dominoSignal v1.0.0
 
-- Version number update to signify acceptance to bioconductor in release 3.20
+- Accepted to Bioconductor in release 3.20.
 
-# dominoSignal v0.99.4
+## Bug Fixes
 
-## Vignettes
+- Disabled exact p-value computation for correlation test between receptor expression and features to prevent repeated warning messages due to inevitable tied ranks during Spearman correlation calculation in `create_domino()`.
 
-- Updated download instructions to use the bioconductor URL
+## Documentation
 
-# dominoSignal v0.99.3
+- Updated vignette download instructions to use the Bioconductor URL
+- All vignettes explicitly state seed used when executing code if applicable.
+- Example code runs with `echo = FALSE` to reduce output verbosity in documentation
+- `create_domino()` examples run with `verbose = FALSE` to reduce extensive output in documentation.
+- Vignette regarding dominoSignal object structure explains the purpose of downloading and importing data with `BiocFileCache` to demonstrate applications on large real data objects.
+- Fixed example code for `circos_ligand_receptor()` color customization and `cor_heatmap()` boolean representation.
+- Updated non-functional links to correct URLs.
 
-## create_domino Function Warnings
+# dominoSignal v0.99.2-alpha
 
-- Disabled exact p-value computation for the correlation test between receptor expression and features to prevent repeated warning messages due to tied ranks during Spearman correlation calculation 
+- Package renamed from "domino2" to "dominoSignal".
 
-## Vignettes
+## Documentation
 
-- Updated non-functional links to functional URLs
-- All vignettes explicitly state the seed used when executing their code
-- The dominoSignal Object vignette states the purpose of the code used to download and import data from a BioFileCache to demonstrate applications of the domino objects on a real data object that is too large to include inside the package
+- Updated vignettes to demonstrate pipeline on data formatted as `SingleCellExperiment` objects.
+- Added SCENIC tutorial vignette in place of deprecated example scripts
 
-## Testing Data
+# dominoSignal v0.2.2-alpha
 
-- Data used for examples and unit tests is now stored in the package's data/ directory.
-- All usage of the triple colon operator to access internal data from sysdata have been replaced with usage of data()
-- Linkage summaries for demonstrating differential linkage testing and plotting are generated within unit test scripts rather than being stored within the package.
-- Examples are run with echo = FALSE to cut down on lines of code printed in example pages.
-- Examples for create_domino are run with verbose = FALSE
-- Fixed example of changing colors for circos_ligand_receptor
-- Fixed example of boolean representation of cor_heatmap
+## New Features
 
-# dominoSignal v0.99.2
+- Added new `linkage_summary` class to summarize linkages in domino objects.
+- Added helper functions to count linkages and compare between domino objects.
+- Added plotting function for differential linkages.
 
-## Package Name
+# dominoSignal v0.2.1-alpha
 
-- Update of package name from "domino2" to "dominoSignal"
+## New Features
 
-## Bioconductor Standards
+### Function Inputs
 
-- Update to vignettes presenting application of the DominoSignal pipeline on data formatted as a SingleCellExperiment object
-- Implemented caching of example data by BiocCache to meet package size limits
-- Removal of deprecated scripts for running SCENIC. Tutorials for running SCENIC are still present in vignettes
-- Corrected BiocCheck notes pertaining to coding practices including paste in conditional statements, functions with dontrun examples, usage of seq_len or seq_along in place of seq, and usage of vapply in place of sapply
+- Standardized input formats for receptor-ligand databases, transcription factor activity scores, and regulon gene lists to support alternative databases and transcription factor activation inference methods.
+- Added helper functions to reformat pySCENIC outputs and CellPhoneDB database files to standardized input formats.
+- Added `host` option for gene ortholog conversions using `biomaRt` for access to maintained mirrors.
 
+### Improved Linkages
 
-# dominoSignal v0.99.1
+- Implemented assessment of transcription factor linkages with heteromeric receptor complexes based on correlation between transcription factor activity and all receptor component genes
+- Implemented assessment of complex ligand expression as the mean of component gene expression for plotting functions.
+- Added minimum threshold parameter for the percentage of cells in a cluster expressing a receptor gene.
+- Added linkage slots for active receptors per cluster, transcription factor-receptor linkages per cluster, and incoming ligands for active receptors within each cluster.
 
-- Update to Bioconductor version numbering conventions for package submission
+### Plotting Functions
 
-# dominoSignal v0.2.2
+- Added chord plot of ligand expression targetting a specified receptor, with chord widths proportional to ligand expression per cell cluster.
+- Added arguments to gene network plots to show communication between two clusters.
+- Added filtering to signaling network plots to show outgoing signaling from specified clusters.
 
-## Linkage functions
-- Addition of new class to summarize linkages in objects
-- Addition of helper functions to count linkages and compare between objects
-- Plotting function for differential linkages
+## Bug Fixes
 
-## Package structure
-- Adjustments made to meet Bioconductor standards
-
-# dominoSignal v0.2.1
-
-## Updates to domino object construction
-- Uniform formats for inputs of receptor - ligand interaction databases, transcription factor activity features, and regulon gene lists for operability with alternative databases and transcription factor activation inference methods
-- Helper functions for reformatting pySCENIC outputs and CellPhoneDB database files to domino-readable uniform formats
-- Assessment of transcription factor linkage with receptors that function as a heteromeric complex based on correlation between transcription factor activity and all receptor component genes
-- Assessment of complex ligand expression as the mean of component gene expression for plotting functions
-- Minimum threshold for the percentage of cells in a cluster expressing a receptor gene for the receptor to be called active within the cluster
-- Additional linkage slots for active receptors in each cluster, transcription factor - receptor linkages for each cluster, and incoming ligands for active receptors on each cluster
-
-## Plotting functions
-- Chord plot of ligand expression targeting a specified receptor where chord widths correspond to the quantity of ligand expression by each cell cluster
-- Signaling networks showing only outgoing signaling from specified cell clusters
-- Gene networks between two cell clusters
-
-## Bugfixes
-- Added host option for gene ortholog conversions using `{biomaRt}` for access to maintained mirrors
-- Transcription factor - target linkages are now properly stored so that receptors in a transcription factor's regulon are excluded from linkage
-- Ligand nodes sizes in gene networks correspond to quantity of ligand expression
-- `create_domino()` can be run without providing a regulon list
-- References to the host GitHub repository have been updated to [Elisseeff-Lab](https://github.com/Elisseeff-Lab/domino)
+- Fixed transcription factor-target linkages to exclude receptors within transcription factor regulon.
+- Enabled `create_domino()` to run without providing a regulon list.
+- Fixed ligand node sizing in gene network plots to correspond to the level of ligand expression.

@@ -15,7 +15,7 @@ NULL
 #' @param interactions data frame or file path to table of protein-protein interactions in CellPhoneDB format
 #' @param complexes optional: data frame or file path to table of protein complexes in CellPhoneDB format
 #' @param database_name name of the database being used, stored in output
-#' @param gene_conv a tuple of (from, to) or (source, target) if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC
+#' @param gene_conv character vector of length 2 formatted as (from, to) or (source, target) if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC
 #' @param gene_conv_host host for conversion; default ensembl, could also use mirrors if desired
 #' @param alternate_convert boolean if you would like to use a non-ensembl method of conversion (must supply table; not recommended, use only if ensembl is down)
 #' @param alternate_convert_table supplied table for non-ensembl method of conversion
@@ -177,7 +177,7 @@ create_rl_map_cellphonedb <- function(
           res <- g[1]
           g_col <- paste(g, collapse = ", ")
           message(
-            component_a, " has multiple encoding gene mapped in genes table.\n",
+            component_b, " has multiple encoding gene mapped in genes table.\n",
             g_col, "\n",
             "The first mapping gene is used: ", res
           )
@@ -205,7 +205,7 @@ create_rl_map_cellphonedb <- function(
           gene_b <- unique(conv_dict[conv_dict[, 1] %in% gene_b, 2])
         }
       }
-      gene_a <- paste(gene_b, collapse = ";")
+      gene_b <- paste(gene_b, collapse = ";")
       b_features[["gene_B"]] <- gene_b
       b_features[["type_B"]] <- ifelse(protein_b[["receptor"]], "R", "L")
       b_features[["name_B"]] <- gene_b
@@ -286,7 +286,7 @@ create_regulon_list_scenic <- function(regulons) {
 #' @param counts Counts matrix for the data. This is only used to threshold receptors on dropout.
 #' @param z_scores Matrix containing z-scored expression data for all cells with cells as columns and features as rows.
 #' @param clusters Named factor containing cell cluster with names as cells.
-#' @param use_clusters Boolean indicating whether to use clusters.
+#' @param use_clusters Boolean indicating whether to use clusters (currently must be TRUE)
 #' @param tf_targets Optional. A list where names are transcription factors and the stored values are character vectors of genes in the transcription factor's regulon.
 #' @param verbose Boolean indicating whether or not to print progress during computation.
 #' @param use_complexes Boolean indicating whether you wish to use receptor/ligand complexes in the receptor ligand signaling database. If FALSE, receptor/ligand pairs where either functions as a protein complex will not be considered when constructing the signaling network.
@@ -296,6 +296,7 @@ create_regulon_list_scenic <- function(regulons) {
 #' @param tf_variance_quantile What proportion of variable features to take if using variance to threshold features. Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'
 #' @return A domino object
 #' @export create_domino
+#' @seealso [create_rl_map_cellphonedb()] for creating receptor-ligand maps, [create_regulon_list_scenic()] for creating regulon lists from pySCENIC output, and [build_domino()] for building signaling networks from domino objects created by this function.
 #' @examples
 #' example(create_rl_map_cellphonedb, echo = FALSE)
 #' example(create_regulon_list_scenic, echo = FALSE)
@@ -310,15 +311,6 @@ create_regulon_list_scenic <- function(regulons) {
 #'  verbose = FALSE
 #'  )
 #'
-#' pbmc_dom_tiny_no_clusters <- create_domino(
-#'  rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
-#'  counts = PBMC$RNA_count_tiny, z_scores =PBMC$RNA_zscore_tiny,
-#'  clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
-#'  use_clusters = FALSE, use_complexes = FALSE,
-#'  rec_min_thresh = 0.1, remove_rec_dropout = TRUE,
-#'  tf_selection_method = "all",
-#'  verbose = FALSE
-#'  )
 #'
 create_domino <- function(
     rl_map, features, counts = NULL, z_scores = NULL,
@@ -682,8 +674,7 @@ add_rl_column <- function(map, map_ref, conv, new_name) {
 #'
 #' Creates a data frame of mean ligand expression for use in plotting a circos
 #' plot of ligand expression and saving tables of mean expression.
-#'us
-
+#'
 #' @param x Gene by cell expression matrix
 #' @param ligands Character vector of ligand genes to be quantified
 #' @param cell_ident Vector of cell type (identity) names for which to calculate mean ligand gene expression

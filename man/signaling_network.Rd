@@ -45,9 +45,9 @@ signaling_network(
 
 \item{layout}{type of layout to use. Options are 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold force directed layout, and 'kk' for Kamada Kawai for directed layout}
 
-\item{scale_by}{how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all incoming or outgoing signaling}
+\item{scale_by}{how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the former two cases the values are scaled with asinh after summing all incoming or outgoing signaling. Vertices with no incoming/outgoing signaling due to the other parameters are given a size of 0.}
 
-\item{vert_scale}{integer used to scale size of vertices with our without variable scaling from size_verts_by.}
+\item{vert_scale}{integer used to scale size of vertices with or without variable scaling from scale_by.}
 
 \item{plot_title}{text for the plot's title.}
 
@@ -68,7 +68,12 @@ signaling_network(pbmc_dom_built_tiny, edge_weight = 2)
 # scaling, thresholds, layouts, selecting clusters
 signaling_network(
  pbmc_dom_built_tiny, showOutgoingSignalingClusts = "CD14_monocyte", 
- scale = "none", norm = "none", layout = "fr", scale_by = "none", 
+ scale = "none", normalize = "none", layout = "fr", scale_by = "none", 
  vert_scale = 5, edge_weight = 2)
 
 }
+\seealso{
+Other {networks}: 
+\code{\link{gene_network}()}
+}
+\concept{{networks}}
