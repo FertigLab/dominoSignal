@@ -127,7 +127,7 @@ Recommended release-branch docs update sequence:
 
 Right before Bioconductor creates the new release branch (after current release changes are disabled):
 
-1. Create a pre-release branch of the form `bioconductor/prep_X_YY`
+1. Create a pre-release branch of the form `bioconductor/prep_X_YY` (this is a promotion branch that will not be merged to master):
 
 ```bash
 git checkout -b bioconductor/prep_X_YY bioc-upstream/devel
