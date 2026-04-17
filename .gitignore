@@ -8,7 +8,7 @@ R/.Rhistory
 .vscode
 *.vscode
 scenic/*
-
+*.log
 scratch/
 /doc/
 /Meta/

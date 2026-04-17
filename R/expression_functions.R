@@ -1,6 +1,3 @@
-#' @import magrittr
-NULL
-
 #' Get average expression for complexes
 #'
 #' @param exp_mat A matrix(or dataframe) of genes x clusters, values are z-scores averaged over the clusters
@@ -14,14 +11,14 @@ avg_exp_for_complexes <- function(exp_mat, complexes_list) {
     # dplyr verbs require a data frame; coerce here so callers can pass either
     exp_mat <- as.data.frame(exp_mat)
     # Trim the complexes list to only include those with genes in the data
-    trim_list <- complexes_list %>%
+    trim_list <- complexes_list |>
         purrr::keep(~ {
             all(.x %in% rownames(exp_mat))
         })
     gene_exp_list <- lapply(seq_along(trim_list), function(x) {
         if (length(trim_list[[x]]) > 1) {
-            mean_exp <- exp_mat %>%
-                dplyr::filter(rownames(exp_mat) %in% trim_list[[x]]) %>%
+            mean_exp <- exp_mat |>
+                dplyr::filter(rownames(exp_mat) %in% trim_list[[x]]) |>
                 dplyr::summarise(dplyr::across(dplyr::all_of(colnames(exp_mat)), mean))
             return(mean_exp)
         } else {
