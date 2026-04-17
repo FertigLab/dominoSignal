@@ -25,54 +25,83 @@ test_that("get_signaling_info function runs", {
             cl_ligands_sub = ligs, exp_type = "z_scores"))
 })
 
+test_that("get_resolved_ligands handles duplicate aliases that resolve to one gene", {
+    test_dom <- dom_dup_ligand_aliases(
+        tiny_dom1,
+        alias_names = c("CCL20_alias_1", "CCL20_alias_2"),
+        target_gene = "CCL20",
+        receptor_slots = c("CCR6", "CXCR3")
+    )
+
+    expect_no_error(lig_info <- get_resolved_ligands(test_dom))
+    expect_type(lig_info$lig_names, "character")
+    expect_length(lig_info$lig_names, length(unique(lig_info$lig_names)))
+    expect_gt(anyDuplicated(names(lig_info$complex_names)), 0)
+    expect_true(all(unlist(lig_info$complex_names) %in% lig_info$lig_names))
+})
+
 test_that("get_resolved_ligands returns unique ligands and complexes", {
+    test_dom <- dom_dup_ligand_aliases(
+        tiny_dom1,
+        alias_names = c("CCL20_alias_1", "CCL20_alias_2"),
+        target_gene = "CCL20",
+        receptor_slots = c("CCR6", "CXCR3")
+    )
+
     ligs <- get_resolved_ligands(tiny_dom1)
     expect_type(ligs$lig_names, "character")
     expect_length(ligs$lig_names, length(unique(ligs$lig_names)))
     expect_true(all(lengths(ligs$complex_names) > 0))
     expect_true(all(unlist(ligs$complex_names) %in% ligs$lig_names))
+
+    dup_ligs <- get_resolved_ligands(test_dom)
+    expect_type(dup_ligs$lig_names, "character")
+    expect_length(dup_ligs$lig_names, length(unique(dup_ligs$lig_names)))
+    expect_true(all(lengths(dup_ligs$complex_names) > 0))
+    expect_true(all(unlist(dup_ligs$complex_names) %in% dup_ligs$lig_names))
 })
 
 test_that("get_resolved_ligands handles objects with no complexes", {
     test_dom <- tiny_dom3
     test_dom@linkages$complexes <- list()
-    expect_no_error(get_resolved_ligands(test_dom))
-    resolved_ligs <- get_resolved_ligands(test_dom)
+    expect_no_error(resolved_ligs <- get_resolved_ligands(test_dom))
     expect_length(resolved_ligs, 2)
     expect_named(resolved_ligs$complex_names, resolved_ligs$lig_names)
 })
 
-test_that("get_ligand_expression returns a matrix with the expected clusters", {
+test_that("get_ligand_expression returns ligand-first data frame with expected clusters", {
     lig_names <- c("ITGB4", "ITGA6", "CCL20")
     complex_names <- list(integrin_a6b4_complex = c("ITGB4", "ITGA6"), CCL20 = "CCL20")
     clusters <- levels(tiny_dom1@clusters)[1:2]
     single_clust <- levels(tiny_dom1@clusters)[1]
     ligand_exp <- get_ligand_expression(tiny_dom1, clusters, lig_names, complex_names, exp_type = "counts")
     ligand_exp_single <- get_ligand_expression(tiny_dom1, single_clust, lig_names, complex_names, exp_type = "counts")
-    expect_true(is.matrix(ligand_exp))
-    expect_true(is.matrix(ligand_exp_single))
-    expect_equal(colnames(ligand_exp), clusters)
-    expect_equal(colnames(ligand_exp_single), single_clust)
-    expect_true(all(rownames(ligand_exp) %in% c(lig_names, names(complex_names))))
-    expect_true(all(rownames(ligand_exp_single) %in% c(lig_names, names(complex_names))))
+
+    expect_s3_class(ligand_exp, "data.frame")
+    expect_s3_class(ligand_exp_single, "data.frame")
+    expect_true("ligand" %in% colnames(ligand_exp))
+    expect_true("ligand" %in% colnames(ligand_exp_single))
+    expect_equal(setdiff(colnames(ligand_exp), "ligand"), clusters)
+    expect_equal(setdiff(colnames(ligand_exp_single), "ligand"), single_clust)
+    expect_true(all(ligand_exp$ligand %in% c(lig_names, names(complex_names))))
+    expect_true(all(ligand_exp_single$ligand %in% c(lig_names, names(complex_names))))
 })
 
-test_that("get_ligand_expression handles clusters with no cells", {
+test_that("get_ligand_expression handles cluster levels with no cells", {
     test_dom <- tiny_dom1
     test_dom@clusters <- factor(test_dom@clusters, levels = c(levels(test_dom@clusters), "empty_cluster"))
     lig_names <- c("ITGB4", "ITGA6", "CCL20")
     complex_names <- list(integrin_a6b4_complex = c("ITGB4", "ITGA6"), CCL20 = "CCL20")
-    ligand_empty_alone <- get_ligand_expression(test_dom, "empty_cluster", lig_names, complex_names,
-        exp_type = "z_scores")
-    expect_true(is.matrix(ligand_empty_alone))
-    expect_true(all(is.na(ligand_empty_alone[ , "empty_cluster"])))
+
+    expect_error(get_ligand_expression(test_dom, "empty_cluster", lig_names, complex_names,
+            exp_type = "z_scores"))
 
     ligand_empty_plus <- get_ligand_expression(test_dom, c("empty_cluster", "B_cell"),
         lig_names, complex_names, exp_type = "counts")
-    expect_true(is.matrix(ligand_empty_plus))
-    expect_equal(colnames(ligand_empty_plus), c("empty_cluster", "B_cell"))
-    expect_true(all(is.na(ligand_empty_plus[ , "empty_cluster"])))
-    expect_false(all(is.na(ligand_empty_plus[ , "B_cell"])))
+    expect_s3_class(ligand_empty_plus, "data.frame")
+    expect_true("ligand" %in% colnames(ligand_empty_plus))
+    expect_true("B_cell" %in% colnames(ligand_empty_plus))
+    expect_false(all(is.na(ligand_empty_plus$B_cell)))
 
 })
 
@@ -81,11 +110,29 @@ test_that("get_ligand_expression handles extra ligands", {
     complex_names <- list(integrin_a6b4_complex = c("ITGB4", "ITGA6"), CCL20 = "CCL20", EXTRA_LIGAND = "EXTRA_LIGAND")
     ligand_exp <- get_ligand_expression(tiny_dom1, levels(tiny_dom1@clusters)[1:2], lig_names, complex_names,
         exp_type = "counts")
-    expect_true(is.matrix(ligand_exp))
-    expect_equal(colnames(ligand_exp), levels(tiny_dom1@clusters)[1:2])
-    expect_true(all(rownames(ligand_exp) %in% c(lig_names, names(complex_names))))
+    expect_s3_class(ligand_exp, "data.frame")
+    expect_true("ligand" %in% colnames(ligand_exp))
+    expect_equal(setdiff(colnames(ligand_exp), "ligand"), levels(tiny_dom1@clusters)[1:2])
+    expect_true(all(ligand_exp$ligand %in% c(lig_names, names(complex_names))))
     expect_message(get_ligand_expression(tiny_dom1, levels(tiny_dom1@clusters)[1:2], lig_names, complex_names,
             exp_type = "counts"), "Some ligands not found in expression matrix: EXTRA_LIGAND")
+})
+
+test_that("get_ligand_expression handles duplicated complexes", {
+    lig_genes <- c("ITGB4", "ITGA6")
+    dup_complexes <- list(dup_integrin = c("ITGB4", "ITGA6"), dup_integrin = c("ITGB4", "ITGA6"))
+
+    expect_no_error(lig_df <- get_ligand_expression(
+        tiny_dom1,
+        send_clusters = levels(tiny_dom1@clusters),
+        lig_genes = lig_genes,
+        complexes = dup_complexes,
+        exp_type = "counts"
+    ))
+
+    expect_s3_class(lig_df, "data.frame")
+    expect_true("ligand" %in% colnames(lig_df))
+    expect_gt(anyDuplicated(lig_df$ligand), 0)
 })
 
 test_that("get_ligand_expression returns appropriate values for exp_type", {
@@ -198,6 +245,32 @@ test_that("get_signaling_info returns appropriate values for exp_type", {
     expect_equal(signaling_counts[ , conserved_cols], signaling_zscores[ , conserved_cols])
 })
 
+test_that("dom_to_df handles duplicate resolved ligand names without rowname errors", {
+    test_dom <- dom_dup_ligand_aliases(
+        tiny_dom1,
+        alias_names = c("CCL20_alias_1", "CCL20_alias_2"),
+        target_gene = "CCL20",
+        receptor_slots = c("CCR6", "CXCR3")
+    )
+
+    expect_no_error(df <- dom_to_df(test_dom, exp_type = "counts"))
+    expect_s3_class(df, "data.frame")
+    expect_gt(nrow(df), 0)
+})
+
+test_that("dom_to_df handles duplicate resolved receptor names without rowname errors", {
+    test_dom <- dom_dup_receptor_aliases(
+        tiny_dom1,
+        alias_names = c("CCR6_alias_1", "CCR6_alias_2"),
+        target_gene = "CCR6",
+        ligand_slots = c("CCL20", "CCL20")
+    )
+
+    expect_no_error(df <- dom_to_df(test_dom, exp_type = "counts"))
+    expect_s3_class(df, "data.frame")
+    expect_gt(nrow(df), 0)
+})
+
 test_that("dom_to_df filters by send_clusters and rec_clusters and handles single or multiple values", {
     dom_df_to_1 <- dom_to_df(tiny_dom1, rec_clusters = tiny_dom1@clusters[1],
         send_clusters = levels(tiny_dom1@clusters), exp_type = "counts")
@@ -216,11 +289,47 @@ test_that("dom_to_df filters by send_clusters and rec_clusters and handles singl
     expect_true(all(dom_df_2_clusts$sending_cl %in% c(levels(tiny_dom1@clusters)[2], levels(tiny_dom1@clusters)[3])))
 })
 
+test_that("dom_to_df handles duplicate cluster names with informative message", {
+    expect_message(dom_to_df(tiny_dom1, rec_clusters = c("B_cell", "B_cell"), exp_type = "counts"),
+        "Duplicate entries in rec_clusters detected. Using unique values: B_cell")
+    expect_message(dom_to_df(tiny_dom1, send_clusters = c("B_cell", "B_cell", "CD8_T_cell"), exp_type = "counts"),
+        "Duplicate entries in send_clusters detected. Using unique values: B_cell, CD8_T_cell")
+    df_dup_send <- dom_to_df(tiny_dom1, send_clusters = c("B_cell", "B_cell", "CD8_T_cell"),
+        rec_clusters = "CD14_monocyte", exp_type = "counts")
+    df_dup_rec <- dom_to_df(tiny_dom1, send_clusters = "B_cell",
+        rec_clusters = c("CD14_monocyte", "CD14_monocyte", "CD8_T_cell"), exp_type = "counts")
+    expect_s3_class(df_dup_send, "data.frame")
+    expect_s3_class(df_dup_rec, "data.frame")
+    expect_true(all(df_dup_send$sending_cl %in% c("B_cell", "CD8_T_cell")))
+    expect_true(all(df_dup_send$receiving_cl == "CD14_monocyte"))
+    expect_true(all(df_dup_rec$sending_cl == "B_cell"))
+    expect_true(all(df_dup_rec$receiving_cl %in% c("CD14_monocyte", "CD8_T_cell")))
+})
+
+test_that("dom_to_df doesn't return rows with no signaling for expression type 'counts'", {
+    dom_df <- dom_to_df(tiny_dom1, exp_type = "counts")
+    dom_df_z <- dom_to_df(tiny_dom1, exp_type = "z_scores")
+    dom_df_z_gtz <- dplyr::filter(dom_df_z, ligand_exp > 0, rec_exp > 0, tf_auc > 0)
+    expect_true(all(dom_df$ligand_exp > 0 & dom_df$rec_exp > 0 & dom_df$tf_auc > 0))
+    expect_gte(nrow(dom_df_z), nrow(dom_df_z_gtz))
+
+    no_fli1_dom <- dom_add_zero_auc(tiny_dom1, "FLI1")
+    no_fli_df_counts <- dom_to_df(no_fli1_dom, exp_type = "counts")
+    no_fli_df_z <- dom_to_df(no_fli1_dom, exp_type = "z_scores")
+    expect_true(all(no_fli_df_counts$ligand_exp > 0 & no_fli_df_counts$rec_exp > 0 & no_fli_df_counts$tf_auc > 0))
+    expect_false(any(no_fli_df_z$tf_auc <= 0))
+
+    no_ccr6_dom <- dom_add_zero_exp(tiny_dom1, "CCR6")
+    no_ccr6_df_counts <- dom_to_df(no_ccr6_dom, exp_type = "counts")
+    no_ccr6_df_z <- dom_to_df(no_ccr6_dom, exp_type = "z_scores")
+    expect_true(all(no_ccr6_df_counts$ligand_exp > 0 & no_ccr6_df_counts$rec_exp > 0 & no_ccr6_df_counts$tf_auc > 0))
+    expect_true(all(dplyr::filter(no_ccr6_df_z, receptor == "CCR6")$rec_exp == 0))
+})
+
 test_that("dom_to_df returns all clusters when send_clusters and rec_clusters are not provided", {
     dom_df_all <- dom_to_df(tiny_dom1, exp_type = "counts")
-    # This is only true because we know there's signaling between all clusters in tiny_dom1
-    expect_true(all(levels(tiny_dom1@clusters) %in% dom_df_all$sending_cl))
-    expect_true(all(levels(tiny_dom1@clusters) %in% dom_df_all$receiving_cl))
+    expect_gt(sum(levels(tiny_dom1@clusters) %in% dom_df_all$sending_cl), 1)
+    expect_gt(sum(levels(tiny_dom1@clusters) %in% dom_df_all$receiving_cl), 1)
 })
 
 test_that("dom_to_df errors are informative", {

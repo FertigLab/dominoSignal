@@ -1,7 +1,5 @@
-#' @importFrom reshape2 melt
-#' @importFrom purrr list_rbind
-NULL
-
+# To prevent notes regarding no visible binding for global variables when using non-standard evaluation:
+utils::globalVariables(c("ligand", "mean_counts", "ligand_exp", "rec_exp", "tf_auc"))
 
 #' Get ligands with resolved names
 #' @param dom A built domino object (as output by [build_domino()])
@@ -58,24 +56,24 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
         }
     }
 
-    cl_ligands <- matrix(NA_real_, nrow = length(lig_genes), ncol = length(send_clusters),
-        dimnames = list(lig_genes, send_clusters))
-
-    for (clust in send_clusters) {
-        idx <- which(dom@clusters == clust)
-        if (length(idx) == 0) next
-        cl_ligands[ , clust] <- rowMeans(expr_mat[lig_genes, idx, drop = FALSE])
-    }
+    cl_ligands_list <- send_clusters |>
+        purrr::set_names() |>
+        purrr::map(function(clust) {
+            idx <- which(dom@clusters == clust)
+            if (length(idx) == 0) return(NULL)
+            rowMeans(expr_mat[lig_genes, idx, drop = FALSE])
+        })
+    cl_ligands <- do.call(cbind, cl_ligands_list)
 
     if (length(dom_linkages(dom, "complexes")) > 0) {
         cl_ligands_coll_list <- avg_exp_for_complexes(cl_ligands, complexes)
         if (length(cl_ligands_coll_list) > 0) {
-            cl_ligands <- Reduce(rbind, cl_ligands_coll_list)
-            rownames(cl_ligands) <- names(cl_ligands_coll_list)
+            cl_ligands <- purrr::list_rbind(cl_ligands_coll_list, names_to = "ligand")
         }
+    } else {
+        cl_ligands$ligand <- rownames(cl_ligands)
+        cl_ligands <- dplyr::relocate(cl_ligands, ligand, .before = 1)
     }
-
-    cl_ligands <- as.matrix(cl_ligands)
 
     return(cl_ligands)
 }
@@ -124,14 +122,15 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
             tf_sig <- mean_or_na(tf_mat, tf, rec_idx)
 
             for (rec in recs) {
-                rec_sep <- unlist(resolve_complexes(dom, rec))
-                rec_sig <- mean_or_na(expr_mat, rec_sep, rec_idx)
 
                 ligs <- resolve_names(dom, dom@linkages$rec_lig[[rec]])
                 if (length(ligs) == 0) next
 
                 df_tmp <- cl_ligands_sub[cl_ligands_sub$ligand %in% ligs, ]
                 if (nrow(df_tmp) == 0) next
+
+                rec_sep <- unlist(resolve_complexes(dom, rec))
+                rec_sig <- mean_or_na(expr_mat, rec_sep, rec_idx)
 
                 row_list[[length(row_list) + 1]] <- data.frame(
                     ligand = df_tmp$ligand,
@@ -183,10 +182,22 @@ dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type =
     check_arg(dom, allow_class = "domino", allow_len = 1)
     if (!is.null(send_clusters)) {
         check_arg(send_clusters, allow_class = c("character", "factor"), allow_values = dom_clusters(dom))
+
+        if (anyDuplicated(send_clusters)) {
+            send_clusters <- unique(send_clusters)
+            message("Duplicate entries in send_clusters detected. Using unique values: ", toString(send_clusters))
+        }
     }
+
     if (!is.null(rec_clusters)) {
         check_arg(rec_clusters, allow_class = c("character", "factor"), allow_values = dom_clusters(dom))
+
+        if (anyDuplicated(rec_clusters)) {
+            rec_clusters <- unique(rec_clusters)
+            message("Duplicate entries in rec_clusters detected. Using unique values: ", toString(rec_clusters))
+        }
     }
+
     check_arg(exp_type, allow_class = "character", allow_values = c("counts", "z_scores"), allow_len = 1)
 
     all_lig_names_resolved_lists <- get_resolved_ligands(dom)
@@ -205,14 +216,24 @@ dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type =
 
     cl_ligands <- get_ligand_expression(dom, send_clusters, lig_genes, all_lig_complexes_resolved, exp_type)
 
-    cl_ligands_sub <- reshape2::melt(cl_ligands)
-    colnames(cl_ligands_sub) <- c("ligand", "cluster", "mean_counts")
+    cl_ligands_sub <- reshape2::melt(cl_ligands, id.vars = "ligand",
+        variable.name = "cluster", value.name = "mean_counts")
+    
+    if (exp_type == "counts") {
+        cl_ligands_sub <- dplyr::filter(cl_ligands_sub, mean_counts > 0)
+    }
 
     if (is.null(rec_clusters)) {
         rec_clusters <- levels(dom@clusters)
     }
 
     dframe <- get_signaling_info(dom, rec_clusters, cl_ligands_sub, exp_type)
+
+    if (exp_type == "counts") {
+        dframe <- dplyr::filter(dframe, ligand_exp > 0, rec_exp > 0, tf_auc > 0)
+    } else if (exp_type == "z_scores") {
+        dframe <- dplyr::filter(dframe, tf_auc > 0)
+    }
 
     return(dframe)
 }
