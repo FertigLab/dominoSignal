@@ -32,6 +32,7 @@ for an analysis of a data set with HGNC gene labels for the hg38 genome.
 First we set up a temporary directory to store the files.
 
 ``` r
+
 temp_dir <- tempdir()
 ```
 
@@ -80,6 +81,7 @@ orientation. Below is an example of extracting the counts from a
 object and saving it as a .tsv file.
 
 ``` r
+
 pbmc_counts <- assay(pbmc, "counts")
 write.table(t(as.matrix(pbmc_counts)), paste0(input_dir, "/pbmc3k_counts.tsv"), sep = "\t",
     col.names = NA)
@@ -97,6 +99,7 @@ matrix to pySCENIC. However, users should be aware that
 Bioconductor at the time of this vignette’s creation.
 
 ``` r
+
 library(loomR)
 
 # save loom counts matrix
@@ -201,8 +204,9 @@ Vignette Build Information
 Date last built and session information:
 
 ``` r
+
 Sys.Date()
-#> [1] "2026-04-29"
+#> [1] "2026-05-05"
 sessionInfo()
 #> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu

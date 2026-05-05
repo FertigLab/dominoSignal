@@ -22,6 +22,7 @@ more information on changes). This version can be installed through
 Bioconductor.
 
 ``` r
+
 if (!requireNamespace("BiocManager")) {
     install.packages("BiocManager")
 }
@@ -32,6 +33,7 @@ The development version can be installed from the devel branch of
 Bioconductor.
 
 ``` r
+
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 

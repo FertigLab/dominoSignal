@@ -24,7 +24,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/FertigLab/dominoSignal/blob/bioconductor/RELEASE_3_23/inst/CITATION)
+[`inst/CITATION`](https://github.com/FertigLab/dominoSignal/blob/v1.6.0/inst/CITATION)
 
 Cherry C, Maestas D, Han J, Andorko J, Cahan P, Fertig E, Garmire L,
 Elisseeff J (2021). “Computational reconstruction of the signalling
