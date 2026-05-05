@@ -13,6 +13,7 @@ for human scRNAseq data can be installed from a public Github repository
 from the Tiechmann Group that developed CellPhoneDB.
 
 ``` r
+
 # URL for desired version of CellPhoneDB
 cellphone_url <- "https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz"
 
@@ -42,10 +43,11 @@ Vignette Build Information
 Date last built and session information:
 
 ``` r
+
 Sys.Date()
-#> [1] "2026-04-15"
+#> [1] "2026-05-05"
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.4 LTS
 #> 
@@ -70,7 +72,7 @@ sessionInfo()
 #>  [5] xfun_0.57         cachem_1.1.0      knitr_1.51        htmltools_0.5.9  
 #>  [9] rmarkdown_2.31    lifecycle_1.0.5   cli_3.6.6         sass_0.4.10      
 #> [13] pkgdown_2.2.0     textshaping_1.0.5 jquerylib_0.1.4   systemfonts_1.3.2
-#> [17] compiler_4.5.3    tools_4.5.3       ragg_1.5.2        bslib_0.10.0     
+#> [17] compiler_4.6.0    tools_4.6.0       ragg_1.5.2        bslib_0.10.0     
 #> [21] evaluate_1.0.5    yaml_2.3.12       formatR_1.14      otel_0.2.0       
-#> [25] jsonlite_2.0.0    rlang_1.2.0       fs_2.0.1          htmlwidgets_1.6.4
+#> [25] jsonlite_2.0.0    rlang_1.2.0       fs_2.1.0          htmlwidgets_1.6.4
 ```

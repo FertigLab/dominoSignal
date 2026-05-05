@@ -27,7 +27,7 @@ the cluster label for each individual cell
 
 ## See also
 
-Other access:
+Accessor Functions:
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_counts.md),
 [`dom_database()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_database.md),

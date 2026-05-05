@@ -70,7 +70,7 @@ An igraph plot rendered to the active graphics device
 
 ## See also
 
-Other networks:
+Network Plotting Functions:
 [`signaling_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.md)
 
 ## Examples

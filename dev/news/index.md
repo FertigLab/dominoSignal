@@ -18,6 +18,14 @@
   to avoid repeated prefixing of outgoing cluster names and to correctly
   subset outgoing signaling matrices.
 - Fixed
+  [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
+  to only include receptor and TF nodes that are associated with a
+  ligand if `OutgoingSignalingClust` is used.
+- Fixed
+  [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
+  to accumulate ligand expression across clusters for ligand node
+  scaling.
+- Fixed
   [`signaling_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.md)
   to assign undefined (`NA`) vertex sizes to 0 when scaling by
   signaling.
@@ -135,7 +143,7 @@
 
 #### Plotting Functions
 
-- Added chord plot of ligand expression targetting a specified receptor,
+- Added chord plot of ligand expression targeting a specified receptor,
   with chord widths proportional to ligand expression per cell cluster.
 - Added arguments to gene network plots to show communication between
   two clusters.

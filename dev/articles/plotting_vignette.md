@@ -10,6 +10,7 @@ utilized, and options for customization.
 ## Setup and Data Load
 
 ``` r
+
 set.seed(42)
 library(dominoSignal)
 ```
@@ -22,6 +23,7 @@ following the instructions on that page.
 Instructions to load data
 
 ``` r
+
 # BiocFileCache helps with managing files across sessions
 bfc <- BiocFileCache::BiocFileCache(ask = FALSE)
 data_url <- "https://zenodo.org/records/10951634/files/pbmc_domino_built.rds"
@@ -38,6 +40,7 @@ can be used to show the correlations calculated between receptors and
 transcription factors.
 
 ``` r
+
 cor_heatmap(dom, title = "PBMC R-TF Correlations", column_names_gp = grid::gpar(fontsize = 8))
 ```
 
@@ -52,6 +55,7 @@ of receptors and transcription factors (TFs) that are connected (with
 argument `mark_connections`).
 
 ``` r
+
 cor_heatmap(dom, bool = TRUE, bool_thresh = 0.25)
 cor_heatmap(dom, bool = FALSE, mark_connections = TRUE)
 ```
@@ -69,6 +73,7 @@ If only a subset of receptors or transcription factors are of interest,
 a vector of either (or both) can be passed to the function.
 
 ``` r
+
 receptors <- c("CSF1R", "CSF3R", "CCR7", "FCER2")
 tfs <- c("PAX5", "JUNB", "FOXJ3", "FOSB")
 cor_heatmap(dom, feats = tfs, recs = receptors)
@@ -88,6 +93,7 @@ through
 [`cor_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_heatmap.md).
 
 ``` r
+
 cor_heatmap(dom, cluster_rows = FALSE, cluster_columns = FALSE, column_title = "Heatmap Without Clustering",
     column_names_gp = grid::gpar(fontsize = 4))
 ```
@@ -103,6 +109,7 @@ is used to show the transcription factor activation for features in the
 signaling network.
 
 ``` r
+
 feat_heatmap(dom, use_raster = FALSE, row_names_gp = grid::gpar(fontsize = 4))
 ```
 
@@ -120,6 +127,7 @@ values to be visualized and one to choose to normalize the scores to the
 max value.
 
 ``` r
+
 feat_heatmap(dom, min_thresh = 0.1, max_thresh = 0.6, norm = TRUE, bool = FALSE,
     use_raster = FALSE)
 feat_heatmap(dom, bool = TRUE, use_raster = FALSE)
@@ -144,10 +152,11 @@ capable of activating the TFs enriched in the cluster. For example, to
 view the incoming signaling of the CD8 T cells:
 
 ``` r
+
 incoming_signaling_heatmap(dom, "CD8_T_cell")
 ```
 
-![Heatmap of ligand expression by sending cluster targetting CD8 T
+![Heatmap of ligand expression by sending cluster targeting CD8 T
 cells.](plotting_vignette_files/figure-html/incoming-1.png)
 
 We can also select for specific clusters of interest that are signaling
@@ -155,6 +164,7 @@ to the CD8 T cells. If we are only interested in viewing the monocyte
 signaling:
 
 ``` r
+
 incoming_signaling_heatmap(dom, "CD8_T_cell", clusts = c("CD14_monocyte", "CD16_monocyte"))
 ```
 
@@ -175,6 +185,7 @@ makes a heatmap showing the signaling strength of ligands from each
 cluster to receptors of each cluster based on averaged expression.
 
 ``` r
+
 signaling_heatmap(dom)
 ```
 
@@ -185,6 +196,7 @@ As with other functions, specific clusters can be selected, thresholds
 can be set, and normalization methods can be selected as well.
 
 ``` r
+
 signaling_heatmap(dom, scale = "sqrt")
 signaling_heatmap(dom, normalize = "rec_norm")
 ```
@@ -209,6 +221,7 @@ displayed as nodes with edges as linkages. To look at signaling to the
 CD16 Monocytes from the CD14 Monocytes:
 
 ``` r
+
 gene_network(dom, clust = "CD16_monocyte", OutgoingSignalingClust = "CD14_monocyte")
 ```
 
@@ -221,6 +234,7 @@ Options to modify this plot include adjusting scaling for the ligands
 and different layouts (some of which are more legible than others).
 
 ``` r
+
 gene_network(dom, clust = "CD16_monocyte", OutgoingSignalingClust = "CD14_monocyte",
     lig_scale = 25, layout = "sphere")
 ```
@@ -233,6 +247,7 @@ Additionally, colors can be given for select genes (for example, to
 highlight a specific signaling path).
 
 ``` r
+
 gene_network(dom, clust = "CD16_monocyte", OutgoingSignalingClust = "CD14_monocyte",
     cols = c(CD1D = "violet", LILRB2 = "violet", FOSB = "violet"), lig_scale = 10)
 ```
@@ -249,6 +264,7 @@ can be used to create a network plot such that nodes are clusters and
 the edges indicate signaling from one cluster to another.
 
 ``` r
+
 signaling_network(dom)
 ```
 
@@ -263,6 +279,7 @@ both!). An example to view signaling from the CD14 Monocytes to other
 clusters:
 
 ``` r
+
 signaling_network(dom, showOutgoingSignalingClusts = "CD14_monocyte", scale = "none",
     norm = "none", layout = "fr", scale_by = "none", edge_weight = 2, vert_scale = 10)
 ```
@@ -283,6 +300,7 @@ receptor, displaying mean cluster expression of the ligand with the
 width of the chord.
 
 ``` r
+
 circos_ligand_receptor(dom, receptor = "CD74")
 ```
 
@@ -296,6 +314,7 @@ the threshold of ligand expression required for a linkage to be
 visualized or selecting clusters of interest.
 
 ``` r
+
 cols <- c("red", "orange", "green", "blue", "pink", "purple", "slategrey", "firebrick",
     "hotpink")
 names(cols) <- dom_clusters(dom, labels = FALSE)
@@ -314,6 +333,7 @@ expression of the receptor. This produces a scatter plot as well as a
 line of best fit to look at receptor - TF correlation.
 
 ``` r
+
 cor_scatter(dom, "FOSB", "CD74")
 ```
 
@@ -343,10 +363,11 @@ Vignette Build Information
 Date last built and session information:
 
 ``` r
+
 Sys.Date()
-#> [1] "2026-04-15"
+#> [1] "2026-05-05"
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.4 LTS
 #> 
@@ -367,44 +388,44 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] dominoSignal_1.5.1
+#> [1] dominoSignal_1.7.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.3.0             httr2_1.2.2           formatR_1.14         
-#>   [4] biomaRt_2.66.2        rlang_1.2.0           magrittr_2.0.5       
+#>   [4] biomaRt_2.68.0        rlang_1.2.0           magrittr_2.0.5       
 #>   [7] clue_0.3-68           GetoptLong_1.1.1      otel_0.2.0           
-#>  [10] matrixStats_1.5.0     compiler_4.5.3        RSQLite_2.4.6        
+#>  [10] matrixStats_1.5.0     compiler_4.6.0        RSQLite_2.4.6        
 #>  [13] mgcv_1.9-4            png_0.1-9             systemfonts_1.3.2    
 #>  [16] vctrs_0.7.3           stringr_1.6.0         pkgconfig_2.0.3      
 #>  [19] shape_1.4.6.1         crayon_1.5.3          fastmap_1.2.0        
-#>  [22] backports_1.5.1       dbplyr_2.5.2          XVector_0.50.0       
+#>  [22] backports_1.5.1       dbplyr_2.5.2          XVector_0.52.0       
 #>  [25] labeling_0.4.3        rmarkdown_2.31        ragg_1.5.2           
 #>  [28] purrr_1.2.2           bit_4.6.0             xfun_0.57            
 #>  [31] cachem_1.1.0          jsonlite_2.0.0        progress_1.2.3       
-#>  [34] blob_1.3.0            broom_1.0.12          parallel_4.5.3       
+#>  [34] blob_1.3.0            broom_1.0.12          parallel_4.6.0       
 #>  [37] prettyunits_1.2.0     cluster_2.1.8.2       R6_2.6.1             
 #>  [40] bslib_0.10.0          stringi_1.8.7         RColorBrewer_1.1-3   
-#>  [43] car_3.1-5             jquerylib_0.1.4       Rcpp_1.1.1           
-#>  [46] Seqinfo_1.0.0         iterators_1.0.14      knitr_1.51           
-#>  [49] IRanges_2.44.0        splines_4.5.3         Matrix_1.7-4         
-#>  [52] igraph_2.2.3          tidyselect_1.2.1      abind_1.4-8          
+#>  [43] car_3.1-5             jquerylib_0.1.4       Rcpp_1.1.1-1.1       
+#>  [46] Seqinfo_1.2.0         iterators_1.0.14      knitr_1.51           
+#>  [49] IRanges_2.46.0        splines_4.6.0         Matrix_1.7-5         
+#>  [52] igraph_2.3.1          tidyselect_1.2.1      abind_1.4-8          
 #>  [55] yaml_2.3.12           doParallel_1.0.17     codetools_0.2-20     
-#>  [58] curl_7.0.0            lattice_0.22-9        tibble_3.3.1         
-#>  [61] plyr_1.8.9            Biobase_2.70.0        withr_3.0.2          
-#>  [64] KEGGREST_1.50.0       S7_0.2.1              evaluate_1.0.5       
-#>  [67] desc_1.4.3            BiocFileCache_3.0.0   circlize_0.4.18      
-#>  [70] Biostrings_2.78.0     pillar_1.11.1         ggpubr_0.6.3         
+#>  [58] curl_7.1.0            lattice_0.22-9        tibble_3.3.1         
+#>  [61] plyr_1.8.9            Biobase_2.72.0        withr_3.0.2          
+#>  [64] KEGGREST_1.52.0       S7_0.2.2              evaluate_1.0.5       
+#>  [67] desc_1.4.3            BiocFileCache_3.2.0   circlize_0.4.18      
+#>  [70] Biostrings_2.80.0     pillar_1.11.1         ggpubr_0.6.3         
 #>  [73] filelock_1.0.3        carData_3.0-6         foreach_1.5.2        
-#>  [76] stats4_4.5.3          generics_0.1.4        S4Vectors_0.49.1-1   
-#>  [79] hms_1.1.4             ggplot2_4.0.2         scales_1.4.0         
-#>  [82] glue_1.8.0            tools_4.5.3           ggsignif_0.6.4       
-#>  [85] fs_2.0.1              grid_4.5.3            tidyr_1.3.2          
-#>  [88] AnnotationDbi_1.72.0  colorspace_2.1-2      nlme_3.1-168         
+#>  [76] stats4_4.6.0          generics_0.1.4        S4Vectors_0.50.0     
+#>  [79] hms_1.1.4             ggplot2_4.0.3         scales_1.4.0         
+#>  [82] glue_1.8.1            tools_4.6.0           ggsignif_0.6.4       
+#>  [85] fs_2.1.0              grid_4.6.0            tidyr_1.3.2          
+#>  [88] AnnotationDbi_1.74.0  colorspace_2.1-2      nlme_3.1-169         
 #>  [91] Formula_1.2-5         cli_3.6.6             rappdirs_0.3.4       
-#>  [94] textshaping_1.0.5     ComplexHeatmap_2.26.1 dplyr_1.2.1          
+#>  [94] textshaping_1.0.5     ComplexHeatmap_2.28.0 dplyr_1.2.1          
 #>  [97] gtable_0.3.6          rstatix_0.7.3         sass_0.4.10          
-#> [100] digest_0.6.39         BiocGenerics_0.56.0   rjson_0.2.23         
+#> [100] digest_0.6.39         BiocGenerics_0.58.0   rjson_0.2.23         
 #> [103] htmlwidgets_1.6.4     farver_2.1.2          memoise_2.0.1        
 #> [106] htmltools_0.5.9       pkgdown_2.2.0         lifecycle_1.0.5      
-#> [109] httr_1.4.8            GlobalOptions_0.1.4   bit64_4.6.0-1
+#> [109] httr_1.4.8            GlobalOptions_0.1.4   bit64_4.8.0
 ```

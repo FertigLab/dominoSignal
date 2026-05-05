@@ -113,7 +113,7 @@ An igraph plot rendered to the active graphics device
 
 ## See also
 
-Other networks:
+Network Plotting Functions:
 [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
 
 ## Examples

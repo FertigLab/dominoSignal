@@ -14,6 +14,7 @@ data can be downloaded
 Libraries and set up
 
 ``` r
+
 set.seed(42)
 
 library(dominoSignal)
@@ -27,6 +28,7 @@ library(knitr)
 Data used in our vignettes can be downloaded from Zenodo.
 
 ``` r
+
 # BiocFileCache helps with managing files across sessions
 bfc <- BiocFileCache::BiocFileCache(ask = FALSE)
 data_url <- "https://zenodo.org/records/10951634/files"
@@ -69,6 +71,7 @@ dominoSignal package. The processed data can be downloaded from
 [Zenodo](https://doi.org/10.5281/zenodo.10124865).
 
 ``` r
+
 pbmc <- readRDS(pbmc)
 ```
 
@@ -78,6 +81,7 @@ Installation of dominoSignal from Bioconductor can be achieved using the
 [BiocManager](https://bioconductor.github.io/BiocManager/) package.
 
 ``` r
+
 if (!require("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
@@ -97,6 +101,7 @@ TF. This prevents the distinction of receptor expression driving TF
 activity or the TF inducing the receptor’s expression.
 
 ``` r
+
 regulons <- read.csv(scenic_regulon)
 auc <- read.table(scenic_auc, header = TRUE, row.names = 1, stringsAsFactors = FALSE,
     sep = ",")
@@ -114,6 +119,7 @@ for easy retrieval of TF regulons from the output of the
 [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) ctx function.
 
 ``` r
+
 regulons <- regulons[-1:-2, ]
 colnames(regulons) <- c("TF", "MotifID", "AUC", "NES", "MotifSimilarityQvalue", "OrthologousIdentity",
     "Annotation", "Context", "TargetGenes", "RankAtMax")
@@ -130,6 +136,7 @@ in the data. We recommend comprehensive removal of the “…” characters
 using the [`gsub()`](https://rdrr.io/r/base/grep.html) function.
 
 ``` r
+
 auc_in <- as.data.frame(t(auc))
 # Remove pattern '...' from the end of all rownames:
 rownames(auc_in) <- gsub("\\.\\.\\.$", "", rownames(auc_in))
@@ -175,6 +182,7 @@ that automatically parses files from the CellPhoneDB database to arrive
 at the rl_map format.
 
 ``` r
+
 complexes <- read.csv(paste0(cellphone_data, "/complex_input.csv"), stringsAsFactors = FALSE)
 genes <- read.csv(paste0(cellphone_data, "/gene_input.csv"), stringsAsFactors = FALSE)
 interactions <- read.csv(paste0(cellphone_data, "/interaction_input.csv"), stringsAsFactors = FALSE)
@@ -187,14 +195,14 @@ rl_map <- create_rl_map_cellphonedb(genes = genes, proteins = proteins, interact
 knitr::kable(head(rl_map))
 ```
 
-|     | int_pair                                   | name_A          | uniprot_A     | gene_A      | type_A | name_B                   | uniprot_B | gene_B  | type_B | annotation_strategy | source           | database_name    |
-|:----|:-------------------------------------------|:----------------|:--------------|:------------|:-------|:-------------------------|:----------|:--------|:-------|:--------------------|:-----------------|:-----------------|
-| 4   | RAreceptor_RXRG & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R      | atRetinoicAcid_byALDH1A3 | P47895    | ALDH1A3 | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 5   | RAreceptor_RXRG & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R      | atRetinoicAcid_byALDH1A2 | O94788    | ALDH1A2 | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 6   | RAreceptor_RXRG & atRetinoicAcid_byALDH1A1 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R      | atRetinoicAcid_byALDH1A1 | P00352    | ALDH1A1 | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 7   | RAreceptor_RXRB & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R      | atRetinoicAcid_byALDH1A3 | P47895    | ALDH1A3 | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 8   | RAreceptor_RXRB & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R      | atRetinoicAcid_byALDH1A2 | O94788    | ALDH1A2 | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 9   | RAreceptor_RXRB & atRetinoicAcid_byALDH1A1 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R      | atRetinoicAcid_byALDH1A1 | P00352    | ALDH1A1 | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
+|  | int_pair | name_A | uniprot_A | gene_A | type_A | name_B | uniprot_B | gene_B | type_B | annotation_strategy | source | database_name |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 4 | RAreceptor_RXRG & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R | atRetinoicAcid_byALDH1A3 | P47895 | ALDH1A3 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 5 | RAreceptor_RXRG & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R | atRetinoicAcid_byALDH1A2 | O94788 | ALDH1A2 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 6 | RAreceptor_RXRG & atRetinoicAcid_byALDH1A1 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R | atRetinoicAcid_byALDH1A1 | P00352 | ALDH1A1 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 7 | RAreceptor_RXRB & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R | atRetinoicAcid_byALDH1A3 | P47895 | ALDH1A3 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 8 | RAreceptor_RXRB & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R | atRetinoicAcid_byALDH1A2 | O94788 | ALDH1A2 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 9 | RAreceptor_RXRB & atRetinoicAcid_byALDH1A1 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R | atRetinoicAcid_byALDH1A1 | P00352 | ALDH1A1 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
 
 #### Optional: Adding interactions manually
 
@@ -205,6 +213,7 @@ interactions as a data frame with the same column headers as the rl_map
 and using the [`rbind()`](https://rdrr.io/r/base/cbind.html) function.
 
 ``` r
+
 # Integrin complexes are not annotated as receptors in CellPhoneDB_v4.0
 # collagen-integrin interactions between cells may be missed unless tables from
 # the CellPhoneDB reference are edited or the interactions are manually added
@@ -217,14 +226,14 @@ rl_map_append <- rbind(col_int_df, rl_map)
 knitr::kable(head(rl_map_append))
 ```
 
-|     | int_pair                                   | name_A          | uniprot_A     | gene_A      | type_A | name_B                   | uniprot_B     | gene_B        | type_B | annotation_strategy | source           | database_name    |
-|:----|:-------------------------------------------|:----------------|:--------------|:------------|:-------|:-------------------------|:--------------|:--------------|:-------|:--------------------|:-----------------|:-----------------|
-| 1   | a11b1 complex & COLA1_HUMAN                | a11b1 complex   | P05556,Q9UKX5 | ITB1,ITA11  | R      | COLA1_HUMAN              | P02452,P08123 | COL1A1,COL1A2 | L      | manual              | manual           | manual           |
-| 4   | RAreceptor_RXRG & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R      | atRetinoicAcid_byALDH1A3 | P47895        | ALDH1A3       | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 5   | RAreceptor_RXRG & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R      | atRetinoicAcid_byALDH1A2 | O94788        | ALDH1A2       | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 6   | RAreceptor_RXRG & atRetinoicAcid_byALDH1A1 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R      | atRetinoicAcid_byALDH1A1 | P00352        | ALDH1A1       | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 7   | RAreceptor_RXRB & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R      | atRetinoicAcid_byALDH1A3 | P47895        | ALDH1A3       | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
-| 8   | RAreceptor_RXRB & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R      | atRetinoicAcid_byALDH1A2 | O94788        | ALDH1A2       | L      | curated             | uniprot;reactome | CellPhoneDB_v4.0 |
+|  | int_pair | name_A | uniprot_A | gene_A | type_A | name_B | uniprot_B | gene_B | type_B | annotation_strategy | source | database_name |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 1 | a11b1 complex & COLA1_HUMAN | a11b1 complex | P05556,Q9UKX5 | ITB1,ITA11 | R | COLA1_HUMAN | P02452,P08123 | COL1A1,COL1A2 | L | manual | manual | manual |
+| 4 | RAreceptor_RXRG & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R | atRetinoicAcid_byALDH1A3 | P47895 | ALDH1A3 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 5 | RAreceptor_RXRG & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R | atRetinoicAcid_byALDH1A2 | O94788 | ALDH1A2 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 6 | RAreceptor_RXRG & atRetinoicAcid_byALDH1A1 | RAreceptor_RXRG | P48443,P29373 | RXRG,CRABP2 | R | atRetinoicAcid_byALDH1A1 | P00352 | ALDH1A1 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 7 | RAreceptor_RXRB & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R | atRetinoicAcid_byALDH1A3 | P47895 | ALDH1A3 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
+| 8 | RAreceptor_RXRB & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R | atRetinoicAcid_byALDH1A2 | O94788 | ALDH1A2 | L | curated | uniprot;reactome | CellPhoneDB_v4.0 |
 
 ## Analysis with Domino object
 
@@ -270,6 +279,7 @@ object. Note that since the data is scaled by gene, genes with no
 expression in any cell need to be removed.
 
 ``` r
+
 counts = assay(pbmc, "counts")
 logcounts = assay(pbmc, "logcounts")
 logcounts = logcounts[rowSums(logcounts) > 0, ]
@@ -307,6 +317,7 @@ To run
 with matrix and vector inputs:
 
 ``` r
+
 pbmc_dom <- create_domino(rl_map = rl_map, features = auc_in, counts = counts, z_scores = z_scores,
     clusters = clusters, tf_targets = regulon_list, use_clusters = TRUE, use_complexes = TRUE,
     remove_rec_dropout = FALSE)
@@ -339,6 +350,7 @@ bottom *n* TFs by lowest p-values from the Wilcoxon rank sum test and
 the top *m* receptors by Spearman correlation coefficient are chosen.
 
 ``` r
+
 pbmc_dom <- build_domino(dom = pbmc_dom, min_tf_pval = 0.001, max_tf_per_clust = 25,
     max_rec_per_tf = 25, rec_tf_cor_threshold = 0.25, min_rec_percentage = 0.1)
 # min_tf_pval: Threshold for p-value of DE for TFs rec_tf_cor_threshold:
@@ -351,6 +363,7 @@ infinity (Inf) to collect all receptors and TFs that meet other
 thresholds.
 
 ``` r
+
 pbmc_dom_all <- build_domino(dom = pbmc_dom, min_tf_pval = 0.001, max_tf_per_clust = Inf,
     max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.25, min_rec_percentage = 0.1)
 ```
@@ -368,6 +381,7 @@ Enrichment of TF activities by cell types can be visualized by
 which plots data set-wide TF activity scores as a heatmap.
 
 ``` r
+
 feat_heatmap(pbmc_dom, norm = TRUE, bool = FALSE, use_raster = FALSE, row_names_gp = grid::gpar(fontsize = 4))
 ```
 
@@ -385,6 +399,7 @@ magnitude of signaling between the clusters. The color of the edge
 corresponds to the sender cluster for that signal.
 
 ``` r
+
 signaling_network(pbmc_dom, edge_weight = 0.5, max_thresh = 3)
 ```
 
@@ -409,6 +424,7 @@ receptors in that cluster, and the possible ligands of these active
 receptors.
 
 ``` r
+
 gene_network(pbmc_dom, clust = "dendritic_cell", layout = "grid")
 ```
 
@@ -423,6 +439,7 @@ ligands for a given receptor are expressed by a putative outgoing
 signaling cluster.
 
 ``` r
+
 gene_network(pbmc_dom, clust = "dendritic_cell", OutgoingSignalingClust = "CD14_monocyte",
     layout = "grid")
 ```
@@ -437,6 +454,7 @@ receptors on a given cluster can be assessed with
 [`incoming_signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/incoming_signaling_heatmap.md).
 
 ``` r
+
 incoming_signaling_heatmap(pbmc_dom, rec_clust = "dendritic_cell", max_thresh = 2.5,
     use_raster = FALSE)
 ```
@@ -456,6 +474,7 @@ widest arc width scaling to the maximum expression of the ligand within
 the data.
 
 ``` r
+
 circos_ligand_receptor(pbmc_dom, receptor = "CD74")
 ```
 
@@ -482,10 +501,11 @@ Vignette Build Information
 Date last built and session information:
 
 ``` r
+
 Sys.Date()
-#> [1] "2026-04-15"
+#> [1] "2026-05-05"
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.4 LTS
 #> 
@@ -507,47 +527,47 @@ sessionInfo()
 #> [8] methods   base     
 #> 
 #> other attached packages:
-#>  [1] knitr_1.51                  ComplexHeatmap_2.26.1      
+#>  [1] knitr_1.51                  ComplexHeatmap_2.28.0      
 #>  [3] circlize_0.4.18             plyr_1.8.9                 
-#>  [5] SingleCellExperiment_1.32.0 SummarizedExperiment_1.40.0
-#>  [7] Biobase_2.70.0              GenomicRanges_1.62.1       
-#>  [9] Seqinfo_1.0.0               IRanges_2.44.0             
-#> [11] S4Vectors_0.49.1-1          BiocGenerics_0.56.0        
-#> [13] generics_0.1.4              MatrixGenerics_1.22.0      
-#> [15] matrixStats_1.5.0           dominoSignal_1.5.1         
+#>  [5] SingleCellExperiment_1.34.0 SummarizedExperiment_1.42.0
+#>  [7] Biobase_2.72.0              GenomicRanges_1.64.0       
+#>  [9] Seqinfo_1.2.0               IRanges_2.46.0             
+#> [11] S4Vectors_0.50.0            BiocGenerics_0.58.0        
+#> [13] generics_0.1.4              MatrixGenerics_1.24.0      
+#> [15] matrixStats_1.5.0           dominoSignal_1.7.0         
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] DBI_1.3.0            httr2_1.2.2          formatR_1.14        
-#>  [4] biomaRt_2.66.2       rlang_1.2.0          magrittr_2.0.5      
+#>  [4] biomaRt_2.68.0       rlang_1.2.0          magrittr_2.0.5      
 #>  [7] clue_0.3-68          GetoptLong_1.1.1     otel_0.2.0          
-#> [10] compiler_4.5.3       RSQLite_2.4.6        png_0.1-9           
+#> [10] compiler_4.6.0       RSQLite_2.4.6        png_0.1-9           
 #> [13] systemfonts_1.3.2    vctrs_0.7.3          stringr_1.6.0       
 #> [16] pkgconfig_2.0.3      shape_1.4.6.1        crayon_1.5.3        
 #> [19] fastmap_1.2.0        backports_1.5.1      dbplyr_2.5.2        
-#> [22] XVector_0.50.0       rmarkdown_2.31       ragg_1.5.2          
+#> [22] XVector_0.52.0       rmarkdown_2.31       ragg_1.5.2          
 #> [25] purrr_1.2.2          bit_4.6.0            xfun_0.57           
 #> [28] cachem_1.1.0         jsonlite_2.0.0       progress_1.2.3      
-#> [31] blob_1.3.0           DelayedArray_0.36.1  broom_1.0.12        
-#> [34] parallel_4.5.3       prettyunits_1.2.0    cluster_2.1.8.2     
+#> [31] blob_1.3.0           DelayedArray_0.38.1  broom_1.0.12        
+#> [34] parallel_4.6.0       prettyunits_1.2.0    cluster_2.1.8.2     
 #> [37] R6_2.6.1             bslib_0.10.0         stringi_1.8.7       
 #> [40] RColorBrewer_1.1-3   car_3.1-5            jquerylib_0.1.4     
-#> [43] Rcpp_1.1.1           iterators_1.0.14     Matrix_1.7-4        
-#> [46] igraph_2.2.3         tidyselect_1.2.1     abind_1.4-8         
+#> [43] Rcpp_1.1.1-1.1       iterators_1.0.14     Matrix_1.7-5        
+#> [46] igraph_2.3.1         tidyselect_1.2.1     abind_1.4-8         
 #> [49] yaml_2.3.12          doParallel_1.0.17    codetools_0.2-20    
-#> [52] curl_7.0.0           lattice_0.22-9       tibble_3.3.1        
-#> [55] withr_3.0.2          KEGGREST_1.50.0      S7_0.2.1            
-#> [58] evaluate_1.0.5       desc_1.4.3           BiocFileCache_3.0.0 
-#> [61] Biostrings_2.78.0    pillar_1.11.1        ggpubr_0.6.3        
+#> [52] curl_7.1.0           lattice_0.22-9       tibble_3.3.1        
+#> [55] withr_3.0.2          KEGGREST_1.52.0      S7_0.2.2            
+#> [58] evaluate_1.0.5       desc_1.4.3           BiocFileCache_3.2.0 
+#> [61] Biostrings_2.80.0    pillar_1.11.1        ggpubr_0.6.3        
 #> [64] filelock_1.0.3       carData_3.0-6        foreach_1.5.2       
-#> [67] hms_1.1.4            ggplot2_4.0.2        scales_1.4.0        
-#> [70] glue_1.8.0           tools_4.5.3          ggsignif_0.6.4      
-#> [73] fs_2.0.1             tidyr_1.3.2          AnnotationDbi_1.72.0
+#> [67] hms_1.1.4            ggplot2_4.0.3        scales_1.4.0        
+#> [70] glue_1.8.1           tools_4.6.0          ggsignif_0.6.4      
+#> [73] fs_2.1.0             tidyr_1.3.2          AnnotationDbi_1.74.0
 #> [76] colorspace_2.1-2     Formula_1.2-5        cli_3.6.6           
-#> [79] rappdirs_0.3.4       textshaping_1.0.5    S4Arrays_1.10.1     
+#> [79] rappdirs_0.3.4       textshaping_1.0.5    S4Arrays_1.12.0     
 #> [82] dplyr_1.2.1          gtable_0.3.6         rstatix_0.7.3       
-#> [85] sass_0.4.10          digest_0.6.39        SparseArray_1.10.10 
+#> [85] sass_0.4.10          digest_0.6.39        SparseArray_1.12.2  
 #> [88] rjson_0.2.23         htmlwidgets_1.6.4    farver_2.1.2        
 #> [91] memoise_2.0.1        htmltools_0.5.9      pkgdown_2.2.0       
 #> [94] lifecycle_1.0.5      httr_1.4.8           GlobalOptions_0.1.4 
-#> [97] bit64_4.6.0-1
+#> [97] bit64_4.8.0
 ```

@@ -53,7 +53,7 @@ as columns named by the unique values of the group.by variable.
 
 ## See also
 
-Other differentials:
+Differential Signaling Workflow:
 [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md),
 [`summarize_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.md),
 [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md)

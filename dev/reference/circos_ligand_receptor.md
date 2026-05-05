@@ -49,7 +49,7 @@ Renders a circos plot to the active graphics device
 
 ## See also
 
-Other misc_plotting:
+Assorted Plotting Functions:
 [`cor_scatter()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_scatter.md),
 [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
 

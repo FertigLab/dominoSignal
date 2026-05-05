@@ -37,7 +37,7 @@ cluster across multiple domino results
 
 ## See also
 
-Other differentials:
+Differential Signaling Workflow:
 [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md),
 [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md),
 [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md)

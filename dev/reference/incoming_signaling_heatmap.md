@@ -82,7 +82,7 @@ a Heatmap rendered to the active graphics device
 
 ## See also
 
-Other heatmaps:
+Heatmap Plotting Functions:
 [`cor_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_heatmap.md),
 [`feat_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/feat_heatmap.md),
 [`signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_heatmap.md)

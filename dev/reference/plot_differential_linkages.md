@@ -51,11 +51,11 @@ features.
 
 ## See also
 
-Other misc_plotting:
+Assorted Plotting Functions:
 [`circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/circos_ligand_receptor.md),
 [`cor_scatter()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_scatter.md)
 
-Other differentials:
+Differential Signaling Workflow:
 [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md),
 [`summarize_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.md),
 [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md)

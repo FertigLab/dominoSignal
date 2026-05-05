@@ -32,6 +32,7 @@ for an analysis of a data set with HGNC gene labels for the hg38 genome.
 First we set up a temporary directory to store the files.
 
 ``` r
+
 temp_dir <- tempdir()
 ```
 
@@ -80,6 +81,7 @@ orientation. Below is an example of extracting the counts from a
 object and saving it as a .tsv file.
 
 ``` r
+
 pbmc_counts <- assay(pbmc, "counts")
 write.table(t(as.matrix(pbmc_counts)), paste0(input_dir, "/pbmc3k_counts.tsv"), sep = "\t",
     col.names = NA)
@@ -97,12 +99,13 @@ matrix to pySCENIC. However, users should be aware that
 Bioconductor at the time of this vignette’s creation.
 
 ``` r
+
 library(loomR)
 
 # save loom counts matrix
 pbmc_counts <- assay(pbmc, "counts")
 pbmc_loom <- loomR::create(filename = paste0(input_dir, "/pbmc3k_counts.loom"), data = pbmc_counts)
-# Depending on the version of loomR, you may need to manually add CellId and
+# Depending on the version of loomR, you may need to manually add CellID and
 # Gene attributes:
 pbmc_loom$add.row.attribute(list(Gene = rownames(pbmc)))
 pbmc_loom$add.col.attribute(list(CellID = colnames(pbmc)))
@@ -201,10 +204,11 @@ Vignette Build Information
 Date last built and session information:
 
 ``` r
+
 Sys.Date()
-#> [1] "2026-04-15"
+#> [1] "2026-05-05"
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.4 LTS
 #> 
@@ -229,7 +233,7 @@ sessionInfo()
 #>  [5] xfun_0.57         cachem_1.1.0      knitr_1.51        htmltools_0.5.9  
 #>  [9] rmarkdown_2.31    lifecycle_1.0.5   cli_3.6.6         sass_0.4.10      
 #> [13] pkgdown_2.2.0     textshaping_1.0.5 jquerylib_0.1.4   systemfonts_1.3.2
-#> [17] compiler_4.5.3    tools_4.5.3       ragg_1.5.2        bslib_0.10.0     
+#> [17] compiler_4.6.0    tools_4.6.0       ragg_1.5.2        bslib_0.10.0     
 #> [21] evaluate_1.0.5    yaml_2.3.12       formatR_1.14      otel_0.2.0       
-#> [25] jsonlite_2.0.0    rlang_1.2.0       fs_2.0.1          htmlwidgets_1.6.4
+#> [25] jsonlite_2.0.0    rlang_1.2.0       fs_2.1.0          htmlwidgets_1.6.4
 ```

@@ -22,7 +22,7 @@ transcription factors (rows) in each cluster (columns)
 
 ## See also
 
-Other access:
+Accessor Functions:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_counts.md),

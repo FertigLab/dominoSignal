@@ -76,7 +76,7 @@ A heatmap rendered to the active graphics device
 
 ## See also
 
-Other heatmaps:
+Heatmap Plotting Functions:
 [`feat_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/feat_heatmap.md),
 [`incoming_signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/incoming_signaling_heatmap.md),
 [`signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_heatmap.md)

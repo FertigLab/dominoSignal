@@ -41,7 +41,7 @@ A ggplot scatter plot rendered in the active graphics device
 
 ## See also
 
-Other misc_plotting:
+Assorted Plotting Functions:
 [`circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/circos_ligand_receptor.md),
 [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
 

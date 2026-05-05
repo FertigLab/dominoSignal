@@ -24,13 +24,13 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/FertigLab/dominoSignal/blob/bioconductor/prep_3_23/inst/CITATION)
+[`inst/CITATION`](https://github.com/FertigLab/dominoSignal/blob/master/inst/CITATION)
 
 Cherry C, Maestas D, Han J, Andorko J, Cahan P, Fertig E, Garmire L,
 Elisseeff J (2021). “Computational reconstruction of the signalling
 networks surrounding implanted biomaterials from single-cell
 transcriptomics.” *Nature Biomedical Engineering*, **5**(10), 1228-1238.
-[doi:10.1038/s41551-021-00770-5](https://doi.org/10.1038/s41551-021-00770-5),
+[doi:10.1038/s41551-021-00770-5](https://doi.org/10.1038/s41551-021-00770-5).
 <https://doi.org/10.1038%2Fs41551-021-00770-5>.
 
     @Article{,
