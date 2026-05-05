@@ -39,3 +39,15 @@ plot_differential_linkages(
 )
 
 }
+\seealso{
+Assorted Plotting Functions:
+\code{\link{circos_ligand_receptor}()},
+\code{\link{cor_scatter}()}
+
+Differential Signaling Workflow:
+\code{\link{count_linkage}()},
+\code{\link{summarize_linkages}()},
+\code{\link{test_differential_linkages}()}
+}
+\concept{differentials}
+\concept{misc_plotting}

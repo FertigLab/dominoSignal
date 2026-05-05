@@ -9,9 +9,9 @@ table_convert_genes(genes, from, to, conversion_table)
 \arguments{
 \item{genes}{the genes to convert}
 
-\item{from}{gene symbol type of the input (ENSG, ENSMUSG, HGNC, MGI)}
+\item{from}{gene symbol type of the input (one of ENSG, ENSMUSG, HGNC, MGI)}
 
-\item{to}{desired gene symbol type for the output (HGNC, MGI)}
+\item{to}{desired gene symbol type for the output (one of HGNC, MGI)}
 
 \item{conversion_table}{a data frame with column names corresponding to gene symbol types (mm.ens, hs.ens, mgi, hgnc)
 and rows corresponding to the gene symbols themselves}

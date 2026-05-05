@@ -33,5 +33,5 @@ Pull expression data from a domino object and format for plotting as a receptor-
 example(build_domino, echo = FALSE)
 #basic usage
 obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-
 }
+\keyword{internal}

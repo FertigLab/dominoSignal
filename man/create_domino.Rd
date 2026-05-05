@@ -31,7 +31,7 @@ create_domino(
 
 \item{clusters}{Named factor containing cell cluster with names as cells.}
 
-\item{use_clusters}{Boolean indicating whether to use clusters.}
+\item{use_clusters}{Boolean indicating whether to use clusters (currently must be TRUE)}
 
 \item{tf_targets}{Optional. A list where names are transcription factors and the stored values are character vectors of genes in the transcription factor's regulon.}
 
@@ -73,14 +73,8 @@ pbmc_dom_tiny <- create_domino(
  verbose = FALSE
  )
 
-pbmc_dom_tiny_no_clusters <- create_domino(
- rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
- counts = PBMC$RNA_count_tiny, z_scores =PBMC$RNA_zscore_tiny,
- clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
- use_clusters = FALSE, use_complexes = FALSE,
- rec_min_thresh = 0.1, remove_rec_dropout = TRUE,
- tf_selection_method = "all",
- verbose = FALSE
- )
 
+}
+\seealso{
+\code{\link[=create_rl_map_cellphonedb]{create_rl_map_cellphonedb()}} for creating receptor-ligand maps, \code{\link[=create_regulon_list_scenic]{create_regulon_list_scenic()}} for creating regulon lists from pySCENIC output, and \code{\link[=build_domino]{build_domino()}} for building signaling networks from domino objects created by this function.
 }

@@ -6,12 +6,13 @@
 #'
 #' @param dom Domino object from [create_domino()].
 #' @param max_tf_per_clust Maximum number of transcription factors called active in a cluster.
-#' @param min_tf_pval Minimum p-value from differential feature score test to call a transcription factor active in a cluster.
+#' @param min_tf_pval Maximum p-value from differential feature score test to call a transcription factor active in a cluster, serving as a significance threshold.
 #' @param max_rec_per_tf Maximum number of receptors to link to each transcription factor.
 #' @param rec_tf_cor_threshold Minimum Spearman correlation used to consider a receptor linked with a transcription factor. Increasing this will decrease the number of receptors linked to each transcription factor.
-#' @param min_rec_percentage Minimum percentage of cells in cluster expressing a receptor for the receptor to be linked to trancription factors in that cluster.
+#' @param min_rec_percentage Minimum percentage of cells in cluster expressing a receptor for the receptor to be linked to transcription factors in that cluster.
 #' @return A domino object with a signaling network built
 #' @export
+#' @seealso [create_domino()] to create a domino object
 #' @examples
 #' example(create_domino, echo = FALSE)
 #'
@@ -207,13 +208,13 @@ build_domino <- function(
   return(dom)
 }
 
-#' Pulls all items from a list pooled into a single vector
+#' Pool items from list into vector
 #'
 #' Helper function to convert from a nested series of lists to a single vector.
 #'
 #' @param list List to pull items from
 #' @param list_names Names of items in list to pool
-#' @return A vector contaning all items in the list by list_names
+#' @return A vector containing all items in the list by list_names
 #' @keywords internal
 #'
 lc <- function(list, list_names) {

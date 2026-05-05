@@ -10,5 +10,9 @@ R/.Rhistory
 scenic/*
 
 scratch/
-/doc/
+/docs/
 /Meta/
+pkgdown/
+inst/pkgdown.yml
+!pkgdown/extra.css
+dominoSignal.BiocCheck/
