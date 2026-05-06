@@ -17,8 +17,8 @@ NULL
 #' @param interactions data frame or file path to table of protein-protein interactions in CellPhoneDB format
 #' @param complexes optional: data frame or file path to table of protein complexes in CellPhoneDB format
 #' @param database_name name of the database being used, stored in output
-#' @param gene_conv a tuple of (from, to) or (source, target) if gene conversion to orthologs is desired;
-#'   options are ENSMUSG, ENSG, MGI, or HGNC
+#' @param gene_conv character vector of length 2 formatted as (from, to) or (source, target)
+#'   if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC
 #' @param gene_conv_host host for conversion; default ensembl, could also use mirrors if desired
 #' @param alternate_convert boolean if you would like to use a non-ensembl method of conversion
 #'   (must supply table; not recommended, use only if ensembl is down)
@@ -27,6 +27,7 @@ NULL
 #'   alternate_convert = TRUE
 #' @return Data frame where each row describes a possible receptor-ligand interaction
 #' @export create_rl_map_cellphonedb
+#' @seealso [create_domino()] where output of this function can be used
 #' @examples
 #' data(CellPhoneDB)
 #' rl_map_tiny <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,

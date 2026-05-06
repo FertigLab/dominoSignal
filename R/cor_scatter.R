@@ -3,13 +3,14 @@
 #' Create a correlation plot between transcription factor activation score and receptor expression
 #'
 #' @param dom Domino object with network built ([build_domino()])
-#' @param tf Target TF for plottting AUC score
+#' @param tf Target TF for plotting AUC score
 #' @param rec Target receptor for plotting expression
 #' @param remove_rec_dropout Whether to remove cells with zero expression for plot.
 #'  This should match the same setting as in [build_domino()].
 #' @param ... Other parameters to pass to [ggpubr::ggscatter()].
 #' @return A ggplot scatter plot rendered in the active graphics device
 #' @export cor_scatter
+#' @family plotting
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny

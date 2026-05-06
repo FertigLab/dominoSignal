@@ -13,6 +13,8 @@
 #' @return A heatmap-class object of features ranked by test_statistic annotated with the proportion of subjects
 #'   that showed active linkage of the features.
 #' @export
+#' @family plotting
+#' @family differentials
 #' @examples
 #' data(LinkageSummary)
 #' plot_differential_linkages(

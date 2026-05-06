@@ -11,8 +11,8 @@ NULL
 #' @param group.by the name of the column in `linkage_summary@subject_meta` by which to group subjects for counting.
 #' @param linkage a stored linkage from the domino object.
 #'   Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
-#' @param subject_names a vector of subject_names from the linkage_summary to be compared.
-#'   If NULL, all subject_names in the linkage summary are included in counting.
+#' @param subject_names a vector of subject_names from the linkage_summary.
+#'   NOTE: all subject_names in the linkage summary are included in counting.
 #' @param test_name the statistical test used for comparison.
 #' \itemize{
 #'  \item{'fishers.exact'} : Fisher's exact test for the dependence of the proportion of subjects with an
@@ -35,6 +35,8 @@ NULL
 #'  \item{'X_n'} : total number of subjects in each category of group.by (X)
 #' }
 #' @export
+#' @seealso [summarize_linkages()] to create [linkage_summary()] objects
+#' @family differentials
 #' @examples
 #' data(LinkageSummary)
 #' tiny_differential_linkage_c1 <- test_differential_linkages(

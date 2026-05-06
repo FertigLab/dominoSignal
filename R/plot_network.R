@@ -40,6 +40,7 @@ NULL
 #' @param ... other parameters to be passed to plot when used with an igraph object.
 #' @return An igraph plot rendered to the active graphics device
 #' @export signaling_network
+#' @family networks
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny
@@ -215,7 +216,7 @@ signaling_network <- function(
 #' will be included in the plot.
 #'
 #' @param dom Domino object with network built ([build_domino()])
-#' @param clust Receptor cluster to create the gene association network for. A vector of clusters may be provided.
+#' @param clust Receptor cluster to create the gene association network for. A vector of clusters may be provided. This is a required parameter.
 #' @param OutgoingSignalingClust Vector of clusters to plot the outgoing signaling from
 #' @param class_cols Named vector of colors used to color classes of vertices. Values must be colors and names must
 #'   be classes ('rec', 'lig', and 'feat' for receptors, ligands, and features).
@@ -229,6 +230,7 @@ signaling_network <- function(
 #'   See [igraph](https://r.igraph.org/) manual for options.
 #' @return An igraph plot rendered to the active graphics device
 #' @export gene_network
+#' @family networks
 #' @examples
 #' # basic usage
 #' data(DominoObjects)

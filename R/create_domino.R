@@ -16,7 +16,7 @@
 #' @param counts Counts matrix for the data. This is only used to threshold receptors on dropout.
 #' @param z_scores Matrix containing z-scored expression data for all cells with cells as columns and features as rows.
 #' @param clusters Named factor containing cell cluster with names as cells.
-#' @param use_clusters Boolean indicating whether to use clusters.
+#' @param use_clusters Boolean indicating whether to use clusters (currently must be TRUE)
 #' @param tf_targets Optional. A list where names are transcription factors and the stored values are character vectors
 #'   of genes in the transcription factor's regulon.
 #' @param verbose Boolean indicating whether or not to print progress during computation.
@@ -37,6 +37,9 @@
 #'   Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'
 #' @return A domino object
 #' @export create_domino
+#' #' @seealso [create_rl_map_cellphonedb()] for creating receptor-ligand maps, 
+#'   [create_regulon_list_scenic()] for creating regulon lists from pySCENIC output,
+#'   and [build_domino()] for building signaling networks from domino objects created by this function.
 #' @examples
 #' 
 #' data(CellPhoneDB)
@@ -51,16 +54,7 @@
 #'  verbose = FALSE
 #'  )
 #'
-#' pbmc_dom_tiny_no_clusters <- create_domino(
-#'  rl_map = CellPhoneDB$rl_map_tiny, features = SCENIC$auc_tiny,
-#'  counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
-#'  clusters = PBMC$clusters_tiny, tf_targets = SCENIC$regulon_list_tiny,
-#'  use_clusters = FALSE, use_complexes = FALSE,
-#'  rec_min_thresh = 0.1, remove_rec_dropout = TRUE,
-#'  tf_selection_method = "all",
-#'  verbose = FALSE
-#'  )
-#'
+
 create_domino <- function(
     rl_map, features, counts = NULL, z_scores = NULL,
     clusters = NULL, use_clusters = TRUE, tf_targets = NULL, verbose = TRUE,
