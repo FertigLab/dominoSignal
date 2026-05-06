@@ -37,7 +37,7 @@
 #'   Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'
 #' @return A domino object
 #' @export create_domino
-#' #' @seealso [create_rl_map_cellphonedb()] for creating receptor-ligand maps, 
+#' @seealso [create_rl_map_cellphonedb()] for creating receptor-ligand maps, 
 #'   [create_regulon_list_scenic()] for creating regulon lists from pySCENIC output,
 #'   and [build_domino()] for building signaling networks from domino objects created by this function.
 #' @examples

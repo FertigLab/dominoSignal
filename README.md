@@ -23,7 +23,7 @@ Here is an overview of how dominoSignal might be used in analysis of a single ce
 4. Parameters such as the maximum number of transcription factors and receptors or the minimum correlation threshold (among others) are used to make a cell communication network
 5. Communication networks can be extracted from within the domino object or visualized using a variety of plotting functions
 
-Please see [our website](https://fertiglab.github.io/dominoSignal/) for tutorials on all of these steps, from downloading and running [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) in the [SCENIC tutorial](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html) to building and visualizing domino results on the [Getting Started page](https://fertiglab.github.io/dominoSignal/articles/dominoSignal). Other articles include [further details on plotting functions](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html) and [the structure of the domino object](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html).
+Please see [our website](https://fertiglab.github.io/dominoSignal/) for tutorials on all of these steps, from downloading and running [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) in the [SCENIC tutorial](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html) to building and visualizing domino results on the [Getting Started page](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html). Other articles include [further details on plotting functions](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html) and [the structure of the domino object](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html).
 
 ### Citation
 
@@ -34,4 +34,5 @@ If you use our package in your analysis, please cite us:
 > Cherry C, Mitchell J, Nagaraj S, Krishnan K, Lvovs D, Fertig E, Elisseeff J (2026). dominoSignal: Cell Communication Analysis for Single Cell RNA Sequencing. R package version 1.6.0.
 
 ### Contact Us
+
 If you find any bugs or have questions, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
