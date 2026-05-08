@@ -37,7 +37,7 @@ library(knitr)
 ```
 </details>
 
-<details><summary>Data used in our vignettes can be downloaded from Zenodo</summary>
+<details><summary>Data used in our vignettes can be downloaded from Zenodo.</summary>
 
 ```{r files}
 # BiocFileCache helps with managing files across sessions
@@ -75,7 +75,7 @@ if (!dir.exists(input_dir)) {
 
 ## Data preparation
 
-Analysis of cell-cell communication with dominoSignal often follows initial processing and annotation of scRNAseq data.  We used the [OSCA workflow](https://bioconductor.org/books/3.18/OSCA.workflows/unfiltered-human-pbmcs-10x-genomics.html) to prepare the data set for analysis with dominoSignal. The complete processing script is available in the data-raw directory of the dominoSignal package. The processed data can be downloaded from [Zenodo](10.5281/zenodo.10124865).
+Analysis of cell-cell communication with dominoSignal often follows initial processing and annotation of scRNAseq data.  We used the [OSCA workflow](https://bioconductor.org/books/3.18/OSCA.workflows/unfiltered-human-pbmcs-10x-genomics.html) to prepare the data set for analysis with dominoSignal. The complete processing script is available in the data-raw directory of the dominoSignal package. The processed data can be downloaded from [Zenodo](https://doi.org/10.5281/zenodo.10124865).
 
 ```{r}
 pbmc <- readRDS(pbmc)
@@ -278,7 +278,7 @@ pbmc_dom <- build_domino(
 # min_rec_percentage: Minimum percent of cells that must express receptor
 ```
 
-Both thresholds for the number of receptors and TFs can be sent to infinity (Inf) to collect all receptors and TFs that meet statistical significance thresholds.
+Thresholds for both the number of receptors and TFs can be sent to infinity (Inf) to collect all receptors and TFs that meet other thresholds.
 
 ```{r Build Domino All Significant Interactions, eval=FALSE}
 pbmc_dom_all <- build_domino(
@@ -319,7 +319,7 @@ The cumulative degree of signaling between clusters is assessed as the sum of th
 signaling_network(pbmc_dom, edge_weight = 0.5, max_thresh = 3)
 ```
 
-Signaling networks can also be drawn with the edges only rendering the signals directed towards a given cell type or signals from one cell type directed to others. To see those options in use, as well as other plotting functions and their options, please see our [plotting vignette](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette).
+Signaling networks can also be drawn with the edges only rendering the signals directed towards a given cell type or signals from one cell type directed to others. To see those options in use, as well as other plotting functions and their options, please see our [plotting vignette](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html).
 
 ### Specific Signaling Interactions between Clusters
 
@@ -365,7 +365,7 @@ circos_ligand_receptor(pbmc_dom, receptor = "CD74")
 
 ## Continued Development
 
-Since dominoSignal is a package still being developed, there are new functions and features that will be implemented in future versions. In the meantime, we have put together further information on [plotting](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette) and the [domino object structure](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette) if you would like to explore more of the package's functionality. Additionally, if you find any bugs, have further questions, or want to share an idea, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
+Since dominoSignal is a package still being developed, there are new functions and features that will be implemented in future versions. In the meantime, we have put together further information on [plotting](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html) and the [domino object structure](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html) if you would like to explore more of the package's functionality. Additionally, if you find any bugs, have further questions, or want to share an idea, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
 
 <details><summary>Vignette Build Information</summary>
 Date last built and session information:
