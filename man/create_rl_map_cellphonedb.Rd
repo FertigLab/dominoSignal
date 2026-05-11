@@ -28,8 +28,8 @@ CellPhoneDB database format}
 
 \item{database_name}{name of the database being used, stored in output}
 
-\item{gene_conv}{a tuple of (from, to) or (source, target) if gene conversion to orthologs is desired;
-options are ENSMUSG, ENSG, MGI, or HGNC}
+\item{gene_conv}{character vector of length 2 formatted as (from, to) or (source, target)
+if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC}
 
 \item{gene_conv_host}{host for conversion; default ensembl, could also use mirrors if desired}
 
@@ -75,4 +75,7 @@ rl_map_tiny_alt <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
   complexes = CellPhoneDB$complexes_tiny, gene_conv = c("ENSG", "MGI"),
   alternate_convert = TRUE, alternate_convert_table = ortho_table)
 
+}
+\seealso{
+\code{\link[=create_domino]{create_domino()}} where output of this function can be used
 }

@@ -51,3 +51,10 @@ signaling_heatmap(dom, scale = "sqrt")
 signaling_heatmap(dom, normalize = "rec_norm")
 
 }
+\seealso{
+Heatmap Plotting Functions:
+\code{\link[=cor_heatmap]{cor_heatmap()}},
+\code{\link[=feat_heatmap]{feat_heatmap()}},
+\code{\link[=incoming_signaling_heatmap]{incoming_signaling_heatmap()}}
+}
+\concept{heatmaps}

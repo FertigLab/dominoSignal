@@ -68,3 +68,10 @@ feat_heatmap(
 )
 
 }
+\seealso{
+Heatmap Plotting Functions:
+\code{\link[=cor_heatmap]{cor_heatmap()}},
+\code{\link[=incoming_signaling_heatmap]{incoming_signaling_heatmap()}},
+\code{\link[=signaling_heatmap]{signaling_heatmap()}}
+}
+\concept{heatmaps}

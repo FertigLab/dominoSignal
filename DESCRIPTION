@@ -34,7 +34,6 @@ Imports:
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.3.3
 biocViews:
     SystemsBiology,
     SingleCell,
@@ -52,3 +51,4 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 URL: https://FertigLab.github.io/dominoSignal/
+Config/roxygen2/version: 8.0.0
