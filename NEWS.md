@@ -1,3 +1,9 @@
+# dominoSignal v1.7.0 (in deveopment)
+
+## Bug fixes
+
+- Fixed `gene_network()` function skip iterating on linkages if length is zero
+
 # dominoSignal v1.6.0
 
 ## New Features

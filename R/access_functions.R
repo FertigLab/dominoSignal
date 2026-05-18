@@ -145,7 +145,6 @@ dom_correlations <- function(dom, type = "rl") {
 #'                  to select the desired type of linkage. Note that "receptor" and
 #'  "incoming-ligand" are only available when by_cluster is set to TRUE.
 #' @param by_cluster A boolean to indicate whether to return linkages overall or by cluster
-#'   or broken down by cluster
 #' @return  A list containing linkages between some combination of receptors, ligands,
 #'   transcription factors, and clusters
 #' @export

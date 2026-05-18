@@ -19,7 +19,7 @@ dominoSignal is an updated version of the original [domino](https://github.com/E
 
 ## Installation
 
-dominoSignal is undergoing active development to improve analysis capabilities and interpretability, so the codebase is subject to change as new features and fixes are implemented. The current version of dominoSignal can be found on [Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html) though the package is still undergoing development (see our [changelog](news/index.html) for more information on changes). This version can be installed through Bioconductor.
+dominoSignal is undergoing active development to improve analysis capabilities and interpretability, so the codebase is subject to change as new features and fixes are implemented. The current version of dominoSignal can be found on [Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html) though the package is still undergoing development (see our [changelog](https://fertiglab.github.io/dominoSignal/news/index.html) for more information on changes). This version can be installed through Bioconductor.
 
 ```{r, eval = FALSE}
 if (!requireNamespace("BiocManager")) {
@@ -31,8 +31,9 @@ BiocManager::install("dominoSignal")
 The development version can be installed from the devel branch of Bioconductor.
 
 ```{r, eval = FALSE}
-if (!require("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocManager")) {
     install.packages("BiocManager")
+}
 
 # The following initializes usage of Bioc devel
 BiocManager::install(version = "devel")
