@@ -19,8 +19,7 @@ dom_linkages(
 to select the desired type of linkage. Note that "receptor" and
 "incoming-ligand" are only available when by_cluster is set to TRUE.}
 
-\item{by_cluster}{A boolean to indicate whether to return linkages overall or by cluster
-or broken down by cluster}
+\item{by_cluster}{A boolean to indicate whether to return linkages overall or by cluster}
 }
 \value{
 A list containing linkages between some combination of receptors, ligands,
