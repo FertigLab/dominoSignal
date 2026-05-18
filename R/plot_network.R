@@ -319,7 +319,7 @@ gene_network <- function(
         allowed_ligs <- character(0)
         if (!is.null(OutgoingSignalingClust)) {
             outgoing_cls <- paste0("L_", OutgoingSignalingClust)
-            all_sums <- matrix(0, 0, 0)
+            all_sums <- numeric(0)
         } else {
             outgoing_cls <- NULL
         }
@@ -337,7 +337,7 @@ gene_network <- function(
                 new_only <- setdiff(names(new_sums), names(all_sums))
                 all_sums <- c(all_sums, new_sums[new_only])
             } else {
-            allowed_ligs <- union(allowed_ligs, rownames(dom@cl_signaling_matrices[[cl]]))
+                allowed_ligs <- union(allowed_ligs, rownames(dom@cl_signaling_matrices[[cl]]))
             }
         }
     } else {
@@ -356,10 +356,16 @@ gene_network <- function(
     }
 
     # Make sure to only keep receptors and TFs downstream of ligands that are included
-    keep_recs <- unique(links[seq(2, length(links), by = 2)])
-    for (i in seq(1, length(rec_tf_links), by = 2)) {
-        if (rec_tf_links[i] %in% keep_recs) {
-        links <- c(links, rec_tf_links[i], rec_tf_links[i + 1])
+    if (length(links) > 0) {
+        keep_recs <- unique(links[seq(2, length(links), by = 2)])
+    } else {
+        keep_recs <- character(0)
+    }
+    if (length(rec_tf_links) > 0) {
+        for (i in seq(1, length(rec_tf_links), by = 2)) {
+            if (rec_tf_links[i] %in% keep_recs) {
+                links <- c(links, rec_tf_links[i], rec_tf_links[i + 1])
+            }
         }
     }
     all_recs <- unique(all_recs[all_recs %in% links])
