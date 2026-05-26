@@ -8,12 +8,13 @@
 #'  If NULL, only total counts of linkages for linkages in the cluster across all subjects is given.
 #' @param linkage a stored linkage from the domino object.
 #'  Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
-#' @param subject_names a vector of subject_names from the linkage_summary to be compared.
-#'  If NULL, all subject_names in the linkage summary are included in counting.
+#' @param subject_names a vector of subject_names from the linkage_summary.
+#'   NOTE: all subject_names in the linkage summary are included in counting.
 #' @return A data frame with columns for the unique linkage features and the counts of how many times the linkage
 #'  occured across the compared domino results. If group.by is used, counts of the linkages are also provided as
 #'  columns named by the unique values of the group.by variable.
 #' @export
+#' @family differentials
 #' @examples
 #' data(LinkageSummary)
 #' count_linkage(

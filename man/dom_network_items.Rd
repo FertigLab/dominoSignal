@@ -31,3 +31,17 @@ monocyte_receptors <- dom_network_items(dom, "CD14_monocyte", "receptors")
 all_tfs <- dom_network_items(dom, which_return = "features")
 
 }
+\seealso{
+Other accessors:
+\code{\link[=dom_clusters]{dom_clusters()}},
+\code{\link[=dom_correlations]{dom_correlations()}},
+\code{\link[=dom_counts]{dom_counts()}},
+\code{\link[=dom_database]{dom_database()}},
+\code{\link[=dom_de]{dom_de()}},
+\code{\link[=dom_info]{dom_info()}},
+\code{\link[=dom_linkages]{dom_linkages()}},
+\code{\link[=dom_signaling]{dom_signaling()}},
+\code{\link[=dom_tf_activation]{dom_tf_activation()}},
+\code{\link[=dom_zscores]{dom_zscores()}}
+}
+\concept{accessors}

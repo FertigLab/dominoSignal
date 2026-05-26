@@ -7,7 +7,7 @@
 summarize_linkages(domino_results, subject_meta, subject_names = NULL)
 }
 \arguments{
-\item{domino_results}{list of domino result with one domino object per subject. Names from the list must
+\item{domino_results}{list of domino results with one domino object per subject. Names from the list should
 match subject_names}
 
 \item{subject_meta}{data frame that includes the subject features by which the objects could be grouped.
@@ -16,7 +16,7 @@ The first column must be subject names}
 \item{subject_names}{vector of subject names in domino_results. If NULL, defaults to first column of subject_meta.}
 }
 \value{
-A linkage summary class object consisting of nested lists of the active transcription factors,
+A \code{\link[=linkage_summary]{linkage_summary()}} object consisting of nested lists of the active transcription factors,
 active receptors, and incoming ligands for each cluster across multiple domino results
 }
 \description{
@@ -71,3 +71,10 @@ summarize_linkages(
     subject_names = meta_df$ID
 )
 }
+\seealso{
+Differential Signaling Workflow:
+\code{\link[=count_linkage]{count_linkage()}},
+\code{\link[=plot_differential_linkages]{plot_differential_linkages()}},
+\code{\link[=test_differential_linkages]{test_differential_linkages()}}
+}
+\concept{differentials}

@@ -18,7 +18,7 @@ gene_network(
 \arguments{
 \item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
 
-\item{clust}{Receptor cluster to create the gene association network for. A vector of clusters may be provided.}
+\item{clust}{Receptor cluster to create the gene association network for. A vector of clusters may be provided. This is a required parameter.}
 
 \item{OutgoingSignalingClust}{Vector of clusters to plot the outgoing signaling from}
 
@@ -57,3 +57,8 @@ gene_network(
 )
 
 }
+\seealso{
+Network Plotting Functions:
+\code{\link[=signaling_network]{signaling_network()}}
+}
+\concept{networks}

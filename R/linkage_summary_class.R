@@ -2,7 +2,7 @@
 #'
 #' The linkage summary class contains linkages established in multiple domino
 #' objects through gene regulatory network inference and reference to receptor-
-#' ligand data bases. A data frame summarizing meta features that describe the
+#' ligand databases. A data frame summarizing meta features that describe the
 #' domino objects compared in the linkage summary facilitates comparisons of
 #' established linkages and differential signaling interactions across categorical
 #' sample covariates.
@@ -11,7 +11,7 @@
 #' @slot subject_meta data.frame with each row describing one subject and columns describing features of the
 #'   subjects by which to draw comparisons of signaling networks
 #' @slot subject_linkages nested list of linkages inferred for each subject. Lists are stored in a
-#'   heirarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs)
+#'   hierarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs)
 #'   linkages between transcription factors and receptors (tfs_rec), active receptors (rec), possible
 #'   receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)
 #' @name linkage_summary-class
@@ -51,7 +51,7 @@ setMethod("print", "linkage_summary", function(x, ...) {
 #' Shows content overview of linkage_summary object
 #'
 #' @param object A linkage_summary object
-#' @return A printed description of subject numbers, group numbers, and cluster numbers in the linkage summary object
+#' @return A printed description of the number of subjects, groups, and clusters in the linkage summary object
 #' @export
 #' @examples
 #' data(LinkageSummary)

@@ -26,3 +26,17 @@ cluster_names <- dom_clusters(dom)
 cell_cluster_label <- dom_clusters(dom, labels = TRUE)
 
 }
+\seealso{
+Other accessors:
+\code{\link[=dom_correlations]{dom_correlations()}},
+\code{\link[=dom_counts]{dom_counts()}},
+\code{\link[=dom_database]{dom_database()}},
+\code{\link[=dom_de]{dom_de()}},
+\code{\link[=dom_info]{dom_info()}},
+\code{\link[=dom_linkages]{dom_linkages()}},
+\code{\link[=dom_network_items]{dom_network_items()}},
+\code{\link[=dom_signaling]{dom_signaling()}},
+\code{\link[=dom_tf_activation]{dom_tf_activation()}},
+\code{\link[=dom_zscores]{dom_zscores()}}
+}
+\concept{accessors}

@@ -23,8 +23,8 @@ test_differential_linkages(
 \item{linkage}{a stored linkage from the domino object.
 Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'}
 
-\item{subject_names}{a vector of subject_names from the linkage_summary to be compared.
-If NULL, all subject_names in the linkage summary are included in counting.}
+\item{subject_names}{a vector of subject_names from the linkage_summary.
+NOTE: all subject_names in the linkage summary are included in counting.}
 
 \item{test_name}{the statistical test used for comparison.
 \itemize{
@@ -61,3 +61,12 @@ tiny_differential_linkage_c1 <- test_differential_linkages(
 )
 
 }
+\seealso{
+\code{\link[=summarize_linkages]{summarize_linkages()}} to create \code{\link[=linkage_summary]{linkage_summary()}} objects
+
+Differential Signaling Workflow:
+\code{\link[=count_linkage]{count_linkage()}},
+\code{\link[=plot_differential_linkages]{plot_differential_linkages()}},
+\code{\link[=summarize_linkages]{summarize_linkages()}}
+}
+\concept{differentials}

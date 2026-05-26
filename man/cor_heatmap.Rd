@@ -58,3 +58,10 @@ cor_heatmap(dom, bool = TRUE, bool_thresh = 0.1)
 cor_heatmap(dom, bool = FALSE, mark_connections = TRUE)
 
 }
+\seealso{
+Heatmap Plotting Functions:
+\code{\link[=feat_heatmap]{feat_heatmap()}},
+\code{\link[=incoming_signaling_heatmap]{incoming_signaling_heatmap()}},
+\code{\link[=signaling_heatmap]{signaling_heatmap()}}
+}
+\concept{heatmaps}

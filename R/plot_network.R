@@ -40,6 +40,7 @@ NULL
 #' @param ... other parameters to be passed to plot when used with an igraph object.
 #' @return An igraph plot rendered to the active graphics device
 #' @export signaling_network
+#' @family networks
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny
@@ -215,7 +216,7 @@ signaling_network <- function(
 #' will be included in the plot.
 #'
 #' @param dom Domino object with network built ([build_domino()])
-#' @param clust Receptor cluster to create the gene association network for. A vector of clusters may be provided.
+#' @param clust Receptor cluster to create the gene association network for. A vector of clusters may be provided. This is a required parameter.
 #' @param OutgoingSignalingClust Vector of clusters to plot the outgoing signaling from
 #' @param class_cols Named vector of colors used to color classes of vertices. Values must be colors and names must
 #'   be classes ('rec', 'lig', and 'feat' for receptors, ligands, and features).
@@ -229,6 +230,7 @@ signaling_network <- function(
 #'   See [igraph](https://r.igraph.org/) manual for options.
 #' @return An igraph plot rendered to the active graphics device
 #' @export gene_network
+#' @family networks
 #' @examples
 #' # basic usage
 #' data(DominoObjects)
@@ -295,6 +297,7 @@ gene_network <- function(
         tfs <- dom@linkages$clust_tf[["clust"]]
     }
     links <- character(0)
+    rec_tf_links <- character(0)
     all_recs <- character(0)
     all_tfs <- character(0)
     for (cl in as.character(clust)) {
@@ -305,7 +308,7 @@ gene_network <- function(
                 all_tfs <- c(all_tfs, tf)
             }
             for (rec in recs) {
-                links <- c(links, rec, tf)
+                rec_tf_links <- c(rec_tf_links, rec, tf)
             }
         }
     }
@@ -316,18 +319,25 @@ gene_network <- function(
         allowed_ligs <- character(0)
         if (!is.null(OutgoingSignalingClust)) {
             outgoing_cls <- paste0("L_", OutgoingSignalingClust)
+            all_sums <- numeric(0)
         } else {
             outgoing_cls <- NULL
         }
         for (cl in cl_with_signaling) {
             if (!is.null(outgoing_cls)) {
                 mat <- dom@cl_signaling_matrices[[cl]][, outgoing_cls, drop = FALSE]
-                
+
                 # Remove ligands with 0s for all clusters
-                allowed_ligs <- rownames(mat[rowSums(mat) > 0, , drop = FALSE]) 
-                all_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
+                new_ligs <- rownames(mat[rowSums(mat) > 0, , drop = FALSE]) 
+                new_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
+                
+                allowed_ligs <- union(allowed_ligs, new_ligs)
+                shared <- intersect(names(all_sums), names(new_sums))
+                all_sums[shared] <- all_sums[shared] + new_sums[shared]
+                new_only <- setdiff(names(new_sums), names(all_sums))
+                all_sums <- c(all_sums, new_sums[new_only])
             } else {
-                allowed_ligs <- rownames(dom@cl_signaling_matrices[[cl]])
+                allowed_ligs <- union(allowed_ligs, rownames(dom@cl_signaling_matrices[[cl]]))
             }
         }
     } else {
@@ -344,6 +354,23 @@ gene_network <- function(
             }
         }
     }
+
+    # Make sure to only keep receptors and TFs downstream of ligands that are included
+    if (length(links) > 0) {
+        keep_recs <- unique(links[seq(2, length(links), by = 2)])
+    } else {
+        keep_recs <- character(0)
+    }
+    if (length(rec_tf_links) > 0) {
+        for (i in seq(1, length(rec_tf_links), by = 2)) {
+            if (rec_tf_links[i] %in% keep_recs) {
+                links <- c(links, rec_tf_links[i], rec_tf_links[i + 1])
+            }
+        }
+    }
+    all_recs <- unique(all_recs[all_recs %in% links])
+    all_tfs <- unique(all_tfs[all_tfs %in% links])
+    
     all_ligs <- unique(all_ligs)
     # Make the graph
     graph <- igraph::make_graph(links)

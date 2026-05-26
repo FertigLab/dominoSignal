@@ -9,9 +9,10 @@
 #'   be rendered between the cell type and the receptor
 #' @param cell_idents Vector of cell types from cluster assignments in the domino object to be included in the plot.
 #' @param cell_colors Named vector of color names or hex codes where names correspond to the plotted cell
-#'   types and the color values
+#'   types and values to the colors.
 #' @return Renders a circos plot to the active graphics device
 #' @export circos_ligand_receptor
+#' @family plotting
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny

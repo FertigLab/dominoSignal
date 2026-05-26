@@ -58,3 +58,10 @@ dom <- DominoObjects$built_dom_tiny
 incoming_signaling_heatmap(dom, "CD8_T_cell")
 
 }
+\seealso{
+Heatmap Plotting Functions:
+\code{\link[=cor_heatmap]{cor_heatmap()}},
+\code{\link[=feat_heatmap]{feat_heatmap()}},
+\code{\link[=signaling_heatmap]{signaling_heatmap()}}
+}
+\concept{heatmaps}

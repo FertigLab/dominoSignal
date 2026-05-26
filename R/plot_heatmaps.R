@@ -25,6 +25,7 @@ NULL
 #' @param ... other parameters to pass to  [ComplexHeatmap::Heatmap()]
 #' @return A heatmap rendered to the active graphics device
 #' @export signaling_heatmap
+#' @family heatmaps
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny
@@ -111,6 +112,7 @@ signaling_heatmap <- function(
 #'   Note that to use the 'column_title' parameter of  [ComplexHeatmap::Heatmap()]  you must set title = FALSE
 #' @return a Heatmap rendered to the active graphics device
 #' @export incoming_signaling_heatmap
+#' @family heatmaps
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny
@@ -226,6 +228,7 @@ incoming_signaling_heatmap <- function(
 #'   and to use 'annCol' or 'annColors' ann_cols must be FALSE.
 #' @return A heatmap rendered to the active graphics device
 #' @export feat_heatmap
+#' @family heatmaps
 #' @examples
 #' # basic usage
 #' data(DominoObjects)
@@ -380,6 +383,7 @@ feat_heatmap <- function(
 #'   use 'annCol' or 'annColors' ann_cols must be FALSE.
 #' @return A heatmap rendered to the active graphics device
 #' @export cor_heatmap
+#' @family heatmaps
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny

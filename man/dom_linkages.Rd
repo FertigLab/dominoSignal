@@ -14,12 +14,12 @@ dom_linkages(
 \arguments{
 \item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
 
-\item{link_type}{One value (choices are "complexes", "receptor-ligand",
-"tf-target", "tf-receptor", "receptor", and "incoming-ligand") that
-selects which type of linkage to return.}
+\item{link_type}{one value (out of "complexes", "receptor-ligand",
+"tf-target", "tf-receptor", "receptor", "incoming-ligand") used
+to select the desired type of linkage. Note that "receptor" and
+"incoming-ligand" are only available when by_cluster is set to TRUE.}
 
-\item{by_cluster}{A boolean to indicate whether to return linkages overall
-or broken down by cluster}
+\item{by_cluster}{A boolean to indicate whether to return linkages overall or by cluster}
 }
 \value{
 A list containing linkages between some combination of receptors, ligands,
@@ -35,3 +35,17 @@ complexes <- dom_linkages(dom, "complexes")
 tf_rec_by_cluster <- dom_linkages(dom, "tf-receptor", TRUE)
 
 }
+\seealso{
+Other accessors:
+\code{\link[=dom_clusters]{dom_clusters()}},
+\code{\link[=dom_correlations]{dom_correlations()}},
+\code{\link[=dom_counts]{dom_counts()}},
+\code{\link[=dom_database]{dom_database()}},
+\code{\link[=dom_de]{dom_de()}},
+\code{\link[=dom_info]{dom_info()}},
+\code{\link[=dom_network_items]{dom_network_items()}},
+\code{\link[=dom_signaling]{dom_signaling()}},
+\code{\link[=dom_tf_activation]{dom_tf_activation()}},
+\code{\link[=dom_zscores]{dom_zscores()}}
+}
+\concept{accessors}

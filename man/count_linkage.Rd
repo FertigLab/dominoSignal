@@ -23,8 +23,8 @@ If NULL, only total counts of linkages for linkages in the cluster across all su
 \item{linkage}{a stored linkage from the domino object.
 Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'}
 
-\item{subject_names}{a vector of subject_names from the linkage_summary to be compared.
-If NULL, all subject_names in the linkage summary are included in counting.}
+\item{subject_names}{a vector of subject_names from the linkage_summary.
+NOTE: all subject_names in the linkage summary are included in counting.}
 }
 \value{
 A data frame with columns for the unique linkage features and the counts of how many times the linkage
@@ -41,3 +41,10 @@ count_linkage(
   group.by = "group", linkage = "rec")
 
 }
+\seealso{
+Differential Signaling Workflow:
+\code{\link[=plot_differential_linkages]{plot_differential_linkages()}},
+\code{\link[=summarize_linkages]{summarize_linkages()}},
+\code{\link[=test_differential_linkages]{test_differential_linkages()}}
+}
+\concept{differentials}
