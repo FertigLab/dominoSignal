@@ -12,7 +12,7 @@ RUN sudo apt-get update -y && \
 RUN Rscript -e 'BiocManager::install(c("biomaRt", "ComplexHeatmap", "S4Arrays", "SingleCellExperiment", "SummarizedExperiment"),ask=FALSE)'
 
 #install all other dependencies
-RUN Rscript -e 'devtools::install_deps(".", dependencies=TRUE)'
+RUN Rscript -e 'pak::local_install_deps(".", ask = FALSE, dependencies = TRUE)'
 
 #need to restart R sometimes https://github.com/r-lib/devtools/issues/2395
 RUN Rscript -e 'devtools::install(".", dependencies=TRUE)'

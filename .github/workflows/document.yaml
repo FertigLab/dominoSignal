@@ -1,14 +1,17 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-on:
-    push:
-      paths: ["R/**"]
-    workflow_dispatch:
   
-name: documentation-update
+name: check-documentation
+
+on:
+  pull_request:
+    branches:
+      - master
+      - dev
+  workflow_dispatch:
   
 jobs:
-    document:
+    check-docs:
       runs-on: ubuntu-latest
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -29,15 +32,12 @@ jobs:
             extra-packages: any::roxygen2
             needs: roxygen2
   
-        - name: Document
+        - name: Run roxygen2::roxygenise
           run: roxygen2::roxygenise()
           shell: Rscript {0}
   
-        - name: Commit and push changes
+        - name: Check for uncommitted documentation changes
           run: |
-            git config --local user.name "$GITHUB_ACTOR"
-            git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-            git add man/\* NAMESPACE DESCRIPTION
-            git commit -m "Update documentation" || echo "No changes to commit"
-            git pull --ff-only
-            git push origin
+            git diff --exit-code man/ NAMESPACE || \
+            (echo "Docs are out of date — run roxygen2::roxygenise() locally and commit the changes." && exit 1)
+            
