@@ -1,0 +1,51 @@
+name: validate-master-pr-checklist
+
+on:
+  pull_request:
+    branches: [master, main]
+
+concurrency:
+  group: validate-master-pr-checklist-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate-master-release-checklist:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Validate required checklist items
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || "";
+            const requiredItems = [
+              "[release-master] DESCRIPTION version updated per Bioconductor conventions",
+              "[release-master] NEWS.md updated for the same version and formatted appropriately",
+              "[release-master] inst/CITATION software entry is current (authors/year/version)",
+              "[release-master] README citation/version text is current",
+              "[release-master] index.Rmd reviewed/updated/knit again if any metadata/package information changed",
+              "[release-master] Documentation has been updated and includes example usage",
+              "[release-master] _pkgdown.yml file has been updated to include all functions and vignettes; check that the development mode is set appropriately (release vs devel)",
+              "[release-master] `R CMD check`, `BiocCheck`, and tests all pass",
+              "[release-master] post-merge push plan to `bioc-upstream/devel` confirmed"
+            ];
+
+            const escaped = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const missing = requiredItems.filter((item) => {
+              const pattern = new RegExp(`-\\s*\\[x\\]\\s*${escaped(item)}\\s*$`, "im");
+              return !pattern.test(body);
+            });
+
+            if (missing.length > 0) {
+              core.setFailed(
+                [
+                  "Missing required checked checklist items for a PR targeting master/main:",
+                  ...missing.map((m) => `- ${m}`),
+                  "",
+                  "Use the URL below (replace `BRANCHNAME` with the source branch name) to open a PR with the required checklist template, and check off the required items: " +
+                  "https://github.com/FertigLab/dominoSignal/compare/master...BRANCHNAME?expand=1&template=master-release.md"
+                ].join("\n")
+              );
+            }
