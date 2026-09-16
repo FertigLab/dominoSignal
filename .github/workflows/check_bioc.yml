@@ -8,7 +8,7 @@
 ## > biocthis::use_bioc_github_action()
 ##
 ## Using GitHub Actions exposes you to many details about how R packages are
-## compiled and installed in several operating system.s
+## compiled and installed in several operating systems.
 ### If you need help, please follow the steps listed at
 ## https://github.com/r-lib/actions#where-to-find-help
 ##
@@ -146,8 +146,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ matrix.config.os }}-${{ matrix.config.r }}-${{ matrix.config.bioc }}-${{ inputs.cache-version }}
-          restore-keys: ${{ matrix.config.os }}-${{ matrix.config.r }}-${{ matrix.config.bioc }}--${{ inputs.cache-version }}
+          key: ${{ matrix.config.os }}-${{ matrix.config.r }}-${{ matrix.config.bioc }}-${{ env.cache-version }}
+          restore-keys: ${{ matrix.config.os }}-${{ matrix.config.r }}-${{ matrix.config.bioc }}--${{ env.cache-version }}
 
       ## remotes is needed for isntalling the Linux system dependencies
       ## as well as other R packages later on.
@@ -327,7 +327,7 @@ jobs:
 
       - name: Upload check results
         if: failure()
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ runner.os }}-${{ matrix.config.r }}-${{ matrix.config.bioc }}-results
           path: check

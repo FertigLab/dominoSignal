@@ -38,6 +38,6 @@ jobs:
   
         - name: Check for uncommitted documentation changes
           run: |
-            git diff --exit-code man/ NAMESPACE || \
+            git diff --exit-code man/ NAMESPACE DESCRIPTION || \
             (echo "Docs are out of date — run roxygen2::roxygenise() locally and commit the changes." && exit 1)
             
