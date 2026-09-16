@@ -42,7 +42,7 @@ concurrency:
 ## Note that you can always run a GHA test without the cache by using the word
 ## "/nocache" in the commit message.
 env:
-  has_testthat: 'false'
+  has_testthat: 'true'
   run_covr: 'false'
   run_pkgdown: 'false'
   has_RUnit: 'false'
@@ -149,7 +149,7 @@ jobs:
           key: ${{ matrix.config.os }}-${{ matrix.config.r }}-${{ matrix.config.bioc }}-${{ env.cache-version }}
           restore-keys: ${{ matrix.config.os }}-${{ matrix.config.r }}-${{ matrix.config.bioc }}--${{ env.cache-version }}
 
-      ## remotes is needed for isntalling the Linux system dependencies
+      ## remotes is needed for installing the Linux system dependencies
       ## as well as other R packages later on.
       - name: Install remotes
         run: |
