@@ -45,16 +45,20 @@ import(plyr)
 import(stats)
 importClassesFrom(Matrix,dgCMatrix)
 importFrom(Matrix,rowSums)
-importFrom(biomaRt,getLDS)
-importFrom(biomaRt,useMart)
+importFrom(biomaRt,
+  getLDS,
+  useMart
+)
 importFrom(ggpubr,ggscatter)
-importFrom(igraph,E)
-importFrom(igraph,V)
-importFrom(igraph,graph)
-importFrom(igraph,layout_in_circle)
-importFrom(igraph,layout_on_sphere)
-importFrom(igraph,layout_randomly)
-importFrom(igraph,layout_with_fr)
-importFrom(igraph,layout_with_kk)
-importFrom(igraph,simplify)
+importFrom(igraph,
+  E,
+  V,
+  graph,
+  layout_in_circle,
+  layout_on_sphere,
+  layout_randomly,
+  layout_with_fr,
+  layout_with_kk,
+  simplify
+)
 importFrom(utils,read.csv)
