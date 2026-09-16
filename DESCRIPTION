@@ -38,7 +38,8 @@ biocViews:
     SystemsBiology,
     SingleCell,
     Transcriptomics,
-    Network
+    Network,
+    Sequencing
 Suggests:
     knitr,
     patchwork,
