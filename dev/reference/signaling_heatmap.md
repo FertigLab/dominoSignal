@@ -73,15 +73,16 @@ Heatmap Plotting Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-#basic usage
-signaling_heatmap(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+# basic usage
+signaling_heatmap(dom)
 
-#scale
-signaling_heatmap(pbmc_dom_built_tiny, scale = "sqrt")
+# scale
+signaling_heatmap(dom, scale = "sqrt")
 
-#normalize
-signaling_heatmap(pbmc_dom_built_tiny, normalize = "rec_norm")
+# normalize
+signaling_heatmap(dom, normalize = "rec_norm")
 #> Warning: Some values are NA, replacing with 0s.
 
 ```

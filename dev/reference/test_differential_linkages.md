@@ -84,6 +84,11 @@ correspond to each linkage tested. Columns correspond to:
 
 ## See also
 
+[`summarize_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.md)
+to create
+[`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+objects
+
 Differential Signaling Workflow:
 [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md),
 [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md),
@@ -92,8 +97,9 @@ Differential Signaling Workflow:
 ## Examples
 
 ``` r
+data(LinkageSummary)
 tiny_differential_linkage_c1 <- test_differential_linkages(
-  linkage_summary = mock_linkage_summary(), cluster = "C1", group.by = "group",
-  linkage = "rec", test_name = "fishers.exact"
+    linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
+    linkage = "rec", test_name = "fishers.exact"
 )
 ```

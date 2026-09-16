@@ -12,11 +12,11 @@ data("PBMC")
 
 A list of:
 
-- RNA_count_tiny:
+- count_tiny:
 
   A subset of PBMC RNA-seq data: counts assay
 
-- RNA_zscore_tiny:
+- zscore_tiny:
 
   A subset of PBMC RNA-seq data: zscore assay
 

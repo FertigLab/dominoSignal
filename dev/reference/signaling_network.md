@@ -92,12 +92,12 @@ signaling_network(
   signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the
   former two cases the values are scaled with asinh after summing all
   incoming or outgoing signaling. Vertices with no incoming/outgoing
-  signaling due to the other parameters are given a size of 0.
+  signaling due to other parameters are given a size of 0.
 
 - vert_scale:
 
   integer used to scale size of vertices with or without variable
-  scaling from scale_by.
+  scaling from scale_by parameter.
 
 - plot_title:
 
@@ -119,14 +119,17 @@ Network Plotting Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-#basic usage
-signaling_network(pbmc_dom_built_tiny, edge_weight = 2)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+# basic usage
+signaling_network(dom, edge_weight = 2)
 
 # scaling, thresholds, layouts, selecting clusters
 signaling_network(
- pbmc_dom_built_tiny, showOutgoingSignalingClusts = "CD14_monocyte", 
- scale = "none", normalize = "none", layout = "fr", scale_by = "none", 
- vert_scale = 5, edge_weight = 2)
+    dom,
+    showOutgoingSignalingClusts = "CD14_monocyte",
+    scale = "none", normalize = "none", layout = "fr", scale_by = "none",
+    vert_scale = 5, edge_weight = 2
+)
 
 ```

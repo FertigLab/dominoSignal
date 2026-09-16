@@ -22,8 +22,8 @@ A printed description of cell numbers and clusters in the object
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-show(pbmc_dom_built_tiny)
+data(DominoObjects)
+show(DominoObjects$built_dom_tiny)
 #> A domino object of 360 cells
 #> Built with signaling between 3 clusters
 ```

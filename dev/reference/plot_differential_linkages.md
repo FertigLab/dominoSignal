@@ -51,7 +51,7 @@ features.
 
 ## See also
 
-Assorted Plotting Functions:
+Other plotting:
 [`circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/circos_ligand_receptor.md),
 [`cor_scatter()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_scatter.md)
 
@@ -63,12 +63,11 @@ Differential Signaling Workflow:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-example(test_differential_linkages, echo = FALSE)
+data(LinkageSummary)
 plot_differential_linkages(
- differential_linkages = tiny_differential_linkage_c1,
- test_statistic = "p.value",
- stat_ranking = "ascending"
+    differential_linkages = LinkageSummary$linkage_diff_tiny,
+    test_statistic = "p.value",
+    stat_ranking = "ascending"
 )
 
 ```

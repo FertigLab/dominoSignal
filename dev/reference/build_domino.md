@@ -48,7 +48,7 @@ build_domino(
 - min_rec_percentage:
 
   Minimum percentage of cells in cluster expressing a receptor for the
-  receptor to be linked to transcription factors in that cluster.
+  receptor to be linked to trancription factors in that cluster.
 
 ## Value
 
@@ -62,11 +62,12 @@ to create a domino object
 ## Examples
 
 ``` r
-example(create_domino, echo = FALSE)
+data(DominoObjects)
+dom <- DominoObjects$dom_tiny
 
-#a relaxed example
+# a relaxed example
 pbmc_dom_built_tiny <- build_domino(
- dom = pbmc_dom_tiny, min_tf_pval = .05, max_tf_per_clust = Inf,
- max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01
+    dom = dom, min_tf_pval = .05, max_tf_per_clust = Inf,
+    max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01
 )
 ```

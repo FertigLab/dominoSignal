@@ -84,15 +84,15 @@ Heatmap Plotting Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-#basic usage
-cor_heatmap(pbmc_dom_built_tiny, title = "PBMC R-TF Correlations")
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+# basic usage
+cor_heatmap(dom, title = "PBMC R-TF Correlations")
 
-#show correlations above a specific value
-cor_heatmap(pbmc_dom_built_tiny, bool = TRUE, bool_thresh = 0.1)
+# show correlations above a specific value
+cor_heatmap(dom, bool = TRUE, bool_thresh = 0.1)
 
-#identify combinations that are connected
-cor_heatmap(pbmc_dom_built_tiny, bool = FALSE, mark_connections = TRUE)
+# identify combinations that are connected
+cor_heatmap(dom, bool = FALSE, mark_connections = TRUE)
 
- 
 ```

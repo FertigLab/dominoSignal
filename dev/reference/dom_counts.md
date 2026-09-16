@@ -22,7 +22,7 @@ cell (column)
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md),
 [`dom_database()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_database.md),
@@ -37,6 +37,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-counts <- dom_counts(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+counts <- dom_counts(dom)
 ```

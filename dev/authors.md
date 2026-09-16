@@ -24,7 +24,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/FertigLab/dominoSignal/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/FertigLab/dominoSignal/blob/gha/test_actions/inst/CITATION)
 
 Cherry C, Maestas D, Han J, Andorko J, Cahan P, Fertig E, Garmire L,
 Elisseeff J (2021). “Computational reconstruction of the signalling

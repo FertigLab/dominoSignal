@@ -27,7 +27,7 @@ object creation
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_counts.md),
@@ -42,7 +42,8 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-database_name <- dom_database(pbmc_dom_built_tiny)
-full_database <- dom_database(pbmc_dom_built_tiny, name_only = FALSE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+database_name <- dom_database(dom)
+full_database <- dom_database(dom, name_only = FALSE)
 ```

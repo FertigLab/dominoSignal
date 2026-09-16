@@ -10,7 +10,7 @@ must be run on the object previously.
 ## Usage
 
 ``` r
-dom_network_items(dom, clusters = NULL, return = NULL)
+dom_network_items(dom, clusters = NULL, which_return = NULL)
 ```
 
 ## Arguments
@@ -26,10 +26,10 @@ dom_network_items(dom, clusters = NULL, return = NULL)
   vector indicating clusters to collate network items from. If left as
   NULL then all clusters will be included.
 
-- return:
+- which_return:
 
   string indicating whether to collate "features", "receptors", or
-  "ligands". If "all" then a list of all three will be returned.
+  "ligands". If NULL then a list of all three will be returned.
 
 ## Value
 
@@ -38,7 +38,7 @@ or a list containing all three.
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_counts.md),
@@ -53,7 +53,8 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-monocyte_receptors <- dom_network_items(pbmc_dom_built_tiny, "CD14_monocyte", "receptors")
-all_tfs <- dom_network_items(pbmc_dom_built_tiny, return = "features")
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+monocyte_receptors <- dom_network_items(dom, "CD14_monocyte", "receptors")
+all_tfs <- dom_network_items(dom, which_return = "features")
 ```

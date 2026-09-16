@@ -27,7 +27,7 @@ the linkage summary object
 ## Examples
 
 ``` r
-link_sum <- mock_linkage_summary()
-print(link_sum)
+data(LinkageSummary)
+print(LinkageSummary$linkage_sum_tiny)
 #> A linkage summary object of 6 subjects with 2 metadata annotations and linkages between 2 clusters.
 ```

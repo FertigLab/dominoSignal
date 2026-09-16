@@ -10,6 +10,8 @@
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/index.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/news/index.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/CellPhoneDB.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/DominoObjects.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/LinkageSummary.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/PBMC.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/SCENIC.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/add_rl_column.html</loc></url>
@@ -36,10 +38,14 @@
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/dom_network_items.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/dom_signaling.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/dom_tf_activation.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/dom_to_df.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/dom_zscores.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/feat_heatmap.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/get_ligand_expression.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/get_resolved_ligands.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/get_signaling_info.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/ggplot_col_gen.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/incoming_signaling_heatmap.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/index.html</loc></url>
@@ -47,7 +53,6 @@
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/mean_exp_by_cluster.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/mean_ligand_expression.html</loc></url>
-<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/mock_linkage_summary.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/obtain_circos_expression.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/print-domino-method.html</loc></url>

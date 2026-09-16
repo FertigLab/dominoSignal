@@ -41,14 +41,15 @@ A ggplot scatter plot rendered in the active graphics device
 
 ## See also
 
-Assorted Plotting Functions:
+Other plotting:
 [`circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/circos_ligand_receptor.md),
 [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
 
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-cor_scatter(pbmc_dom_built_tiny, "FLI1","CXCR3")
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+cor_scatter(dom, "FLI1","CXCR3")
 
 ```

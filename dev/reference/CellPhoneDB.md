@@ -28,6 +28,10 @@ A list of:
 
   A subset of CellPhoneDB interaction_input.csv
 
+- rl_map_tiny:
+
+  A subset of CellPhoneDB data formatted as a domino rl_map
+
 ## Source
 
 <https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz>

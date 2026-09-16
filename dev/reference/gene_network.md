@@ -10,7 +10,7 @@ cluster will be included in the plot.
 ``` r
 gene_network(
   dom,
-  clust,
+  clust = NULL,
   OutgoingSignalingClust = NULL,
   class_cols = c(lig = "#FF685F", rec = "#47a7ff", feat = "#39C740"),
   cols = NULL,
@@ -40,7 +40,7 @@ gene_network(
 
   Named vector of colors used to color classes of vertices. Values must
   be colors and names must be classes ('rec', 'lig', and 'feat' for
-  receptors, ligands, and features.).
+  receptors, ligands, and features).
 
 - cols:
 
@@ -76,10 +76,13 @@ Network Plotting Functions:
 ## Examples
 
 ``` r
-#basic usage
-example(build_domino, echo = FALSE)
+# basic usage
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
 gene_network(
- pbmc_dom_built_tiny, clust = "CD8_T_cell", 
- OutgoingSignalingClust = "CD14_monocyte")
+    dom,
+    clust = "CD8_T_cell",
+    OutgoingSignalingClust = "CD14_monocyte"
+)
 
 ```

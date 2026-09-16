@@ -17,7 +17,7 @@ as new features and fixes are implemented. The current version of
 dominoSignal can be found on
 [Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html)
 though the package is still undergoing development (see our
-[changelog](https://FertigLab.github.io/dominoSignal/dev/news/index.md)
+[changelog](https://fertiglab.github.io/dominoSignal/news/index.html)
 for more information on changes). This version can be installed through
 Bioconductor.
 
@@ -34,8 +34,9 @@ Bioconductor.
 
 ``` r
 
-if (!require("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocManager")) {
     install.packages("BiocManager")
+}
 
 # The following initializes usage of Bioc devel
 BiocManager::install(version = "devel")

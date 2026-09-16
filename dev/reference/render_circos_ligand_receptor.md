@@ -40,16 +40,3 @@ render_circos_ligand_receptor(
 ## Value
 
 a circlize plot is rendered to the active graphics device
-
-## Examples
-
-``` r
-example(build_domino, echo = FALSE)
-#basic usage
-circos_df <- obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-render_circos_ligand_receptor(signaling_df = circos_df, receptor = "CXCR3")
-#> There are more than one numeric columns in the data frame. Take the
-#> first two numeric columns and draw the link ends with unequal width.
-#> 
-#> Type `circos.par$message = FALSE` to suppress the message.
-```

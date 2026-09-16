@@ -17,17 +17,17 @@ dom_clusters(dom, labels = FALSE)
 
 - labels:
 
-  a boolean for whether to return the cluster labels for each cell or
+  A boolean for whether to return the cluster labels for each cell or
   the clusters used for inferring communication
 
 ## Value
 
-A vector containing either the names of the clusters used OR factors of
+A vector containing either the names of the clusters used or factors of
 the cluster label for each individual cell
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_counts.md),
 [`dom_database()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_database.md),
@@ -42,7 +42,8 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-cluster_names <- dom_clusters(pbmc_dom_built_tiny)
-cell_cluster_label <- dom_clusters(pbmc_dom_built_tiny, labels = TRUE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+cluster_names <- dom_clusters(dom)
+cell_cluster_label <- dom_clusters(dom, labels = TRUE)
 ```

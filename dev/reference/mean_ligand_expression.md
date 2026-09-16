@@ -40,9 +40,10 @@ A data frame of ligand expression targeting the specified receptor
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-counts <- dom_counts(pbmc_dom_built_tiny)
+data(DominoObjects)
+counts <- dom_counts(DominoObjects$built_dom_tiny)
 mean_exp <- mean_ligand_expression(counts,
- ligands = c("PTPRC", "FASLG"), cell_ident = "CD14_monocyte",
- cell_barcodes = colnames(counts), destination = "FAS")
+    ligands = c("PTPRC", "FASLG"), cell_ident = "CD14_monocyte",
+    cell_barcodes = colnames(counts), destination = "FAS"
+)
 ```

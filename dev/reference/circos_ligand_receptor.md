@@ -49,25 +49,26 @@ Renders a circos plot to the active graphics device
 
 ## See also
 
-Assorted Plotting Functions:
+Other plotting:
 [`cor_scatter()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_scatter.md),
 [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
 
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-#basic usage
-circos_ligand_receptor(pbmc_dom_built_tiny, receptor = "CXCR3")
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+# basic usage
+circos_ligand_receptor(dom, receptor = "CXCR3")
 #> There are more than one numeric columns in the data frame. Take the
 #> first two numeric columns and draw the link ends with unequal width.
 #> 
 #> Type `circos.par$message = FALSE` to suppress the message.
 
-#specify colors
-cols = c("red", "orange", "green")
-names(cols) = dom_clusters(pbmc_dom_built_tiny)
-circos_ligand_receptor(pbmc_dom_built_tiny, receptor = "CXCR3", cell_colors = cols)
+# specify colors
+cols <- c("red", "orange", "green")
+names(cols) <- dom_clusters(dom)
+circos_ligand_receptor(dom, receptor = "CXCR3", cell_colors = cols)
 #> There are more than one numeric columns in the data frame. Take the
 #> first two numeric columns and draw the link ends with unequal width.
 #> 

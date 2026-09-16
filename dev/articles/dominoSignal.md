@@ -503,11 +503,11 @@ Date last built and session information:
 ``` r
 
 Sys.Date()
-#> [1] "2026-05-05"
+#> [1] "2026-09-16"
 sessionInfo()
-#> R version 4.6.0 (2026-04-24)
+#> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.4 LTS
+#> Running under: Ubuntu 24.04.5 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -527,47 +527,46 @@ sessionInfo()
 #> [8] methods   base     
 #> 
 #> other attached packages:
-#>  [1] knitr_1.51                  ComplexHeatmap_2.28.0      
+#>  [1] knitr_1.52                  ComplexHeatmap_2.28.0      
 #>  [3] circlize_0.4.18             plyr_1.8.9                 
 #>  [5] SingleCellExperiment_1.34.0 SummarizedExperiment_1.42.0
 #>  [7] Biobase_2.72.0              GenomicRanges_1.64.0       
 #>  [9] Seqinfo_1.2.0               IRanges_2.46.0             
-#> [11] S4Vectors_0.50.0            BiocGenerics_0.58.0        
+#> [11] S4Vectors_0.50.2            BiocGenerics_0.58.1        
 #> [13] generics_0.1.4              MatrixGenerics_1.24.0      
 #> [15] matrixStats_1.5.0           dominoSignal_1.7.0         
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] DBI_1.3.0            httr2_1.2.2          formatR_1.14        
-#>  [4] biomaRt_2.68.0       rlang_1.2.0          magrittr_2.0.5      
+#>  [1] DBI_1.3.0            httr2_1.3.0          formatR_1.14        
+#>  [4] biomaRt_2.68.0       rlang_1.3.0          magrittr_2.0.5      
 #>  [7] clue_0.3-68          GetoptLong_1.1.1     otel_0.2.0          
-#> [10] compiler_4.6.0       RSQLite_2.4.6        png_0.1-9           
+#> [10] compiler_4.6.1       RSQLite_3.53.3       png_0.1-9           
 #> [13] systemfonts_1.3.2    vctrs_0.7.3          stringr_1.6.0       
 #> [16] pkgconfig_2.0.3      shape_1.4.6.1        crayon_1.5.3        
-#> [19] fastmap_1.2.0        backports_1.5.1      dbplyr_2.5.2        
-#> [22] XVector_0.52.0       rmarkdown_2.31       ragg_1.5.2          
-#> [25] purrr_1.2.2          bit_4.6.0            xfun_0.57           
+#> [19] fastmap_1.2.0        backports_1.5.1      dbplyr_2.6.0        
+#> [22] XVector_0.52.0       rmarkdown_2.32       ragg_1.5.2          
+#> [25] purrr_1.2.2          bit_4.6.0            xfun_0.60           
 #> [28] cachem_1.1.0         jsonlite_2.0.0       progress_1.2.3      
-#> [31] blob_1.3.0           DelayedArray_0.38.1  broom_1.0.12        
-#> [34] parallel_4.6.0       prettyunits_1.2.0    cluster_2.1.8.2     
-#> [37] R6_2.6.1             bslib_0.10.0         stringi_1.8.7       
+#> [31] blob_1.3.0           DelayedArray_0.38.2  broom_1.0.13        
+#> [34] parallel_4.6.1       prettyunits_1.2.0    cluster_2.1.8.2     
+#> [37] R6_2.6.1             bslib_0.12.0         stringi_1.8.9       
 #> [40] RColorBrewer_1.1-3   car_3.1-5            jquerylib_0.1.4     
-#> [43] Rcpp_1.1.1-1.1       iterators_1.0.14     Matrix_1.7-5        
-#> [46] igraph_2.3.1         tidyselect_1.2.1     abind_1.4-8         
+#> [43] Rcpp_1.1.2           iterators_1.0.14     Matrix_1.7-5        
+#> [46] igraph_2.3.3         tidyselect_1.2.1     abind_1.4-8         
 #> [49] yaml_2.3.12          doParallel_1.0.17    codetools_0.2-20    
-#> [52] curl_7.1.0           lattice_0.22-9       tibble_3.3.1        
-#> [55] withr_3.0.2          KEGGREST_1.52.0      S7_0.2.2            
+#> [52] curl_8.0.0           lattice_0.22-9       tibble_3.3.1        
+#> [55] withr_3.0.3          KEGGREST_1.52.2      S7_0.2.2            
 #> [58] evaluate_1.0.5       desc_1.4.3           BiocFileCache_3.2.0 
-#> [61] Biostrings_2.80.0    pillar_1.11.1        ggpubr_0.6.3        
+#> [61] Biostrings_2.80.2    pillar_1.11.1        ggpubr_1.0.0        
 #> [64] filelock_1.0.3       carData_3.0-6        foreach_1.5.2       
 #> [67] hms_1.1.4            ggplot2_4.0.3        scales_1.4.0        
-#> [70] glue_1.8.1           tools_4.6.0          ggsignif_0.6.4      
+#> [70] glue_1.8.1           tools_4.6.1          ggsignif_0.6.4      
 #> [73] fs_2.1.0             tidyr_1.3.2          AnnotationDbi_1.74.0
-#> [76] colorspace_2.1-2     Formula_1.2-5        cli_3.6.6           
-#> [79] rappdirs_0.3.4       textshaping_1.0.5    S4Arrays_1.12.0     
-#> [82] dplyr_1.2.1          gtable_0.3.6         rstatix_0.7.3       
-#> [85] sass_0.4.10          digest_0.6.39        SparseArray_1.12.2  
-#> [88] rjson_0.2.23         htmlwidgets_1.6.4    farver_2.1.2        
-#> [91] memoise_2.0.1        htmltools_0.5.9      pkgdown_2.2.0       
-#> [94] lifecycle_1.0.5      httr_1.4.8           GlobalOptions_0.1.4 
-#> [97] bit64_4.8.0
+#> [76] colorspace_2.1-3     Formula_1.2-6        cli_3.6.6           
+#> [79] textshaping_1.0.5    S4Arrays_1.12.0      dplyr_1.2.1         
+#> [82] gtable_0.3.6         rstatix_1.1.0        sass_0.4.10         
+#> [85] digest_0.6.39        SparseArray_1.12.2   rjson_0.2.23        
+#> [88] htmlwidgets_1.6.4    farver_2.1.2         memoise_2.0.1       
+#> [91] htmltools_0.5.9      pkgdown_2.2.1        lifecycle_1.0.5     
+#> [94] httr_1.4.9           GlobalOptions_0.1.4  bit64_4.8.6
 ```

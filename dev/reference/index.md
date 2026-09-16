@@ -102,6 +102,8 @@ Convenience functions for working with dominoSignal objects
 - [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md)
   : Count occurrences of linkages across multiple domino results from a
   linkage summary
+- [`dom_to_df()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_to_df.md)
+  : Turn domino object signaling information into a data frame
 - [`mean_ligand_expression()`](https://FertigLab.github.io/dominoSignal/dev/reference/mean_ligand_expression.md)
   : Calculate mean ligand expression as a data frame for plotting in
   circos plot
@@ -122,9 +124,11 @@ Example data used for testing and demonstration purposes
 
 - [`CellPhoneDB`](https://FertigLab.github.io/dominoSignal/dev/reference/CellPhoneDB.md)
   : CellPhoneDB subset
-- [`SCENIC`](https://FertigLab.github.io/dominoSignal/dev/reference/SCENIC.md)
-  : SCENIC AUC subset
+- [`DominoObjects`](https://FertigLab.github.io/dominoSignal/dev/reference/DominoObjects.md)
+  : Example domino objects
+- [`LinkageSummary`](https://FertigLab.github.io/dominoSignal/dev/reference/LinkageSummary.md)
+  : Example linkage summary
 - [`PBMC`](https://FertigLab.github.io/dominoSignal/dev/reference/PBMC.md)
   : PBMC RNAseq data subset
-- [`mock_linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/mock_linkage_summary.md)
-  : Create a mock linkage summary object
+- [`SCENIC`](https://FertigLab.github.io/dominoSignal/dev/reference/SCENIC.md)
+  : SCENIC AUC subset

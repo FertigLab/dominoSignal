@@ -44,19 +44,3 @@ obtain_circos_expression(
 
 a data frame where each row describes plotting parameters of
 ligand-receptor interactions to pass to render_circos_ligand_receptor()
-
-## Examples
-
-``` r
-example(build_domino, echo = FALSE)
-#basic usage
-obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-#>                origin destination mean.expression        sender ligand receptor
-#> 1        B_cell-CCL20       CXCR3       0.0000000        B_cell  CCL20    CXCR3
-#> 2 CD14_monocyte-CCL20       CXCR3       0.2095956 CD14_monocyte  CCL20    CXCR3
-#> 3    CD8_T_cell-CCL20       CXCR3       0.0000000    CD8_T_cell  CCL20    CXCR3
-#>   scaled.mean.expression ligand.arc receptor.arc
-#> 1                      0          1     1.333333
-#> 2                      1          1     1.333333
-#> 3                      0          1     1.333333
-```

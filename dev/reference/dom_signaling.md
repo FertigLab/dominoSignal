@@ -23,13 +23,13 @@ dom_signaling(dom, cluster = NULL)
 ## Value
 
 A data frame containing the signaling score through each ligand (row) by
-each cluster (column) OR a data frame containing the global summed
+each cluster (column) OR . a data frame containing the global summed
 signaling scores between receptors (rows) and ligands (columns) of each
 cluster
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_counts.md),
@@ -44,6 +44,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-monocyte_signaling <- dom_signaling(pbmc_dom_built_tiny, cluster = "CD14_monocyte")
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+monocyte_signaling <- dom_signaling(dom, cluster = "CD14_monocyte")
 ```

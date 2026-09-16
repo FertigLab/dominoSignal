@@ -28,7 +28,7 @@ transcription factor (column)
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_clusters.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_counts.md),
 [`dom_database()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_database.md),
@@ -43,6 +43,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-cor_matrix <- dom_correlations(pbmc_dom_built_tiny, "rl")
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+cor_matrix <- dom_correlations(dom, "rl")
 ```

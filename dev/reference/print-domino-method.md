@@ -27,8 +27,8 @@ object
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-print(pbmc_dom_built_tiny)
+data(DominoObjects)
+print(DominoObjects$built_dom_tiny)
 #> A domino object of 360 cells
 #>                 Contains signaling between 3 clusters
 #>                 Built with a maximum of Inf TFs per cluster

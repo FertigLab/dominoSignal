@@ -27,7 +27,7 @@ an instance of class `linkage_summary`
 
   nested list of linkages inferred for each subject. Lists are stored in
   a hierarchical structure of subject-cluster-linkage where linkages
-  include transcription factors (tfs), linkages between transcription
+  include transcription factors (tfs) linkages between transcription
   factors and receptors (tfs_rec), active receptors (rec), possible
   receptor-ligand interactions (rec_lig), and incoming ligands
   (incoming_lig)

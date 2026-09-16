@@ -64,12 +64,19 @@ create_rl_map_cellphonedb(
 
 - alternate_convert_table:
 
-  supplied table for non-ensembl method of conversion
+  a data frame with column names corresponding to gene symbol types
+  (mm.ens, hs.ens, mgi, hgnc) and rows corresponding to the gene symbols
+  themselves for use with alternate_convert = TRUE
 
 ## Value
 
 Data frame where each row describes a possible receptor-ligand
 interaction
+
+## See also
+
+[`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+where output of this function can be used
 
 ## Examples
 
@@ -78,5 +85,36 @@ data(CellPhoneDB)
 rl_map_tiny <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
  proteins = CellPhoneDB$proteins_tiny,
  interactions = CellPhoneDB$interactions_tiny,
- complexes =CellPhoneDB$complexes_tiny)
+ complexes = CellPhoneDB$complexes_tiny)
+
+if (FALSE) { # \dontrun{
+rl_map_tiny_conv <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
+  proteins = CellPhoneDB$proteins_tiny,
+  interactions = CellPhoneDB$interactions_tiny,
+  gene_conv = c("HGNC", "MGI"),
+  gene_conv_host = "https://beta.ensembl.org")
+} # }
+
+# Using alternate conversion table instead of biomaRt
+ortho_table <- data.frame(
+  hs.ens = c("ENSG00000198888", "ENSG00000198763", "ENSG00000198804"),
+  hgnc = c("MT-ND1", "MT-ND2", "MT-CO1"),
+  mm.ens = c("ENSMUSG00000064341", "ENSMUSG00000064345", "ENSMUSG00000064351"),
+  mgi = c("mt-Nd1", "mt-Nd2", "mt-Co1"))
+
+rl_map_tiny_alt <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
+  proteins = CellPhoneDB$proteins_tiny,
+  interactions = CellPhoneDB$interactions_tiny,
+  complexes = CellPhoneDB$complexes_tiny, gene_conv = c("ENSG", "MGI"),
+  alternate_convert = TRUE, alternate_convert_table = ortho_table)
+#> No gene orthologs found for: IL7
+#> Skipping interaction: IL7_receptor P13232
+#> No gene orthologs found for: TGFB3
+#> Skipping interaction: P10600 Q03167
+#> No gene orthologs found for: CXCR3
+#> Skipping interaction: P49682 P78556
+#> No gene orthologs found for: CCR6
+#> Skipping interaction: P51684 P78556
+#> No gene orthologs found for: NRG1
+#> Skipping interaction: Q02297 integrin_a6b4_complex
 ```

@@ -103,8 +103,6 @@ can be used.
 ``` r
 
 dom
-#> A domino object of 2607 cells
-#> Built with signaling between 9 clusters
 ```
 
 ``` r
@@ -125,7 +123,7 @@ ls("package:dominoSignal", pattern = "^dom_")
 #>  [1] "dom_clusters"      "dom_correlations"  "dom_counts"       
 #>  [4] "dom_database"      "dom_de"            "dom_info"         
 #>  [7] "dom_linkages"      "dom_network_items" "dom_signaling"    
-#> [10] "dom_tf_activation" "dom_zscores"
+#> [10] "dom_tf_activation" "dom_to_df"         "dom_zscores"
 ```
 
 ### Input data
@@ -339,7 +337,7 @@ dendritic cell cluster:
 
 ``` r
 
-dc_tfs <- dom_network_items(dom, "dendritic_cell", return = "features")
+dc_tfs <- dom_network_items(dom, "dendritic_cell", which_return = "features")
 head(dc_tfs)
 #> [1] "ATF3"  "CEBPD" "FOSB"  "STAT6" "KLF4"  "CEBPA"
 ```
@@ -442,11 +440,11 @@ Date last built and session information:
 ``` r
 
 Sys.Date()
-#> [1] "2026-05-05"
+#> [1] "2026-09-16"
 sessionInfo()
-#> R version 4.6.0 (2026-04-24)
+#> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.4 LTS
+#> Running under: Ubuntu 24.04.5 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -468,40 +466,40 @@ sessionInfo()
 #> [1] dominoSignal_1.7.0
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] DBI_1.3.0             httr2_1.2.2           formatR_1.14         
-#>   [4] biomaRt_2.68.0        rlang_1.2.0           magrittr_2.0.5       
-#>   [7] clue_0.3-68           GetoptLong_1.1.1      otel_0.2.0           
-#>  [10] matrixStats_1.5.0     compiler_4.6.0        RSQLite_2.4.6        
-#>  [13] png_0.1-9             systemfonts_1.3.2     vctrs_0.7.3          
-#>  [16] stringr_1.6.0         pkgconfig_2.0.3       shape_1.4.6.1        
-#>  [19] crayon_1.5.3          fastmap_1.2.0         backports_1.5.1      
-#>  [22] dbplyr_2.5.2          XVector_0.52.0        rmarkdown_2.31       
-#>  [25] ragg_1.5.2            purrr_1.2.2           bit_4.6.0            
-#>  [28] xfun_0.57             cachem_1.1.0          jsonlite_2.0.0       
-#>  [31] progress_1.2.3        blob_1.3.0            broom_1.0.12         
-#>  [34] parallel_4.6.0        prettyunits_1.2.0     cluster_2.1.8.2      
-#>  [37] R6_2.6.1              bslib_0.10.0          stringi_1.8.7        
-#>  [40] RColorBrewer_1.1-3    car_3.1-5             jquerylib_0.1.4      
-#>  [43] Rcpp_1.1.1-1.1        Seqinfo_1.2.0         iterators_1.0.14     
-#>  [46] knitr_1.51            IRanges_2.46.0        Matrix_1.7-5         
-#>  [49] igraph_2.3.1          tidyselect_1.2.1      abind_1.4-8          
-#>  [52] yaml_2.3.12           doParallel_1.0.17     codetools_0.2-20     
-#>  [55] curl_7.1.0            lattice_0.22-9        tibble_3.3.1         
-#>  [58] plyr_1.8.9            Biobase_2.72.0        withr_3.0.2          
-#>  [61] KEGGREST_1.52.0       S7_0.2.2              evaluate_1.0.5       
-#>  [64] desc_1.4.3            BiocFileCache_3.2.0   circlize_0.4.18      
-#>  [67] Biostrings_2.80.0     pillar_1.11.1         ggpubr_0.6.3         
-#>  [70] filelock_1.0.3        carData_3.0-6         foreach_1.5.2        
-#>  [73] stats4_4.6.0          generics_0.1.4        S4Vectors_0.50.0     
-#>  [76] hms_1.1.4             ggplot2_4.0.3         scales_1.4.0         
-#>  [79] glue_1.8.1            tools_4.6.0           ggsignif_0.6.4       
-#>  [82] fs_2.1.0              grid_4.6.0            tidyr_1.3.2          
-#>  [85] AnnotationDbi_1.74.0  colorspace_2.1-2      Formula_1.2-5        
-#>  [88] cli_3.6.6             rappdirs_0.3.4        textshaping_1.0.5    
-#>  [91] ComplexHeatmap_2.28.0 dplyr_1.2.1           gtable_0.3.6         
-#>  [94] rstatix_0.7.3         sass_0.4.10           digest_0.6.39        
-#>  [97] BiocGenerics_0.58.0   rjson_0.2.23          htmlwidgets_1.6.4    
-#> [100] farver_2.1.2          memoise_2.0.1         htmltools_0.5.9      
-#> [103] pkgdown_2.2.0         lifecycle_1.0.5       httr_1.4.8           
-#> [106] GlobalOptions_0.1.4   bit64_4.8.0
+#>   [1] tidyselect_1.2.1      dplyr_1.2.1           farver_2.1.2         
+#>   [4] blob_1.3.0            S7_0.2.2              filelock_1.0.3       
+#>   [7] Biostrings_2.80.2     fastmap_1.2.0         BiocFileCache_3.2.0  
+#>  [10] digest_0.6.39         lifecycle_1.0.5       cluster_2.1.8.2      
+#>  [13] KEGGREST_1.52.2       RSQLite_3.53.3        magrittr_2.0.5       
+#>  [16] compiler_4.6.1        rlang_1.3.0           sass_0.4.10          
+#>  [19] progress_1.2.3        tools_4.6.1           igraph_2.3.3         
+#>  [22] yaml_2.3.12           ggsignif_0.6.4        knitr_1.52           
+#>  [25] prettyunits_1.2.0     htmlwidgets_1.6.4     bit_4.6.0            
+#>  [28] curl_8.0.0            plyr_1.8.9            RColorBrewer_1.1-3   
+#>  [31] abind_1.4-8           withr_3.0.3           purrr_1.2.2          
+#>  [34] BiocGenerics_0.58.1   desc_1.4.3            grid_4.6.1           
+#>  [37] stats4_4.6.1          ggpubr_1.0.0          colorspace_2.1-3     
+#>  [40] ggplot2_4.0.3         scales_1.4.0          iterators_1.0.14     
+#>  [43] biomaRt_2.68.0        cli_3.6.6             rmarkdown_2.32       
+#>  [46] crayon_1.5.3          ragg_1.5.2            generics_0.1.4       
+#>  [49] otel_0.2.0            httr_1.4.9            rjson_0.2.23         
+#>  [52] DBI_1.3.0             cachem_1.1.0          stringr_1.6.0        
+#>  [55] parallel_4.6.1        AnnotationDbi_1.74.0  formatR_1.14         
+#>  [58] XVector_0.52.0        matrixStats_1.5.0     vctrs_0.7.3          
+#>  [61] Matrix_1.7-5          carData_3.0-6         jsonlite_2.0.0       
+#>  [64] car_3.1-5             IRanges_2.46.0        hms_1.1.4            
+#>  [67] GetoptLong_1.1.1      S4Vectors_0.50.2      rstatix_1.1.0        
+#>  [70] bit64_4.8.6           Formula_1.2-6         clue_0.3-68          
+#>  [73] systemfonts_1.3.2     foreach_1.5.2         tidyr_1.3.2          
+#>  [76] jquerylib_0.1.4       glue_1.8.1            pkgdown_2.2.1        
+#>  [79] codetools_0.2-20      stringi_1.8.9         shape_1.4.6.1        
+#>  [82] gtable_0.3.6          ComplexHeatmap_2.28.0 tibble_3.3.1         
+#>  [85] pillar_1.11.1         htmltools_0.5.9       Seqinfo_1.2.0        
+#>  [88] circlize_0.4.18       R6_2.6.1              dbplyr_2.6.0         
+#>  [91] httr2_1.3.0           textshaping_1.0.5     doParallel_1.0.17    
+#>  [94] evaluate_1.0.5        Biobase_2.72.0        lattice_0.22-9       
+#>  [97] backports_1.5.1       png_0.1-9             broom_1.0.13         
+#> [100] memoise_2.0.1         bslib_0.12.0          Rcpp_1.1.2           
+#> [103] xfun_0.60             fs_2.1.0              pkgconfig_2.0.3      
+#> [106] GlobalOptions_0.1.4
 ```

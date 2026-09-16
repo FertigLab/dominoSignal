@@ -127,17 +127,16 @@ function.
 ## Examples
 
 ``` r
-example(create_rl_map_cellphonedb, echo = FALSE)
-example(create_regulon_list_scenic, echo = FALSE)
+
+data(CellPhoneDB)
 data(SCENIC)
 data(PBMC)
 
 pbmc_dom_tiny <- create_domino(
- rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
- counts = PBMC$RNA_count_tiny, z_scores = PBMC$RNA_zscore_tiny,
- clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
+ rl_map = CellPhoneDB$rl_map_tiny, features = SCENIC$auc_tiny,
+ counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
+ clusters = PBMC$clusters_tiny, tf_targets = SCENIC$regulon_list_tiny,
  use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE,
  verbose = FALSE
  )
-
 ```

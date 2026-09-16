@@ -81,8 +81,8 @@ feat_heatmap(
 - ...:
 
   Other parameters to pass to
-  [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
-  . Note that to use the 'main' parameter of
+  [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html).
+  Note that to use the 'main' parameter of
   [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
   you must set title = FALSE and to use 'annCol' or 'annColors' ann_cols
   must be FALSE.
@@ -101,14 +101,17 @@ Heatmap Plotting Functions:
 ## Examples
 
 ``` r
-#basic usage
-example(build_domino, echo = FALSE)
-feat_heatmap(pbmc_dom_built_tiny)
+# basic usage
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+feat_heatmap(dom)
 
-#using thresholds
+# using thresholds
 feat_heatmap(
- pbmc_dom_built_tiny, min_thresh = 0.1, 
- max_thresh = 0.6, norm = TRUE, bool = FALSE)
+    dom,
+    min_thresh = 0.1,
+    max_thresh = 0.6, norm = TRUE, bool = FALSE
+)
 #> Warning: You are using norm with min_thresh and max_thresh. Note that values will be thresholded AFTER normalization.
 
 ```

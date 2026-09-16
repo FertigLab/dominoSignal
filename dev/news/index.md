@@ -1,5 +1,13 @@
 # Changelog
 
+## dominoSignal v1.7.0 (in deveopment)
+
+### Bug fixes
+
+- Fixed
+  [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
+  function skip iterating on linkages if length is zero
+
 ## dominoSignal v1.6.0
 
 ### New Features

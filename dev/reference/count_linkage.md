@@ -61,8 +61,9 @@ Differential Signaling Workflow:
 ## Examples
 
 ``` r
+data(LinkageSummary)
 count_linkage(
-  linkage_summary = mock_linkage_summary(), cluster = "C1", 
+  linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
   group.by = "group", linkage = "rec")
 #>   feature total_count G1 G2
 #> 1      R1           3  3  0
