@@ -43,7 +43,7 @@ of genes in the transcription factor's regulon.}
 
 \item{use_complexes}{Boolean indicating whether you wish to use receptor/ligand complexes in the receptor ligand
 signaling database. If FALSE, receptor/ligand pairs where either functions as a protein complex will not be
-considered when constructing the signaling network.}
+considered when constructing the signaling network. If TRUE, make sure rl_map contains name columns matching names of complexes.}
 
 \item{rec_min_thresh}{Minimum expression level of receptors by cell. Default is 0.025 or 2.5 percent of all cells
 in the data set. This is important when calculating correlation to connect receptors to transcription activation.

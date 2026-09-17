@@ -28,7 +28,7 @@ transcription factor. Increasing this will decrease the number of receptors link
 transcription factor.}
 
 \item{min_rec_percentage}{Minimum percentage of cells in cluster expressing a receptor for the
-receptor to be linked to trancription factors in that cluster.}
+receptor to be linked to transcription factors in that cluster.}
 }
 \value{
 A domino object with a signaling network built
