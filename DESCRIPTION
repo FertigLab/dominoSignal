@@ -38,7 +38,8 @@ biocViews:
     SystemsBiology,
     SingleCell,
     Transcriptomics,
-    Network
+    Network,
+    Sequencing
 Suggests:
     knitr,
     patchwork,
@@ -51,4 +52,4 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 URL: https://FertigLab.github.io/dominoSignal/
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

@@ -4,6 +4,10 @@ on:
         branches: ['master', 'dev']
     workflow_dispatch:
 
+concurrency:
+    group: r-build-check-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
 jobs:
     build-check:
         uses: FertigLab/actions/.github/workflows/r-build-check.yml@v1

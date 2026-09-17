@@ -83,6 +83,7 @@ reference:
   contents:
   - add_rl_column
   - count_linkage
+  - dom_to_df
   - mean_ligand_expression
   - print,domino-method
   - print,linkage_summary-method
@@ -94,9 +95,10 @@ reference:
     Example data used for testing and demonstration purposes
   contents:
   - CellPhoneDB
-  - SCENIC
+  - DominoObjects
+  - LinkageSummary
   - PBMC
-  - mock_linkage_summary
+  - SCENIC
 
 navbar:
   type: light

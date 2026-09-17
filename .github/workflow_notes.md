@@ -56,10 +56,14 @@ How to implement version numbers:
 
 ## Existing GitHub Actions in This Repository
 
-Current workflows relevant to this runbook:
+Current workflows relevant to this project:
 
-- r-build-check workflow: runs on pull requests to master and dev
-- pkgdown workflow: runs on push and pull request for master, plus manual dispatch
+- check-documentation: runs on pull requests to master and dev, plus manual dispatch
+- r-build-check: runs on pull requests to master and dev, plus manual dispatch
+- R-CMD-check-bioc: runs on pull requests to master, main, and dev, plus manual dispatch
+- pkgdown-update: runs on push to master and main, plus manual dispatch
+- build-push-container: runs on push to master, plus manual dispatch
+- validate-master-pr-checklist: runs on pull requests to master and main
 
 ## Standard Feature Development Workflow
 
@@ -182,6 +186,28 @@ After pushing:
 - Bioconductor build report shows successful build (check [the Bioconductor Build Report](https://bioconductor.org/checkResults/))
 - GitHub mirror branch and Bioconductor branch remain aligned
 - pkgdown deployment status is green when docs changed
+
+## Pull Requests Targeting Master/Main
+
+Use the URL below (replace `BRANCHNAME` with the source branch name) when opening promotion PRs:
+
+<https://github.com/FertigLab/dominoSignal/compare/master...BRANCHNAME?expand=1&template=master-release.md>
+
+This pre-fills `.github/PULL_REQUEST_TEMPLATE/master-release.md`.
+
+The workflow `validate-master-pr-checklist` will fail unless all required checklist items are present and checked (`[x]`) in the PR body.
+
+Required checklist items are:
+
+- `[release-master] DESCRIPTION version updated per Bioconductor conventions`
+- `[release-master] NEWS.md updated for the same version and formatted appropriately`
+- `[release-master] inst/CITATION software entry is current (authors/year/version)`
+- `[release-master] README citation/version text is current`
+- `[release-master] index.Rmd reviewed/updated/knit again if any metadata/package information changed`
+- `[release-master] Documentation has been updated and includes example usage`
+- `[release-master] _pkgdown.yml file has been updated to include all functions and vignettes; check that the development mode is set appropriately (release vs devel)`
+- `[release-master] \`R CMD check\`, \`BiocCheck\`, and tests all pass`
+- `[release-master] post-merge push plan to \`bioc-upstream/devel\` confirmed`
 
 ## R Versioning
 
