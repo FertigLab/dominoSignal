@@ -1,8 +1,12 @@
-# dominoSignal v1.7.0 (in deveopment)
+# dominoSignal v1.7.0 (in development)
 
 ## Bug fixes
 
-- Fixed `gene_network()` function skip iterating on linkages if length is zero
+- Fixed `gene_network()` function skip iterating on linkages if length is zero.
+- Fixed `create_domino` to work with custom rl_map without names_A and names_B columns (thank you to [@mitaylor1822](https://github.com/mitaylor1822) for finding this issue!)
+- Fixed `build_domino()` to retain receptor gene names when only one receptor passes expression threshold in a cluster, rather than silently excluding it from signaling network.
+- Fixed `build_domino()` to compute signaling scores for clusters with only one incoming ligand instead of always returning zero.
+
 
 # dominoSignal v1.6.0
 

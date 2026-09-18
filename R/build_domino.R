@@ -13,7 +13,7 @@
 #'  transcription factor. Increasing this will decrease the number of receptors linked to each
 #'  transcription factor.
 #' @param min_rec_percentage Minimum percentage of cells in cluster expressing a receptor for the
-#'  receptor to be linked to trancription factors in that cluster.
+#'  receptor to be linked to transcription factors in that cluster.
 #' @return A domino object with a signaling network built
 #' @export
 #' @seealso [create_domino()] to create a domino object
@@ -90,8 +90,9 @@ build_domino <- function(
         dom@linkages[["tf_rec"]] <- tf_rec
         # If cluster methods are used, provide cluster-specific tf_rec linkages
         cl_tf_rec <- list()
-        for (clust in levels(dom@clusters)) {
-            percent <- dom@misc$cl_rec_percent[, clust]
+    for (clust in levels(dom@clusters)) {
+            percent <- dom@misc$cl_rec_percent[, clust, drop = FALSE]
+            percent <- stats::setNames(percent[, 1], rownames(percent))
             pass_genes <- names(percent[percent > min_rec_percentage])
             expressed <- character()
             for (rec in names(dom@linkages$rec_lig)) {
@@ -198,11 +199,7 @@ build_domino <- function(
                 }
             }
             cl_signaling_matrices[[clust]] <- cl_sig_mat
-            if (nrow(cl_sig_mat) > 1) {
-                signaling[paste0("R_", clust), ] <- colSums(cl_sig_mat)
-            } else {
-                signaling[paste0("R_", clust), ] <- 0
-            }
+            signaling[paste0("R_", clust), ] <- colSums(cl_sig_mat)
         }
         dom@cl_signaling_matrices <- cl_signaling_matrices
         dom@signaling <- signaling
