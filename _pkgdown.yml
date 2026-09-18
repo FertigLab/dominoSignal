@@ -90,6 +90,7 @@ reference:
   - rename_clusters
   - show,domino-method
   - show,linkage_summary-method
+  - subset,linkage_summary-method
 - title: "Example Data"
   desc: >
     Example data used for testing and demonstration purposes
