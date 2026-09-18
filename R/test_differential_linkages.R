@@ -87,6 +87,9 @@ test_differential_linkages <- function(
             # conduct test
             test <- fisher.test(test_df)
             odds.ratio <- test$estimate
+            if (is.null(odds.ratio)) {
+                odds.ratio <- NA
+            }
             p.value <- test$p.value
             res <- c(odds.ratio, p.value)
             res <- setNames(res, c("odds.ratio", "p.value"))

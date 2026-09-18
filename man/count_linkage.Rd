@@ -5,7 +5,7 @@
 \title{Count occurrences of linkages across multiple domino results from a linkage summary}
 \usage{
 count_linkage(
-  linkage_summary,
+  link_summary,
   cluster,
   group.by = NULL,
   linkage = "rec_lig",
@@ -13,7 +13,7 @@ count_linkage(
 )
 }
 \arguments{
-\item{linkage_summary}{a \code{\link[=linkage_summary]{linkage_summary()}} object}
+\item{link_summary}{a \code{\link[=linkage_summary]{linkage_summary()}} object}
 
 \item{cluster}{the name of the cell cluster being compared across multiple domino results}
 
@@ -37,7 +37,7 @@ Count occurrences of linkages across multiple domino results from a linkage summ
 \examples{
 data(LinkageSummary)
 count_linkage(
-  linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
+  link_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
   group.by = "group", linkage = "rec")
 
 }
