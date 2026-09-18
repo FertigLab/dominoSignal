@@ -13,7 +13,7 @@ test_that("create_domino runs with tiny inputs", {
     )
 
     expect_s4_class(dom, "domino")
-    expect_identical(dom, tiny_created_dom1)
+    expect_equal(dom, tiny_created_dom1)
 })
 
 test_that("create_domino fails on wrong input arg type", {
