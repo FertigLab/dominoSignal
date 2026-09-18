@@ -57,7 +57,7 @@ test_differential_linkages <- function(
     colnames(subject_count) <- c(group.by, "total")
     group_levels <- subject_count[[group.by]]
     count_link <- count_linkage(
-        linkage_summary = link_summary, cluster = cluster, linkage = linkage,
+        link_summary = link_summary, cluster = cluster, linkage = linkage,
         group.by = group.by, subject_names = subject_names
     )
     # initiate data frame for storing results

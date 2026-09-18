@@ -2,7 +2,7 @@
 
 ## BREAKING CHANGES
 
-- Updated name of first argument of `test_differential_linkages()` function to `link_summary` to avoid conflict with linkage summary class.
+- Updated name of first argument of `count_linkage()` and `test_differential_linkages()` functions to `link_summary` to avoid conflict with linkage summary class.
 - Removed `test_name` argument from `test_differential_linkages()` function as Fisher's Exact Test is the only option.
 
 ## New Features
