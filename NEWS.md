@@ -1,12 +1,20 @@
 # dominoSignal v1.7.0 (in development)
 
-## Bug fixes
+## BREAKING CHANGES
+
+- Updated name of first argument of `test_differential_linkages()` function to `link_summary` to avoid conflict with linkage summary class.
+- Removed `test_name` argument from `test_differential_linkages()` function as Fisher's Exact Test is the only option.
+
+## New Features
+
+- Added `dom_to_df()` function to create data.frame of signaling results from domino object.
+
+## Bug Fixes
 
 - Fixed `gene_network()` function skip iterating on linkages if length is zero.
-- Fixed `create_domino` to work with custom rl_map without names_A and names_B columns (thank you to [@mitaylor1822](https://github.com/mitaylor1822) for finding this issue!)
+- Fixed `create_domino()` to work with custom rl_map without names_A and names_B columns
 - Fixed `build_domino()` to retain receptor gene names when only one receptor passes expression threshold in a cluster, rather than silently excluding it from signaling network.
 - Fixed `build_domino()` to compute signaling scores for clusters with only one incoming ligand instead of always returning zero.
-
 
 # dominoSignal v1.6.0
 
