@@ -90,7 +90,7 @@ build_domino <- function(
         dom@linkages[["tf_rec"]] <- tf_rec
         # If cluster methods are used, provide cluster-specific tf_rec linkages
         cl_tf_rec <- list()
-    for (clust in levels(dom@clusters)) {
+        for (clust in levels(dom@clusters)) {
             percent <- dom@misc$cl_rec_percent[, clust, drop = FALSE]
             percent <- stats::setNames(percent[, 1], rownames(percent))
             pass_genes <- names(percent[percent > min_rec_percentage])

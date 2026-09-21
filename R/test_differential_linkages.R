@@ -12,8 +12,8 @@ NULL
 #' @param group.by the name of the column in `linkage_summary@subject_meta` by which to group subjects for counting.
 #' @param linkage a stored linkage from the domino object.
 #'   Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
-#' @param subject_names a vector of subject_names from the linkage_summary.
-#'   NOTE: all subject_names in the linkage summary are included in counting.
+#' @param subject_names a vector of subject_names from the linkage_summary to restrict testing to.
+#'   If NULL, all subjects in `link_summary` are included.
 #' @return A data frame of results from the test of the differential linkages. Rows correspond to each
 #'   linkage tested. Columns correspond to:
 #' \itemize{
@@ -35,7 +35,7 @@ NULL
 #' data(LinkageSummary)
 #' tiny_differential_linkage_c1 <- test_differential_linkages(
 #'     link_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
-#'     linkage = "rec"
+#'     linkage = "rec", subject_names = c("P1", "P2", "P4", "P5")
 #' )
 #'
 test_differential_linkages <- function(
@@ -49,16 +49,20 @@ test_differential_linkages <- function(
         allow_values = c("tfs", "rec", "incoming_lig", "tfs_rec", "rec_lig"))
     check_arg(subject_names, allow_class = c("factor", "character", "NULL"))
 
-    if (is.null(subject_names)) {
-        subject_names <- link_summary@subject_names
-    }
+    link_summary <- filter_by_subject_names(link_summary, subject_names)
     # count the number of groups
     subject_count <- as.data.frame(table(link_summary@subject_meta[[group.by]]))
     colnames(subject_count) <- c(group.by, "total")
     group_levels <- subject_count[[group.by]]
+    if (nrow(subject_count) < 2) {
+        stop(sprintf(
+            "At least 2 groups of %s must be represented among the included subjects; found: %s",
+            group.by, toString(group_levels)
+        ))
+    }
     count_link <- count_linkage(
         link_summary = link_summary, cluster = cluster, linkage = linkage,
-        group.by = group.by, subject_names = subject_names
+        group.by = group.by
     )
     # initiate data frame for storing results
     n <- nrow(count_link)
@@ -66,7 +70,7 @@ test_differential_linkages <- function(
         group.by,
         n
     ), test_name = rep("fishers.exact", n), feature = count_link[["feature"]])
-    # empty contigency table
+    # empty contingency table
     test_mat <- matrix(data = NA, nrow = nrow(subject_count), ncol = 2)
     rownames(test_mat) <- subject_count[[group.by]]
     colnames(test_mat) <- c("linkage_present", "linkage_absent")

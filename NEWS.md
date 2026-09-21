@@ -8,6 +8,7 @@
 ## New Features
 
 - Added `dom_to_df()` function to create data.frame of signaling results from domino object.
+- Added `subset-linkage_summary-method()` for `linkage_summary` class to allow for filtering of objects by subject names or metadata.
 
 ## Bug Fixes
 
@@ -15,6 +16,7 @@
 - Fixed `create_domino()` to work with custom rl_map without names_A and names_B columns
 - Fixed `build_domino()` to retain receptor gene names when only one receptor passes expression threshold in a cluster, rather than silently excluding it from signaling network.
 - Fixed `build_domino()` to compute signaling scores for clusters with only one incoming ligand instead of always returning zero.
+- Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary` object before calculating results.
 
 # dominoSignal v1.6.0
 

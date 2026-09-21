@@ -23,12 +23,12 @@ If NULL, only total counts of linkages for linkages in the cluster across all su
 \item{linkage}{a stored linkage from the domino object.
 Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'}
 
-\item{subject_names}{a vector of subject_names from the linkage_summary.
-NOTE: all subject_names in the linkage summary are included in counting.}
+\item{subject_names}{a vector of subject_names from the linkage_summary to restrict counting to.
+If NULL, all subjects in \code{link_summary} are included.}
 }
 \value{
 A data frame with columns for the unique linkage features and the counts of how many times the linkage
-occured across the compared domino results. If group.by is used, counts of the linkages are also provided as
+occurred across the compared domino results. If group.by is used, counts of the linkages are also provided as
 columns named by the unique values of the group.by variable.
 }
 \description{
@@ -39,9 +39,13 @@ data(LinkageSummary)
 count_linkage(
   link_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
   group.by = "group", linkage = "rec")
-
+count_linkage(
+  link_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", 
+  group.by = "group", linkage = "tfs_rec", subject_names = c("P1", "P2", "P4", "P5"))
 }
 \seealso{
+\code{\link[=summarize_linkages]{summarize_linkages()}} to create \code{\link[=linkage_summary]{linkage_summary()}} objects, \code{\link[=test_differential_linkages]{test_differential_linkages()}} to compare links across groups
+
 Differential Signaling Workflow:
 \code{\link[=plot_differential_linkages]{plot_differential_linkages()}},
 \code{\link[=summarize_linkages]{summarize_linkages()}},

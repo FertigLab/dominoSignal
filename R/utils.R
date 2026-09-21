@@ -150,6 +150,28 @@ lc <- function(list, list_names) {
     return(vec)
 }
 
+#' Restrict a linkage_summary object to a set of subject names
+#'
+#' @param link_summary a [linkage_summary()] object
+#' @param subject_names a vector of subject_names to restrict `link_summary` to, or NULL to
+#'   leave `link_summary` unchanged
+#' @return `link_summary`, subset to the given `subject_names`, or unchanged if `subject_names` is NULL
+#' @keywords internal
+filter_by_subject_names <- function(link_summary, subject_names) {
+    if (is.null(subject_names)) {
+        return(link_summary)
+    }
+    subject_names <- as.character(subject_names)
+    unknown_subjects <- setdiff(subject_names, as.character(link_summary@subject_names))
+    if (length(unknown_subjects) > 0) {
+        stop(sprintf(
+            "subject_names not found in link_summary: %s",
+            toString(unknown_subjects)
+        ))
+    }
+    return(eval(bquote(subset(link_summary, subset = subject_names %in% .(subject_names)))))
+}
+
 #' Generate ggplot colors
 #'
 #' Accepts a number of colors to generate and generates a ggplot color spectrum.

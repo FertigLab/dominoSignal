@@ -22,8 +22,8 @@ test_differential_linkages(
 \item{linkage}{a stored linkage from the domino object.
 Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'}
 
-\item{subject_names}{a vector of subject_names from the linkage_summary.
-NOTE: all subject_names in the linkage summary are included in counting.}
+\item{subject_names}{a vector of subject_names from the linkage_summary to restrict testing to.
+If NULL, all subjects in \code{link_summary} are included.}
 }
 \value{
 A data frame of results from the test of the differential linkages. Rows correspond to each
@@ -48,7 +48,7 @@ Statistical test for differential linkages across multiple domino results
 data(LinkageSummary)
 tiny_differential_linkage_c1 <- test_differential_linkages(
     link_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
-    linkage = "rec"
+    linkage = "rec", subject_names = c("P1", "P2", "P4", "P5")
 )
 
 }

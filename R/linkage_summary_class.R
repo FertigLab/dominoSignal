@@ -63,6 +63,11 @@ setMethod("show", "linkage_summary", function(object) {
         max(lengths(slot(object, "subject_linkages"))), " clusters.")
 })
 
+
+# Explicitly state "subset" generic so dominoSignal namespace has local subset binding
+# (even if other loaded package has a different subset generic method)
+setGeneric("subset")
+
 #' Subset a linkage_summary object
 #' 
 #' Subsets a linkage summary object by subject names or metadata
