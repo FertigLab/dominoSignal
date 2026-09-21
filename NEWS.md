@@ -17,6 +17,7 @@
 - Fixed `build_domino()` to retain receptor gene names when only one receptor passes expression threshold in a cluster, rather than silently excluding it from signaling network.
 - Fixed `build_domino()` to compute signaling scores for clusters with only one incoming ligand instead of always returning zero.
 - Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary` object before calculating results.
+- Fixed `summarize_linkages()` iteration over linkage pairs (receptor-TF or ligand-receptor) to skip empty cases (removing spurious NA <- NA results when no links are present).
 
 # dominoSignal v1.6.0
 

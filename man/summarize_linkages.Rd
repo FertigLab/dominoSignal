@@ -2,9 +2,12 @@
 % Please edit documentation in R/summarize_linkages.R
 \name{summarize_linkages}
 \alias{summarize_linkages}
+\alias{summarise_linkages}
 \title{Summarize linkages from multiple domino objects}
 \usage{
 summarize_linkages(domino_results, subject_meta, subject_names = NULL)
+
+summarise_linkages(domino_results, subject_meta, subject_names = NULL)
 }
 \arguments{
 \item{domino_results}{list of domino results with one domino object per subject. Names from the list should
@@ -22,6 +25,7 @@ active receptors, and incoming ligands for each cluster across multiple domino r
 \description{
 Creates a \code{\link[=linkage_summary]{linkage_summary()}} object storing the linkages learned in different domino objects as nested
 lists to facilitate comparisons of networks learned by domino across subject covariates.
+\code{\link[=summarize_linkages]{summarize_linkages()}} and \code{\link[=summarise_linkages]{summarise_linkages()}} are synonyms.
 }
 \examples{
 data(PBMC)

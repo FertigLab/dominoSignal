@@ -69,7 +69,7 @@ test_differential_linkages <- function(
     result_df <- data.frame(cluster = rep(cluster, n), linkage = rep(linkage, n), group.by = rep(
         group.by,
         n
-    ), test_name = rep("fishers.exact", n), feature = count_link[["feature"]])
+    ), test_name = rep("fishers.exact", n), feature = count_link[["feature"]], stringsAsFactors = FALSE)
     # empty contingency table
     test_mat <- matrix(data = NA, nrow = nrow(subject_count), ncol = 2)
     rownames(test_mat) <- subject_count[[group.by]]
