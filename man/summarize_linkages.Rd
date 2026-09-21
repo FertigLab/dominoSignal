@@ -25,7 +25,6 @@ active receptors, and incoming ligands for each cluster across multiple domino r
 \description{
 Creates a \code{\link[=linkage_summary]{linkage_summary()}} object storing the linkages learned in different domino objects as nested
 lists to facilitate comparisons of networks learned by domino across subject covariates.
-\code{\link[=summarize_linkages]{summarize_linkages()}} and \code{\link[=summarise_linkages]{summarise_linkages()}} are synonyms.
 }
 \examples{
 data(PBMC)
@@ -50,7 +49,8 @@ pbmc_dom_tiny_alt <- create_domino(
     tf_targets = SCENIC$regulon_list_tiny,
     use_clusters = TRUE,
     use_complexes = TRUE,
-    remove_rec_dropout = FALSE
+    remove_rec_dropout = FALSE,
+    verbose = FALSE
 )
 
 pbmc_dom_built_tiny_alt <- build_domino(
