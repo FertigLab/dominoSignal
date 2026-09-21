@@ -2,9 +2,12 @@
 % Please edit documentation in R/access_functions.R
 \name{dom_signaling}
 \alias{dom_signaling}
+\alias{dom_signalling}
 \title{Access signaling}
 \usage{
 dom_signaling(dom, cluster = NULL)
+
+dom_signalling(dom, cluster = NULL)
 }
 \arguments{
 \item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
@@ -19,6 +22,7 @@ of each cluster
 }
 \description{
 A function to pull signaling matrices from a domino object
+\code{\link[=dom_signaling]{dom_signaling()}} and \code{\link[=dom_signalling]{dom_signalling()}} are synonyms.
 }
 \examples{
 data(DominoObjects)

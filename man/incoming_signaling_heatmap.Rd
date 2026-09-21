@@ -2,9 +2,22 @@
 % Please edit documentation in R/plot_heatmaps.R
 \name{incoming_signaling_heatmap}
 \alias{incoming_signaling_heatmap}
+\alias{incoming_signalling_heatmap}
 \title{Create a cluster incoming signaling heatmap}
 \usage{
 incoming_signaling_heatmap(
+  dom,
+  rec_clust,
+  clusts = NULL,
+  min_thresh = -Inf,
+  max_thresh = Inf,
+  scale = "none",
+  normalize = "none",
+  title = TRUE,
+  ...
+)
+
+incoming_signalling_heatmap(
   dom,
   rec_clust,
   clusts = NULL,
@@ -50,6 +63,7 @@ function creates a heatmap of cluster average expression for all of those
 ligands. A list of all cluster incoming signaling matrices can be found in
 the cl_signaling_matrices slot of a domino option as an alternative to this
 plotting function.
+\code{\link[=incoming_signaling_heatmap]{incoming_signaling_heatmap()}} and \code{\link[=incoming_signalling_heatmap]{incoming_signalling_heatmap()}} are synonyms.
 }
 \examples{
 data(DominoObjects)

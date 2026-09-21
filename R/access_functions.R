@@ -187,6 +187,7 @@ by_cluster = FALSE) {
 #' Access signaling
 #'
 #' A function to pull signaling matrices from a domino object
+#' [dom_signaling()] and [dom_signalling()] are synonyms.
 #'
 #' @param dom a domino object that has been created with [create_domino()]
 #' @param cluster either NULL to indicate global signaling or a specific cluster for which a signaling matrix
@@ -200,7 +201,7 @@ by_cluster = FALSE) {
 #' data(DominoObjects)
 #' dom <- DominoObjects$built_dom_tiny
 #' monocyte_signaling <- dom_signaling(dom, cluster = "CD14_monocyte")
-#' 
+#'
 dom_signaling <- function(dom, cluster = NULL) {
     check_arg(dom, allow_class = "domino", allow_len = 1)
     check_arg(cluster, allow_class = c("character", "NULL"))
@@ -210,6 +211,10 @@ dom_signaling <- function(dom, cluster = NULL) {
         as.data.frame(slot(dom, "cl_signaling_matrices")[[cluster]])
     }
 }
+
+#' @rdname dom_signaling
+#' @export
+dom_signalling <- dom_signaling
 
 #' Access differential expression
 #'

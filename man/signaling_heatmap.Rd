@@ -2,9 +2,20 @@
 % Please edit documentation in R/plot_heatmaps.R
 \name{signaling_heatmap}
 \alias{signaling_heatmap}
+\alias{signalling_heatmap}
 \title{Create a network heatmap}
 \usage{
 signaling_heatmap(
+  dom,
+  clusts = NULL,
+  min_thresh = -Inf,
+  max_thresh = Inf,
+  scale = "none",
+  normalize = "none",
+  ...
+)
+
+signalling_heatmap(
   dom,
   clusts = NULL,
   min_thresh = -Inf,
@@ -39,6 +50,7 @@ A heatmap rendered to the active graphics device
 Creates a heatmap of the signaling network. Alternatively, the network
 matrix can be accessed directly in the signaling slot of a domino object using
 the \code{\link[=dom_signaling]{dom_signaling()}} function.
+\code{\link[=signaling_heatmap]{signaling_heatmap()}} and \code{\link[=signalling_heatmap]{signalling_heatmap()}} are synonyms.
 }
 \examples{
 data(DominoObjects)

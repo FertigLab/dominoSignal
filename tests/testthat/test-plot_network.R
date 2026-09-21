@@ -14,6 +14,10 @@ test_that("signaling_network returns a graph with scaled vertices even if scalin
     expect_no_error(signaling_network(tiny_dom1, showIncomingSignalingClusts = "B_cell"))
 })
 
+test_that("signalling_network is a synonym of signaling_network", {
+    expect_identical(signalling_network, signaling_network)
+})
+
 test_that("gene_network function runs", {
     expect_no_error(gene_network(tiny_dom1, clust = levels(tiny_dom1@clusters)[1], layout = "grid"))
 })

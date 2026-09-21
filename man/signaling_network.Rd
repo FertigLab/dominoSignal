@@ -2,9 +2,28 @@
 % Please edit documentation in R/plot_network.R
 \name{signaling_network}
 \alias{signaling_network}
+\alias{signalling_network}
 \title{Create a cluster to cluster signaling network diagram}
 \usage{
 signaling_network(
+  dom,
+  cols = NULL,
+  edge_weight = 0.3,
+  clusts = NULL,
+  showOutgoingSignalingClusts = NULL,
+  showIncomingSignalingClusts = NULL,
+  min_thresh = -Inf,
+  max_thresh = Inf,
+  normalize = "none",
+  scale = "sq",
+  layout = "circle",
+  scale_by = "rec_sig",
+  vert_scale = 3,
+  plot_title = NULL,
+  ...
+)
+
+signalling_network(
   dom,
   cols = NULL,
   edge_weight = 0.3,
@@ -70,6 +89,7 @@ An igraph plot rendered to the active graphics device
 Creates a network diagram of signaling between clusters. Nodes are clusters
 and directed edges indicate signaling from one cluster to another. Edges are
 colored based on the color scheme of the ligand expressing cluster
+\code{\link[=signaling_network]{signaling_network()}} and \code{\link[=signalling_network]{signalling_network()}} are synonyms.
 }
 \examples{
 data(DominoObjects)

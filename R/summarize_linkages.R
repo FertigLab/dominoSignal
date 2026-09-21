@@ -2,7 +2,6 @@
 #'
 #' Creates a [linkage_summary()] object storing the linkages learned in different domino objects as nested
 #'   lists to facilitate comparisons of networks learned by domino across subject covariates.
-#' [summarize_linkages()] and [summarise_linkages()] are synonyms.
 #'
 #' @param domino_results list of domino results with one domino object per subject. Names from the list should
 #'   match subject_names
@@ -36,7 +35,8 @@
 #'     tf_targets = SCENIC$regulon_list_tiny,
 #'     use_clusters = TRUE,
 #'     use_complexes = TRUE,
-#'     remove_rec_dropout = FALSE
+#'     remove_rec_dropout = FALSE,
+#'     verbose = FALSE
 #' )
 #'
 #' pbmc_dom_built_tiny_alt <- build_domino(

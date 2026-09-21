@@ -12,6 +12,7 @@ NULL
 #' Creates a network diagram of signaling between clusters. Nodes are clusters
 #' and directed edges indicate signaling from one cluster to another. Edges are
 #' colored based on the color scheme of the ligand expressing cluster
+#' [signaling_network()] and [signalling_network()] are synonyms.
 #'
 #' @param dom a domino object with network built ([build_domino()])
 #' @param cols named vector indicating the colors for clusters. Values are colors and names must match clusters in
@@ -207,6 +208,10 @@ signaling_network <- function(
     )
     plot(graph, layout = l, main = plot_title, ...)
 }
+
+#' @rdname signaling_network
+#' @export signalling_network
+signalling_network <- signaling_network
 
 #' Create a gene association network
 #'

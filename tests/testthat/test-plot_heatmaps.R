@@ -6,3 +6,11 @@ test_that("plot_heatmaps functions run", {
     expect_no_error(feat_heatmap(tiny_dom1, title = FALSE))
     expect_no_error(cor_heatmap(tiny_dom1, title = FALSE))
 })
+
+test_that("signalling_heatmap is a synonym of signaling_heatmap", {
+    expect_identical(signalling_heatmap, signaling_heatmap)
+})
+
+test_that("incoming_signalling_heatmap is a synonym of incoming_signaling_heatmap", {
+    expect_identical(incoming_signalling_heatmap, incoming_signaling_heatmap)
+})

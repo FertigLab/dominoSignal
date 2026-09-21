@@ -12,7 +12,7 @@
 *.loom
 *.rds
 *.log
-.*Rplots.pdf
+Rplots.pdf
 
 # R package build and check artifacts
 *.tar.gz

@@ -9,6 +9,7 @@
 
 - Added `dom_to_df()` function to create data.frame of signaling results from domino object.
 - Added `subset-linkage_summary-method()` for `linkage_summary` class to allow for filtering of objects by subject names or metadata.
+- Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
 
 ## Bug Fixes
 
