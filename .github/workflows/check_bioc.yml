@@ -295,7 +295,7 @@ jobs:
         env:
           DISPLAY: 99.0
         run: |
-            if (identical(Sys.info()[[sysname"]], "Darwin")) {
+            if (identical(Sys.info()[["sysname"]], "Darwin")) {
               libomp <- Sys.getenv("LIBOMP_DYLIB")
               if (nzchar(libomp) && file.exists(libomp)) {
                 dyn.load(libomp, local = FALSE, now = TRUE)
