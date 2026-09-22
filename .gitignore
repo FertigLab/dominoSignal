@@ -26,6 +26,7 @@ dominoSignal.BiocCheck/
 
 # pkgdown and generated site output
 docs/*
+doc/
 /pkgdown/
 
 # Generated vignette output

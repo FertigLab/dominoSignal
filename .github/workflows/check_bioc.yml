@@ -174,6 +174,16 @@ jobs:
           brew install libxml2
           echo "XML_CONFIG=/usr/local/opt/libxml2/bin/xml2-config" >> $GITHUB_ENV
 
+          ## Install libomp for stringdist
+          brew install libomp
+          LIBOMP_PREFIX="$(brew --prefix libomp)"
+          echo "CPPFLAGS=-I${LIBOMP_PREFIX}/include" >> $GITHUB_ENV
+          echo "LDFLAGS=-L${LIBOMP_PREFIX}/lib" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=${LIBOMP_PREFIX}/lib/pkgconfig" >> $GITHUB_ENV
+          echo "DYLD_LIBRARY_PATH=${LIBOMP_PREFIX}/lib${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}" >> $GITHUB_ENV
+          echo "R_LD_LIBRARY_PATH=${LIBOMP_PREFIX}/lib${R_LD_LIBRARY_PATH:+:$R_LD_LIBRARY_PATH}" >> $GITHUB_ENV
+          echo "LIBOMP_DYLIB=${LIBOMP_PREFIX}/lib/libomp.dylib" >> $GITHUB_ENV
+
           ## Required to install magick as noted at
           ## https://github.com/r-lib/usethis/commit/f1f1e0d10c1ebc75fd4c18fa7e2de4551fd9978f#diff-9bfee71065492f63457918efcd912cf2
           brew install imagemagick@6
@@ -285,12 +295,18 @@ jobs:
         env:
           DISPLAY: 99.0
         run: |
-          BiocCheck::BiocCheck(
+            if (identical(Sys.info()[[sysname"]], "Darwin")) {
+              libomp <- Sys.getenv("LIBOMP_DYLIB")
+              if (nzchar(libomp) && file.exists(libomp)) {
+                dyn.load(libomp, local = FALSE, now = TRUE)
+              }}
+          
+              BiocCheck::BiocCheck(
               dir('check', 'tar.gz$', full.names = TRUE),
               `quit-with-status` = TRUE,
               `no-check-R-ver` = TRUE,
               `no-check-bioc-help` = TRUE
-          )
+              )
         shell: Rscript {0}
 
       - name: Test coverage
