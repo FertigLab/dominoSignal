@@ -18,5 +18,6 @@ Shows content overview of linkage_summary object
 \examples{
 data(LinkageSummary)
 LinkageSummary$linkage_sum_tiny
+show(LinkageSummary$linkage_sum_tiny)
 
 }

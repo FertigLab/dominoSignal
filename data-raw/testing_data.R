@@ -207,8 +207,8 @@ tiny_linkage_summary <- summarize_linkages(
 
 # A differential linkage object:
 tiny_differential_linkage <- test_differential_linkages(
-    linkage_summary = tiny_linkage_summary, cluster = "B_cell", group.by = "group",
-    linkage = "rec", test_name = "fishers.exact")
+    link_summary = tiny_linkage_summary, cluster = "B_cell", group.by = "group",
+    linkage = "rec")
 
 
 # Shorter names for development:
