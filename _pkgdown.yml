@@ -118,6 +118,8 @@ navbar:
         href: articles/domino_object_vignette.html
       - text: Plotting and Visualization
         href: articles/plotting_vignette.html
+      - text: Differential Signaling Workflow
+        href: articles/differential_signaling.html
     github:
       icon: fa-github
       href: https://github.com/FertigLab/dominoSignal
