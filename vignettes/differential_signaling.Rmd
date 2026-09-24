@@ -24,7 +24,7 @@ In this tutorial, we will walk through the workflow for performing differential 
 
 ## Workflow overview
 
-The differential signaling workflow consistens of the following steps:
+The differential signaling workflow consists of the following steps:
 
 1. Build a domino object per subject to be compared (see the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) tutorial for details on building a domino object).
 2. Compile linkages across the subjects into a [linkage_summary object](https://fertiglab.github.io/dominoSignal/reference/linkage_summary-class.html) using the `summarize_linkages()` function.
@@ -114,7 +114,9 @@ build_reps <- function(clusters, seed, keep_frac, shuffle_frac) {
   return(dom_shuffle)
 }
 
-params <- data.frame(set = c(161803, 314159, 6631034, 6021023, 831446, 98067), keep = c(0.95, 0.95, 0.95, 0.95, 0.9, 0.9), shuffle = c(0.15, 0.1, 0.15, 0.1, 0.15, 0.1))
+params <- data.frame(set = c(161803, 314159, 6631034, 6021023, 831446, 98067),
+    keep = c(0.95, 0.95, 0.95, 0.95, 0.9, 0.9),
+    shuffle = c(0.15, 0.1, 0.15, 0.1, 0.15, 0.1))
 
 # This does take a few minutes to run
 dom_list <- purrr::pmap(params, function(set, keep, shuffle) {
@@ -146,7 +148,8 @@ subject_metas <- data.frame(
   condition = c("control", "treatment", "treatment", "control", "control", "control"),
   batch = c("A", "A", "B", "B", "C", "C"))
 
-link_summary <- summarize_linkages(dom_list, subject_metas, subject_names = subject_metas$patient)
+link_summary <- summarize_linkages(dom_list, subject_metas,
+    subject_names = subject_metas$patient)
 
 print(link_summary)
 ```
@@ -180,13 +183,16 @@ The `count_linkage()` function tabulates the number of subjects with a given lin
 If no grouping variable is specified and no subject names are provided, the function will return a data frame with the total number of subjects with each linkage in the selected cluster.
 
 ```{r all linkages}
-count_all <- count_linkage(link_summary, cluster = "CD8_T_cell", linkage = "rec_lig") %>% slice_sample(n = 5)
+count_all <- count_linkage(link_summary, cluster = "CD8_T_cell",
+    linkage = "rec_lig") %>% slice_sample(n = 5)
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(count_all, caption = "Total counts of receptor-ligand linkages in CD8 T Cells"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(count_all,
+    caption = "Total counts of receptor-ligand linkages in CD8 T Cells"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -197,13 +203,16 @@ kableExtra::kable_styling(knitr::kable(count_all, caption = "Total counts of rec
 If specific subjects are of interest, the counts can be restricted to those subjects by providing a vector of the subject names.
 
 ```{r subset subjects}
-count_subjects <- count_linkage(link_summary, cluster = "CD8_T_cell", linkage = "tfs", subject_names = c("P1", "P2"))
+count_subjects <- count_linkage(link_summary, cluster = "CD8_T_cell",
+    linkage = "tfs", subject_names = c("P1", "P2"))
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(count_subjects, caption = "Counts of TF linkages in patients P1 & P2 in CD8 T Cells"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(count_subjects,
+    caption = "Counts of TF linkages in patients P1 & P2 in CD8 T Cells"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -216,37 +225,46 @@ kableExtra::kable_styling(knitr::kable(count_subjects, caption = "Counts of TF l
 The `count_linkage()` function can also return counts that are grouped by a metadata column. For example, we can count the linkages for subjects in the treatment condition grouped by the "time" column to see how many subjects in each time point have each linkage.
 
 ```{r time treatment counts}
-counts_time_trt <- count_linkage(link_treat, cluster = "CD14_monocyte", linkage = "tfs_rec", group.by = "time")
+counts_time_trt <- count_linkage(link_treat, cluster = "CD14_monocyte",
+    linkage = "tfs_rec", group.by = "time")
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(slice_sample(counts_time_trt, n = 5), caption = "Counts of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(slice_sample(counts_time_trt, n = 5),
+    caption = "Counts of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
 ```{r include = FALSE}
-kableExtra::kable_styling(knitr::kable(slice_sample(counts_time_trt, n = 5), caption = "Counts of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(slice_sample(counts_time_trt, n = 5),
+    caption = "Counts of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 This is equivalent to grouping by the "time" column and providing the subject names of only the subjects in the treatment condition.
 
 ```{r time subject counts}
-counts_time_subj <- count_linkage(link_summary, cluster = "CD14_monocyte", linkage = "tfs_rec", group.by = "time", subject_names = c("P2", "P3"))
+counts_time_subj <- count_linkage(link_summary, cluster = "CD14_monocyte",
+    linkage = "tfs_rec", group.by = "time", subject_names = c("P2", "P3"))
 identical(counts_time_trt, counts_time_subj)
 ```
 
 Of course, more than one subject can be in each group, and the counts will reflect the number of subjects in each group with each linkage.
 
 ```{r condition counts}
-counts_condition <- count_linkage(link_summary, cluster = "naive_CD4_T_cell", linkage = "incoming_lig", group.by = "condition") %>% slice_sample(n = 5)
+counts_condition <- count_linkage(link_summary, cluster = "naive_CD4_T_cell",
+    linkage = "incoming_lig", group.by = "condition") %>% slice_sample(n = 5)
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(counts_condition, caption = "Counts of incoming ligand linkages in naive CD4 T Cells grouped by condition"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(counts_condition,
+    caption = "Counts of incoming ligand linkages in naive CD4 T Cells grouped by condition"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -258,14 +276,16 @@ kableExtra::kable_styling(knitr::kable(counts_condition, caption = "Counts of in
 And more than two groups can be compared at once.
 
 ```{r batch counts}
-counts_batch <- count_linkage(link_summary, cluster = "CD14_monocyte", linkage = "rec", group.by = "batch") %>%
-slice_sample(n = 5)
+counts_batch <- count_linkage(link_summary, cluster = "CD14_monocyte",
+    linkage = "rec", group.by = "batch") %>% slice_sample(n = 5)
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(counts_batch, caption = "Counts of receptor linkages in CD14 Monocytes grouped by batch"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(counts_batch,
+    caption = "Counts of receptor linkages in CD14 Monocytes grouped by batch"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -284,13 +304,16 @@ The `test_differential_linkages()` function returns a data frame that includes t
 When exactly two groups are compared, the `fisher.test()` function returns an odds ratio in addition to the p-value, reflecting the relative odds of the linkage being present in one group compared to the other.
 
 ```{r test time treat}
-dcst_time_trt <- test_differential_linkages(link_treat, cluster = "CD14_monocyte", linkage = "tfs_rec", group.by = "time")
+dcst_time_trt <- test_differential_linkages(link_treat,
+    cluster = "CD14_monocyte", linkage = "tfs_rec", group.by = "time")
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(slice_sample(dcst_time_trt, n = 5), caption = "DCST of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(slice_sample(dcst_time_trt, n = 5),
+    caption = "DCST of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -301,26 +324,31 @@ kableExtra::kable_styling(knitr::kable(slice_sample(dcst_time_trt, n = 5), capti
 As with the `count_linkage()` function, the same results can be obtained by providing the subject names of only the subjects in the treatment condition.
 
 ```{r test time subject}
-dcst_time_subj <- test_differential_linkages(link_summary, cluster = "CD14_monocyte", linkage = "tfs_rec", group.by = "time", subject_names = c("P2", "P3"))
+dcst_time_subj <- test_differential_linkages(link_summary, cluster = "CD14_monocyte",
+    linkage = "tfs_rec", group.by = "time", subject_names = c("P2", "P3"))
 identical(dcst_time_trt, dcst_time_subj)
 ```
 
 The `test_differential_linkages()` function does require that any grouping variable has at least two groups with at least one subject in each group.
 
 ```{r no subjects, error = TRUE}
-test_differential_linkages(link_treat, cluster = "CD14_monocyte", linkage = "tfs_rec", group.by = "condition")
+test_differential_linkages(link_treat, cluster = "CD14_monocyte",
+    linkage = "tfs_rec", group.by = "condition")
 ```
 
 It is obviously preferable to have more than one subject in each group (though the function does return results for groups with only one subject). Note that there are no significant differences between the groups in this example, which is expected since the subjects were generated from the same data set.
 
 ```{r dcst time}
-dcst_time <- test_differential_linkages(link_summary, cluster = "CD8_T_cell", linkage = "rec", group.by = "time") %>% dplyr::arrange(desc(odds.ratio))
+dcst_time <- test_differential_linkages(link_summary, cluster = "CD8_T_cell",
+    linkage = "rec", group.by = "time") %>% dplyr::arrange(desc(odds.ratio))
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(slice_sample(dcst_time, n = 5), caption = "DCST of receptor-ligand linkages in CD8 T Cells grouped by time"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(slice_sample(dcst_time, n = 5),
+    caption = "DCST of receptor-ligand linkages in CD8 T Cells grouped by time"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -333,13 +361,16 @@ kableExtra::kable_styling(knitr::kable(slice_sample(dcst_time, n = 5), caption =
 When more than two groups are compared, the `fisher.test()` function does not return an odds ratio (so it is set to `NA` in the DCST output), but the p-value still reflects whether the frequency of the linkage is significantly different across groups.
 
 ```{r dcst batch}
-dcst_batch <- test_differential_linkages(link_summary, cluster = "naive_CD4_T_cell", linkage = "rec", group.by = "batch") %>% arrange(p.value)
+dcst_batch <- test_differential_linkages(link_summary, cluster = "naive_CD4_T_cell",
+    linkage = "rec", group.by = "batch") %>% arrange(p.value)
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(slice_sample(dcst_batch, n = 5), caption = "DCST of receptors in naive CD4 T Cells grouped by batch"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(slice_sample(dcst_batch, n = 5),
+    caption = "DCST of receptors in naive CD4 T Cells grouped by batch"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -350,13 +381,16 @@ kableExtra::kable_styling(knitr::kable(slice_sample(dcst_batch, n = 5), caption 
 There is no limit to the number of groups that can be compared at once (as long as there is at least one subject in each group).
 
 ```{r dcst patient}
-dcst_patient <- test_differential_linkages(link_summary, cluster = "naive_CD4_T_cell", linkage = "rec_lig", group.by = "patient") %>% arrange(p.value)
+dcst_patient <- test_differential_linkages(link_summary, cluster = "naive_CD4_T_cell",
+    linkage = "rec_lig", group.by = "patient") %>% arrange(p.value)
 ```
 
 <details><summary>Show table code</summary>
 
 ```{r eval = FALSE}
-kableExtra::kable_styling(knitr::kable(slice_sample(dcst_patient, n = 5), caption = "DCST of receptor-ligand linkages in naive CD4 T Cells grouped by patient"), bootstrap_options = c("striped", "hover"))
+kableExtra::kable_styling(knitr::kable(slice_sample(dcst_patient, n = 5),
+    caption = "DCST of receptor-ligand linkages in naive CD4 T Cells grouped by patient"),
+    bootstrap_options = c("striped", "hover"))
 ```
 </details>
 
@@ -378,19 +412,24 @@ An example of a two-group comparison is shown below, where the p-value is used a
 
 ```{r plot time treat}
 #| fig.alt: Heatmap of p-values for receptor-ligand linkages in CD8 T cell cluster differing between pre and post timepoint for treatment condition with row barplots showing proportion of subjects in each group with active linkage.
-plot_differential_linkages(differential_linkage = dcst_time_trt %>% slice_sample(n = 15), test_statistic = "p.value", stat_range = c(0, 1), stat_ranking = "ascending")
+plot_differential_linkages(differential_linkage = dcst_time_trt %>% slice_sample(n = 15),
+  test_statistic = "p.value", stat_range = c(0, 1), stat_ranking = "ascending")
 ```
 
 ```{r plot time}
 #| fig.alt: Heatmap of p-values for receptors in CD8 T cells differing between pre and post timepoint with row barplots showing proportion of subjects in each group with active receptor.
-plot_differential_linkages(differential_linkage = dcst_time %>% slice_sample(n = 15), test_statistic = "p.value", gradient = c(minimum = "#c44f4f", maximum = "#ffd771"), stat_ranking = "ascending")
+plot_differential_linkages(differential_linkage = dcst_time %>% slice_sample(n = 15),
+    test_statistic = "p.value", gradient = c(minimum = "#c44f4f", maximum = "#ffd771"),
+    stat_ranking = "ascending")
 ```
 
 If comparing between two groups, it is also possible to use the odds ratio as the test statistic, which will show the relative odds of a linkage being present in one group compared to the other.
 
 ```{r plot dcst time odds}
 #| fig.alt: Heatmap of odds ratios for receptors in CD8 T cells differing between pre and post timepoints with row barplots showing proportion of subjects in each group with active receptor.
-plot_differential_linkages(differential_linkage = dcst_time %>% slice_sample(n = 15), test_statistic = "odds.ratio", stat_range = c(0, 4), stat_ranking = "descending", gradient = c(minimum = "gray90", maximum = "orange"))
+plot_differential_linkages(differential_linkage = dcst_time %>% slice_sample(n = 15),
+    test_statistic = "odds.ratio", stat_range = c(0, 4), stat_ranking = "descending",
+    gradient = c(minimum = "gray90", maximum = "orange"))
 ```
 
 ### Multi-group comparisons
@@ -399,19 +438,46 @@ When comparing between more than two groups, the odds ratio is not available, so
 
 ```{r plot dcst batch}
 #| fig.alt: Heatmap of p-values for receptors in naive CD4 T cells differing between batches with row barplots showing proportion of subjects in each group with active receptor.
-plot_differential_linkages(differential_linkage = dcst_batch %>% slice_sample(n = 15), test_statistic = "p.value", stat_range = c(0, 1), stat_ranking = "ascending", gradient = c(minimum = "#ff4c43", maximum = "#ffe6c0"))
+plot_differential_linkages(differential_linkage = dcst_batch %>% slice_sample(n = 15),
+  test_statistic = "p.value", stat_range = c(0, 1), stat_ranking = "ascending",
+  gradient = c(minimum = "#ff4c43", maximum = "#ffe6c0"))
 ```
 
 A custom color can be assigned to each group's barplot annotation using the `group_palette` argument, which takes a named vector of colors where names correspond to the group names in the DCST result.
 
 ```{r plot dcst group colors}
-plot_differential_linkages(differential_linkage = dcst_batch %>% slice_sample(n = 15), test_statistic = "p.value", stat_range = c(0, 1), stat_ranking = "ascending", gradient = c(minimum = "#ff4c43", maximum = "#ffe6c0"), group_palette = c(A = "#64a5e6", B = "#71fcad", C = "#c968c3"))
+plot_differential_linkages(differential_linkage = dcst_batch %>% slice_sample(n = 15),
+    test_statistic = "p.value", stat_range = c(0, 1), stat_ranking = "ascending",
+    gradient = c(minimum = "#7b43ff", maximum = "#c0c5ff"),
+    group_palette = c(A = "#64a5e6", B = "#71fcad", C = "#c968c3"))
 ```
 
-This can be used to include metadata information in the plot, such as condition or time point, by assigning the same color to all subjects in the same group.
+This can be useful for consistency across multiple plots or to match publication color schemes.
 
-```{r plot dcst meta colors}
-plot_differential_linkages(differential_linkage = dcst_patient %>% slice_sample(n = 15), test_statistic = "p.adj", stat_range = c(0, 1), stat_ranking = "ascending", gradient = c(minimum = "#ff4c43", maximum = "#ffe6c0"), group_palette = c(P1 = "#64a5e6", P2 = "#71fcad", P3 = "#71fcad", P4 = "#64a5e6", P5 = "#c968c3", P6 = "#c968c3"))
+## Example run
+
+Here's an example of what a workflow might look like from the list of `domino()` objects to the final visualization of differential linkages. We begin with the list of synthetic domino objects created above, create the metadata, create a `link_summary()` object, examine the counts for the linkages,and then run the DCST for a comparison by batch. In this example, we focus on incoming ligands in the CD14 monocyte cluster.
+
+```{r example workflow, eval = FALSE}
+subject_metas <- data.frame(
+  patient = c("P1", "P2", "P3", "P4", "P5", "P6"),
+  time = c("pre", "post", "pre", "post", "pre", "post"),
+  condition = c("control", "treatment", "treatment", "control", "control", "control"),
+  batch = c("A", "A", "B", "B", "C", "C"))
+
+link_summary <- summarize_linkages(dom_list, subject_metas,
+    subject_names = subject_metas$patient)
+
+counts_batch <- count_linkage(link_summary, cluster = "CD14_monocyte",
+    linkage = "incoming_lig", group.by = "batch")
+
+dcst_batch <- test_differential_linkages(link_summary, cluster = "CD14_monocyte",
+    linkage = "incoming_lig", group.by = "batch")
+
+plot_differential_linkages(dcst_batch, test_statistic = "p.value", stat_ranking = "ascending", 
+    gradient = c("minimum" = "#e02c2c", "maximum" = "#feffcd"),
+    group_palette = c(A = "#2a6aaa", B = "#07bd56", C = "#a244a3"))
+
 ```
 
 ## Continued development
@@ -421,8 +487,10 @@ As dominoSignal is actively being developed, new functions and features may be i
 
 <details><summary>Vignette Build Information</summary>
 Date last built and session information:
+
 ```{r}
 Sys.Date()
 sessionInfo()
 ```
+
 </details>

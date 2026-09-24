@@ -363,6 +363,63 @@ Another form of comprehensive ligand expression assessment is available for indi
 circos_ligand_receptor(pbmc_dom, receptor = "CD74")
 ```
 
+## Example run
+
+Here is an example of the complete dominoSignal workflow with default settings using the PBMC data set. We start from the `pbmc` SingleCellExperiment object, the SCENIC results, and the CellPhoneDB files. In this example, we focus on signaling to the CD14 monocyte cluster.
+
+```{r eval = FALSE}
+# Read and format SCENIC results
+regulons <- read.csv(scenic_regulon)
+auc <- read.table(scenic_auc,
+    header = TRUE, row.names = 1,
+    stringsAsFactors = FALSE, sep = ","
+)
+regulons <- regulons[-1:-2, ]
+colnames(regulons) <- c(
+    "TF", "MotifID", "AUC", "NES", "MotifSimilarityQvalue", "OrthologousIdentity",
+    "Annotation", "Context", "TargetGenes", "RankAtMax"
+)
+regulon_list <- create_regulon_list_scenic(regulons = regulons)
+auc_in <- as.data.frame(t(auc))
+rownames(auc_in) <- gsub("\\.\\.\\.$", "", rownames(auc_in))
+
+# Create rl_map
+complexes <- read.csv(paste0(cellphone_data, "/complex_input.csv"), stringsAsFactors = FALSE)
+genes <- read.csv(paste0(cellphone_data, "/gene_input.csv"), stringsAsFactors = FALSE)
+interactions <- read.csv(paste0(cellphone_data, "/interaction_input.csv"), stringsAsFactors = FALSE)
+proteins <- read.csv(paste0(cellphone_data, "/protein_input.csv"), stringsAsFactors = FALSE)
+
+rl_map <- create_rl_map_cellphonedb(
+    genes = genes,
+    proteins = proteins,
+    interactions = interactions,
+    complexes = complexes,
+    database_name = "CellPhoneDB_v4.0" # database version used
+)
+
+# Get inputs from SingleCellExperiment object
+counts <- assay(pbmc, "counts")
+logcounts <- assay(pbmc, "logcounts")
+logcounts <- logcounts[rowSums(logcounts) > 0, ]
+z_scores <- t(scale(t(logcounts)))
+clusters <- factor(pbmc$cell_type)
+names(clusters) <- colnames(pbmc)
+
+# Infer network
+pbmc_dom <- create_domino(rl_map = rl_map, features = auc_in, counts = counts,
+    z_scores = z_scores, clusters = clusters, tf_targets = regulon_list,
+    use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE)
+
+pbmc_dom <- build_domino(dom = pbmc_dom)
+
+# Visualize results
+feat_heatmap(pbmc_dom)
+signaling_network(pbmc_dom, showIncomingSignalingClusts = "CD14_monocyte")
+gene_network(pbmc_dom, clust = "CD14_monocyte")
+incoming_signaling_heatmap(pbmc_dom, rec_clust = "CD14_monocyte")
+circos_ligand_receptor(pbmc_dom, receptor = "CD74")
+```
+
 ## Continued Development
 
 Since dominoSignal is a package still being developed, there are new functions and features that will be implemented in future versions. In the meantime, we have put together further information on [plotting](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html) and the [domino object structure](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html) if you would like to explore more of the package's functionality. Additionally, if you find any bugs, have further questions, or want to share an idea, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
