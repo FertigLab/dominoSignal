@@ -49,21 +49,21 @@ test_that("subset filters on a subject_meta column", {
     expect_s4_class(sub, "linkage_summary")
     expect_equal(as.character(sub@subject_names), c("dom1", "dom2"))
     expect_equal(sub@subject_meta$ID, c("dom1", "dom2"))
-    expect_equal(names(sub@subject_linkages), c("dom1", "dom2"))
+    expect_named(sub@subject_linkages, c("dom1", "dom2"))
 })
 
 test_that("subset filters on subject_names", {
     sub <- subset(tiny_linkage_summary, subset = subject_names %in% c("dom1", "dom3"))
     expect_equal(as.character(sub@subject_names), c("dom1", "dom3"))
     expect_equal(sub@subject_meta$ID, c("dom1", "dom3"))
-    expect_equal(names(sub@subject_linkages), c("dom1", "dom3"))
+    expect_named(sub@subject_linkages, c("dom1", "dom3"))
 })
 
 test_that("subset filters on a combination of subject_names and subject_meta columns", {
     sub <- subset(tiny_linkage_summary, subset = subject_names %in% c("dom1", "dom2", "dom3") & group == "B")
     expect_equal(as.character(sub@subject_names), "dom3")
     expect_equal(sub@subject_meta$ID, "dom3")
-    expect_equal(names(sub@subject_linkages), "dom3")
+    expect_named(sub@subject_linkages, "dom3")
 })
 
 test_that("subset drops unused subject_names factor levels, preserving relative order", {
