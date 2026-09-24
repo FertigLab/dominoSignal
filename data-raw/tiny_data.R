@@ -276,8 +276,8 @@ linkage_sum_tiny <- new("linkage_summary",
 
 # A differential linkage object:
 tiny_differential_linkage <- test_differential_linkages(
-    linkage_summary = linkage_sum_tiny, cluster = "C1", group.by = "group",
-    linkage = "rec", test_name = "fishers.exact")
+    link_summary = linkage_sum_tiny, cluster = "C1", group.by = "group",
+    linkage = "rec")
 
 # save all data to be used in examples and for users to explore (exported)
 CellPhoneDB <- list(
