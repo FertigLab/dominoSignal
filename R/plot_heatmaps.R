@@ -12,6 +12,7 @@ NULL
 #' Creates a heatmap of the signaling network. Alternatively, the network
 #' matrix can be accessed directly in the signaling slot of a domino object using
 #' the [dom_signaling()] function.
+#' [signaling_heatmap()] and [signalling_heatmap()] are synonyms.
 #'
 #' @param dom domino object with network built ([build_domino()])
 #' @param clusts vector of clusters to be included. If NULL then all clusters are used.
@@ -87,6 +88,10 @@ signaling_heatmap <- function(
     )
 }
 
+#' @rdname signaling_heatmap
+#' @export signalling_heatmap
+signalling_heatmap <- signaling_heatmap
+
 #' Create a cluster incoming signaling heatmap
 #'
 #' Creates a heatmap of a cluster incoming signaling matrix. Each cluster has a
@@ -95,6 +100,7 @@ signaling_heatmap <- function(
 #' ligands. A list of all cluster incoming signaling matrices can be found in
 #' the cl_signaling_matrices slot of a domino option as an alternative to this
 #' plotting function.
+#' [incoming_signaling_heatmap()] and [incoming_signalling_heatmap()] are synonyms.
 #'
 #' @param dom Domino object with network built ([build_domino()])
 #' @param rec_clust Which cluster to select as the receptor. Must match naming of clusters in the domino object.
@@ -202,6 +208,10 @@ incoming_signaling_heatmap <- function(
         )
     }
 }
+
+#' @rdname incoming_signaling_heatmap
+#' @export incoming_signalling_heatmap
+incoming_signalling_heatmap <- incoming_signaling_heatmap
 
 #' Create a heatmap of features organized by cluster
 #'

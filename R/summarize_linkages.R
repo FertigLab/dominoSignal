@@ -35,7 +35,8 @@
 #'     tf_targets = SCENIC$regulon_list_tiny,
 #'     use_clusters = TRUE,
 #'     use_complexes = TRUE,
-#'     remove_rec_dropout = FALSE
+#'     remove_rec_dropout = FALSE,
+#'     verbose = FALSE
 #' )
 #'
 #' pbmc_dom_built_tiny_alt <- build_domino(
@@ -77,10 +78,11 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
         extra_names <- subject_names[!subject_names %in% names(domino_results)]
         warning("Provided subject names included names not present in domino_results: ", toString(extra_names))
         subject_names <- subject_names[subject_names %in% names(domino_results)]
+        subject_meta <- subject_meta[subject_meta[, 1] %in% subject_names, , drop = FALSE]
     }
     if (length(subject_names) < length(names(domino_results))) {
         warning("Linkage summary includes results only for provided subject names: ", toString(subject_names))
-        subject_meta <- subject_meta[subject_meta[, 1] %in% subject_names, ]
+        subject_meta <- subject_meta[subject_meta[, 1] %in% subject_names, , drop = FALSE]
     }
     subject_linkages <- list()
     for (id in subject_names) {
@@ -117,17 +119,20 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
             # stitch linked t.factors-receptors, receptors-ligands
             int_tfs_rec <- character(0)
             int_rec_lig <- character(0)
-            for (i in 0:((length(tfs_rec) / 2) - 1)) {
-                # count by twos and paste together with a <- denoting direction
-                s <- i * 2
-                interact <- paste(tfs_rec[1 + s], tfs_rec[2 + s], sep = " <- ")
-                int_tfs_rec <- c(int_tfs_rec, interact)
-            }
-            for (i in 0:((length(rec_lig) / 2) - 1)) {
+            # Only iterate if there are at least two elements in list
+            if (length(tfs_rec) >= 2) {
                 # count by twos and paste together with a '<-' denoting direction
-                s <- i * 2
-                interact <- paste(rec_lig[1 + s], rec_lig[2 + s], sep = " <- ")
+                for (i in seq(1, length(tfs_rec) - 1, by = 2)) {
+                interact <- paste(tfs_rec[i], tfs_rec[i + 1], sep = " <- ")
+                int_tfs_rec <- c(int_tfs_rec, interact)
+                }
+            }
+            if (length(rec_lig) >= 2) {
+                # count by twos and paste together with a '<-' denoting direction
+                for (i in seq(1, length(rec_lig) - 1, by = 2)) {
+                interact <- paste(rec_lig[i], rec_lig[i + 1], sep = " <- ")
                 int_rec_lig <- c(int_rec_lig, interact)
+                }
             }
             # save the features of this cluster
             c_features[[cluster]] <- list(
@@ -142,3 +147,7 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
         subject_meta = subject_meta,
         subject_linkages = subject_linkages))
 }
+
+#' @rdname summarize_linkages
+#' @export
+summarise_linkages <- summarize_linkages

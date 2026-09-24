@@ -11,3 +11,12 @@ test_that("access functions run", {
     expect_no_error(dom_info(tiny_dom1))
     expect_no_error(dom_network_items(tiny_dom1))
 })
+
+test_that("dom_signalling is a synonym of dom_signaling", {
+    expect_identical(dom_signalling, dom_signaling)
+    expect_identical(dom_signalling(tiny_dom1), dom_signaling(tiny_dom1))
+    expect_identical(
+        dom_signalling(tiny_dom1, cluster = "CD14_monocyte"),
+        dom_signaling(tiny_dom1, cluster = "CD14_monocyte")
+    )
+})

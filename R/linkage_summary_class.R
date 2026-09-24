@@ -28,6 +28,26 @@ linkage_summary <- setClass(
     )
 )
 
+valid_linksum <- function(object) {
+    n <- length(object@subject_names)
+    err <- character()
+    if (n == 0) {
+        err <- c(err, "subject_names must have length > 0")
+    }
+    if (length(object@subject_linkages) != n) {
+        err <- c(err, sprintf("subject_linkages must have length %d (number of subjects)", n))
+    }
+    if (ncol(object@subject_meta) == 0) {
+        err <- c(err, "subject_meta must have at least 1 column matching subject_names")
+    }
+    if (nrow(object@subject_meta) != n) {
+        err <- c(err, sprintf("subject_meta must have %d rows (number of subjects)", n))
+    }
+    if (length(err) == 0) TRUE else err
+}
+
+setValidity("linkage_summary", valid_linksum)
+
 #' Print linkage summary object
 #'
 #' Prints a description of a linkage summary object
@@ -41,9 +61,7 @@ linkage_summary <- setClass(
 #' print(LinkageSummary$linkage_sum_tiny)
 #'
 setMethod("print", "linkage_summary", function(x, ...) {
-    message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects with ",
-        ncol(slot(x, "subject_meta")), " metadata annotations and linkages between ",
-        max(lengths(slot(x, "subject_linkages"))), " clusters.")
+    show(x)
 })
 
 #' Show linkage_summary object information
@@ -56,9 +74,72 @@ setMethod("print", "linkage_summary", function(x, ...) {
 #' @examples
 #' data(LinkageSummary)
 #' LinkageSummary$linkage_sum_tiny
+#' show(LinkageSummary$linkage_sum_tiny)
 #'
 setMethod("show", "linkage_summary", function(object) {
-    message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects with ",
-        ncol(slot(object, "subject_meta")), " metadata annotations and linkages between ",
-        max(lengths(slot(object, "subject_linkages"))), " clusters.")
+    n_subjects <- nlevels(slot(object, "subject_names"))
+    n_meta <- ncol(slot(object, "subject_meta"))
+    n_clusts <- max(lengths(slot(object, "subject_linkages")), 0L)
+    if (n_subjects == 0) {
+        cat("An empty linkage summary object (0 subjects).\n")
+    } else {
+        cat("A linkage summary object of", n_subjects, "subjects with", n_meta, "metadata annotations and linkages between", n_clusts, "clusters.\n")
+    }
+    return(invisible(object))
+})
+
+
+# Explicitly state "subset" generic so dominoSignal namespace has local subset binding
+# (even if other loaded package has a different subset generic method)
+setGeneric("subset")
+
+#' Subset a linkage_summary object
+#' 
+#' Subsets a linkage summary object by subject names or metadata
+#' 
+#' @param x A linkage_summary object
+#' @param subset A logical expression referencing `subject_names` or columns of `subject_meta`
+#' @return A linkage_summary object containing only the subjects that match the specified criteria.
+#' @export
+#' @examples 
+#' data(LinkageSummary)
+#' links <- LinkageSummary$linkage_sum_tiny
+#' subset(links, subset = !subject_names %in% c("P1", "P2"))
+#' subset(links, subset = group == "G1")
+#' subset(links, subset = subject_names %in% c("P1", "P2", "P4") | group == "G2")
+
+setMethod("subset", "linkage_summary", function(x, subset) {
+    check_arg(x, allow_class = "linkage_summary", allow_len = 1)
+    # Capture the subset argument unevaluated; it references subject_names/subject_meta
+    # columns rather than variables in the calling environment
+    subset_call <- substitute(subset)
+    check_arg(subset_call, allow_class = "call")
+    # Only allow the subset expression to reference subject_names or columns of subject_meta
+    valid_vars <- c("subject_names", colnames(x@subject_meta))
+    unknown_vars <- setdiff(all.vars(subset_call), valid_vars)
+    if (length(unknown_vars) > 0) {
+        stop(sprintf(
+            "subset references unknown variable(s): %s.
+            Variables must be 'subject_names' or a column of subject_meta: %s",
+            toString(unknown_vars), toString(colnames(x@subject_meta))
+        ))
+    }
+    # Evaluate the subset expression in an environment of subject_meta columns plus subject_names
+    eval_env <- list2env(c(as.list(x@subject_meta), list(subject_names = x@subject_names)))
+    keep_subjects <- eval(subset_call, envir = eval_env)
+    keep_subjects[is.na(keep_subjects)] <- FALSE
+    if (sum(keep_subjects, na.rm = TRUE) == 0) {
+        stop("No subjects matched the subset criteria; a linkage_summary object must contain at least 1 subject.")
+    }
+    # subset the linkage_summary object, dropping unused factor levels so the
+    # remaining subject_names factor accurately reflects the subjects kept
+    new_subject_names <- droplevels(x@subject_names[keep_subjects])
+    new_subject_meta <- droplevels(x@subject_meta[keep_subjects, , drop = FALSE])
+    new_subject_linkages <- x@subject_linkages[keep_subjects]
+    new_link_sum <- linkage_summary(
+        subject_names = new_subject_names,
+        subject_meta = new_subject_meta,
+        subject_linkages = new_subject_linkages
+    )
+    return(new_link_sum)
 })

@@ -2,9 +2,12 @@
 % Please edit documentation in R/summarize_linkages.R
 \name{summarize_linkages}
 \alias{summarize_linkages}
+\alias{summarise_linkages}
 \title{Summarize linkages from multiple domino objects}
 \usage{
 summarize_linkages(domino_results, subject_meta, subject_names = NULL)
+
+summarise_linkages(domino_results, subject_meta, subject_names = NULL)
 }
 \arguments{
 \item{domino_results}{list of domino results with one domino object per subject. Names from the list should
@@ -46,7 +49,8 @@ pbmc_dom_tiny_alt <- create_domino(
     tf_targets = SCENIC$regulon_list_tiny,
     use_clusters = TRUE,
     use_complexes = TRUE,
-    remove_rec_dropout = FALSE
+    remove_rec_dropout = FALSE,
+    verbose = FALSE
 )
 
 pbmc_dom_built_tiny_alt <- build_domino(

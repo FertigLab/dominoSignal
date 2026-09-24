@@ -5,16 +5,15 @@
 \title{Statistical test for differential linkages across multiple domino results}
 \usage{
 test_differential_linkages(
-  linkage_summary,
+  link_summary,
   cluster,
   group.by,
   linkage = "rec_lig",
-  subject_names = NULL,
-  test_name = "fishers.exact"
+  subject_names = NULL
 )
 }
 \arguments{
-\item{linkage_summary}{a \code{\link[=linkage_summary]{linkage_summary()}} object}
+\item{link_summary}{a \code{\link[=linkage_summary]{linkage_summary()}} object}
 
 \item{cluster}{the name of the cell cluster being compared across multiple domino results}
 
@@ -23,15 +22,8 @@ test_differential_linkages(
 \item{linkage}{a stored linkage from the domino object.
 Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'}
 
-\item{subject_names}{a vector of subject_names from the linkage_summary.
-NOTE: all subject_names in the linkage summary are included in counting.}
-
-\item{test_name}{the statistical test used for comparison.
-\itemize{
-\item{'fishers.exact'} : Fisher's exact test for the dependence of the proportion of subjects with an
-active linkage in the cluster on which group the subject belongs to in the group.by variable.
-Provides an odds ratio, p-value, and a Benjamini-Hochberg FDR-adjusted p-value (p.adj) for each linkage tested.
-}}
+\item{subject_names}{a vector of subject_names from the linkage_summary to restrict testing to.
+If NULL, all subjects in \code{link_summary} are included.}
 }
 \value{
 A data frame of results from the test of the differential linkages. Rows correspond to each
@@ -40,10 +32,9 @@ linkage tested. Columns correspond to:
 \item{'cluster'} : the name of the cell cluster being compared
 \item{'linkage'} : the type of linkage being compared
 \item{'group.by'} : the grouping variable
-\item{'test_name'} : the test used for comparison
+\item{'test_name'} : the test used for comparison (Fisher's exact test)
 \item{'feature'} : individual linkages compared
-\item{'test statistics'} : test statistics provided are based on test method.
-'fishers.exact' provides a odds ratio, p-value, and fdr-adjusted p-value.
+\item{'test statistics'} : an odds ratio (for 2 groups), p-value, and fdr-adjusted p-value.
 \item{'total_count'} : total number of subjects where the linkage is active
 \item{'X_count'} : number of subjects in each category of group.by (X) where the linkage is active
 \item{'total_n'} : number of total subjects compared
@@ -56,8 +47,8 @@ Statistical test for differential linkages across multiple domino results
 \examples{
 data(LinkageSummary)
 tiny_differential_linkage_c1 <- test_differential_linkages(
-    linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
-    linkage = "rec", test_name = "fishers.exact"
+    link_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
+    linkage = "rec", subject_names = c("P1", "P2", "P4", "P5")
 )
 
 }
