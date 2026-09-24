@@ -78,10 +78,11 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
         extra_names <- subject_names[!subject_names %in% names(domino_results)]
         warning("Provided subject names included names not present in domino_results: ", toString(extra_names))
         subject_names <- subject_names[subject_names %in% names(domino_results)]
+        subject_meta <- subject_meta[subject_meta[, 1] %in% subject_names, , drop = FALSE]
     }
     if (length(subject_names) < length(names(domino_results))) {
         warning("Linkage summary includes results only for provided subject names: ", toString(subject_names))
-        subject_meta <- subject_meta[subject_meta[, 1] %in% subject_names, ]
+        subject_meta <- subject_meta[subject_meta[, 1] %in% subject_names, , drop = FALSE]
     }
     subject_linkages <- list()
     for (id in subject_names) {

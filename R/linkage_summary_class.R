@@ -28,6 +28,26 @@ linkage_summary <- setClass(
     )
 )
 
+valid_linksum <- function(object) {
+    n <- length(object@subject_names)
+    err <- character()
+    if (n == 0) {
+        err <- c(err, "subject_names must have length > 0")
+    }
+    if (length(object@subject_linkages) != n) {
+        err <- c(err, sprintf("subject_linkages must have length %d (number of subjects)", n))
+    }
+    if (ncol(object@subject_meta) == 0) {
+        err <- c(err, "subject_meta must have at least 1 column matching subject_names")
+    }
+    if (nrow(object@subject_meta) != n) {
+        err <- c(err, sprintf("subject_meta must have %d rows (number of subjects)", n))
+    }
+    if (length(err) == 0) TRUE else err
+}
+
+setValidity("linkage_summary", valid_linksum)
+
 #' Print linkage summary object
 #'
 #' Prints a description of a linkage summary object
@@ -41,9 +61,7 @@ linkage_summary <- setClass(
 #' print(LinkageSummary$linkage_sum_tiny)
 #'
 setMethod("print", "linkage_summary", function(x, ...) {
-    message("A linkage summary object of ", nlevels(slot(x, "subject_names")), " subjects with ",
-        ncol(slot(x, "subject_meta")), " metadata annotations and linkages between ",
-        max(lengths(slot(x, "subject_linkages"))), " clusters.")
+    show(x)
 })
 
 #' Show linkage_summary object information
@@ -56,11 +74,18 @@ setMethod("print", "linkage_summary", function(x, ...) {
 #' @examples
 #' data(LinkageSummary)
 #' LinkageSummary$linkage_sum_tiny
+#' show(LinkageSummary$linkage_sum_tiny)
 #'
 setMethod("show", "linkage_summary", function(object) {
-    message("A linkage summary object of ", nlevels(slot(object, "subject_names")), " subjects with ",
-        ncol(slot(object, "subject_meta")), " metadata annotations and linkages between ",
-        max(lengths(slot(object, "subject_linkages"))), " clusters.")
+    n_subjects <- nlevels(slot(object, "subject_names"))
+    n_meta <- ncol(slot(object, "subject_meta"))
+    n_clusts <- max(lengths(slot(object, "subject_linkages")), 0L)
+    if (n_subjects == 0) {
+        cat("An empty linkage summary object (0 subjects).\n")
+    } else {
+        cat("A linkage summary object of", n_subjects, "subjects with", n_meta, "metadata annotations and linkages between", n_clusts, "clusters.\n")
+    }
+    return(invisible(object))
 })
 
 
@@ -104,7 +129,7 @@ setMethod("subset", "linkage_summary", function(x, subset) {
     keep_subjects <- eval(subset_call, envir = eval_env)
     keep_subjects[is.na(keep_subjects)] <- FALSE
     if (sum(keep_subjects, na.rm = TRUE) == 0) {
-        warning("No subjects matched the subset criteria; returning an empty linkage_summary object.")
+        stop("No subjects matched the subset criteria; a linkage_summary object must contain at least 1 subject.")
     }
     # subset the linkage_summary object, dropping unused factor levels so the
     # remaining subject_names factor accurately reflects the subjects kept

@@ -85,6 +85,7 @@ test_that("summarize_linkages warns and drops subject_names not present in domin
         "not present in domino_results"
     )
     expect_equal(as.character(out@subject_names), c("dom1", "dom2"))
+    expect_equal(out@subject_meta$ID, c("dom1", "dom2"))
 })
 
 test_that("summarize_linkages warns and restricts subject_meta when domino_results has unused entries", {
