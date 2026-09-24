@@ -4,11 +4,11 @@
 #'
 #' @param differential_linkages a data frame output from the [test_differential_linkages()] function
 #' @param test_statistic column name of differential_linkages where the test statistic used for ranking linkages is
-#'   stored (ex. 'p.value')
+#'   stored (p.value, p.adj, odds.ratio)
 #' @param stat_range a two value vector of the minimum and maximum values of test_statistic for
 #'  plotting linkage features
-#' @param stat_ranking 'ascending' (lowest value of test statisic is colored red and plotted at the top) or
-#'   'descending' (highest value of test statistic is colored red and plotted at the top).
+#' @param stat_ranking whether to rank the features by ascending or descending values of test_statistic
+#' @param gradient a named two value vector of colors to use for the minimum and maximum values of test_statistic
 #' @param group_palette a named vector of colors to use for each group being compared
 #' @return A heatmap-class object of features ranked by test_statistic annotated with the proportion of subjects
 #'   that showed active linkage of the features.
@@ -20,35 +20,46 @@
 #' plot_differential_linkages(
 #'     differential_linkages = LinkageSummary$linkage_diff_tiny,
 #'     test_statistic = "p.value",
-#'     stat_ranking = "ascending"
+#'     stat_range = c(0, 1),
+#'     stat_ranking = "ascending",
 #' )
 #'
 plot_differential_linkages <- function(
     differential_linkages, test_statistic, stat_range = c(0, 1),
-    stat_ranking = c("ascending", "descending"), group_palette = NULL) {
+    stat_ranking = c("ascending", "descending"), gradient = c(minimum = "red", maximum = "gray90"), group_palette = NULL) {
     
     stat_ranking <- match.arg(stat_ranking)
 
     check_arg(test_statistic, allow_class = "character", allow_len = 1)
     check_arg(differential_linkages, allow_class = "data.frame", need_vars = test_statistic)
-    check_arg(stat_range, allow_class = "numeric", allow_len = 2, allow_range = c(0, 1))
-    check_arg(stat_ranking, allow_class = "character", allow_len = 1, allow_values = c("ascending", "descending"))
+    if (all(is.na(differential_linkages[[test_statistic]]))) {
+        stop("All values in test_statistic column '", test_statistic, "' are NA; cannot plot.")
+    }
+    if (test_statistic %in% c("p.value", "p.adj")) {
+        check_arg(stat_range, allow_class = "numeric", allow_len = 2, allow_range = c(0, 1))
+    } else {
+        check_arg(stat_range, allow_class = "numeric", allow_len = 2)
+    }
+    check_arg(gradient, allow_class = "character", allow_len = 2, need_names = TRUE)
+    if (!setequal(names(gradient), c("minimum", "maximum"))) {
+        stop("gradient must be a named vector with names 'minimum' and 'maximum'")
+    }
 
-    # limit to features within stat range
-    dframe <- differential_linkages[differential_linkages[[test_statistic]] >= stat_range[1] &
-            differential_linkages[[test_statistic]] <= stat_range[2], ]
+    # limit to features within stat range, dropping any rows where test_statistic is NA
+    stat_col <- differential_linkages[[test_statistic]]
+    dframe <- differential_linkages[!is.na(stat_col) & stat_col >= stat_range[1] &
+            stat_col <= stat_range[2], ]
     if (nrow(dframe) == 0) {
         stop("No features with '", test_statistic, "' within stat_range")
     }
     # order df by plot statistic
     if (stat_ranking == "ascending") {
         dframe <- dframe[order(dframe[[test_statistic]], dframe[["total_count"]], decreasing = FALSE), ]
-        stat_gradient <- c("#FF0000", "#FFFFFF")
     }
     if (stat_ranking == "descending") {
         dframe <- dframe[order(dframe[[test_statistic]], dframe[["total_count"]], decreasing = TRUE), ]
-        stat_gradient <- c("#FFFFFF", "#FF0000")
     }
+    stat_gradient <- c(gradient["minimum"], gradient["maximum"])
     # values from test result for plotting
     cluster <- unique(dframe[["cluster"]])
     g_names_full <- colnames(dframe)[grepl("_n$", colnames(dframe)) & !grepl("^total_", colnames(dframe))]

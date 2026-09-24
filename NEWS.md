@@ -10,6 +10,7 @@
 - Added `dom_to_df()` function to create data.frame of signaling results from domino object.
 - Added `subset-linkage_summary-method()` for `linkage_summary` class to allow for filtering of objects by subject names or metadata.
 - Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
+- Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
 
 ## Bug Fixes
 
@@ -19,6 +20,7 @@
 - Fixed `build_domino()` to compute signaling scores for clusters with only one incoming ligand instead of always returning zero.
 - Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary` object before calculating results.
 - Fixed `summarize_linkages()` iteration over linkage pairs (receptor-TF or ligand-receptor) to skip empty cases (removing spurious NA <- NA results when no links are present).
+- Fixed `plot_differential_linkages()` to accept statistic ranges outside of [0, 1] for odds.ratio
 
 # dominoSignal v1.6.0
 
