@@ -41,7 +41,7 @@ plot_differential_linkages(
     differential_linkages = LinkageSummary$linkage_diff_tiny,
     test_statistic = "p.value",
     stat_range = c(0, 1),
-    stat_ranking = "ascending",
+    stat_ranking = "ascending"
 )
 
 }
