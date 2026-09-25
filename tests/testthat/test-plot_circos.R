@@ -21,7 +21,7 @@ test_that("plot_circos functions run", {
 })
 
 test_that("domino object interpretation by obtain_circos_expression", {
-    # start temporary graphics device for testing to preserve package enviroment
+    # start temporary graphics device for testing to preserve package environment
     png(filename = file.path(tempdir(), "ts.png"))
 
     # parent function runs to completion without error
@@ -38,7 +38,7 @@ test_that("domino object interpretation by obtain_circos_expression", {
 })
 
 test_that("Cell types with hyphenated names can be plotted", {
-    # start temporary graphics device for testing to preserve package enviroment
+    # start temporary graphics device for testing to preserve package environment
     png(filename = file.path(tempdir(), "ts.png"))
 
     ts_signaling_df <- data.frame(

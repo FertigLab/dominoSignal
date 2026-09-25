@@ -53,7 +53,8 @@ test_that("summarize_linkages pairs tfs_rec and rec_lig correctly for a cluster 
     expect_equal(cd8$rec_lig, c("IL7_receptor <- IL7", "CXCR3 <- CCL20"))
 })
 
-test_that("summarize_linkages returns empty tfs_rec/rec_lig, not a bogus 'NA <- NA' entry, for a cluster with no active tfs or receptors", {
+test_that("summarize_linkages returns empty tfs_rec/rec_lig, not a bogus 'NA <- NA' entry,
+    for a cluster with no active tfs or receptors", {
     # tiny_dom3's B_cell cluster has zero active transcription factors and receptors
     dom_ls <- list(dom3 = tiny_dom3)
     meta <- data.frame(ID = "dom3", group = "A", stringsAsFactors = FALSE)

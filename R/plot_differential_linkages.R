@@ -8,8 +8,8 @@
 #' @param stat_range a two value vector of the minimum and maximum values of test_statistic for
 #'  plotting linkage features
 #' @param stat_ranking whether to rank the features by ascending or descending values of test_statistic
-#' @param gradient a named two value vector of colors to use for the minimum and maximum values of test_statistic
 #' @param group_palette a named vector of colors to use for each group being compared
+#' @param gradient a named two value vector of colors to use for the minimum and maximum values of test_statistic
 #' @return A heatmap-class object of features ranked by test_statistic annotated with the proportion of subjects
 #'   that showed active linkage of the features.
 #' @export
@@ -21,12 +21,12 @@
 #'     differential_linkages = LinkageSummary$linkage_diff_tiny,
 #'     test_statistic = "p.value",
 #'     stat_range = c(0, 1),
-#'     stat_ranking = "ascending",
+#'     stat_ranking = "ascending"
 #' )
 #'
 plot_differential_linkages <- function(
     differential_linkages, test_statistic, stat_range = c(0, 1),
-    stat_ranking = c("ascending", "descending"), gradient = c(minimum = "red", maximum = "gray90"), group_palette = NULL) {
+    stat_ranking = c("ascending", "descending"), group_palette = NULL, gradient = c(minimum = "red", maximum = "gray90")) {
     
     stat_ranking <- match.arg(stat_ranking)
 

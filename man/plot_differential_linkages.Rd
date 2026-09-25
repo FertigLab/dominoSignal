@@ -9,8 +9,8 @@ plot_differential_linkages(
   test_statistic,
   stat_range = c(0, 1),
   stat_ranking = c("ascending", "descending"),
-  gradient = c(minimum = "red", maximum = "gray90"),
-  group_palette = NULL
+  group_palette = NULL,
+  gradient = c(minimum = "red", maximum = "gray90")
 )
 }
 \arguments{
@@ -24,9 +24,9 @@ plotting linkage features}
 
 \item{stat_ranking}{whether to rank the features by ascending or descending values of test_statistic}
 
-\item{gradient}{a named two value vector of colors to use for the minimum and maximum values of test_statistic}
-
 \item{group_palette}{a named vector of colors to use for each group being compared}
+
+\item{gradient}{a named two value vector of colors to use for the minimum and maximum values of test_statistic}
 }
 \value{
 A heatmap-class object of features ranked by test_statistic annotated with the proportion of subjects

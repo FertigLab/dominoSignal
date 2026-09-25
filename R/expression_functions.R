@@ -95,7 +95,7 @@ mean_ligand_expression <- function(x, ligands, cell_ident, cell_barcodes, destin
     for (feat in ligands) {
         # index of ligand row
         lig_index <- grep(paste0("^", feat, "$"), rownames(x))
-        # column indecies of cells belonging to cell_ident
+        # column indices of cells belonging to cell_ident
         cell_index <- colnames(x) %in% cell_barcodes
         cell_df <- data.frame(
             origin = paste0(cell_ident, "_", feat),

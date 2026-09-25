@@ -13,7 +13,7 @@ test_that("creation of rl_map from CellPhoneDB v4 input", {
     expect_equal(rl_map, v0.2.1$rl_map_tiny)
 })
 
-test_that("formating of SCENIC regulons output as a list", {
+test_that("formatting of SCENIC regulons output as a list", {
     # use regulon list created in dominoSignal v0.2.1
     regulon_ls <- create_regulon_list_scenic(regulons = v0.2.1$regulons_tiny)
     expect_equal(regulon_ls, v0.2.1$regulon_list_tiny)

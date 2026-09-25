@@ -22,7 +22,7 @@ auc <- read.table(paste0(scenic_dir, "/auc_pbmc_3k.csv"),
 regulons <- read.csv(paste0(scenic_dir, "/regulons_pbmc_3k.csv"))
 
 # Create list of SCENIC regulons
-regulons <- regulons[-1:-2,]
+regulons <- regulons[-1:-2, ]
 colnames(regulons) <- c("TF", "MotifID", "AUC", "NES", "MotifSimilarityQvalue",
     "OrthologousIdentity", "Annotation", "Context", "TargetGenes", "RankAtMax")
 regulon_list <- create_regulon_list_scenic(regulons = regulons)
