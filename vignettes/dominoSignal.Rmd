@@ -218,12 +218,12 @@ dominoSignal analysis takes place in two steps.
 dominoSignal infers active receipt of signals via receptors based on the correlation of the receptor's expression with TF activity across the data set and differential activity of the TF within a cell cluster. Correlations are conducted using scaled expression values rather than raw counts or normalized counts. For assessment of receptor activity on a per cell type basis, a named vector of cell cluster assignments, where the names are cell barcodes matching the expression matrix, are provided. Assessing signaling based on other categorical groupings of cells can be achieved by passing these groupings as "clusters" to `build_domino()` in place of cell types. dominoSignal accepts a matrix of counts, a matrix of scaled counts, and a **named** vector of cell cluster labels as factors. Shown below is how to extract these elements from a [SingleCellExperiment](https://doi.org/doi:10.18129/B9.bioc.SingleCellExperiment) object. Note that since the data is scaled by gene, genes with no expression in any cell need to be removed.
 
 ```{r load cell features}
-counts = assay(pbmc, "counts")
-logcounts = assay(pbmc, "logcounts")
-logcounts = logcounts[rowSums(logcounts) > 0, ]
-z_scores = t(scale(t(logcounts)))
-clusters = factor(pbmc$cell_type)
-names(clusters) = colnames(pbmc)
+counts <- assay(pbmc, "counts")
+logcounts <- assay(pbmc, "logcounts")
+logcounts <- logcounts[rowSums(logcounts) > 0, ]
+z_scores <- t(scale(t(logcounts)))
+clusters <- factor(pbmc$cell_type)
+names(clusters) <- colnames(pbmc)
 ```
 
 Note: Ligand and receptor expression can only be assessed for genes included in the z\_scores matrix. Many scRNAseq analysis pipelines recommend storing only genes with high variance in scaled expression slots for these data objects, thereby missing many genes encoding ligands and receptors. **Ensure that all your genes of interest are included in the rows of your z\_scores matrix.** Scaled expression was calculated for all genes in this PBMC data set after removal of genes expressed in less than three cells. 
@@ -267,10 +267,10 @@ There are also options for thresholds of the number of TFs that may be called ac
 ```{r Build Domino}
 pbmc_dom <- build_domino(
     dom = pbmc_dom,
-    min_tf_pval = .001,
+    min_tf_pval = 0.001,
     max_tf_per_clust = 25,
     max_rec_per_tf = 25,
-    rec_tf_cor_threshold = .25,
+    rec_tf_cor_threshold = 0.25,
     min_rec_percentage = 0.1
 )
 # min_tf_pval: Threshold for p-value of DE for TFs
@@ -283,10 +283,10 @@ Thresholds for both the number of receptors and TFs can be sent to infinity (Inf
 ```{r Build Domino All Significant Interactions, eval=FALSE}
 pbmc_dom_all <- build_domino(
     dom = pbmc_dom,
-    min_tf_pval = .001,
+    min_tf_pval = 0.001,
     max_tf_per_clust = Inf,
     max_rec_per_tf = Inf,
-    rec_tf_cor_threshold = .25,
+    rec_tf_cor_threshold = 0.25,
     min_rec_percentage = 0.1
 )
 ```
@@ -360,6 +360,63 @@ Another form of comprehensive ligand expression assessment is available for indi
 #| fig.alt: >
 #|  A circos plot with outer arcs corresponding to clusters and inner arcs corresponding to ligands
 #|  directed to receptor CD74. Arcs represent mean expression of the ligands.
+circos_ligand_receptor(pbmc_dom, receptor = "CD74")
+```
+
+## Example run
+
+Here is an example of the complete dominoSignal workflow with default settings using the PBMC data set. We start from the `pbmc` SingleCellExperiment object, the SCENIC results, and the CellPhoneDB files. In this example, we focus on signaling to the CD14 monocyte cluster.
+
+```{r eval = FALSE}
+# Read and format SCENIC results
+regulons <- read.csv(scenic_regulon)
+auc <- read.table(scenic_auc,
+    header = TRUE, row.names = 1,
+    stringsAsFactors = FALSE, sep = ","
+)
+regulons <- regulons[-1:-2, ]
+colnames(regulons) <- c(
+    "TF", "MotifID", "AUC", "NES", "MotifSimilarityQvalue", "OrthologousIdentity",
+    "Annotation", "Context", "TargetGenes", "RankAtMax"
+)
+regulon_list <- create_regulon_list_scenic(regulons = regulons)
+auc_in <- as.data.frame(t(auc))
+rownames(auc_in) <- gsub("\\.\\.\\.$", "", rownames(auc_in))
+
+# Create rl_map
+complexes <- read.csv(paste0(cellphone_data, "/complex_input.csv"), stringsAsFactors = FALSE)
+genes <- read.csv(paste0(cellphone_data, "/gene_input.csv"), stringsAsFactors = FALSE)
+interactions <- read.csv(paste0(cellphone_data, "/interaction_input.csv"), stringsAsFactors = FALSE)
+proteins <- read.csv(paste0(cellphone_data, "/protein_input.csv"), stringsAsFactors = FALSE)
+
+rl_map <- create_rl_map_cellphonedb(
+    genes = genes,
+    proteins = proteins,
+    interactions = interactions,
+    complexes = complexes,
+    database_name = "CellPhoneDB_v4.0" # database version used
+)
+
+# Get inputs from SingleCellExperiment object
+counts <- assay(pbmc, "counts")
+logcounts <- assay(pbmc, "logcounts")
+logcounts <- logcounts[rowSums(logcounts) > 0, ]
+z_scores <- t(scale(t(logcounts)))
+clusters <- factor(pbmc$cell_type)
+names(clusters) <- colnames(pbmc)
+
+# Infer network
+pbmc_dom <- create_domino(rl_map = rl_map, features = auc_in, counts = counts,
+    z_scores = z_scores, clusters = clusters, tf_targets = regulon_list,
+    use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE)
+
+pbmc_dom <- build_domino(dom = pbmc_dom)
+
+# Visualize results
+feat_heatmap(pbmc_dom)
+signaling_network(pbmc_dom, showIncomingSignalingClusts = "CD14_monocyte")
+gene_network(pbmc_dom, clust = "CD14_monocyte")
+incoming_signaling_heatmap(pbmc_dom, rec_clust = "CD14_monocyte")
 circos_ligand_receptor(pbmc_dom, receptor = "CD74")
 ```
 

@@ -9,22 +9,24 @@ plot_differential_linkages(
   test_statistic,
   stat_range = c(0, 1),
   stat_ranking = c("ascending", "descending"),
-  group_palette = NULL
+  group_palette = NULL,
+  gradient = c(minimum = "red", maximum = "gray90")
 )
 }
 \arguments{
 \item{differential_linkages}{a data frame output from the \code{\link[=test_differential_linkages]{test_differential_linkages()}} function}
 
 \item{test_statistic}{column name of differential_linkages where the test statistic used for ranking linkages is
-stored (ex. 'p.value')}
+stored (p.value, p.adj, odds.ratio)}
 
 \item{stat_range}{a two value vector of the minimum and maximum values of test_statistic for
 plotting linkage features}
 
-\item{stat_ranking}{'ascending' (lowest value of test statisic is colored red and plotted at the top) or
-'descending' (highest value of test statistic is colored red and plotted at the top).}
+\item{stat_ranking}{whether to rank the features by ascending or descending values of test_statistic}
 
 \item{group_palette}{a named vector of colors to use for each group being compared}
+
+\item{gradient}{a named two value vector of colors to use for the minimum and maximum values of test_statistic}
 }
 \value{
 A heatmap-class object of features ranked by test_statistic annotated with the proportion of subjects
@@ -38,6 +40,7 @@ data(LinkageSummary)
 plot_differential_linkages(
     differential_linkages = LinkageSummary$linkage_diff_tiny,
     test_statistic = "p.value",
+    stat_range = c(0, 1),
     stat_ranking = "ascending"
 )
 

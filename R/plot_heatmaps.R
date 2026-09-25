@@ -226,7 +226,7 @@ incoming_signalling_heatmap <- incoming_signaling_heatmap
 #'   making a boolean heatmap.
 #' @param title Either a string to use as the title or a boolean describing whether to include a title.
 #'    In order to pass the 'main' parameter to  [ComplexHeatmap::Heatmap()]  you must set title to FALSE.
-#' @param norm Boolean indicating whether or not to normalize the transcrption factors to their max value.
+#' @param norm Boolean indicating whether or not to normalize the transcription factors to their max value.
 #' @param ann_cols Boolean indicating whether to include cell cluster as a column annotation.
 #'  Colors can be defined with cols. If FALSE then custom annotations can be passed to [ComplexHeatmap::Heatmap()].
 #' @param cols Named vector of colors to annotate cells by cluster color. Values are taken as colors and names as

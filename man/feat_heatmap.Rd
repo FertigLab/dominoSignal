@@ -33,7 +33,7 @@ making a boolean heatmap.}
 \item{title}{Either a string to use as the title or a boolean describing whether to include a title.
 In order to pass the 'main' parameter to  \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap()}}  you must set title to FALSE.}
 
-\item{norm}{Boolean indicating whether or not to normalize the transcrption factors to their max value.}
+\item{norm}{Boolean indicating whether or not to normalize the transcription factors to their max value.}
 
 \item{cols}{Named vector of colors to annotate cells by cluster color. Values are taken as colors and names as
 cluster. If left as NULL then default ggplot colors will be generated.}

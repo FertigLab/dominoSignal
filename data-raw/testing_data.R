@@ -82,7 +82,7 @@ name_features <- c(
 
 # From here, we start to diverge from the code for exported data,
 # as some functions require multiple objects for testing
-# Create 3 downsampled data sets with subsetted clusters and featuers
+# Create 3 downsampled data sets with subsetted clusters and features
 sub_celltypes <- c("CD8_T_cell", "CD14_monocyte", "B_cell")
 n_cells <- 110
 n_objects <- 3

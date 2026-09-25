@@ -48,7 +48,9 @@ Suggests:
     testthat,
     formatR,
     BiocFileCache,
-    SingleCellExperiment
+    SingleCellExperiment,
+    withr,
+    kableExtra
 VignetteBuilder: knitr
 Language: en-US
 URL: https://FertigLab.github.io/dominoSignal/

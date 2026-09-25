@@ -127,7 +127,7 @@ We can also select for specific clusters of interest that are signaling to the C
 ```{r incoming-subset}
 #| fig.alt: >
 #|  Heatmap of ligand expression subset to sending clusters CD14 monocytes and CD16 monocytes
-#|  targetting CD8 T cells.
+#|  targeting CD8 T cells.
 incoming_signaling_heatmap(dom, "CD8_T_cell", clusts = c("CD14_monocyte", "CD16_monocyte"))
 ```
 

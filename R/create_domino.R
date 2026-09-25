@@ -108,7 +108,7 @@ create_domino <- function(
     } else {
         dom@db_info <- rl_map
     }
-    # check for receptors that match receptor complex syntax of comma seperated genes
+    # check for receptors that match receptor complex syntax of comma separated genes
     non_complex_index <- which(!grepl(",", rl_map[["gene_A"]], fixed = TRUE) &
             !grepl(",", rl_map[["gene_B"]], fixed = TRUE))
     # discard interactions including complexes if requested
@@ -249,8 +249,8 @@ create_domino <- function(
         }
         if (!is.null(dom@linkages$tf_targets)) {
             tf <- gsub(pattern = "...", replacement = "", module, fixed = TRUE)
-            # correction for AUC values from pySCENIC that append an elipses to TF names due to (+) characters
-            # in the orignial python output
+            # correction for AUC values from pySCENIC that append an ellipses to TF names due to (+) characters
+            # in the original python output
             module_targets <- tf_targets[[tf]]
             module_rec_targets <- intersect(module_targets, ser_receptors)
         } else {

@@ -2,14 +2,15 @@
 
 ## BREAKING CHANGES
 
-- Updated name of first argument of `count_linkage()` and `test_differential_linkages()` functions to `link_summary` to avoid conflict with linkage summary class.
+- Updated name of first argument of `count_linkage()` and `test_differential_linkages()` functions to `link_summary` to avoid conflict with `linkage_summary()` class.
 - Removed `test_name` argument from `test_differential_linkages()` function as Fisher's Exact Test is the only option.
 
 ## New Features
 
 - Added `dom_to_df()` function to create data.frame of signaling results from domino object.
-- Added `subset-linkage_summary-method()` for `linkage_summary` class to allow for filtering of objects by subject names or metadata.
+- Added [`subset`](../reference/subset-linkage_summary-method.html) for `linkage_summary()` class to allow for filtering of objects by subject names or metadata.
 - Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
+- Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
 
 ## Bug Fixes
 
@@ -17,14 +18,19 @@
 - Fixed `create_domino()` to work with custom rl_map without names_A and names_B columns
 - Fixed `build_domino()` to retain receptor gene names when only one receptor passes expression threshold in a cluster, rather than silently excluding it from signaling network.
 - Fixed `build_domino()` to compute signaling scores for clusters with only one incoming ligand instead of always returning zero.
-- Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary` object before calculating results.
+- Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary()` object before calculating results.
 - Fixed `summarize_linkages()` iteration over linkage pairs (receptor-TF or ligand-receptor) to skip empty cases (removing spurious NA <- NA results when no links are present).
+- Fixed `plot_differential_linkages()` to accept statistic ranges outside of [0, 1] for odds.ratio.
+
+## Documentation
+
+- Added vignette for differential signaling workflow.
 
 # dominoSignal v1.6.0
 
 ## New Features
 
-- Added `print()` and `show()` methods for `linkage_summary` objects to provide concise summary output.
+- Added [`print`](../reference/print-linkage_summary-method.html) and [`show`](../reference/show-linkage_summary-method.html) methods for `linkage_summary()` objects to provide concise summary output.
 
 ## Bug Fixes
 
@@ -84,7 +90,7 @@
 
 ## New Features
 
-- Added new `linkage_summary` class to summarize linkages in domino objects.
+- Added new `linkage_summary()` class to summarize linkages in domino objects.
 - Added helper functions to count linkages and compare between domino objects.
 - Added plotting function for differential linkages.
 
