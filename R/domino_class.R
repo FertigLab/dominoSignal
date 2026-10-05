@@ -18,7 +18,8 @@ NULL
 #' @slot cor Correlation matrix of receptor expression to features.
 #' @slot linkages List of lists containing info linking cluster->tf->rec->lig
 #' @slot clust_de Data frame containing differential expression results for features by cluster.
-#' @slot misc List of miscellaneous info pertaining to run parameters etc.
+#' @slot misc List of miscellaneous info pertaining to run parameters etc., including the
+#'   dominoSignal versions used to create (`create_version`) and build (`build_version`) the object.
 #' @slot cl_signaling_matrices Incoming signaling matrix for each cluster
 #' @slot signaling Signaling matrix between all clusters.
 #' @name domino-class
@@ -45,6 +46,47 @@ domino <- methods::setClass(
         misc = list("build" = FALSE)
     )
 )
+
+valid_domino_misc <- function(misc) {
+    # Run state flags must be single TRUE/FALSE values when present
+    flags <- c("create", "build")
+    bad_flag <- vapply(flags, function(f) {
+        !is.null(misc[[f]]) && !isTRUE(misc[[f]]) && !isFALSE(misc[[f]])
+    }, logical(1))
+    err <- sprintf("misc$%s must be a single TRUE or FALSE", flags[bad_flag])
+    # Package versions are optional (objects made before they were recorded lack them)
+    versions <- c("create_version", "build_version")
+    bad_version <- vapply(versions, function(v) {
+        val <- misc[[v]]
+        !is.null(val) && !(is.character(val) && length(val) == 1 && !is.na(package_version(val, strict = FALSE)))
+    }, logical(1))
+    c(err, sprintf("misc$%s must be a single valid version string", versions[bad_version]))
+}
+
+valid_domino_slots <- function(object) {
+    # Cell-level matrices must contain the same cells as clusters (order may differ)
+    cells <- names(object@clusters)
+    cell_slots <- c("z_scores", "counts", "features")
+    bad_cells <- vapply(cell_slots, function(s) {
+        m <- slot(object, s)
+        length(cells) > 0 && ncol(m) > 0 && !setequal(colnames(m), cells)
+    }, logical(1))
+    err <- sprintf("%s columns must be the same cells as names(clusters)", cell_slots[bad_cells])
+    if (ncol(object@clust_de) > 0 && !setequal(colnames(object@clust_de), levels(object@clusters))) {
+        err <- c(err, "clust_de columns must match levels(clusters)")
+    }
+    if (ncol(object@cor) > 0 && !setequal(colnames(object@cor), rownames(object@features))) {
+        err <- c(err, "cor columns must match features rows")
+    }
+    err
+}
+
+valid_domino <- function(object) {
+    err <- c(valid_domino_misc(object@misc), valid_domino_slots(object))
+    if (length(err) == 0) TRUE else err
+}
+
+setValidity("domino", valid_domino)
 
 #' Print domino object
 #'

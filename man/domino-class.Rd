@@ -34,7 +34,8 @@ Cells are columns and features are rows.}
 
 \item{\code{clust_de}}{Data frame containing differential expression results for features by cluster.}
 
-\item{\code{misc}}{List of miscellaneous info pertaining to run parameters etc.}
+\item{\code{misc}}{List of miscellaneous info pertaining to run parameters etc., including the
+dominoSignal versions used to create (\code{create_version}) and build (\code{build_version}) the object.}
 
 \item{\code{cl_signaling_matrices}}{Incoming signaling matrix for each cluster}
 

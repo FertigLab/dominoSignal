@@ -92,6 +92,7 @@ create_domino <- function(
     # Create object
     dom <- domino()
     dom@misc[["create"]] <- TRUE
+    dom@misc[["create_version"]] <- as.character(utils::packageVersion("dominoSignal"))
     dom@misc[["build"]] <- FALSE
     dom@misc[["build_vars"]] <- NULL
 
@@ -320,5 +321,6 @@ create_domino <- function(
         rownames(cl_rec_percent) <- ser_receptors
         dom@misc$cl_rec_percent <- cl_rec_percent
     }
+    validObject(dom)
     return(dom)
 }

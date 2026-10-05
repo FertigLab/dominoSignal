@@ -43,6 +43,7 @@ build_domino <- function(
         stop("Please run domino_create to create the domino object.")
     }
     dom@misc[["build"]] <- TRUE
+    dom@misc[["build_version"]] <- as.character(utils::packageVersion("dominoSignal"))
     dom@misc[["build_vars"]] <- c(
         max_tf_per_clust = max_tf_per_clust, min_tf_pval = min_tf_pval,
         max_rec_per_tf = max_rec_per_tf, rec_tf_cor_threshold = rec_tf_cor_threshold,
@@ -220,5 +221,6 @@ build_domino <- function(
         }
         dom@linkages[["tf_rec"]] <- tf_rec
     }
+    validObject(dom)
     return(dom)
 }

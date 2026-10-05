@@ -12,6 +12,9 @@ test_that("create_domino runs with tiny inputs", {
     )
 
     expect_s4_class(dom, "domino")
+    # stored fixture predates version recording, so compare without it
+    expect_equal(dom@misc$create_version, as.character(packageVersion("dominoSignal")))
+    dom@misc$create_version <- NULL
     expect_equal(dom, tiny_created_dom1)
 })
 
