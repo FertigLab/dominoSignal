@@ -26,12 +26,16 @@ test_that("creation of a domino object from SCENIC and CellPhoneDB inputs", {
     # minimal expression data from 360 cells in 3 cell types,
     # expression features for 16 genes
     # 360 cell barcodes have annotations of cell type assignment in clusters_tiny
+    # WARNING: v0.2.1 assigned clusters to cells by position rather than by name (clusters_tiny is not in
+    # z_scores column order); rename clusters positionally to reproduce the v0.2.1 cell assignment
+    clusters_by_position <- v0.2.1$clusters_tiny
+    names(clusters_by_position) <- colnames(v0.2.1$RNA_zscore_tiny)
     pbmc_dom <- create_domino(
         rl_map = v0.2.1$rl_map_tiny,
         features = v0.2.1$auc_tiny,
         counts = v0.2.1$RNA_count_tiny,
         z_scores = v0.2.1$RNA_zscore_tiny,
-        clusters = v0.2.1$clusters_tiny,
+        clusters = clusters_by_position,
         tf_targets = v0.2.1$regulon_list_tiny,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE
@@ -46,8 +50,12 @@ test_that("creation of a domino object from SCENIC and CellPhoneDB inputs", {
 test_that("building a domino object under set parameters", {
     # built domino object created in dominoSignal v0.2.1
     # domino object created in dominoSignal v0.2.1
+    # # WARNING: v0.2.1 assigned clusters to cells by position; rename clusters positionally so the stored
+    # object passes validity (same cell order) while reproducing the v0.2.1 cell assignment
+    pbmc_dom_tiny <- v0.2.1$pbmc_dom_tiny
+    names(pbmc_dom_tiny@clusters) <- colnames(pbmc_dom_tiny@z_scores)
     pbmc_dom_built <- build_domino(
-        dom = v0.2.1$pbmc_dom_tiny,
+        dom = pbmc_dom_tiny,
         min_tf_pval = 0.05,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,

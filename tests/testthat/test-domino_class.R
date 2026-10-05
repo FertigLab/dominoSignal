@@ -62,20 +62,20 @@ test_that("domino validity rejects malformed misc entries", {
 test_that("domino validity rejects matrices whose cells do not match clusters", {
     dom <- tiny_dom1
     dom@z_scores <- dom@z_scores[, -1, drop = FALSE]
-    expect_error(validObject(dom), "z_scores columns must be the same cells as names\\(clusters\\)")
+    expect_error(validObject(dom), "z_scores columns must be the same cells in the same order as names\\(clusters\\)")
 
     dom <- tiny_dom1
     colnames(dom@counts)[1] <- "not_a_cell"
-    expect_error(validObject(dom), "counts columns must be the same cells as names\\(clusters\\)")
+    expect_error(validObject(dom), "counts columns must be the same cells in the same order as names\\(clusters\\)")
 
     dom <- tiny_dom1
     dom@features <- dom@features[, -1, drop = FALSE]
-    expect_error(validObject(dom), "features columns must be the same cells as names\\(clusters\\)")
+    expect_error(validObject(dom), "features columns must be the same cells in the same order as names\\(clusters\\)")
 
-    # cell order is not required to match
+    # cells are indexed by position, so the same cells in a different order are invalid
     dom <- tiny_dom1
     dom@z_scores <- dom@z_scores[, rev(colnames(dom@z_scores)), drop = FALSE]
-    expect_true(validObject(dom))
+    expect_error(validObject(dom), "z_scores columns must be the same cells in the same order")
 })
 
 test_that("domino validity rejects clust_de and cor that do not match clusters and features", {

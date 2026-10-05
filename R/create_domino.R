@@ -21,7 +21,7 @@
 #' @param verbose Boolean indicating whether or not to print progress during computation.
 #' @param use_complexes Boolean indicating whether you wish to use receptor/ligand complexes in the receptor ligand
 #'   signaling database. If FALSE, receptor/ligand pairs where either functions as a protein complex will not be
-#'   considered when constructing the signaling network. If TRUE, make sure rl_map contains name columns matching names of complexes.
+#'   considered when constructing the signaling network.
 #' @param rec_min_thresh Minimum expression level of receptors by cell. Default is 0.025 or 2.5 percent of all cells
 #'   in the data set. This is important when calculating correlation to connect receptors to transcription activation.
 #'   If this threshold is too low then correlation calculations will proceed with very few cells with non-zero
@@ -176,15 +176,32 @@ create_domino <- function(
     if (verbose) {
         message("Getting z_scores, clusters, and counts")
     }
+    if (is(features, "character")) {
+        features <- read.csv(features, row.names = 1, check.names = FALSE)
+    }
+    # Align cells by name to the order of z_scores; downstream calculations index cells by position
+    cells <- Reduce(intersect, list(colnames(z_scores), colnames(counts), colnames(features), names(clusters)))
+    if (length(cells) == 0) {
+        stop("No cells are shared between z_scores, counts, features, and clusters.")
+    }
+    n_dropped <- c(
+        z_scores = ncol(z_scores), counts = ncol(counts), features = ncol(features), clusters = length(clusters)
+    ) - length(cells)
+    if (any(n_dropped > 0)) {
+        warning(
+            "Using the ", length(cells), " cells shared between z_scores, counts, features, and clusters. ",
+            "Cells dropped: ", toString(paste(names(n_dropped), n_dropped, sep = " = "))
+        )
+    }
+    z_scores <- z_scores[, cells, drop = FALSE]
+    counts <- counts[, cells, drop = FALSE]
+    features <- features[, cells, drop = FALSE]
+    clusters <- clusters[cells]
     dom@z_scores <- z_scores
     if (!is.null(clusters)) {
         dom@clusters <- clusters
     }
-    # Read in features matrix and calculate differential expression by cluster.
-    if (is(features, "character")) {
-        features <- read.csv(features, row.names = 1, check.names = FALSE)
-    }
-    features <- features[, colnames(dom@z_scores)]
+    # Calculate differential expression of features by cluster.
     dom@features <- as.matrix(features)
     if (tf_selection_method == "clusters") {
         p_vals <- matrix(1, nrow = nrow(features), ncol = nlevels(dom@clusters))

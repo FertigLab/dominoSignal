@@ -60,7 +60,7 @@ signaling_heatmap(dom)
 # scale
 signaling_heatmap(dom, scale = "sqrt")
 # normalize
-signaling_heatmap(dom, normalize = "rec_norm")
+signaling_heatmap(dom, normalize = "lig_norm")
 
 }
 \seealso{

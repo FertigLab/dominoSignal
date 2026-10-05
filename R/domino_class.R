@@ -64,14 +64,14 @@ valid_domino_misc <- function(misc) {
 }
 
 valid_domino_slots <- function(object) {
-    # Cell-level matrices must contain the same cells as clusters (order may differ)
+    # Cell-level matrices must have the same cells in the same order as clusters, since cells are indexed by position
     cells <- names(object@clusters)
     cell_slots <- c("z_scores", "counts", "features")
     bad_cells <- vapply(cell_slots, function(s) {
         m <- slot(object, s)
-        length(cells) > 0 && ncol(m) > 0 && !setequal(colnames(m), cells)
+        length(cells) > 0 && ncol(m) > 0 && !identical(colnames(m), cells)
     }, logical(1))
-    err <- sprintf("%s columns must be the same cells as names(clusters)", cell_slots[bad_cells])
+    err <- sprintf("%s columns must be the same cells in the same order as names(clusters)", cell_slots[bad_cells])
     if (ncol(object@clust_de) > 0 && !setequal(colnames(object@clust_de), levels(object@clusters))) {
         err <- c(err, "clust_de columns must match levels(clusters)")
     }

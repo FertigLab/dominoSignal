@@ -64,7 +64,8 @@ feat_heatmap(dom)
 feat_heatmap(
     dom,
     min_thresh = 0.1,
-    max_thresh = 0.6, norm = TRUE, bool = FALSE
+    max_thresh = 0.6,
+    bool = FALSE
 )
 
 }
