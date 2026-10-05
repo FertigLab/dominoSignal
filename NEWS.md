@@ -6,6 +6,7 @@
 - Removed `test_name` argument from `test_differential_linkages()` function, as Fisher's Exact Test is the only option.
 - Default for `remove_rec_dropout` in `create_domino()` has been changed to `FALSE` to reflect current recommended usage.
 - Argument `use_clusters` removed from `create_domino()`, as `TRUE` is the only option.
+- `domino()` validity check now requires that cell inputs have aligned names. Previously built objects (before the bug fix for cluster matching by positions) will now fail the validity check and should be re-run.
 
 ## New Features
 
@@ -25,10 +26,12 @@
 - Fixed `plot_differential_linkages()` to accept statistic ranges outside of [0, 1] for odds.ratio.
 - Fixed `create_domino()` setting clusters to empty factor if using `tf_selection_method` of `variable` or `all`.
 - Removed default value of `NULL` for required arguments of `counts`, `zscores`, and `clusters` in `create_domino()`.
+- Fixed cluster matching to cells by position only by aligning cell inputs by name in `create_domino()`.
 
 ## Documentation
 
 - Added vignette for differential signaling workflow.
+- Example data regenerated with `dominoSignal` version 1.7.0.
 
 # dominoSignal v1.6.0
 

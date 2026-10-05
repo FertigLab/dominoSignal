@@ -1,4 +1,5 @@
 # generate tiny objects for examples in functions and for users
+# Updated with version 1.7.0 to handle bug fixes and other changes
 
 library(SingleCellExperiment)
 library(dominoSignal)
@@ -150,7 +151,6 @@ pbmc_dom_tiny <- dominoSignal::create_domino(
     z_scores = RNA_zscore_tiny,
     clusters = clusters_tiny,
     tf_targets = regulon_list_tiny,
-    use_clusters = TRUE,
     use_complexes = TRUE,
     remove_rec_dropout = FALSE
 )
