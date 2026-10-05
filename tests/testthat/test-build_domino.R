@@ -35,7 +35,6 @@ test_that("build_domino runs with custom rl_map with minimum required columns", 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -61,7 +60,6 @@ test_that("build_domino runs with custom rl_map with minimum required columns an
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = FALSE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -86,7 +84,6 @@ test_that("build_domino identifies an expressed receptor when only one receptor 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = FALSE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -117,7 +114,6 @@ test_that("build_domino computes non-zero signaling for a cluster with a single 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = FALSE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -149,7 +145,6 @@ test_that("build_domino runs with rl_map without name columns and use_complexes 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE,
         verbose = FALSE

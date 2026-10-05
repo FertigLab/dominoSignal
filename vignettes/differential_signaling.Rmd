@@ -99,7 +99,6 @@ build_reps <- function(clusters, seed, keep_frac, shuffle_frac) {
             z_scores = zscores,
             clusters = resampled_clusters,
             tf_targets = tf_targets,
-            use_clusters = TRUE,
             use_complexes = TRUE,
             remove_rec_dropout = FALSE,
             verbose = FALSE

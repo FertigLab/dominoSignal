@@ -47,7 +47,6 @@ pbmc_dom_tiny_alt <- create_domino(
     z_scores = PBMC$zscore_tiny,
     clusters = clusters_tiny_alt,
     tf_targets = SCENIC$regulon_list_tiny,
-    use_clusters = TRUE,
     use_complexes = TRUE,
     remove_rec_dropout = FALSE,
     verbose = FALSE

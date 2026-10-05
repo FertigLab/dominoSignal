@@ -92,7 +92,7 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
         rl_map = rl_map_append, features = tiny_auc2,
         counts = tiny_counts2, z_scores = tiny_zscores2,
         clusters = tiny_clusters2, tf_targets = regulon_list_tiny,
-        use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
+        use_complexes = TRUE, remove_rec_dropout = FALSE
     )
 
     dom <- build_domino(

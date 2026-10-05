@@ -7,15 +7,14 @@
 create_domino(
   rl_map,
   features,
-  counts = NULL,
-  z_scores = NULL,
-  clusters = NULL,
-  use_clusters = TRUE,
+  counts,
+  z_scores,
+  clusters,
   tf_targets = NULL,
   verbose = TRUE,
   use_complexes = TRUE,
   rec_min_thresh = 0.025,
-  remove_rec_dropout = TRUE,
+  remove_rec_dropout = FALSE,
   tf_selection_method = "clusters",
   tf_variance_quantile = 0.5
 )
@@ -33,8 +32,6 @@ or named matrix with cells as columns and features as rows.}
 \item{z_scores}{Matrix containing z-scored expression data for all cells with cells as columns and features as rows.}
 
 \item{clusters}{Named factor containing cell cluster with names as cells.}
-
-\item{use_clusters}{Boolean indicating whether to use clusters (currently must be TRUE)}
 
 \item{tf_targets}{Optional. A list where names are transcription factors and the stored values are character vectors
 of genes in the transcription factor's regulon.}
@@ -83,7 +80,7 @@ pbmc_dom_tiny <- create_domino(
  rl_map = CellPhoneDB$rl_map_tiny, features = SCENIC$auc_tiny,
  counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
  clusters = PBMC$clusters_tiny, tf_targets = SCENIC$regulon_list_tiny,
- use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE,
+ use_complexes = TRUE, remove_rec_dropout = FALSE,
  verbose = FALSE
  )
 

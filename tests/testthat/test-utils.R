@@ -79,7 +79,7 @@ test_that("resolve_complexes maps complex names to component genes, resolve_name
         rl_map = rl_map_tiny, features = SCENIC$auc_tiny,
         counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
         clusters = PBMC$clusters_tiny, tf_targets = regulon_list_tiny,
-        use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
+        use_complexes = TRUE, remove_rec_dropout = FALSE
     )
 
     # Test resolve_names

@@ -6,7 +6,6 @@ test_that("create_domino runs with tiny inputs", {
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -58,7 +57,7 @@ test_that("create_domino fails on wrong input arg type", {
             rl_map_tiny,
             tiny_auc1
         ),
-        "Class of counts must be one of: matrix,data.frame"
+        "missing, with no default"
     )
 
     expect_error(
@@ -67,7 +66,7 @@ test_that("create_domino fails on wrong input arg type", {
             counts = tiny_counts1,
             z_scores = tiny_zscores1
         ),
-        "Class of clusters must be one of: factor"
+        "missing, with no default"
     )
 
     # bad rec_min threshold
@@ -114,7 +113,6 @@ test_that("create_domino runs using custom rl_map with only gene and type column
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -136,7 +134,6 @@ test_that("create_domino and build_domino give identical signaling with and with
             z_scores = tiny_zscores1,
             clusters = tiny_clusters1,
             tf_targets = regulon_list_tiny,
-            use_clusters = TRUE,
             use_complexes = FALSE,
             remove_rec_dropout = FALSE,
             verbose = FALSE

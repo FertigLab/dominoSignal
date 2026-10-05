@@ -33,7 +33,6 @@ test_that("creation of a domino object from SCENIC and CellPhoneDB inputs", {
         z_scores = v0.2.1$RNA_zscore_tiny,
         clusters = v0.2.1$clusters_tiny,
         tf_targets = v0.2.1$regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE
     )

@@ -3,7 +3,9 @@
 ## BREAKING CHANGES
 
 - Updated name of first argument of `count_linkage()` and `test_differential_linkages()` functions to `link_summary` to avoid conflict with `linkage_summary()` class.
-- Removed `test_name` argument from `test_differential_linkages()` function as Fisher's Exact Test is the only option.
+- Removed `test_name` argument from `test_differential_linkages()` function, as Fisher's Exact Test is the only option.
+- Default for `remove_rec_dropout` in `create_domino()` has been changed to `FALSE` to reflect current recommended usage.
+- Argument `use_clusters` removed from `create_domino()`, as `TRUE` is the only option.
 
 ## New Features
 
@@ -21,6 +23,8 @@
 - Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary()` object before calculating results.
 - Fixed `summarize_linkages()` iteration over linkage pairs (receptor-TF or ligand-receptor) to skip empty cases (removing spurious NA <- NA results when no links are present).
 - Fixed `plot_differential_linkages()` to accept statistic ranges outside of [0, 1] for odds.ratio.
+- Fixed `create_domino()` setting clusters to empty factor if using `tf_selection_method` of `variable` or `all`.
+- Removed default value of `NULL` for required arguments of `counts`, `zscores`, and `clusters` in `create_domino()`.
 
 ## Documentation
 
