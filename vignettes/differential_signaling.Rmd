@@ -227,8 +227,8 @@ count_subjects <- count_linkage(link_summary,
 
 ```{r eval = FALSE}
 kableExtra::kable_styling(
-    knitr::kable(count_subjects,
-        caption = "Counts of TF linkages in patients P1 & P2 in CD8 T Cells"
+    knitr::kable(count_subjects[1:5, ],
+        caption = "Subset of counts of TF linkages in patients P1 & P2 in CD8 T Cells"
     ),
     bootstrap_options = c("striped", "hover")
 )
@@ -236,8 +236,8 @@ kableExtra::kable_styling(
 </details>
 
 ```{r echo = FALSE}
-kableExtra::kable_styling(knitr::kable(count_subjects,
-        caption = "Counts of TF linkages in patients P1 & P2 in CD8 T Cells"),
+kableExtra::kable_styling(knitr::kable(count_subjects[1:5, ],
+        caption = "Subset of counts of TF linkages in patients P1 & P2 in CD8 T Cells"),
     bootstrap_options = c("striped", "hover"))
 ```
 
@@ -264,7 +264,7 @@ kableExtra::kable_styling(
 ```
 </details>
 
-```{r include = FALSE}
+```{r echo = FALSE}
 kableExtra::kable_styling(
     knitr::kable(slice_sample(counts_time_trt, n = 5),
         caption = "Counts of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"
