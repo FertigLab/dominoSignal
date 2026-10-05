@@ -93,3 +93,23 @@ test_that("domino constructor runs validity checks", {
     z <- matrix(0, nrow = 1, ncol = 2, dimnames = list("g1", c("c1", "c3")))
     expect_error(domino(clusters = clusters, z_scores = z), "z_scores columns must be the same cells")
 })
+
+test_that("print and show report recorded package versions", {
+    dom <- tiny_dom1
+    dom@misc$create_version <- "1.7.0"
+    dom@misc$build_version <- "1.8.0"
+    expect_message(print(dom), "Created with dominoSignal v1\\.7\\.0\nBuilt with dominoSignal v1\\.8\\.0")
+    expect_message(show(dom), "Created with dominoSignal v1\\.7\\.0\nBuilt with dominoSignal v1\\.8\\.0")
+
+    created <- tiny_created_dom1
+    created@misc$create_version <- "1.7.0"
+    expect_message(print(created), "has not been built\nCreated with dominoSignal v1\\.7\\.0")
+    expect_message(show(created), "has not been built\nCreated with dominoSignal v1\\.7\\.0")
+    expect_no_match(capture.output(show(created), type = "message"), "Built with")
+})
+
+test_that("print and show omit versions when none are recorded", {
+    expect_no_match(capture.output(print(tiny_dom1), type = "message"), "dominoSignal v")
+    expect_no_match(capture.output(show(tiny_dom1), type = "message"), "dominoSignal v")
+    expect_no_match(capture.output(show(tiny_created_dom1), type = "message"), "dominoSignal v")
+})

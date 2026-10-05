@@ -240,8 +240,9 @@ dom_de <- function(dom) {
 #' A function to pull the parameters used when running [build_domino()] from a domino object
 #'
 #' @param dom a domino object that has been created with [create_domino()]
-#' @return  A list containing booleans for whether the object has been created and built and a list of the
-#'          build parameters that were used in [build_domino()] to infer the signaling network
+#' @return  A list containing booleans for whether the object has been created and built, a list of the
+#'          build parameters that were used in [build_domino()] to infer the signaling network, and the
+#'          dominoSignal versions used to create and build the object (NULL if not recorded)
 #' @export
 #' @family accessors
 #' @examples
@@ -254,7 +255,8 @@ dom_info <- function(dom) {
     info <- slot(dom, "misc")
     return(list(
         "create" = info$create, "build" = info$build,
-        "build_variables" = info$build_vars
+        "build_variables" = info$build_vars,
+        "create_version" = info$create_version, "build_version" = info$build_version
     ))
 }
 

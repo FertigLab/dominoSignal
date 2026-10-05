@@ -20,3 +20,17 @@ test_that("dom_signalling is a synonym of dom_signaling", {
         dom_signaling(tiny_dom1, cluster = "CD14_monocyte")
     )
 })
+
+test_that("dom_info returns recorded package versions, or NULL when absent", {
+    info <- dom_info(tiny_dom1)
+    expect_named(info, c("create", "build", "build_variables", "create_version", "build_version"))
+    expect_null(info$create_version)
+    expect_null(info$build_version)
+
+    dom <- tiny_dom1
+    dom@misc$create_version <- "1.7.0"
+    dom@misc$build_version <- "1.8.0"
+    info <- dom_info(dom)
+    expect_equal(info$create_version, "1.7.0")
+    expect_equal(info$build_version, "1.8.0")
+})

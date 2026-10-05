@@ -101,6 +101,10 @@ setValidity("domino", valid_domino)
 #' print(DominoObjects$built_dom_tiny)
 #'
 setMethod("print", "domino", function(x, ...) {
+    version_msg <- paste0(
+        if (!is.null(x@misc$create_version)) paste0("Created with dominoSignal v", x@misc$create_version, "\n"),
+        if (!is.null(x@misc$build_version)) paste0("Built with dominoSignal v", x@misc$build_version, "\n")
+    )
     if (x@misc$build) {
         message(
             "A domino object of ", length(x@clusters), " cells
@@ -109,10 +113,11 @@ setMethod("print", "domino", function(x, ...) {
                 Built with a maximum of ", x@misc$build_vars["max_tf_per_clust"],
             " TFs per cluster
                 and a maximum of ", x@misc$build_vars["max_rec_per_tf"],
-            " receptors per TF\n"
+            " receptors per TF\n", version_msg
         )
     } else {
-        message("A domino object of ", length(x@clusters), " cells\n", "A signaling network has not been built\n"
+        message("A domino object of ", length(x@clusters), " cells\n", "A signaling network has not been built\n",
+            version_msg
         )
     }
 })
@@ -128,12 +133,5 @@ setMethod("print", "domino", function(x, ...) {
 #' show(DominoObjects$built_dom_tiny)
 #'
 setMethod("show", "domino", function(object) {
-    if (object@misc$build) {
-        message(
-            "A domino object of ", length(object@clusters), " cells\n", "Built with signaling between ",
-            nlevels(object@clusters), " clusters\n"
-        )
-    } else {
-        message("A domino object of ", length(object@clusters), " cells\n", "A signaling network has not been built\n")
-    }
+    print(object)
 })
