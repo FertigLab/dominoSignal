@@ -2,7 +2,7 @@ test_that("build_domino runs with tiny object", {
     expect_s4_class(
         build_domino(
             dom = tiny_created_dom1,
-            min_tf_pval = 0.05,
+            max_tf_pval = 0.05,
             max_tf_per_clust = 3,
             max_rec_per_tf = 3,
             rec_tf_cor_threshold = 0.1,
@@ -15,7 +15,7 @@ test_that("build_domino runs with tiny object", {
 test_that("build_domino does not fail with no TFs with p-value below threshold", {
     expect_no_error(build_domino(
         dom = tiny_created_dom1,
-        min_tf_pval = 0,
+        max_tf_pval = 0,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 1e-20,
@@ -35,13 +35,12 @@ test_that("build_domino runs with custom rl_map with minimum required columns", 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
     )
     dom_custom <- build_domino(dom_custom,
-        min_tf_pval = 0.05,
+        max_tf_pval = 0.05,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 0.1,
@@ -61,13 +60,12 @@ test_that("build_domino runs with custom rl_map with minimum required columns an
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = FALSE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
     )
     dom_custom <- build_domino(dom_custom,
-        min_tf_pval = 0.05,
+        max_tf_pval = 0.05,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 0.1,
@@ -86,7 +84,6 @@ test_that("build_domino identifies an expressed receptor when only one receptor 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = FALSE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -95,7 +92,7 @@ test_that("build_domino identifies an expressed receptor when only one receptor 
     expect_equal(rownames(dom_custom@misc$cl_rec_percent), "CXCR3")
 
     dom_custom <- build_domino(dom_custom,
-        min_tf_pval = 0.05,
+        max_tf_pval = 0.05,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 0.1,
@@ -117,13 +114,12 @@ test_that("build_domino computes non-zero signaling for a cluster with a single 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = FALSE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
     )
     dom_custom <- build_domino(dom_custom,
-        min_tf_pval = 0.05,
+        max_tf_pval = 0.05,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 0.1,
@@ -149,7 +145,6 @@ test_that("build_domino runs with rl_map without name columns and use_complexes 
         z_scores = tiny_zscores1,
         clusters = tiny_clusters1,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
         use_complexes = TRUE,
         remove_rec_dropout = FALSE,
         verbose = FALSE
@@ -157,7 +152,7 @@ test_that("build_domino runs with rl_map without name columns and use_complexes 
     expect_named(dom_custom@linkages$complexes, c("ITGB4,ITGA6", "IL7R,IL2RG"))
 
     dom_custom <- build_domino(dom_custom,
-        min_tf_pval = 0.05,
+        max_tf_pval = 0.05,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 0.1,

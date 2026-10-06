@@ -16,25 +16,26 @@
 #' @param counts Counts matrix for the data. This is only used to threshold receptors on dropout.
 #' @param z_scores Matrix containing z-scored expression data for all cells with cells as columns and features as rows.
 #' @param clusters Named factor containing cell cluster with names as cells.
-#' @param use_clusters Boolean indicating whether to use clusters (currently must be TRUE)
 #' @param tf_targets Optional. A list where names are transcription factors and the stored values are character vectors
 #'   of genes in the transcription factor's regulon.
 #' @param verbose Boolean indicating whether or not to print progress during computation.
 #' @param use_complexes Boolean indicating whether you wish to use receptor/ligand complexes in the receptor ligand
 #'   signaling database. If FALSE, receptor/ligand pairs where either functions as a protein complex will not be
-#'   considered when constructing the signaling network. If TRUE, make sure rl_map contains name columns matching names of complexes.
+#'   considered when constructing the signaling network.
 #' @param rec_min_thresh Minimum expression level of receptors by cell. Default is 0.025 or 2.5 percent of all cells
 #'   in the data set. This is important when calculating correlation to connect receptors to transcription activation.
 #'   If this threshold is too low then correlation calculations will proceed with very few cells with non-zero
 #'   expression.
 #' @param remove_rec_dropout Whether to remove receptors with 0 expression counts when calculating correlations.
 #'   This can reduce false positive correlation calculations when receptors have high dropout rates.
-#' @param tf_selection_method Selection of which method to target transcription factors. If 'clusters' then
-#'   differential expression for clusters will be calculated. If 'variable' then the most variable transcription factors
-#'   will be selected. If 'all' then all transcription factors in the feature matrix will be used. Default is
-#'   'clusters'. Note that if you wish to use clusters for intercellular signaling downstream to MUST choose clusters.
-#' @param tf_variance_quantile What proportion of variable features to take if using variance to threshold features.
-#'   Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'
+#' @param tf_selection_method Selection of which method to target transcription factors. Options: 
+#' \itemize{
+#' \item{"clusters"}: TFs are selected based on differential activity by cluster using Wilcoxon rank sum test.
+#' \item{"variable"}: TFs are selected based on coefficient of variation (also known as relative standard deviation or normalized root-mean-square) across all cells in dataset.
+#' \item{"all"}: All TFs provided in the `features` matrix are included in downstream analysis.
+#' }
+#' @param tf_variance_quantile Quantile of most variable features to take if using coefficient of variance to threshold features.
+#'   Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'.
 #' @return A domino object
 #' @export create_domino
 #' @seealso [create_rl_map_cellphonedb()] for creating receptor-ligand maps, 
@@ -50,15 +51,15 @@
 #'  rl_map = CellPhoneDB$rl_map_tiny, features = SCENIC$auc_tiny,
 #'  counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
 #'  clusters = PBMC$clusters_tiny, tf_targets = SCENIC$regulon_list_tiny,
-#'  use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE,
+#'  use_complexes = TRUE, remove_rec_dropout = FALSE,
 #'  verbose = FALSE
 #'  )
 #'
 
 create_domino <- function(
-    rl_map, features, counts = NULL, z_scores = NULL,
-    clusters = NULL, use_clusters = TRUE, tf_targets = NULL, verbose = TRUE,
-    use_complexes = TRUE, rec_min_thresh = 0.025, remove_rec_dropout = TRUE,
+    rl_map, features, counts, z_scores,
+    clusters, tf_targets = NULL, verbose = TRUE,
+    use_complexes = TRUE, rec_min_thresh = 0.025, remove_rec_dropout = FALSE,
     tf_selection_method = "clusters", tf_variance_quantile = 0.5
 ) {
     # Check inputs:
@@ -93,8 +94,13 @@ create_domino <- function(
     # Create object
     dom <- domino()
     dom@misc[["create"]] <- TRUE
+    dom@misc[["create_version"]] <- as.character(utils::packageVersion("dominoSignal"))
     dom@misc[["build"]] <- FALSE
     dom@misc[["build_vars"]] <- NULL
+    dom@misc[["create_vars"]] <- list(
+        tf_selection_method = tf_selection_method, tf_variance_quantile = tf_variance_quantile,
+        use_complexes = use_complexes, rec_min_thresh = rec_min_thresh, remove_rec_dropout = remove_rec_dropout
+    )
 
     # Read in lr db info
     if (verbose) {
@@ -176,15 +182,32 @@ create_domino <- function(
     if (verbose) {
         message("Getting z_scores, clusters, and counts")
     }
+    if (is(features, "character")) {
+        features <- read.csv(features, row.names = 1, check.names = FALSE)
+    }
+    # Align cells by name to the order of z_scores; downstream calculations index cells by position
+    cells <- Reduce(intersect, list(colnames(z_scores), colnames(counts), colnames(features), names(clusters)))
+    if (length(cells) == 0) {
+        stop("No cells are shared between z_scores, counts, features, and clusters.")
+    }
+    n_dropped <- c(
+        z_scores = ncol(z_scores), counts = ncol(counts), features = ncol(features), clusters = length(clusters)
+    ) - length(cells)
+    if (any(n_dropped > 0)) {
+        warning(
+            "Using the ", length(cells), " cells shared between z_scores, counts, features, and clusters. ",
+            "Cells dropped: ", toString(paste(names(n_dropped), n_dropped, sep = " = "))
+        )
+    }
+    z_scores <- z_scores[, cells, drop = FALSE]
+    counts <- counts[, cells, drop = FALSE]
+    features <- features[, cells, drop = FALSE]
+    clusters <- droplevels(clusters[cells])
     dom@z_scores <- z_scores
     if (!is.null(clusters)) {
         dom@clusters <- clusters
     }
-    # Read in features matrix and calculate differential expression by cluster.
-    if (is(features, "character")) {
-        features <- read.csv(features, row.names = 1, check.names = FALSE)
-    }
-    features <- features[, colnames(dom@z_scores)]
+    # Calculate differential expression of features by cluster.
     dom@features <- as.matrix(features)
     if (tf_selection_method == "clusters") {
         p_vals <- matrix(1, nrow = nrow(features), ncol = nlevels(dom@clusters))
@@ -209,11 +232,7 @@ create_domino <- function(
         }
         dom@clust_de <- p_vals
     }
-    if (tf_selection_method == "all") {
-        dom@clusters <- factor()
-    }
     if (tf_selection_method == "variable") {
-        dom@clusters <- factor()
         variances <- apply(dom@features, 1, function(x) {
             sd(x) / mean(x)
         })
@@ -311,19 +330,17 @@ create_domino <- function(
     }
     c_cor <- t(as.data.frame(cor_list))
     dom@cor <- c_cor
-    # If cluster methods are used, calculate percentage of non-zero expression of receptor genes
-    # in clusters
-    if (tf_selection_method == "clusters") {
-        cl_rec_percent <- NULL
-        for (rec in ser_receptors) {
-            rec_percent <- vapply(X = levels(dom@clusters), FUN.VALUE = numeric(1), FUN = function(x) {
-                # percentage of cells in cluster with non-zero expression of receptor gene
-                sum(dom@counts[rec, dom@clusters == x] > 0) / length(dom@counts[rec, dom@clusters == x])
-            })
-            cl_rec_percent <- rbind(cl_rec_percent, rec_percent)
-        }
-        rownames(cl_rec_percent) <- ser_receptors
-        dom@misc$cl_rec_percent <- cl_rec_percent
+    # Calculate percentage of non-zero expression of receptor genes in clusters
+    cl_rec_percent <- NULL
+    for (rec in ser_receptors) {
+        rec_percent <- vapply(X = levels(dom@clusters), FUN.VALUE = numeric(1), FUN = function(x) {
+            # percentage of cells in cluster with non-zero expression of receptor gene
+            sum(dom@counts[rec, dom@clusters == x] > 0) / length(dom@counts[rec, dom@clusters == x])
+        })
+        cl_rec_percent <- rbind(cl_rec_percent, rec_percent)
     }
+    rownames(cl_rec_percent) <- ser_receptors
+    dom@misc$cl_rec_percent <- cl_rec_percent
+    validObject(dom)
     return(dom)
 }

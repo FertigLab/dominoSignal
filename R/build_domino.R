@@ -6,8 +6,9 @@
 #'
 #' @param dom Domino object from [create_domino()].
 #' @param max_tf_per_clust Maximum number of transcription factors called active in a cluster.
-#' @param min_tf_pval Maximum p-value from differential feature score test to call a transcription
-#'   factor active in a cluster, serving as a significance threshold.
+#' @param max_tf_pval Maximum p-value from differential feature score test to call a transcription
+#'   factor active in a cluster, serving as a significance threshold (used if object was created with TF selection method "clusters"). For selection with "variable" or "all", this argument is ignored, and TFs are ranked by max correlation with active receptors
+#'   by cluster.
 #' @param max_rec_per_tf Maximum number of receptors to link to each transcription factor.
 #' @param rec_tf_cor_threshold Minimum Spearman correlation used to consider a receptor linked with a
 #'  transcription factor. Increasing this will decrease the number of receptors linked to each
@@ -23,18 +24,18 @@
 #'
 #' # a relaxed example
 #' pbmc_dom_built_tiny <- build_domino(
-#'     dom = dom, min_tf_pval = .05, max_tf_per_clust = Inf,
+#'     dom = dom, max_tf_pval = .05, max_tf_per_clust = Inf,
 #'     max_rec_per_tf = Inf, rec_tf_cor_threshold = .1, min_rec_percentage = 0.01
 #' )
 #'
 build_domino <- function(
-    dom, max_tf_per_clust = 5, min_tf_pval = 0.01, max_rec_per_tf = 5, rec_tf_cor_threshold = 0.15,
+    dom, max_tf_per_clust = 5, max_tf_pval = 0.01, max_rec_per_tf = 5, rec_tf_cor_threshold = 0.15,
     min_rec_percentage = 0.1
 ) {
     # Check inputs:
     check_arg(dom, allow_class = "domino", allow_len = 1)
     check_arg(max_tf_per_clust, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
-    check_arg(min_tf_pval, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
+    check_arg(max_tf_pval, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
     check_arg(max_rec_per_tf, allow_class = "numeric", allow_len = 1, allow_range = c(0, Inf))
     check_arg(rec_tf_cor_threshold, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
     check_arg(min_rec_percentage, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
@@ -43,15 +44,38 @@ build_domino <- function(
         stop("Please run domino_create to create the domino object.")
     }
     dom@misc[["build"]] <- TRUE
+    dom@misc[["build_version"]] <- as.character(utils::packageVersion("dominoSignal"))
     dom@misc[["build_vars"]] <- c(
-        max_tf_per_clust = max_tf_per_clust, min_tf_pval = min_tf_pval,
+        max_tf_per_clust = max_tf_per_clust, max_tf_pval = max_tf_pval,
         max_rec_per_tf = max_rec_per_tf, rec_tf_cor_threshold = rec_tf_cor_threshold,
         min_rec_percentage = min_rec_percentage
     )
-    if (length(dom@clusters)) {
-        # Get transcription factors for each cluster
-        clust_tf <- list()
-        for (clust in levels(dom@clusters)) {
+    tf_method <- dom@misc[["create_vars"]][["tf_selection_method"]]
+    # clust_de only available when TF seelction is cluster based so serves as backup
+    use_clusters <- if (is.null(tf_method)) ncol(dom@clust_de) > 0 else tf_method == "clusters"
+    # Get receptors expressed by cluster; complex is expressed only each component is expressed
+    expressed_rec <- list()
+    for (clust in levels(dom@clusters)) {
+        percent <- dom@misc$cl_rec_percent[, clust, drop = FALSE]
+        percent <- stats::setNames(percent[, 1], rownames(percent))
+        pass_genes <- names(percent[percent > min_rec_percentage])
+        expressed <- character()
+        for (rec in names(dom@linkages$rec_lig)) {
+            if (rec %in% names(dom@linkages$complexes)) {
+                rec_gene <- dom@linkages$complexes[[rec]]
+            } else {
+                rec_gene <- rec
+            }
+            if (length(rec_gene) == sum(rec_gene %in% pass_genes)) {
+                expressed <- c(expressed, rec)
+            }
+        }
+        expressed_rec[[clust]] <- expressed
+    }
+    # Get transcription factors for each cluster
+    clust_tf <- list()
+    for (clust in levels(dom@clusters)) {
+        if (use_clusters) {
             ordering <- sort(dom@clust_de[, clust], decreasing = FALSE)
             # If there are more ties than max tf per cluster then rank by logfc
             if (sum(ordering == 0) > max_tf_per_clust) {
@@ -67,158 +91,139 @@ build_domino <- function(
                 names(fcs) <- zeros
                 sorted <- sort(fcs, decreasing = TRUE)[seq_len(max_tf_per_clust)]
             } else {
-                sorted <- ordering[which(ordering < min_tf_pval)]
+                sorted <- ordering[which(ordering < max_tf_pval)]
             }
-            if (length(sorted) > max_tf_per_clust) {
-                sorted <- sorted[seq_len(max_tf_per_clust)]
-            }
-            clust_tf[[clust]] <- names(sorted)
+        } else {
+            # TF scores can't necessarily be compared across TFs (if not normalized)
+            # so subset to those with positive mean score in cluster
+            means <- rowMeans(dom@features[, dom@clusters == clust, drop = FALSE])
+            recs <- intersect(expressed_rec[[clust]], rownames(dom@cor))
+            # Rank by max TF correlation with expressed receptors in cluster (above threshold)
+            max_cor <- vapply(names(means)[means > 0], function(tf) {
+                max(dom@cor[recs, tf], -Inf)
+            }, numeric(1))
+            sorted <- sort(max_cor[max_cor > rec_tf_cor_threshold], decreasing = TRUE)
         }
-        dom@linkages[["clust_tf"]] <- clust_tf
-        # Get receptors for each transcription factor
-        tf_rec <- list()
-        for (tf in colnames(dom@cor)) {
-            ordering <- sort(dom@cor[, tf], decreasing = TRUE)
-            filtered <- ordering[which(ordering > rec_tf_cor_threshold)]
-            if (length(filtered) > max_rec_per_tf) {
-                top_receptors <- names(filtered)[seq_len(max_rec_per_tf)]
-            } else {
-                top_receptors <- names(filtered)
-            }
-            tf_rec[[tf]] <- top_receptors
+        if (length(sorted) > max_tf_per_clust) {
+            sorted <- sorted[seq_len(max_tf_per_clust)]
         }
-        dom@linkages[["tf_rec"]] <- tf_rec
-        # If cluster methods are used, provide cluster-specific tf_rec linkages
-        cl_tf_rec <- list()
-        for (clust in levels(dom@clusters)) {
-            percent <- dom@misc$cl_rec_percent[, clust, drop = FALSE]
-            percent <- stats::setNames(percent[, 1], rownames(percent))
-            pass_genes <- names(percent[percent > min_rec_percentage])
-            expressed <- character()
-            for (rec in names(dom@linkages$rec_lig)) {
-                if (rec %in% names(dom@linkages$complexes)) {
-                    rec_gene <- dom@linkages$complexes[[rec]]
-                } else {
-                    rec_gene <- rec
-                }
-                if (length(rec_gene) == sum(rec_gene %in% pass_genes)) {
-                    expressed <- c(expressed, rec)
-                }
-            }
-            active_tf <- dom@linkages$clust_tf[[clust]]
-            cl_tf_rec[[clust]] <- lapply(dom@linkages$tf_rec[active_tf], FUN = function(x) {
-                return(x[x %in% expressed])
-            })
-        }
-        dom@linkages[["clust_tf_rec"]] <- cl_tf_rec
-        # Get a list of active receptors for each cluster
-        clust_rec <- list()
-        for (clust in levels(dom@clusters)) {
-            vec <- lc(dom@linkages$clust_tf_rec[[clust]], lc(clust_tf, clust))
-            vec <- unique(vec[!is.na(vec)])
-            clust_rec[[clust]] <- vec
-        }
-        dom@linkages[["clust_rec"]] <- clust_rec
-        # Get a list of incoming ligands for each cluster
-        clust_ligs <- list()
-        for (clust in levels(dom@clusters)) {
-            vec <- lc(dom@linkages$rec_lig, lc(clust_rec, clust))
-            vec <- unique(vec[!is.na(vec)])
-            clust_ligs[[clust]] <- vec
-        }
-        dom@linkages[["clust_incoming_lig"]] <- clust_ligs
-        # Build signaling matrices for each cluster
-        cl_signaling_matrices <- list()
-        signaling <- matrix(0, ncol = nlevels(dom@clusters), nrow = nlevels(dom@clusters))
-        rownames(signaling) <- paste0("R_", levels(dom@clusters))
-        colnames(signaling) <- paste0("L_", levels(dom@clusters))
-        for (clust in levels(dom@clusters)) {
-            inc_ligs <- clust_ligs[[clust]]
-            rl_map <- dom@misc[["rl_map"]]
-            inc_ligs <- vapply(inc_ligs, FUN.VALUE = character(1), FUN = function(l) {
-                int <- rl_map[rl_map$L.name == l, ][1, ]
-                if ((int$L.name != int$L.gene) && !grepl(",", int$L.gene, fixed = TRUE)) {
-                    int$L.gene
-                } else {
-                    int$L.name
-                }
-            })
-            if (length(dom@linkages$complexes) > 0) {
-                # if complexes were used
-                inc_ligs_list <- lapply(inc_ligs, function(l) {
-                    if (l %in% names(dom@linkages$complexes)) {
-                        return(dom@linkages$complexes[[l]])
-                    } else {
-                        return(l)
-                    }
-                })
-                names(inc_ligs_list) <- inc_ligs
-                inc_ligs <- unlist(inc_ligs_list)
-            }
-            lig_genes <- intersect(inc_ligs, rownames(dom@z_scores))
-            if (length(lig_genes) == 0) {
-                lig_genes <- numeric(0)
-            }
-            cl_sig_mat <- matrix(0, ncol = nlevels(dom@clusters), nrow = length(lig_genes))
-            colnames(cl_sig_mat) <- colnames(signaling)
-            if (!identical(lig_genes, numeric(0))) {
-                rownames(cl_sig_mat) <- lig_genes
-            }
-            rownames(cl_sig_mat) <- lig_genes
-            for (c2 in levels(dom@clusters)) {
-                n_cell <- length(which(dom@clusters == c2))
-                if (n_cell > 1) {
-                    expr <- matrix(dom@z_scores[lig_genes, which(dom@clusters == c2)], nrow = length(lig_genes))
-                    sig <- rowMeans(expr)
-                } else if (n_cell == 1) {
-                    sig <- dom@z_scores[lig_genes, which(dom@clusters == c2)]
-                } else {
-                    sig <- rep(0, length(lig_genes))
-                    names(sig) <- lig_genes
-                }
-                # mean scaled expression less than 0 is brought up to 0 as a floor
-                sig[which(sig < 0)] <- 0
-                cl_sig_mat[, paste0("L_", c2)] <- sig
-            }
-            if (length(dom@linkages$complexes) > 0) {
-                # if complexes were used
-                cl_sig_list <- lapply(seq_along(inc_ligs_list), function(x) {
-                    if (all(inc_ligs_list[[x]] %in% lig_genes)) {
-                        # Some of the ligands in the list object may not be present in the data
-                        if (length(inc_ligs_list[[x]]) > 1) {
-                            return(colMeans(cl_sig_mat[inc_ligs_list[[x]], ]))
-                        } else {
-                            return(cl_sig_mat[inc_ligs_list[[x]], ])
-                        }
-                    }
-                })
-                names(cl_sig_list) <- names(inc_ligs_list)
-                valid <- !vapply(cl_sig_list, is.null, logical(1))
-                if (sum(valid) > 1) {
-                    cl_sig_mat <- do.call(rbind, cl_sig_list[valid])
-                }
-            }
-            cl_signaling_matrices[[clust]] <- cl_sig_mat
-            signaling[paste0("R_", clust), ] <- colSums(cl_sig_mat)
-        }
-        dom@cl_signaling_matrices <- cl_signaling_matrices
-        dom@signaling <- signaling
-    } else {
-        # If clusters are not defined, take all TFs selected previously
-        dom@linkages[["clust_tf"]] <- list(clust = rownames(dom@features))
-        # ID receptors for transcription factors
-        tf_rec <- list()
-        for (tf in colnames(dom@cor)) {
-            ordering <- sort(dom@cor[, tf], decreasing = TRUE)
-            filtered <- ordering[which(ordering > rec_tf_cor_threshold)]
-            if (length(filtered) > max_rec_per_tf) {
-                top_receptors <- names(filtered)[seq_len(max_rec_per_tf)]
-            } else {
-                top_receptors <- names(filtered)
-            }
-            tf_rec[[tf]] <- top_receptors
-        }
-        dom@linkages[["tf_rec"]] <- tf_rec
+        clust_tf[[clust]] <- names(sorted)
     }
+    dom@linkages[["clust_tf"]] <- clust_tf
+    # Get receptors for each transcription factor
+    tf_rec <- list()
+    for (tf in colnames(dom@cor)) {
+        ordering <- sort(dom@cor[, tf], decreasing = TRUE)
+        filtered <- ordering[which(ordering > rec_tf_cor_threshold)]
+        if (length(filtered) > max_rec_per_tf) {
+            top_receptors <- names(filtered)[seq_len(max_rec_per_tf)]
+        } else {
+            top_receptors <- names(filtered)
+        }
+        tf_rec[[tf]] <- top_receptors
+    }
+    dom@linkages[["tf_rec"]] <- tf_rec
+    # Provide cluster-specific tf_rec linkages
+    cl_tf_rec <- list()
+    for (clust in levels(dom@clusters)) {
+        active_tf <- dom@linkages$clust_tf[[clust]]
+        cl_tf_rec[[clust]] <- lapply(dom@linkages$tf_rec[active_tf], FUN = function(x) {
+            return(x[x %in% expressed_rec[[clust]]])
+        })
+    }
+    dom@linkages[["clust_tf_rec"]] <- cl_tf_rec
+    # Get a list of active receptors for each cluster
+    clust_rec <- list()
+    for (clust in levels(dom@clusters)) {
+        vec <- lc(dom@linkages$clust_tf_rec[[clust]], lc(clust_tf, clust))
+        vec <- unique(vec[!is.na(vec)])
+        clust_rec[[clust]] <- vec
+    }
+    dom@linkages[["clust_rec"]] <- clust_rec
+    # Get a list of incoming ligands for each cluster
+    clust_ligs <- list()
+    for (clust in levels(dom@clusters)) {
+        vec <- lc(dom@linkages$rec_lig, lc(clust_rec, clust))
+        vec <- unique(vec[!is.na(vec)])
+        clust_ligs[[clust]] <- vec
+    }
+    dom@linkages[["clust_incoming_lig"]] <- clust_ligs
+    # Build signaling matrices for each cluster
+    cl_signaling_matrices <- list()
+    signaling <- matrix(0, ncol = nlevels(dom@clusters), nrow = nlevels(dom@clusters))
+    rownames(signaling) <- paste0("R_", levels(dom@clusters))
+    colnames(signaling) <- paste0("L_", levels(dom@clusters))
+    for (clust in levels(dom@clusters)) {
+        inc_ligs <- clust_ligs[[clust]]
+        rl_map <- dom@misc[["rl_map"]]
+        inc_ligs <- vapply(inc_ligs, FUN.VALUE = character(1), FUN = function(l) {
+            int <- rl_map[rl_map$L.name == l, ][1, ]
+            if ((int$L.name != int$L.gene) && !grepl(",", int$L.gene, fixed = TRUE)) {
+                int$L.gene
+            } else {
+                int$L.name
+            }
+        })
+        if (length(dom@linkages$complexes) > 0) {
+            # if complexes were used
+            inc_ligs_list <- lapply(inc_ligs, function(l) {
+                if (l %in% names(dom@linkages$complexes)) {
+                    return(dom@linkages$complexes[[l]])
+                } else {
+                    return(l)
+                }
+            })
+            names(inc_ligs_list) <- inc_ligs
+            inc_ligs <- unlist(inc_ligs_list)
+        }
+        lig_genes <- intersect(inc_ligs, rownames(dom@z_scores))
+        if (length(lig_genes) == 0) {
+            lig_genes <- numeric(0)
+        }
+        cl_sig_mat <- matrix(0, ncol = nlevels(dom@clusters), nrow = length(lig_genes))
+        colnames(cl_sig_mat) <- colnames(signaling)
+        if (!identical(lig_genes, numeric(0))) {
+            rownames(cl_sig_mat) <- lig_genes
+        }
+        rownames(cl_sig_mat) <- lig_genes
+        for (c2 in levels(dom@clusters)) {
+            n_cell <- length(which(dom@clusters == c2))
+            if (n_cell > 1) {
+                expr <- matrix(dom@z_scores[lig_genes, which(dom@clusters == c2)], nrow = length(lig_genes))
+                sig <- rowMeans(expr)
+            } else if (n_cell == 1) {
+                sig <- dom@z_scores[lig_genes, which(dom@clusters == c2)]
+            } else {
+                sig <- rep(0, length(lig_genes))
+                names(sig) <- lig_genes
+            }
+            # mean scaled expression less than 0 is brought up to 0 as a floor
+            sig[which(sig < 0)] <- 0
+            cl_sig_mat[, paste0("L_", c2)] <- sig
+        }
+        if (length(dom@linkages$complexes) > 0) {
+            # if complexes were used
+            cl_sig_list <- lapply(seq_along(inc_ligs_list), function(x) {
+                if (all(inc_ligs_list[[x]] %in% lig_genes)) {
+                    # Some of the ligands in the list object may not be present in the data
+                    if (length(inc_ligs_list[[x]]) > 1) {
+                        return(colMeans(cl_sig_mat[inc_ligs_list[[x]], ]))
+                    } else {
+                        return(cl_sig_mat[inc_ligs_list[[x]], ])
+                    }
+                }
+            })
+            names(cl_sig_list) <- names(inc_ligs_list)
+            valid <- !vapply(cl_sig_list, is.null, logical(1))
+            if (sum(valid) > 1) {
+                cl_sig_mat <- do.call(rbind, cl_sig_list[valid])
+            }
+        }
+        cl_signaling_matrices[[clust]] <- cl_sig_mat
+        signaling[paste0("R_", clust), ] <- colSums(cl_sig_mat)
+    }
+    dom@cl_signaling_matrices <- cl_signaling_matrices
+    dom@signaling <- signaling
+    validObject(dom)
     return(dom)
 }

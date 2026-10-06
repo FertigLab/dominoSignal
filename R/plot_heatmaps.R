@@ -35,7 +35,7 @@ NULL
 #' # scale
 #' signaling_heatmap(dom, scale = "sqrt")
 #' # normalize
-#' signaling_heatmap(dom, normalize = "rec_norm")
+#' signaling_heatmap(dom, normalize = "lig_norm")
 #'
 signaling_heatmap <- function(
     dom, clusts = NULL, min_thresh = -Inf, max_thresh = Inf, scale = "none",
@@ -248,7 +248,8 @@ incoming_signalling_heatmap <- incoming_signaling_heatmap
 #' feat_heatmap(
 #'     dom,
 #'     min_thresh = 0.1,
-#'     max_thresh = 0.6, norm = TRUE, bool = FALSE
+#'     max_thresh = 0.6,
+#'     bool = FALSE
 #' )
 #'
 feat_heatmap <- function(

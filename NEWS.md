@@ -1,9 +1,13 @@
-# dominoSignal v1.7.0 (in development)
+# dominoSignal v1.7.1 (in development)
 
 ## BREAKING CHANGES
 
 - Updated name of first argument of `count_linkage()` and `test_differential_linkages()` functions to `link_summary` to avoid conflict with `linkage_summary()` class.
-- Removed `test_name` argument from `test_differential_linkages()` function as Fisher's Exact Test is the only option.
+- Removed `test_name` argument from `test_differential_linkages()` function, as Fisher's Exact Test is the only option.
+- Default for `remove_rec_dropout` in `create_domino()` has been changed to `FALSE` to reflect current recommended usage.
+- Argument `use_clusters` removed from `create_domino()`, as `TRUE` is the only option.
+- `domino()` validity check now requires that cell inputs have aligned names. Previously built objects (before the bug fix for cluster matching by positions) will now fail the validity check and should be re-run.
+- When `create_domino()` TF selection method is set to `all` or `variable`, per cluster networks (using TFs ranked by maximum correlation in expressed receptors) are generated rather than the previous `clust` list. This ensures compatibility with downstream exploration and visualization functions but will change returned results compared to previous versions.
 
 ## New Features
 
@@ -11,6 +15,7 @@
 - Added [`subset`](../reference/subset-linkage_summary-method.html) for `linkage_summary()` class to allow for filtering of objects by subject names or metadata.
 - Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
 - Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
+- Parameters for `domino()` object creation (used in `create_domino()`) are now stored in object
 
 ## Bug Fixes
 
@@ -21,10 +26,15 @@
 - Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary()` object before calculating results.
 - Fixed `summarize_linkages()` iteration over linkage pairs (receptor-TF or ligand-receptor) to skip empty cases (removing spurious NA <- NA results when no links are present).
 - Fixed `plot_differential_linkages()` to accept statistic ranges outside of [0, 1] for odds.ratio.
+- Fixed `create_domino()` setting clusters to empty factor if using `tf_selection_method` of `variable` or `all`.
+- Removed default value of `NULL` for required arguments of `counts`, `zscores`, and `clusters` in `create_domino()`.
+- Fixed cluster matching to cells by position only by aligning cell inputs by name in `create_domino()`.
+- The maximum p-value threshold for cluster based selection of TFs in `build_domino()` has argument name `max_tf_pval` instead of incorrect `min_tf_pval`. (The previous `min_tf_pval` name stored in `build_vars` of the `domino()` object should still pass validity checks.)
 
 ## Documentation
 
 - Added vignette for differential signaling workflow.
+- Example data regenerated with `dominoSignal` version 1.7.1.
 
 # dominoSignal v1.6.0
 

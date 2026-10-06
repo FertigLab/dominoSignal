@@ -40,7 +40,7 @@ dom <- readRDS(tmp_path)
 
 ## Object contents
 
-There is a great deal of information stored with the [domino object class](https://fertiglab.github.io/dominoSignal/reference/domino-class.html). The domino object is an S4 class object that contains a variety of information about the data set used to build the object, the calculated values, and the linkages between receptors, ligands, and transcription factors. The object is structured as follows (with some examples of the information stored within each slot:
+There is a great deal of information stored with the `domino()` object class. The domino object is an S4 class object that contains a variety of information about the data set used to build the object, the calculated values, and the linkages between receptors, ligands, and transcription factors. The object is structured as follows (with some examples of the information stored within each slot):
 
 - Input Data
 
@@ -88,19 +88,23 @@ There is a great deal of information stored with the [domino object class](https
 
 - Miscellaneous Information
 
-  - Build information, which includes the parameters used to build the object in the `build_domino()` functions
+  - Create information, which includes the parameters used to create the object in the `create_domino()` functions and the package version used
+
+  - Build information, which includes the parameters used to build the object in the `build_domino()` functions and the package version used
 
   - The pared down receptor ligand map information used in building the object
 
   - The percent expression of receptors within each cluster
 
+  - The versions used to create and build the domino object
+
 For commonly accessed information (the number of cells, clusters, and some build information), the show and print methods for domino objects can be used.
 
-```{r show}
+```{r show, message = TRUE}
 dom
 ```
 
-```{r print}
+```{r print, message = TRUE}
 print(dom)
 ```
 
@@ -128,21 +132,58 @@ To access the counts:
 
 ```{r counts}
 count_matrix <- dom_counts(dom)
-knitr::kable(count_matrix[1:5, 1:5])
+```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(count_matrix[1:5, 1:5], caption = "Subset of counts matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
+```
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(count_matrix[1:5, 1:5], caption = "Subset of counts matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 Or z-scored counts:
 
 ```{r zcounts}
 z_matrix <- dom_zscores(dom)
-knitr::kable(z_matrix[1:5, 1:5])
+```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(z_matrix[1:5, 1:5], caption = "Subset of z-scored counts matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
+```
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(z_matrix[1:5, 1:5], caption = "Subset of z-scored counts matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 The transcription factor activation scores can be similarly accessed:
 
 ```{r tf_activation}
 activation_matrix <- dom_tf_activation(dom)
-knitr::kable(activation_matrix[1:5, 1:5])
+```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(activation_matrix[1:5, 1:5], caption = "Subset of transcription factor activation matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
+```
+
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(activation_matrix[1:5, 1:5], caption = "Subset of transcription factor activation matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 Information about the database referenced for ligand - receptor pairs and composition of protein complexes can be extracted from the `dom_database()` function. By default, the function returns the name(s) of the database(s) used:
@@ -155,7 +196,22 @@ If you would like to view the entire ligand - receptor map, set `name_only = FAL
 
 ```{r db-all}
 db_matrix <- dom_database(dom, name_only = FALSE)
-knitr::kable(db_matrix[1:5, 1:5])
+```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(db_matrix[1:5, 1:5],
+    caption = "Subset of full ligand-receptor map from domino object."),
+    bootstrap_options = c("striped", "hover"))
+```
+
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(db_matrix[1:5, 1:5],
+    caption = "Subset of full ligand-receptor map from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 ### Calculations
@@ -164,14 +220,44 @@ Active transcription factors in each cluster are determined by conducting Wilcox
 
 ```{r de}
 de_matrix <- dom_de(dom)
-knitr::kable(de_matrix[1:5, 1:5])
+```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(de_matrix[1:5, 1:5],
+    caption = "Subset of differential expression p-values for TFs."),
+    bootstrap_options = c("striped", "hover"))
+```
+
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(de_matrix[1:5, 1:5],
+    caption = "Subset of differential expression p-values for TFs."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 Linkage between receptors and transcription factors is assessed by Spearman correlation between transcription factor activity scores and scaled expression of receptor-encoding genes across all cells in the data set. Spearman coefficients can be accessed with the `dom_correlations()` function. Setting `type` to "complex" will return the median correlation between components of receptor complexes; the default ("rl") will return receptor - ligand correlations.
 
 ```{r correlations}
 cor_matrix <- dom_correlations(dom)
-knitr::kable(cor_matrix[1:5, 1:5])
+```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(cor_matrix[1:5, 1:5],
+    caption = "Correlation matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
+```
+
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(cor_matrix[1:5, 1:5],
+    caption = "Correlation matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 ### Linkages
@@ -180,8 +266,8 @@ Linkages between ligands, receptors, and transcription factors can be accessed i
 
 ```{r, complex}
 complex_links <- dom_linkages(dom, link_type = "complexes")
-# Look for components of NODAL receptor complex
-complex_links$NODAL_receptor
+# Look for components of IL7 receptor complex
+complex_links$IL7_receptor
 ```
 
 To view incoming ligands to each cluster:
@@ -213,21 +299,60 @@ The averaged z-scored expression of ligands and receptors between different clus
 
 ```{r global-signalling}
 signal_matrix <- dom_signaling(dom)
-knitr::kable(signal_matrix)
 ```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(signal_matrix,
+    caption = "Cluster signaling matrix of averaged z_scored expression."),
+    bootstrap_options = c("striped", "hover"))
+```
+
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(signal_matrix,
+    caption = "Cluster signaling matrix of averaged z_scored expression."),
+    bootstrap_options = c("striped", "hover"))
+```
+
 
 To view signaling to a specific cluster from the other clusters, set the `cluster` argument to the cluster name.
 
 ```{r clust-signal}
 dc_matrix <- dom_signaling(dom, "dendritic_cell")
-knitr::kable(dc_matrix)
+```
+
+<details><summary>Show table code</summary>
+
+```{r eval = FALSE}
+kableExtra::kable_styling(knitr::kable(dc_matrix,
+    caption = "Cluster signaling matrix for dendritic cell cluster."),
+    bootstrap_options = c("striped", "hover"))
+```
+
+</details>
+
+```{r echo = FALSE}
+kableExtra::kable_styling(knitr::kable(dc_matrix,
+    caption = "Cluster signaling matrix for dendritic cell cluster."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 ### Build information
 
-To keep track of the options set when running `build_domino()`, they are stored within the domino object itself. To view these options, use the `dom_info()` function.
+To keep track of the options set when running `create_domino()` and `build_domino()`, they are stored within the domino object itself. To view these options, use the `dom_info()` function. Objects created with dominoSignal version 1.7.1 or newer also record the package versions used to create and build them. This example object was generated before that, so the package versions are `NULL`.
 
 ```{r info}
+dom_info(dom)
+```
+
+Building the object again (with different parameters) results in a `domino()` object with the new parameters.
+
+```{r rebuild}
+dom <- build_domino(dom, max_tf_per_clust = Inf, max_tf_pval = 0.05,
+    max_rec_per_tf = 50, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.05)
 dom_info(dom)
 ```
 
@@ -241,4 +366,5 @@ Date last built and session information:
 Sys.Date()
 sessionInfo()
 ```
+
 </details>

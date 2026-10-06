@@ -7,15 +7,14 @@
 create_domino(
   rl_map,
   features,
-  counts = NULL,
-  z_scores = NULL,
-  clusters = NULL,
-  use_clusters = TRUE,
+  counts,
+  z_scores,
+  clusters,
   tf_targets = NULL,
   verbose = TRUE,
   use_complexes = TRUE,
   rec_min_thresh = 0.025,
-  remove_rec_dropout = TRUE,
+  remove_rec_dropout = FALSE,
   tf_selection_method = "clusters",
   tf_variance_quantile = 0.5
 )
@@ -34,8 +33,6 @@ or named matrix with cells as columns and features as rows.}
 
 \item{clusters}{Named factor containing cell cluster with names as cells.}
 
-\item{use_clusters}{Boolean indicating whether to use clusters (currently must be TRUE)}
-
 \item{tf_targets}{Optional. A list where names are transcription factors and the stored values are character vectors
 of genes in the transcription factor's regulon.}
 
@@ -43,7 +40,7 @@ of genes in the transcription factor's regulon.}
 
 \item{use_complexes}{Boolean indicating whether you wish to use receptor/ligand complexes in the receptor ligand
 signaling database. If FALSE, receptor/ligand pairs where either functions as a protein complex will not be
-considered when constructing the signaling network. If TRUE, make sure rl_map contains name columns matching names of complexes.}
+considered when constructing the signaling network.}
 
 \item{rec_min_thresh}{Minimum expression level of receptors by cell. Default is 0.025 or 2.5 percent of all cells
 in the data set. This is important when calculating correlation to connect receptors to transcription activation.
@@ -53,13 +50,15 @@ expression.}
 \item{remove_rec_dropout}{Whether to remove receptors with 0 expression counts when calculating correlations.
 This can reduce false positive correlation calculations when receptors have high dropout rates.}
 
-\item{tf_selection_method}{Selection of which method to target transcription factors. If 'clusters' then
-differential expression for clusters will be calculated. If 'variable' then the most variable transcription factors
-will be selected. If 'all' then all transcription factors in the feature matrix will be used. Default is
-'clusters'. Note that if you wish to use clusters for intercellular signaling downstream to MUST choose clusters.}
+\item{tf_selection_method}{Selection of which method to target transcription factors. Options:
+\itemize{
+\item{"clusters"}: TFs are selected based on differential activity by cluster using Wilcoxon rank sum test.
+\item{"variable"}: TFs are selected based on coefficient of variation (also known as relative standard deviation or normalized root-mean-square) across all cells in dataset.
+\item{"all"}: All TFs provided in the \code{features} matrix are included in downstream analysis.
+}}
 
-\item{tf_variance_quantile}{What proportion of variable features to take if using variance to threshold features.
-Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'}
+\item{tf_variance_quantile}{Quantile of most variable features to take if using coefficient of variance to threshold features.
+Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'.}
 }
 \value{
 A domino object
@@ -83,7 +82,7 @@ pbmc_dom_tiny <- create_domino(
  rl_map = CellPhoneDB$rl_map_tiny, features = SCENIC$auc_tiny,
  counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
  clusters = PBMC$clusters_tiny, tf_targets = SCENIC$regulon_list_tiny,
- use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE,
+ use_complexes = TRUE, remove_rec_dropout = FALSE,
  verbose = FALSE
  )
 

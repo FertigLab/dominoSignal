@@ -1,7 +1,7 @@
 bibentry(
   bibtype  = "Article",
   title    = "Computational reconstruction of the signalling networks surrounding implanted biomaterials from single-cell transcriptomics",
-  author   = c(person("Christopher", "Cherry"), 
+  author   = c(person("Christopher", "Cherry"),
             person("David R.", "Maestas"),
             person("Jin", "Han"),
             person("James I.", "Andorko"),
@@ -14,21 +14,53 @@ bibentry(
   volume   = 5,
   number   = 10,
   pages    = "1228-1238",
-  doi      = "10.1038/s41551-021-00770-5",
-  url      = "https://doi.org/10.1038%2Fs41551-021-00770-5"
+  doi      = "10.1038/s41551-021-00770-5"
 )
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Differential cell signaling testing for cell-cell communication inference from single-cell data by dominoSignal",
+  author   = c(person("Jacob T", "Mitchell"),
+            person("Orian", "Stapleton"),
+            person("Kavita", "Krishnan"),
+            person("Sushma", "Nagaraj"),
+            person("Dmitrijs", "Lvovs"),
+            person("Christopher", "Cherry"),
+            person("Amanda", "Poissonnier"),
+            person("Wesley", "Horton"),
+            person("Andrew", "Adey"),
+            person("Varun", "Rao"),
+            person("Amanda", "Huff"),
+            person("Jacquelyn W", "Zimmerman"),
+            person("Luciane T", "Kagohara"),
+            person("Neeha", "Zaidi"),
+            person("Lisa M", "Coussens"),
+            person("Elizabeth M", "Jaffee"),
+            person("Jennifer H", "Elisseeff"),
+            person("Elana J", "Fertig")),
+  journal  = "Bioinformatics",
+  year     = 2026,
+  volume   = 42,
+  number   = 3,
+  doi      = "10.1093/bioinformatics/btag089"
+)
+
+# Release year from the Bioconductor build date; current year for development installs
+pkg_year <- if (is.null(meta$`Date/Publication`)) format(Sys.Date(), "%Y") else substr(meta$`Date/Publication`, 1, 4)
 
 bibentry(
   bibtype  = "Manual",
   title    = "dominoSignal: Cell Communication Analysis for Single Cell RNA Sequencing",
   author   = c(
-    person("Christopher", "Cherry", role = c("aut"), email = "ccherry.6574@gmail.com", comment = c(ORCID = "0000-0002-5481-0055")),
-    person("Jacob T", "Mitchell", role = c("aut"), email = "jmitch81@jhmi.edu", comment = c(ORCID = "0000-0002-5370-9692")),
-    person("Sushma", "Nagaraj", role = c("aut"), email = "snagara5@jhmi.edu", comment = c(ORCID = "0000-0001-5166-1309")),
-    person("Kavita", "Krishnan", role = c("aut"), email = "kkrishnan@jhmi.edu", comment = c(ORCID = "0000-0003-1345-0249")),
-    person("Elana", "Fertig", role = "ctb", email = "ejfertig@jhmi.edu", comment = c(ORCID = "0000-0003-3204-342X")),
-    person("Jennifer", "Elisseeff", role = "ctb", email = "jhe@jhu.edu", comment = c(ORCID = "0000-0002-5066-1996"))
+    person("Christopher", "Cherry", role = c("aut"), comment = c(ORCID = "0000-0002-5481-0055")),
+    person("Jacob T", "Mitchell", role = c("aut"), comment = c(ORCID = "0000-0002-5370-9692")),
+    person("Sushma", "Nagaraj", role = c("aut"), comment = c(ORCID = "0000-0001-5166-1309")),
+    person("Kavita", "Krishnan", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-1345-0249")),
+    person("Dmitrijs", "Lvovs", role = c("aut")),
+    person("Elana", "Fertig", role = "ctb", comment = c(ORCID = "0000-0003-3204-342X")),
+    person("Jennifer", "Elisseeff", role = "ctb", comment = c(ORCID = "0000-0002-5066-1996"))
     ),
-  year     = 2026,
-  note     = "R package version 1.6.0"
+  year     = pkg_year,
+  note     = sprintf("R package version %s", meta$Version),
+  url      = "https://bioconductor.org/packages/dominoSignal"
 )

@@ -8,41 +8,88 @@ output: github_document
 
 ## Introducing dominoSignal <img src="logo.svg" alt="dominoSignal hex logo" align="right" height="138" style="float:right; height:138px;" />
 
-dominoSignal is an updated version of the original [domino](https://github.com/Elisseeff-Lab/domino) R package published in Nature Biomedical Engineering in [Computational reconstruction of the signalling networks surrounding implanted biomaterials from single-cell transcriptomics](https://doi.org/10.1038/s41551-021-00770-5). dominoSignal is a tool for analysis of intra- and intercellular signaling in single cell RNA sequencing data based on transcription factor activation and receptor and ligand linkages.
+dominoSignal infers intra- and intercellular signaling from single cell RNA sequencing (scRNAseq) data. Within each cell cluster, it identifies transcription factors (TFs) with enriched activity and links them to receptors whose expression correlates with that activity. It then connects those active receptors to ligands expressed by other clusters, producing a cluster-to-cluster signaling network associated with downstream transcriptional response rather than ligand and receptor expression alone.
+
+dominoSignal builds on the original [domino](https://github.com/Elisseeff-Lab/domino) R package ([Cherry et al., 2021, *Nature Biomedical Engineering*](https://doi.org/10.1038/s41551-021-00770-5)) and adds the Differential Cell Signaling Test (DCST) for statistically comparing signaling across subjects and conditions ([Mitchell et al., 2026, *Bioinformatics*](https://doi.org/10.1093/bioinformatics/btag089)).
 
 ## Installation
 
-dominoSignal is undergoing active development to improve analysis capabilities and interpretability, so the codebase is subject to change as new features and fixes are implemented. The current version of dominoSignal can be found on [Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html) though the package is still undergoing development (see our [changelog](https://fertiglab.github.io/dominoSignal/news/index.html) for more information on changes). This version can be installed through Bioconductor.
+dominoSignal is available from [Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html):
 
 
 ``` r
-if (!requireNamespace("BiocManager")) {
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
 BiocManager::install("dominoSignal")
 ```
 
-The development version can be installed from the devel branch of Bioconductor.
+The development version, with the latest features and fixes, is available from Bioconductor devel:
 
 
 ``` r
-if (!requireNamespace("BiocManager")) {
-    install.packages("BiocManager")
-}
-
-# The following initializes usage of Bioc devel
 BiocManager::install(version = "devel")
 BiocManager::install("dominoSignal")
 ```
 
-## Usage Overview
+Changes between versions, including any that affect results, are listed in the [changelog](https://fertiglab.github.io/dominoSignal/news/index.html).
 
-Here is an overview of how dominoSignal might be used in analysis of a single cell RNA sequencing data set:
+## Workflow
 
-1. Transcription factor activation scores are calculated (we recommend using [pySCENIC](https://pyscenic.readthedocs.io/en/latest/), but other methods can be used as well). For more information on how to use SCENIC, please see our [Using SCENIC for TF Activation](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html) page.
-2. A ligand-receptor database is used to map linkages between ligands and receptors (we recommend using [cellphoneDB](https://www.cellphonedb.org/), but other methods can be used as well). For information on downloading the necessary files for cellphoneDB, please see our [Using the cellphoneDB Database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html) page.
-3. A domino object is created using counts, z-scored counts, clustering information, and the data from steps 1 and 2.
-4. Parameters such as the maximum number of transcription factors and receptors or the minimum correlation threshold (among others) are used to make a cell communication network
-5. Communication networks can be extracted from within the domino object or visualized using a variety of plotting functions
+### 1. Prepare inputs
 
-Please see the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page for an example analysis that includes all of these steps in a dominoSignal analysis in detail, from creating a domino object to parameters for building the network to visualizing domino results. Other articles include further details on [plotting functions](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html) and the structure of the [domino object](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html).
+dominoSignal needs four inputs:
+
+- **Expression data**: a counts matrix, a z-scored (scaled) expression matrix, and a named factor of cluster labels, with cell names matching across all three. These can be extracted from a `SingleCellExperiment` or similar object.
+- **TF activity scores**: a matrix of TF activity per cell, plus an optional list of each TF's target genes. We recommend [pySCENIC](https://pyscenic.readthedocs.io/en/latest/); `create_regulon_list_scenic()` converts its regulon output. See [SCENIC for TF Activation Scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html).
+- **Ligand-receptor database**: a data frame describing receptor-ligand pairs. We recommend [CellPhoneDB](https://www.cellphonedb.org/); `create_rl_map_cellphonedb()` builds this table from its database files. See [Using the CellPhoneDB Database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html).
+
+Other TF scoring methods and ligand-receptor databases can be used, provided they are provided to `create_domino()` in the correct format.
+
+### 2. Build a signaling network
+
+`create_domino()` stores the inputs, tests TF enrichment by cluster, and correlates receptor expression with TF activity. `build_domino()` then applies thresholds to assemble the signaling network.
+
+
+``` r
+library(dominoSignal)
+
+dom <- create_domino(rl_map = rl_map, features = tf_scores, counts = counts, z_scores = z_scores,
+    clusters = clusters, tf_targets = regulon_list)
+dom <- build_domino(dom, max_tf_pval = 0.001, max_tf_per_clust = 25, max_rec_per_tf = 25,
+    rec_tf_cor_threshold = 0.25, min_rec_percentage = 0.1)
+```
+
+See [Get Started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) for a complete example, including guidance on choosing these thresholds.
+
+### 3. Explore and visualize results
+
+Results are stored in a domino object. Accessor functions (`dom_signaling()`, `dom_linkages()`, `dom_info()`, and others) retrieve its contents, and `dom_to_df()` returns the signaling results as a data frame. Plotting functions include signaling and gene networks, heatmaps of signaling, TF activity, and receptor-TF correlation, and chord diagrams of ligand expression. See [Interacting with domino Objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html) and [Plotting Functions and Options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html).
+
+### 4. Compare signaling across subjects
+
+With a domino object for each subject or sample, the DCST workflow identifies linkages (for example, active receptors or ligand-receptor pairs in a cluster) that differ between groups.
+
+
+``` r
+link_summary <- summarize_linkages(dom_list, subject_meta, subject_names = subject_meta$subject)
+diff_links <- test_differential_linkages(link_summary, cluster = "CD8_T_cell", group.by = "condition",
+    linkage = "rec")
+plot_differential_linkages(diff_links, "p.value")
+```
+
+See [Differential Signaling Workflow](https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html) for a full walkthrough.
+
+## Citation
+
+If you use dominoSignal, please cite:
+
+> Cherry C, Maestas DR, Han J, Andorko JI, Cahan P, Fertig EJ, Garmire LX, Elisseeff JH. Computational reconstruction of the signalling networks surrounding implanted biomaterials from single-cell transcriptomics. *Nat Biomed Eng*. 2021;5(10):1228-1238. [doi:10.1038/s41551-021-00770-5](https://doi.org/10.1038/s41551-021-00770-5)
+
+If you use the differential signaling workflow, please also cite:
+
+> Mitchell JT, Stapleton O, Krishnan K, Nagaraj S, Lvovs D, Cherry C, Poissonnier A, Horton W, Adey A, Rao V, Huff A, Zimmerman JW, Kagohara LT, Zaidi N, Coussens LM, Jaffee EM, Elisseeff JH, Fertig EJ. Differential cell signaling testing for cell-cell communication inference from single-cell data by dominoSignal. *Bioinformatics*. 2026;42(3):btag089. [doi:10.1093/bioinformatics/btag089](https://doi.org/10.1093/bioinformatics/btag089)
+
+## Getting help
+
+If you find a bug or have a question, please [open an issue](https://github.com/FertigLab/dominoSignal/issues).

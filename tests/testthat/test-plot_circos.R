@@ -92,11 +92,11 @@ test_that("Plots for receptors that have ligands in the rl_map but not the signa
         rl_map = rl_map_append, features = tiny_auc2,
         counts = tiny_counts2, z_scores = tiny_zscores2,
         clusters = tiny_clusters2, tf_targets = regulon_list_tiny,
-        use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE
+        use_complexes = TRUE, remove_rec_dropout = FALSE
     )
 
     dom <- build_domino(
-        dom = pbmc_dom_tiny, min_tf_pval = 0.05, max_tf_per_clust = Inf,
+        dom = pbmc_dom_tiny, max_tf_pval = 0.05, max_tf_per_clust = Inf,
         max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
     )
     # Need to adapt to testthat(3) handling of messages at some point

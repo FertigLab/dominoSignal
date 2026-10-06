@@ -99,7 +99,6 @@ build_reps <- function(clusters, seed, keep_frac, shuffle_frac) {
             z_scores = zscores,
             clusters = resampled_clusters,
             tf_targets = tf_targets,
-            use_clusters = TRUE,
             use_complexes = TRUE,
             remove_rec_dropout = FALSE,
             verbose = FALSE
@@ -107,7 +106,7 @@ build_reps <- function(clusters, seed, keep_frac, shuffle_frac) {
 
         dom_shuffle <- build_domino(
             dom = dom_shuffle,
-            min_tf_pval = 0.05,
+            max_tf_pval = 0.05,
             max_tf_per_clust = 25,
             max_rec_per_tf = 25,
             rec_tf_cor_threshold = 0.1,
@@ -228,8 +227,8 @@ count_subjects <- count_linkage(link_summary,
 
 ```{r eval = FALSE}
 kableExtra::kable_styling(
-    knitr::kable(count_subjects,
-        caption = "Counts of TF linkages in patients P1 & P2 in CD8 T Cells"
+    knitr::kable(count_subjects[1:5, ],
+        caption = "Subset of counts of TF linkages in patients P1 & P2 in CD8 T Cells"
     ),
     bootstrap_options = c("striped", "hover")
 )
@@ -237,8 +236,8 @@ kableExtra::kable_styling(
 </details>
 
 ```{r echo = FALSE}
-kableExtra::kable_styling(knitr::kable(count_subjects,
-        caption = "Counts of TF linkages in patients P1 & P2 in CD8 T Cells"),
+kableExtra::kable_styling(knitr::kable(count_subjects[1:5, ],
+        caption = "Subset of counts of TF linkages in patients P1 & P2 in CD8 T Cells"),
     bootstrap_options = c("striped", "hover"))
 ```
 
@@ -265,7 +264,7 @@ kableExtra::kable_styling(
 ```
 </details>
 
-```{r include = FALSE}
+```{r echo = FALSE}
 kableExtra::kable_styling(
     knitr::kable(slice_sample(counts_time_trt, n = 5),
         caption = "Counts of TF-Receptor linkages in CD14 Monocytes grouped by time for treatment subjects"
