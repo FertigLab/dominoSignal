@@ -106,7 +106,7 @@ build_reps <- function(clusters, seed, keep_frac, shuffle_frac) {
 
         dom_shuffle <- build_domino(
             dom = dom_shuffle,
-            min_tf_pval = 0.05,
+            max_tf_pval = 0.05,
             max_tf_per_clust = 25,
             max_rec_per_tf = 25,
             rec_tf_cor_threshold = 0.1,

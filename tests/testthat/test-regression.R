@@ -56,7 +56,7 @@ test_that("building a domino object under set parameters", {
     names(pbmc_dom_tiny@clusters) <- colnames(pbmc_dom_tiny@z_scores)
     pbmc_dom_built <- build_domino(
         dom = pbmc_dom_tiny,
-        min_tf_pval = 0.05,
+        max_tf_pval = 0.05,
         max_tf_per_clust = Inf,
         max_rec_per_tf = Inf,
         rec_tf_cor_threshold = 0.1,

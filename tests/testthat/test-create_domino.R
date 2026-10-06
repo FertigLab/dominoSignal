@@ -12,9 +12,14 @@ test_that("create_domino runs with tiny inputs", {
     )
 
     expect_s4_class(dom, "domino")
-    # stored fixture predates version recording, so compare without it
+    # stored fixture predates version and creation variable recording, so compare without them
     expect_equal(dom@misc$create_version, as.character(packageVersion("dominoSignal")))
+    expect_equal(dom@misc$create_vars, list(
+        tf_selection_method = "clusters", tf_variance_quantile = 0.5,
+        use_complexes = TRUE, rec_min_thresh = 0.025, remove_rec_dropout = FALSE
+    ))
     dom@misc$create_version <- NULL
+    dom@misc$create_vars <- NULL
     expect_equal(dom, tiny_created_dom1)
 })
 
@@ -143,7 +148,7 @@ test_that("create_domino and build_domino give identical signaling with and with
         )
 
         dom <- build_domino(dom,
-            min_tf_pval = 0.05,
+            max_tf_pval = 0.05,
             max_tf_per_clust = Inf,
             max_rec_per_tf = Inf,
             rec_tf_cor_threshold = 0.1,
@@ -211,4 +216,104 @@ test_that("create_domino errors when no cells are shared", {
         do.call(create_domino, tiny_mod_args),
         "No cells are shared"
     )
+})
+
+test_that("create_domino drops levels of clusters whose cells are all removed", {
+    dropped_clust <- levels(tiny_clusters1)[1]
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$clusters <- tiny_clusters1[tiny_clusters1 != dropped_clust]
+    expect_warning(
+        dom <- do.call(create_domino, tiny_mod_args), # nolint: implicit_assignment_linter.
+        "Using the .* cells shared"
+    )
+    expect_identical(levels(dom@clusters), levels(tiny_clusters1)[-1])
+    expect_identical(colnames(dom@clust_de), levels(tiny_clusters1)[-1])
+    expect_identical(colnames(dom@misc$cl_rec_percent), levels(tiny_clusters1)[-1])
+    built <- build_domino(dom, max_tf_pval = 0.05, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01)
+    expect_named(built@linkages$clust_tf, levels(tiny_clusters1)[-1])
+})
+
+test_that("variable and all TF selection methods rank TFs by correlation with expressed receptors", {
+    for (method in c("variable", "all")) {
+        tiny_mod_args <- tiny_create_args
+        tiny_mod_args$tf_selection_method <- method
+        dom <- do.call(create_domino, tiny_mod_args)
+        # no differential testing, but receptor expression by cluster is still calculated
+        expect_identical(dom@clusters, tiny_clusters1)
+        expect_equal(dom@misc$create_vars$tf_selection_method, method)
+        expect_identical(dim(dom@clust_de), c(0L, 0L))
+        expect_identical(colnames(dom@misc$cl_rec_percent), levels(tiny_clusters1))
+
+        # with no cap on receptors per TF, clust_tf_rec holds every expressed receptor above the threshold,
+        # so each active TF must have one and TFs must be ordered by their maximum correlation among them
+        built <- build_domino(dom,
+            max_tf_per_clust = Inf, max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
+        )
+        expect_named(built@linkages$clust_tf, levels(tiny_clusters1))
+        for (clust in levels(tiny_clusters1)) {
+            tfs <- built@linkages$clust_tf[[clust]]
+            expect_gt(length(tfs), 0)
+            means <- rowMeans(dom@features[tfs, tiny_clusters1 == clust, drop = FALSE])
+            expect_true(all(means > 0))
+            max_cor <- vapply(tfs, function(tf) {
+                recs <- built@linkages$clust_tf_rec[[clust]][[tf]]
+                if (length(recs) == 0) NA_real_ else max(dom@cor[recs, tf])
+            }, numeric(1))
+            expect_false(anyNA(max_cor))
+            expect_true(all(max_cor > 0.1))
+            expect_false(is.unsorted(rev(max_cor)))
+        }
+        expect_named(built@linkages$clust_rec, levels(tiny_clusters1))
+        expect_identical(dim(built@signaling), rep(nlevels(tiny_clusters1), 2))
+        expect_named(built@cl_signaling_matrices, levels(tiny_clusters1))
+
+        # max_tf_per_clust keeps the top ranked TFs
+        capped <- build_domino(dom,
+            max_tf_per_clust = 2, max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
+        )
+        expect_identical(capped@linkages$clust_tf, lapply(built@linkages$clust_tf, head, 2))
+    }
+})
+
+test_that("variable and all TF selection methods exclude TFs without expressed receptors above the threshold", {
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$tf_selection_method <- "all"
+    dom <- do.call(create_domino, tiny_mod_args)
+    no_cor <- build_domino(dom, max_tf_per_clust = Inf, rec_tf_cor_threshold = 0.99, min_rec_percentage = 0.01)
+    expect_true(all(lengths(no_cor@linkages$clust_tf) == 0))
+    no_expr <- build_domino(dom, max_tf_per_clust = Inf, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.99)
+    expect_true(all(lengths(no_expr@linkages$clust_tf) == 0))
+})
+
+test_that("variable and all TF selection methods ignore max_tf_pval and exclude TFs with no positive mean score", {
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$tf_selection_method <- "all"
+    dom <- do.call(create_domino, tiny_mod_args)
+    strict <- build_domino(dom, max_tf_pval = 0, max_tf_per_clust = Inf, rec_tf_cor_threshold = 0.1)
+    loose <- build_domino(dom, max_tf_pval = 1, max_tf_per_clust = Inf, rec_tf_cor_threshold = 0.1)
+    expect_identical(strict@linkages$clust_tf, loose@linkages$clust_tf)
+
+    # a TF selected in a cluster is excluded once its scores there are zero
+    clust <- levels(tiny_clusters1)[1]
+    inactive_tf <- loose@linkages$clust_tf[[clust]][1]
+    expect_false(is.na(inactive_tf))
+    dom@features[inactive_tf, tiny_clusters1 == clust] <- 0
+    built <- build_domino(dom, max_tf_per_clust = Inf, rec_tf_cor_threshold = 0.1)
+    expect_false(inactive_tf %in% built@linkages$clust_tf[[clust]])
+})
+
+test_that("build_domino infers the TF selection method for objects without creation variables", {
+    # cluster route when clust_de is present
+    expect_null(tiny_created_dom1@misc$create_vars)
+    built <- build_domino(tiny_created_dom1, max_tf_pval = 0.05, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01)
+    expect_named(built@linkages$clust_tf, levels(tiny_clusters1))
+
+    # mean score route when clust_de is empty
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$tf_selection_method <- "all"
+    dom <- do.call(create_domino, tiny_mod_args)
+    expected <- build_domino(dom, rec_tf_cor_threshold = 0.1)
+    dom@misc$create_vars <- NULL
+    built <- build_domino(dom, rec_tf_cor_threshold = 0.1)
+    expect_identical(built@linkages$clust_tf, expected@linkages$clust_tf)
 })

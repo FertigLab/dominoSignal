@@ -1,5 +1,6 @@
 library(SingleCellExperiment)
 library(dominoSignal)
+# Not updated after dominoSignal v1.7.1 so some parameters have changed
 
 # Note that v0.2.1 is from a previous domino version (v0.2.1); refer to commit d8b0e11 for creation
 # Included for regression tests to assess changes to processing functions and outputs
@@ -180,7 +181,7 @@ pbmc_dom_tiny_list <- lapply(dom_inputs, function(inputs) {
         z_scores = inputs$z_scores,
         clusters = inputs$clusters,
         tf_targets = regulon_list_tiny,
-        use_clusters = TRUE,
+        use_clusters = TRUE, # Argument no longer in use after v1.7.1
         use_complexes = TRUE,
         remove_rec_dropout = FALSE)
 })

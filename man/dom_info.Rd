@@ -10,8 +10,8 @@ dom_info(dom)
 \item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
 }
 \value{
-A list containing booleans for whether the object has been created and built, a list of the
-build parameters that were used in \code{\link[=build_domino]{build_domino()}} to infer the signaling network, and the
+A list containing booleans for whether the object has been created and built, the parameters
+used in \code{\link[=create_domino]{create_domino()}} and \code{\link[=build_domino]{build_domino()}} to infer the signaling network, and the
 dominoSignal versions used to create and build the object (NULL if not recorded)
 }
 \description{

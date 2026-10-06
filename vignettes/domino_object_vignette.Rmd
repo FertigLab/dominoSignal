@@ -88,7 +88,9 @@ There is a great deal of information stored with the `domino()` object class. Th
 
 - Miscellaneous Information
 
-  - Build information, which includes the parameters used to build the object in the `build_domino()` functions
+  - Create information, which includes the parameters used to create the object in the `create_domino()` functions and the package version used
+
+  - Build information, which includes the parameters used to build the object in the `build_domino()` functions and the package version used
 
   - The pared down receptor ligand map information used in building the object
 
@@ -340,7 +342,7 @@ kableExtra::kable_styling(knitr::kable(dc_matrix,
 
 ### Build information
 
-To keep track of the options set when running `build_domino()`, they are stored within the domino object itself. To view these options, use the `dom_info()` function. Objects created with dominoSignal version 1.7.0 or newer also record the package versions used to create and build them. This example object was generated before that, so the package versions are `NULL`.
+To keep track of the options set when running `create_domino()` and `build_domino()`, they are stored within the domino object itself. To view these options, use the `dom_info()` function. Objects created with dominoSignal version 1.7.1 or newer also record the package versions used to create and build them. This example object was generated before that, so the package versions are `NULL`.
 
 ```{r info}
 dom_info(dom)
@@ -349,7 +351,7 @@ dom_info(dom)
 Building the object again (with different parameters) results in a `domino()` object with the new parameters.
 
 ```{r rebuild}
-dom <- build_domino(dom, max_tf_per_clust = Inf, min_tf_pval = 0.05,
+dom <- build_domino(dom, max_tf_per_clust = Inf, max_tf_pval = 0.05,
     max_rec_per_tf = 50, rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.05)
 dom_info(dom)
 ```
