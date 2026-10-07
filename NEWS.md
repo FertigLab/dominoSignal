@@ -8,6 +8,7 @@
 - Argument `use_clusters` removed from `create_domino()`, as `TRUE` is the only option.
 - `domino()` validity check now requires that cell inputs have aligned names. Previously built objects (before the bug fix for cluster matching by positions) will now fail the validity check and should be re-run.
 - When `create_domino()` TF selection method is set to `all` or `variable`, per cluster networks (using TFs ranked by maximum correlation in expressed receptors) are generated rather than the previous `clust` list. This ensures compatibility with downstream exploration and visualization functions but will change returned results compared to previous versions.
+- Interactions in `rl_map` that do not pair one receptor (`R`) with one ligand (`L`) are excluded with a warning and the function errors if no rows remain (previously gene_B was silently treated as a receptor in those rows).
 
 ## New Features
 
@@ -16,6 +17,7 @@
 - Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
 - Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
 - Parameters for `domino()` object creation (used in `create_domino()`) are now stored in object
+- `create_domino()` accepts dense `matrix` or `data.frame` for `counts` input and converts them to sparse `dgCMatrix`.
 
 ## Bug Fixes
 
@@ -30,11 +32,14 @@
 - Removed default value of `NULL` for required arguments of `counts`, `zscores`, and `clusters` in `create_domino()`.
 - Fixed cluster matching to cells by position only by aligning cell inputs by name in `create_domino()`.
 - The maximum p-value threshold for cluster based selection of TFs in `build_domino()` has argument name `max_tf_pval` instead of incorrect `min_tf_pval`. (The previous `min_tf_pval` name stored in `build_vars` of the `domino()` object should still pass validity checks.)
+- Fixed `create_domino()` dropping receptors with non-syntactic names (such as those containing spaces or hyphens) from signaling network which were renamed in correlation matrix.
+- Fixed `create_domino()` failing when single feature is retained by `tf_selection_method` is set to `variable` and added validation for `tf_variance_quantile` argument.
 
 ## Documentation
 
 - Added vignette for differential signaling workflow.
 - Example data regenerated with `dominoSignal` version 1.7.1.
+- Corrected documentation of `tf_variance_quantile` in `create_domino()` to indicate coefficient of variation is used and higher values keep fewer features.
 
 # dominoSignal v1.6.0
 

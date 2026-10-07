@@ -10,11 +10,11 @@
 #'
 #' @param rl_map Data frame where each row describes a receptor-ligand interaction with required columns
 #'   gene_A & gene_B including the gene names for the receptor and ligand and type_A & type_B annotating
-#'   if genes A and B are a ligand (L) or receptor (R)
+#'   if genes A and B are a ligand (L) or receptor (R). Each interaction must pair one receptor with one ligand (rows that do not, such as ligand-ligand or missing types) are excluded with a warning.
 #' @param features Either a path to a csv containing cell level features of interest (ie. the auc matrix from pySCENIC)
 #'   or named matrix with cells as columns and features as rows.
-#' @param counts Counts matrix for the data. This is only used to threshold receptors on dropout.
-#' @param z_scores Matrix containing z-scored expression data for all cells with cells as columns and features as rows.
+#' @param counts Counts matrix for the data. Used to threshold receptors based on expression (`rec_min_thresh`), to calculate percentage of clusters with receptor expression, and to remove cells with zero receptor counts if `remove_rec_dropout` is TRUE. Dense matrices are converted to sparse `dgCMatrix` for storage.
+#' @param z_scores Matrix containing z-scored expression data for all cells with cells as columns and features as rows. Receptor genes that pass `rec_min_thresh` but are not present in the z_scores matrix are excluded from correlation calculations with a warning.
 #' @param clusters Named factor containing cell cluster with names as cells.
 #' @param tf_targets Optional. A list where names are transcription factors and the stored values are character vectors
 #'   of genes in the transcription factor's regulon.
@@ -34,8 +34,7 @@
 #' \item{"variable"}: TFs are selected based on coefficient of variation (also known as relative standard deviation or normalized root-mean-square) across all cells in dataset.
 #' \item{"all"}: All TFs provided in the `features` matrix are included in downstream analysis.
 #' }
-#' @param tf_variance_quantile Quantile of most variable features to take if using coefficient of variance to threshold features.
-#'   Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'.
+#' @param tf_variance_quantile Quantile of coefficient of variation used to threshold features to take if `tf_selection_method` is `variable`. Features with coefficient of variation ranked above quantile are kept (default of 0.5 keeps the most variable half of features and higher numbers keep fewer features). Ignored if tf_selection_method is not 'variable'.
 #' @return A domino object
 #' @export create_domino
 #' @seealso [create_rl_map_cellphonedb()] for creating receptor-ligand maps, 
@@ -91,6 +90,14 @@ create_domino <- function(
         allow_values = c("clusters", "variable", "all")
     )
 
+    check_arg(tf_variance_quantile, allow_class = "numeric",
+        allow_range = c(0, 1))
+
+    # Convert dense matrix inputs to sparse
+    if (!is(counts, "dgCMatrix")) {
+        counts <- as(as(as(as.matrix(counts), "dMatrix"), "generalMatrix"), "CsparseMatrix")
+    }
+
     # Create object
     dom <- domino()
     dom@misc[["create"]] <- TRUE
@@ -113,6 +120,17 @@ create_domino <- function(
         }
     } else {
         dom@db_info <- rl_map
+    }
+    # Make sure interactions have one receptor with one ligand
+    rl_pair <- paste(rl_map[["type_A"]], rl_map[["type_B"]])
+    not_rl <- !rl_pair %in% c("R L", "L R")
+    if (any(not_rl)) {
+        warning("Excluding ", sum(not_rl), " interactions that do not pair one receptor (R) with one ligand (L): ",
+        toString(head(unique(rl_pair[not_rl]))))
+    }
+    rl_map <- rl_map[!not_rl, , drop = FALSE]
+    if (nrow(rl_map) == 0) {
+        stop("No rl_map rows pair a receptor (R) with a ligand (L). Please check your input.")
     }
     # check for receptors that match receptor complex syntax of comma separated genes
     non_complex_index <- which(!grepl(",", rl_map[["gene_A"]], fixed = TRUE) &
@@ -238,7 +256,7 @@ create_domino <- function(
         })
         keep_n <- length(variances) * tf_variance_quantile
         keep_id <- which(rank(variances) > keep_n)
-        dom@features <- dom@features[names(keep_id), ]
+        dom@features <- dom@features[names(keep_id), , drop = FALSE]
     }
     # store tf_targets in linkages if they are provided as a list
     if (is(tf_targets, "list")) {
@@ -252,6 +270,12 @@ create_domino <- function(
     zero_sum <- rowSums(counts == 0)
     keeps <- which(zero_sum < (1 - rec_min_thresh) * ncol(counts))
     ser_receptors <- intersect(names(keeps), rec_genes)
+    # Receptors missing from z_scores cannot be assessed
+    missing_z <- setdiff(ser_receptors, rownames(dom@z_scores))
+    if (length(missing_z) > 0) {
+        warning("Receptor genes not found in z_scores are excluded from correlation calculations: ", toString(missing_z))
+        ser_receptors <- setdiff(ser_receptors, missing_z)
+    }
     rho <- matrix(0, nrow = length(ser_receptors), ncol = nrow(dom@features))
     rownames(rho) <- ser_receptors
     colnames(rho) <- rownames(dom@features)
@@ -261,7 +285,7 @@ create_domino <- function(
     }
     for (module in rownames(dom@features)) {
         # If df is provided then check if receptors are targets of TF. If they are then set
-        # correlation equal to 0.
+        # correlation equal to NA.
         if (verbose) {
             cur <- which(rownames(dom@features) == module)
             message(cur, " of ", n_tf)
@@ -288,9 +312,9 @@ create_domino <- function(
                 tar_tf_scores <- scores
             }
             # There are some cases where all the tfs are zero for the cells left after trimming
-            # dropout for receptors. Skip those and set cor to zero manually.
+            # dropout for receptors. Skip those and set cor to NA manually.
             if (sum(tar_tf_scores) == 0) {
-                rhorow[rec] <- 0
+                rhorow[rec] <- NA
                 next
             }
             corr <- stats::cor.test(
@@ -301,7 +325,7 @@ create_domino <- function(
             rhorow[rec] <- corr$estimate
         }
         if (length(module_rec_targets) > 0) {
-            rhorow[module_rec_targets] <- 0
+            rhorow[module_rec_targets] <- NA
         }
         rho[, module] <- rhorow
     }
@@ -321,14 +345,15 @@ create_domino <- function(
             next
         }
         if (length(r_genes) > 1) {
-            gene_cor <- rho[rownames(rho) %in% r_genes, ]
+            gene_cor <- rho[rownames(rho) %in% r_genes, , drop = FALSE]
             cor_med <- apply(gene_cor, 2, median)
             cor_list[[r]] <- cor_med
         } else {
-            cor_list[[r]] <- rho[rownames(rho) == r_genes, ]
+            cor_list[[r]] <- rho[rownames(rho) == r_genes, , drop = FALSE]
         }
     }
-    c_cor <- t(as.data.frame(cor_list))
+    # To avoid issues with receptor names, build matrix directly instead of with as.data.frame
+    c_cor <- matrix(unlist(cor_list, use.names = FALSE), nrow = length(cor_list), byrow = TRUE, dimnames = list(names(cor_list), colnames(rho)))
     dom@cor <- c_cor
     # Calculate percentage of non-zero expression of receptor genes in clusters
     cl_rec_percent <- NULL
