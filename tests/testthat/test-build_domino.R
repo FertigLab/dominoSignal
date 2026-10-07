@@ -160,3 +160,30 @@ test_that("build_domino runs with rl_map without name columns and use_complexes 
     )
     expect_false(all(dom_signaling(dom_custom) == 0))
 })
+
+test_that("build_domino returns no active TFs when no p-value passes max_tf_pval", {
+    expect_message(built <- build_domino(
+        dom = tiny_created_dom1, max_tf_pval = 0, max_tf_per_clust = Inf, max_rec_per_tf = Inf,
+        rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
+    ), "No TFs in cluster .* will be called active as no p-values pass the max_tf_pval threshold.*")
+    expect_true(all(lengths(built@linkages$clust_tf) == 0))
+    expect_true(all(lengths(built@linkages$clust_rec) == 0))
+    expect_true(all(built@signaling == 0))
+})
+
+test_that("build_domino averages complex ligand components when a cluster has a single incoming complex ligand", {
+    built <- build_domino(
+        dom = tiny_created_dom1, max_tf_pval = 0.05, max_tf_per_clust = Inf, max_rec_per_tf = Inf,
+        rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.01
+    )
+    expect_identical(built@linkages$clust_incoming_lig[["CD14_monocyte"]], "integrin_a6b4_complex")
+    mono_mat <- built@cl_signaling_matrices[["CD14_monocyte"]]
+    expect_identical(rownames(mono_mat), "integrin_a6b4_complex")
+
+    # floored cluster mean z-score of each component gene, averaged across components
+    comp_means <- vapply(levels(tiny_clusters1), function(cl) {
+        mean(pmax(rowMeans(tiny_zscores1[c("ITGB4", "ITGA6"), tiny_clusters1 == cl, drop = FALSE]), 0))
+    }, numeric(1))
+    expect_equal(unname(mono_mat[1, ]), unname(comp_means))
+    expect_equal(unname(built@signaling["R_CD14_monocyte", ]), unname(comp_means))
+})

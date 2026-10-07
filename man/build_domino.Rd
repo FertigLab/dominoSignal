@@ -28,8 +28,8 @@ by cluster.}
 transcription factor. Increasing this will decrease the number of receptors linked to each
 transcription factor.}
 
-\item{min_rec_percentage}{Minimum percentage of cells in cluster expressing a receptor for the
-receptor to be linked to transcription factors in that cluster.}
+\item{min_rec_percentage}{Minimum proportion of cells in cluster expressing a receptor (0 to 1) for the
+receptor to be linked to transcription factors in that cluster. For receptor complexes, every component gene must exceed this threshold.}
 }
 \value{
 A domino object with a signaling network built

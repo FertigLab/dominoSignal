@@ -13,8 +13,8 @@
 #' @param rec_tf_cor_threshold Minimum Spearman correlation used to consider a receptor linked with a
 #'  transcription factor. Increasing this will decrease the number of receptors linked to each
 #'  transcription factor.
-#' @param min_rec_percentage Minimum percentage of cells in cluster expressing a receptor for the
-#'  receptor to be linked to transcription factors in that cluster.
+#' @param min_rec_percentage Minimum proportion of cells in cluster expressing a receptor (0 to 1) for the
+#'  receptor to be linked to transcription factors in that cluster. For receptor complexes, every component gene must exceed this threshold.
 #' @return A domino object with a signaling network built
 #' @export
 #' @seealso [create_domino()] to create a domino object
@@ -41,7 +41,7 @@ build_domino <- function(
     check_arg(min_rec_percentage, allow_class = "numeric", allow_len = 1, allow_range = c(0, 1))
 
     if (!dom@misc[["create"]]) {
-        stop("Please run domino_create to create the domino object.")
+        stop("Please run create_domino to create the domino object.")
     }
     dom@misc[["build"]] <- TRUE
     dom@misc[["build_version"]] <- as.character(utils::packageVersion("dominoSignal"))
@@ -51,9 +51,9 @@ build_domino <- function(
         min_rec_percentage = min_rec_percentage
     )
     tf_method <- dom@misc[["create_vars"]][["tf_selection_method"]]
-    # clust_de only available when TF seelction is cluster based so serves as backup
+    # clust_de only available when TF selection is cluster based so serves as backup
     use_clusters <- if (is.null(tf_method)) ncol(dom@clust_de) > 0 else tf_method == "clusters"
-    # Get receptors expressed by cluster; complex is expressed only each component is expressed
+    # Get receptors expressed by cluster; complex is expressed only if each component is expressed
     expressed_rec <- list()
     for (clust in levels(dom@clusters)) {
         percent <- dom@misc$cl_rec_percent[, clust, drop = FALSE]
@@ -92,6 +92,9 @@ build_domino <- function(
                 sorted <- sort(fcs, decreasing = TRUE)[seq_len(max_tf_per_clust)]
             } else {
                 sorted <- ordering[which(ordering < max_tf_pval)]
+                if (length(sorted) == 0) {
+                    message(paste0("No TFs in cluster ", clust, " will be called active as no p-values pass the max_tf_pval threshold."))
+                }
             }
         } else {
             # TF scores can't necessarily be compared across TFs (if not normalized)
@@ -202,21 +205,17 @@ build_domino <- function(
             cl_sig_mat[, paste0("L_", c2)] <- sig
         }
         if (length(dom@linkages$complexes) > 0) {
-            # if complexes were used
-            cl_sig_list <- lapply(seq_along(inc_ligs_list), function(x) {
-                if (all(inc_ligs_list[[x]] %in% lig_genes)) {
-                    # Some of the ligands in the list object may not be present in the data
-                    if (length(inc_ligs_list[[x]]) > 1) {
-                        return(colMeans(cl_sig_mat[inc_ligs_list[[x]], ]))
-                    } else {
-                        return(cl_sig_mat[inc_ligs_list[[x]], ])
-                    }
+            # if complexes were used, collapse each ligand to mean of component genes
+            cl_sig_list <- lapply(inc_ligs_list, function(l_genes) {
+                if (all(l_genes %in% lig_genes)) {
+                    return(colMeans(cl_sig_mat[l_genes, , drop = FALSE]))
                 }
             })
-            names(cl_sig_list) <- names(inc_ligs_list)
             valid <- !vapply(cl_sig_list, is.null, logical(1))
-            if (sum(valid) > 1) {
+            if (any(valid)) {
                 cl_sig_mat <- do.call(rbind, cl_sig_list[valid])
+            } else {
+                cl_sig_mat <- cl_sig_mat[0, , drop = FALSE]
             }
         }
         cl_signaling_matrices[[clust]] <- cl_sig_mat
