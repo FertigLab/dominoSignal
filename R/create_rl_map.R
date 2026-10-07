@@ -18,7 +18,7 @@ NULL
 #' @param complexes optional: data frame or file path to table of protein complexes in CellPhoneDB format
 #' @param database_name name of the database being used, stored in output
 #' @param gene_conv character vector of length 2 formatted as (from, to) or (source, target)
-#'   if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC
+#'   if gene conversion to orthologs is desired; options are ENSMUSG, ENSG, MGI, or HGNC (for from) and MGI or HGNC (for to). Identifiers in the `gene_name` column of `genes` (gene symbols, such as HGNC for CellPhoneDB human databases). Interactions with any gene lacking an ortholog are skipped.
 #' @param gene_conv_host host for conversion; default ensembl, could also use mirrors if desired
 #' @param alternate_convert boolean if you would like to use a non-ensembl method of conversion
 #'   (must supply table; not recommended, use only if ensembl is down)
@@ -44,16 +44,17 @@ NULL
 #' }
 #' 
 #' # Using alternate conversion table instead of biomaRt
+#' # (this simplified table if for illustration only, this is
+#' # NOT the correct way to convert between HGNC and MGI symbols)
+#' hs_genes <- unique(CellPhoneDB$genes_tiny$gene_name)
 #' ortho_table <- data.frame(
-#'   hs.ens = c("ENSG00000198888", "ENSG00000198763", "ENSG00000198804"),
-#'   hgnc = c("MT-ND1", "MT-ND2", "MT-CO1"),
-#'   mm.ens = c("ENSMUSG00000064341", "ENSMUSG00000064345", "ENSMUSG00000064351"),
-#'   mgi = c("mt-Nd1", "mt-Nd2", "mt-Co1"))
+#'   hgnc = hs_genes,
+#'   mgi = paste0(substr(hs_genes, 1, 1), tolower(substr(hs_genes, 2, nchar(hs_genes)))))
 #' 
 #' rl_map_tiny_alt <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
 #'   proteins = CellPhoneDB$proteins_tiny,
 #'   interactions = CellPhoneDB$interactions_tiny,
-#'   complexes = CellPhoneDB$complexes_tiny, gene_conv = c("ENSG", "MGI"),
+#'   complexes = CellPhoneDB$complexes_tiny, gene_conv = c("HGNC", "MGI"),
 #'   alternate_convert = TRUE, alternate_convert_table = ortho_table)
 #' 
 create_rl_map_cellphonedb <- function(
@@ -86,7 +87,8 @@ create_rl_map_cellphonedb <- function(
         "transmembrane", "peripheral", "secreted", "secreted_highlight", "receptor",
         "integrin", "other"
     )
-    proteins[!nzchar(proteins$receptor, keepNA = TRUE), colnames(proteins) %in% gene_features] <- "False"
+    unannotated <- is.na(proteins$receptor) | !nzchar(proteins$receptor)
+    proteins[unannotated, colnames(proteins) %in% gene_features] <- "False"
 
     # change cases of True/False syntax from Python to TRUE/FALSE R syntax
     genes <- conv_py_bools(genes)
@@ -129,7 +131,8 @@ create_rl_map_cellphonedb <- function(
                     # interaction is not included in the final rl_map
                     if (sum(g %in% conv_dict[, 1]) < length(g)) {
                         for (gn in g) {
-                            conversion_flag[[gn]] <- TRUE
+                            # I do not like this <<- situation but the flag needs to be assigned outside the vapply environment
+                            conversion_flag[[gn]] <<- TRUE
                         }
                     } else {
                         g <- paste(unique(conv_dict[conv_dict[, 1] %in% g, 2]), collapse = ";")
@@ -142,7 +145,7 @@ create_rl_map_cellphonedb <- function(
                     res <- g[1]
                     g_col <- toString(g)
                     message(
-                        component_a, " has multiple encoding gene mapped in genes table.\n",
+                        x, " has multiple encoding gene mapped in genes table.\n",
                         g_col, "\n",
                         "The first mapping gene is used: ", res
                     )
@@ -164,6 +167,7 @@ create_rl_map_cellphonedb <- function(
                 # interaction is not included in the final rl_map
                 if (sum(gene_a %in% conv_dict[, 1]) < length(gene_a)) {
                     for (gn in gene_a) {
+                        # This is outside vapply so doesn't need <<- (?)
                         conversion_flag[[gn]] <- TRUE
                     }
                 } else {
@@ -197,7 +201,8 @@ create_rl_map_cellphonedb <- function(
                     # interaction is not included in the final rl_map
                     if (sum(g %in% conv_dict[, 1]) < length(g)) {
                         for (gn in g) {
-                            conversion_flag[[gn]] <- TRUE
+                            # Back in vapply, so <<- required
+                            conversion_flag[[gn]] <<- TRUE
                         }
                     } else {
                         g <- paste(unique(conv_dict[conv_dict[, 1] %in% g, 2]), collapse = ";")
@@ -210,7 +215,7 @@ create_rl_map_cellphonedb <- function(
                     res <- g[1]
                     g_col <- toString(g)
                     message(
-                        component_b, " has multiple encoding gene mapped in genes table.\n",
+                        x, " has multiple encoding gene mapped in genes table.\n",
                         g_col, "\n",
                         "The first mapping gene is used: ", res
                     )

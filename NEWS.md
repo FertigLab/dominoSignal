@@ -38,6 +38,8 @@
 - Fixed `create_domino()` dropping receptors with non-syntactic names (such as those containing spaces or hyphens) from signaling network which were renamed in correlation matrix.
 - Fixed `create_domino()` failing when single feature is retained by `tf_selection_method` is set to `variable` and added validation for `tf_variance_quantile` argument.
 - Fixed `count_linkage()` counting the wrong subjects when subject name column of `subject_meta` is a factor.
+- Fixed `create_rl_map_cellphonedb()` keeping components that lack an ortholog (resulting in unconverted gene names) instead of skipping interactions
+- Fixed `create_rl_map_cellphonedb()` to handle missing receptor annotations in protein table input instead of crashing.
 
 ## Documentation
 
@@ -46,6 +48,7 @@
 - Corrected documentation of `tf_variance_quantile` in `create_domino()` to indicate coefficient of variation is used and higher values keep fewer features.
 - Error message referring to `domino_create` instead of `create_domino()` in `build_domino()` has been corrected.
 - When no TFs pass `max_tf_pval` threshold in `build_domino()`, users now receive a warning explaining why no signaling is inferred.
+- Fixed `create_rl_map_cellphondb()` examples to use genes and toy ortholog table that returns results.
 
 # dominoSignal v1.6.0
 
