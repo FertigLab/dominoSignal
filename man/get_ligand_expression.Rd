@@ -20,8 +20,7 @@ The output of \code{\link[=get_resolved_ligands]{get_resolved_ligands()}} can be
 \item{exp_type}{Character of length 1: either "counts" or "z_scores" to specify expression type}
 }
 \value{
-Matrix with ligands/complexes as rows and send_clusters as columns; entries are mean expression.
-Missing ligands and empty clusters yield NA; row and column names are preserved.
+Data frame with a ligand column and then one column per send_cluster with mean expression values. Ligands not found are dropped with a message, complexes with missing components are dropped, and send_clusters with no cells are omitted.
 }
 \description{
 Get ligand expression matrix for outgoing clusters
