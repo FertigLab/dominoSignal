@@ -127,3 +127,26 @@ test_that("count_linkage errors on subject_names not present in link_summary", {
         "bogus"
     )
 })
+
+test_that("count_linkage counts by subject name when the subject_meta ID column is a factor", {
+    clust <- names(tiny_linkage_summary@subject_linkages[[1]])[1]
+    # make subjects differ so mismatched subject lookup changes counts
+    link_sum <- tiny_linkage_summary
+    link_sum@subject_linkages$dom3[[clust]]$rec <- "CXCR3"
+    expected <- count_linkage(link_summary = link_sum, cluster = clust, group.by = "group", linkage = "rec")
+    expect_equal(expected$A, c(2, 2))
+    expect_equal(expected$B, c(1, 0))
+
+    # factor levels in different order from rows (codes no longer match positions)
+    link_sum@subject_meta$ID <- factor(link_sum@subject_meta$ID, levels = c("dom3", "dom2", "dom1"))
+    out <- count_linkage(link_summary = link_sum, cluster = clust, group.by = "group", linkage = "rec")
+    expect_equal(out, expected)
+})
+
+test_that("count_linkage errors when group.by is not a subject_meta column", {
+    clust <- names(tiny_linkage_summary@subject_linkages[[1]])[1]
+    expect_error(
+        count_linkage(link_summary = tiny_linkage_summary, cluster = clust, group.by = "bogus", linkage = "rec"),
+        "group.by variable not present in subject_meta"
+    )
+})

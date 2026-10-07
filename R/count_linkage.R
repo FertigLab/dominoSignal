@@ -46,8 +46,9 @@ count_linkage <- function(link_summary, cluster, group.by = NULL, linkage = "rec
         }
         groups <- levels(factor(link_summary@subject_meta[[group.by]]))
         for (g in groups) {
-            g_index <- link_summary@subject_meta[[group.by]] == g
-            g_subjects <- link_summary@subject_meta[g_index, 1]
+            g_index <- which(link_summary@subject_meta[[group.by]] == g)
+            # need characters so subjects are looked up by name (not factor code)
+            g_subjects <- as.character(link_summary@subject_meta[g_index, 1])
             int_count <- list()
             for (f in dframe[["feature"]]) {
                 count <- vapply(g_subjects, FUN.VALUE = logical(1), FUN = function(x) {
