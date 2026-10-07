@@ -9,10 +9,10 @@
 #'
 #' @slot subject_names unique names for each domino result included in the summary
 #' @slot subject_meta data.frame with each row describing one subject and columns describing features of the
-#'   subjects by which to draw comparisons of signaling networks
-#' @slot subject_linkages nested list of linkages inferred for each subject. Lists are stored in a
-#'   hierarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs)
-#'   linkages between transcription factors and receptors (tfs_rec), active receptors (rec), possible
+#'   subjects by which to draw comparisons of signaling networks. The first column holds the subject names, in the same order as `subject_names`.
+#' @slot subject_linkages nested list of linkages inferred for each subject, named by and in the same order as `subject_names`. Lists are stored in a
+#'   hierarchical structure of subject-cluster-linkage including 
+#'   linkages transcription factors (tfs), between transcription factors and receptors (tfs_rec), active receptors (rec), possible
 #'   receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)
 #' @name linkage_summary-class
 #' @rdname linkage_summary-class
@@ -42,6 +42,15 @@ valid_linksum <- function(object) {
     }
     if (nrow(object@subject_meta) != n) {
         err <- c(err, sprintf("subject_meta must have %d rows (number of subjects)", n))
+    }
+
+    # subjects are matched to subject_meta rows and subject_linkages by position
+    subjects <- as.character(object@subject_names)
+    if (ncol(object@subject_meta) > 0 && !identical(as.character(object@subject_meta[[1]]), subjects)) {
+        err <- c(err, "the first column of subject_meta must match subject_names in the same order")
+    }
+    if (!identical(names(object@subject_linkages), subjects)) {
+        err <- c(err, "names of subject_linkages must match subject_names in the same order")
     }
     if (length(err) == 0) TRUE else err
 }

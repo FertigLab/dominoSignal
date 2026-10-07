@@ -22,11 +22,11 @@ sample covariates.
 \item{\code{subject_names}}{unique names for each domino result included in the summary}
 
 \item{\code{subject_meta}}{data.frame with each row describing one subject and columns describing features of the
-subjects by which to draw comparisons of signaling networks}
+subjects by which to draw comparisons of signaling networks. The first column holds the subject names, in the same order as \code{subject_names}.}
 
-\item{\code{subject_linkages}}{nested list of linkages inferred for each subject. Lists are stored in a
-hierarchical structure of subject-cluster-linkage where linkages include transcription factors (tfs)
-linkages between transcription factors and receptors (tfs_rec), active receptors (rec), possible
+\item{\code{subject_linkages}}{nested list of linkages inferred for each subject, named by and in the same order as \code{subject_names}. Lists are stored in a
+hierarchical structure of subject-cluster-linkage including
+linkages transcription factors (tfs), between transcription factors and receptors (tfs_rec), active receptors (rec), possible
 receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)}
 }}
 

@@ -10,6 +10,8 @@
 - When `create_domino()` TF selection method is set to `all` or `variable`, per cluster networks (using TFs ranked by maximum correlation in expressed receptors) are generated rather than the previous `clust` list. This ensures compatibility with downstream exploration and visualization functions but will change returned results compared to previous versions.
 - Interactions in `rl_map` that do not pair one receptor (`R`) with one ligand (`L`) are excluded in `create_domino()` with a warning and the function errors if no rows remain (previously gene_B was silently treated as a receptor in those rows).
 - Component genes of a complex ligand when it is the only valid ligand for a cluster are now averaged in `build_domino()` instead of summing component genes as separate rows. Complexes with missing components drop consistently. Signaling scores for affected clusters will differ from previous versions.
+- The `summarize_linkages()` function requires `domino()` objects built with `build_domino()` and subject names present in the first column of `subject_meta`. The function reorders `subject_meta` to match `subject_names` to avoid issues with positional matching.
+- Validity check for `linkage_summary()` object now requires the first column of `subject_meta` and the names of `subject_linkages` to match `subject_names` in the same order.
 
 ## New Features
 

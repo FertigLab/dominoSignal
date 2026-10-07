@@ -105,10 +105,12 @@ test_that("summarize_linkages errors when domino_results is not a named list", {
     meta <- data.frame(ID = c("dom1", "dom2"), group = c("A", "B"), stringsAsFactors = FALSE)
 
     expect_error(
-        summarize_linkages(domino_results = list(tiny_dom1, tiny_dom2), subject_meta = meta, subject_names = meta$ID)
+        summarize_linkages(domino_results = list(tiny_dom1, tiny_dom2), subject_meta = meta, subject_names = meta$ID),
+        "No names found in domino_results"
     )
     expect_error(
-        summarize_linkages(domino_results = "not a list", subject_meta = meta, subject_names = meta$ID)
+        summarize_linkages(domino_results = "not a list", subject_meta = meta, subject_names = meta$ID),
+        "Class of domino_results must be one of: list"
     )
 })
 
@@ -116,6 +118,48 @@ test_that("summarize_linkages errors when subject_meta is not a data.frame", {
     dom_ls <- list(dom1 = tiny_dom1, dom2 = tiny_dom2)
 
     expect_error(
-        summarize_linkages(domino_results = dom_ls, subject_meta = c("dom1", "dom2"), subject_names = c("dom1", "dom2"))
+        summarize_linkages(domino_results = dom_ls, subject_meta = c("dom1", "dom2"), subject_names = c("dom1", "dom2")),
+        "Class of subject_meta must be one of: data.frame"
     )
+})
+
+test_that("summarize_linkages reorders subject_meta to match subject_names so subsetting keeps the right subjects", {
+    dom_ls <- list(dom1 = tiny_dom1, dom2 = tiny_dom2, dom3 = tiny_dom3)
+    meta <- data.frame(ID = c("dom3", "dom1", "dom2"), group = c("B", "A", "A"), stringsAsFactors = FALSE)
+
+    out <- summarize_linkages(domino_results = dom_ls, subject_meta = meta, subject_names = c("dom1", "dom2", "dom3"))
+    expect_equal(out@subject_meta$ID, c("dom1", "dom2", "dom3"))
+    expect_equal(out@subject_meta$group, c("A", "A", "B"))
+
+    sub <- subset(out, subset = group == "B")
+    expect_equal(as.character(sub@subject_names), "dom3")
+    expect_named(sub@subject_linkages, "dom3")
+})
+
+test_that("summarize_linkages errors when subject_names are missing from subject_meta", {
+    dom_ls <- list(dom1 = tiny_dom1, dom2 = tiny_dom2)
+    meta <- data.frame(ID = c("dom1", "other"), group = c("A", "B"), stringsAsFactors = FALSE)
+    expect_error(
+        summarize_linkages(domino_results = dom_ls, subject_meta = meta, subject_names = c("dom1", "dom2")),
+        "subject_names not found in the first column of subject_meta: dom2"
+    )
+})
+
+test_that("summarize_linkages requires built domino objects", {
+    meta <- data.frame(ID = c("dom1", "dom2"), group = c("A", "B"), stringsAsFactors = FALSE)
+    expect_error(
+        summarize_linkages(domino_results = list(dom1 = tiny_dom1, dom2 = tiny_created_dom2), subject_meta = meta),
+        "domino_results must contain domino objects built with build_domino\\(\\). The following subjects are not built: dom2"
+    )
+    expect_error(
+        summarize_linkages(domino_results = list(dom1 = tiny_dom1, dom2 = "not a domino"), subject_meta = meta),
+        "not built: dom2"
+    )
+})
+
+test_that("summarize_linkages returns a valid linkage_summary", {
+    dom_ls <- list(dom1 = tiny_dom1, dom2 = tiny_dom2)
+    meta <- data.frame(ID = c("dom1", "dom2"), group = c("A", "B"), stringsAsFactors = FALSE)
+    out <- summarize_linkages(domino_results = dom_ls, subject_meta = meta)
+    expect_true(validObject(out))
 })
