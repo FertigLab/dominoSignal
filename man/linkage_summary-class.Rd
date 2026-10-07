@@ -25,8 +25,8 @@ sample covariates.
 subjects by which to draw comparisons of signaling networks. The first column holds the subject names, in the same order as \code{subject_names}.}
 
 \item{\code{subject_linkages}}{nested list of linkages inferred for each subject, named by and in the same order as \code{subject_names}. Lists are stored in a
-hierarchical structure of subject-cluster-linkage including
-linkages transcription factors (tfs), between transcription factors and receptors (tfs_rec), active receptors (rec), possible
-receptor-ligand interactions (rec_lig), and incoming ligands (incoming_lig)}
+hierarchical structure of subject-cluster-linkages, including
+transcription factors (tfs), links between transcription factors and receptors (tfs_rec), active receptors (rec), links between
+receptors and ligands(rec_lig), and incoming ligands (incoming_lig)}
 }}
 

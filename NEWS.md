@@ -47,8 +47,8 @@
 - Example data regenerated with `dominoSignal` version 1.7.1.
 - Corrected documentation of `tf_variance_quantile` in `create_domino()` to indicate coefficient of variation is used and higher values keep fewer features.
 - Error message referring to `domino_create` instead of `create_domino()` in `build_domino()` has been corrected.
-- When no TFs pass `max_tf_pval` threshold in `build_domino()`, users now receive a warning explaining why no signaling is inferred.
-- Fixed `create_rl_map_cellphondb()` examples to use genes and toy ortholog table that returns results.
+- When no TFs pass `max_tf_pval` threshold in `build_domino()`, users now receive a message explaining why no signaling is inferred.
+- Fixed `create_rl_map_cellphonedb()` examples to use genes and toy ortholog table that returns results.
 
 # dominoSignal v1.6.0
 

@@ -126,7 +126,7 @@ create_domino <- function(
     not_rl <- !rl_pair %in% c("R L", "L R")
     if (any(not_rl)) {
         warning("Excluding ", sum(not_rl), " interactions that do not pair one receptor (R) with one ligand (L): ",
-        toString(head(unique(rl_pair[not_rl]))))
+        toString(unique(rl_pair[not_rl])))
     }
     rl_map <- rl_map[!not_rl, , drop = FALSE]
     if (nrow(rl_map) == 0) {

@@ -54,10 +54,15 @@ Other TF scoring methods and ligand-receptor databases can be used, provided the
 ``` r
 library(dominoSignal)
 
-dom <- create_domino(rl_map = rl_map, features = tf_scores, counts = counts, z_scores = z_scores,
-    clusters = clusters, tf_targets = regulon_list)
-dom <- build_domino(dom, max_tf_pval = 0.001, max_tf_per_clust = 25, max_rec_per_tf = 25,
-    rec_tf_cor_threshold = 0.25, min_rec_percentage = 0.1)
+dom <- create_domino(
+    rl_map = rl_map, features = tf_scores, counts = counts,
+    z_scores = z_scores, clusters = clusters, tf_targets = regulon_list
+)
+dom <- build_domino(
+    dom,
+    max_tf_pval = 0.001, max_tf_per_clust = 25, max_rec_per_tf = 25,
+    rec_tf_cor_threshold = 0.25, min_rec_percentage = 0.1
+)
 ```
 
 See [Get Started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) for a complete example, including guidance on choosing these thresholds.
@@ -73,8 +78,9 @@ With a domino object for each subject or sample, the DCST workflow identifies li
 
 ``` r
 link_summary <- summarize_linkages(dom_list, subject_meta, subject_names = subject_meta$subject)
-diff_links <- test_differential_linkages(link_summary, cluster = "CD8_T_cell", group.by = "condition",
-    linkage = "rec")
+diff_links <- test_differential_linkages(
+    link_summary, cluster = "CD8_T_cell", group.by = "condition", linkage = "rec"
+)
 plot_differential_linkages(diff_links, "p.value")
 ```
 

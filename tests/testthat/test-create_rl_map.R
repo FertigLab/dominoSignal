@@ -92,6 +92,6 @@ test_that("create_rl_map_cellphonedb handles missing receptor annotations in pro
         genes = genes_tiny, proteins = proteins_nrg1, interactions = interactions_tiny, complexes = complexes_tiny
     ))
     expected <- rl_map_tiny[!(rl_map_tiny$gene_A == "NRG1" | rl_map_tiny$gene_B == "NRG1"), ]
-    identical(out_nrg1, expected)
+    expect_identical(out_nrg1, expected)
 })
 
