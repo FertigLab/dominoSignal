@@ -68,6 +68,8 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
         cl_ligands_coll_list <- avg_exp_for_complexes(cl_ligands, complexes)
         if (length(cl_ligands_coll_list) > 0) {
             cl_ligands <- purrr::list_rbind(cl_ligands_coll_list, names_to = "ligand")
+        } else {
+            cl_ligands <- data.frame(ligand = character(), as.data.frame(cl_ligands)[0, , drop = FALSE], check.names = FALSE)
         }
     } else {
         cl_ligands <- as.data.frame(cl_ligands)
@@ -130,6 +132,8 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
                 if (nrow(df_tmp) == 0) next
 
                 rec_sep <- unlist(resolve_complexes(dom, rec))
+                # Skip if any receptor components are missing
+                if (!all(rec_sep %in% rownames(expr_mat))) next
                 rec_sig <- mean_or_na(expr_mat, rec_sep, rec_idx)
 
                 row_list[[length(row_list) + 1]] <- data.frame(
@@ -208,6 +212,10 @@ dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type =
         lig_genes <- intersect(all_lig_names_resolved, rownames(dom@counts))
     } else if (exp_type == "z_scores") {
         lig_genes <- intersect(all_lig_names_resolved, rownames(dom@z_scores))
+    }
+
+    if (length(lig_genes) == 0) {
+        stop("No ligands found in the expression matrix for the specified exp_type.")
     }
 
     if (is.null(send_clusters)) {

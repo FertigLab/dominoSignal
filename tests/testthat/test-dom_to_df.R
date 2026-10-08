@@ -147,6 +147,15 @@ test_that("get_ligand_expression returns appropriate values for exp_type", {
     expect_true(any(ligand_zscores[ , num_cols] < 0))
 })
 
+test_that("get_ligand_expression returns an empty data frame when all complexes have missing component", {
+    clusters <- levels(tiny_dom1@clusters)
+    lig_df <- get_ligand_expression(tiny_dom1, clusters, c("ITGB4", "ITGA6"),
+        list(integrin_a6b4_complex = c("ITGB4", "ITGA6", "MISSING")), exp_type = "counts")
+    expect_s3_class(lig_df, "data.frame")
+    expect_shape(lig_df, dim = c(0, 4))
+    expect_equal(colnames(lig_df), c("ligand", clusters))
+})
+
 test_that("get_signaling_info returns expected format", {
     ligs <- data.frame(ligand = rep(c("integrin_a6b4_complex", "CCL20"), times = 3),
         cluster = rep(c("CD8_T_cell", "CD14_monocyte", "B_cell"), each = 2),
@@ -376,4 +385,22 @@ test_that("dom_to_df returns an empty data frame with a message when no interact
     )
     expect_s3_class(df, "data.frame")
     expect_equal(dim(df), c(0, 8))
+})
+
+test_that("dom_to_df returns handles scenarios where receptor or ligand complexes exist but they all have a missing component", {
+    test_dom <- tiny_dom1
+    test_dom@linkages$complexes <- list(integrin_a6b4_complex = c("ITGB4", "ITGA6", "EMPTY"), IL7_receptor = c("IL7R", "IL2RG", "MISSING"))
+    expect_no_error(dframe <- dom_to_df(test_dom, exp_type = "counts"))
+    sub_tiny_df <- dom_to_df(tiny_dom1, exp_type = "counts")
+    sub_tiny_df <- sub_tiny_df[!(sub_tiny_df$ligand %in% c("integrin_a6b4_complex", "IL7_receptor") | sub_tiny_df$receptor %in% c("integrin_a6b4_complex", "IL7_receptor")), ]
+    expect_equal(dframe, sub_tiny_df, ignore_attr = TRUE)
+})
+
+test_that("dom_to_df returns an empty data frame when the only ligand is a complex with a missing component", {
+    test_dom <- tiny_dom1
+    test_dom@linkages$complexes <- list(integrin_a6b4_complex = c("ITGB4", "ITGA6", "EMPTY"))
+    test_dom@linkages$rec_lig <- test_dom@linkages$rec_lig["NRG1"]
+    expect_message(test_df <- dom_to_df(test_dom, exp_type = "counts"),
+        "No interactions found for the specified clusters and expression type.")
+    expect_shape(test_df, dim = c(0, 8))
 })
