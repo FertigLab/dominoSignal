@@ -11,10 +11,10 @@ summarise_linkages(domino_results, subject_meta, subject_names = NULL)
 }
 \arguments{
 \item{domino_results}{list of domino results with one domino object per subject. Names from the list should
-match subject_names}
+match subject_names. Each object used must have a signaling network built with \code{\link[=build_domino]{build_domino()}}.}
 
 \item{subject_meta}{data frame that includes the subject features by which the objects could be grouped.
-The first column must be subject names}
+The first column must be subject names. Rows are reordered to match order of \code{subject_names}.}
 
 \item{subject_names}{vector of subject names in domino_results. If NULL, defaults to first column of subject_meta.}
 }

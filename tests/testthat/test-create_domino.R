@@ -1,3 +1,9 @@
+tiny_create_args <- list(
+    rl_map = rl_map_tiny, features = tiny_auc1, counts = tiny_counts1, z_scores = tiny_zscores1,
+    clusters = tiny_clusters1, tf_targets = regulon_list_tiny, use_complexes = TRUE,
+    remove_rec_dropout = FALSE, verbose = FALSE
+)
+
 test_that("create_domino runs with tiny inputs", {
     dom <- create_domino(
         rl_map = rl_map_tiny,
@@ -162,12 +168,6 @@ test_that("create_domino and build_domino give identical signaling with and with
     expect_identical(unname(as.matrix(dom_signaling(dom))), unname(as.matrix(dom_signaling(dom_custom))))
 })
 
-tiny_create_args <- list(
-    rl_map = rl_map_tiny, features = tiny_auc1, counts = tiny_counts1, z_scores = tiny_zscores1,
-    clusters = tiny_clusters1, tf_targets = regulon_list_tiny, use_complexes = TRUE,
-    remove_rec_dropout = FALSE, verbose = FALSE
-)
-
 test_that("create_domino aligns clusters, counts, and features to z_scores cell order", {
     set.seed(1)
     shuffled_clusters <- tiny_clusters1[sample(length(tiny_clusters1))]
@@ -316,4 +316,145 @@ test_that("build_domino infers the TF selection method for objects without creat
     dom@misc$create_vars <- NULL
     built <- build_domino(dom, rec_tf_cor_threshold = 0.1)
     expect_identical(built@linkages$clust_tf, expected@linkages$clust_tf)
+})
+
+test_that("create_domino converts dense counts to dgCMatrix with identical results", {
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$counts <- as.matrix(tiny_counts1)
+    dom_dense <- do.call(create_domino, tiny_mod_args)
+    expect_s4_class(dom_dense@counts, "dgCMatrix")
+    expect_equal(dom_dense, do.call(create_domino, tiny_create_args))
+
+    tiny_mod_args$counts <- as.data.frame(as.matrix(tiny_counts1))
+    expect_equal(do.call(create_domino, tiny_mod_args), do.call(create_domino, tiny_create_args))
+})
+
+test_that("create_domino excludes receptors missing from z_scores with a warning", {
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$z_scores <- tiny_zscores1[rownames(tiny_zscores1) != "CXCR3", , drop = FALSE]
+    expect_warning(
+        dom <- do.call(create_domino, tiny_mod_args),
+        "Receptor genes not found in z_scores are excluded from correlation calculations: CXCR3"
+    )
+    expect_false("CXCR3" %in% rownames(dom@misc$rec_cor))
+    expect_false("CXCR3" %in% rownames(dom@misc$cl_rec_percent))
+    expect_equal(unname(dom@cor["CXCR3", ]), rep(0, nrow(dom@features)))
+})
+
+test_that("create_domino keeps receptor names that are not syntactic R names", {
+    rename_gene <- function(x) {
+        rownames(x)[rownames(x) == "CXCR3"] <- "CXCR-3"
+        return(x)
+    }
+    rl_map_dash <- rl_map_tiny
+    rl_map_dash[rl_map_dash == "CXCR3"] <- "CXCR-3"
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$rl_map <- rl_map_dash
+    tiny_mod_args$counts <- rename_gene(tiny_counts1)
+    tiny_mod_args$z_scores <- rename_gene(tiny_zscores1)
+    dom <- do.call(create_domino, tiny_mod_args)
+    expect_identical(rownames(dom@cor), names(dom@linkages$rec_lig))
+    expect_equal(unname(dom@cor["CXCR-3", ]), unname(tiny_created_dom1@cor["CXCR3", ]))
+
+    # the renamed receptor must be linked in the same clusters as the original
+    build_args <- list(
+        max_tf_pval = 0.05, max_tf_per_clust = Inf, max_rec_per_tf = Inf, rec_tf_cor_threshold = 0.1,
+        min_rec_percentage = 0.01
+    )
+    built <- do.call(build_domino, c(list(dom = dom), build_args))
+    built_ref <- do.call(build_domino, c(list(dom = tiny_created_dom1), build_args))
+    expect_identical(
+        lapply(built@linkages$clust_rec, sort),
+        lapply(built_ref@linkages$clust_rec, function(x) sort(sub("^CXCR3$", "CXCR-3", x)))
+    )
+})
+
+test_that("create_domino keeps features above tf_variance_quantile for the variable method", {
+    cv <- apply(tiny_auc1, 1, function(x) sd(x) / mean(x))
+    for (q in c(0.25, 0.5, 0.75)) {
+        tiny_mod_args <- tiny_create_args
+        tiny_mod_args$tf_selection_method <- "variable"
+        tiny_mod_args$tf_variance_quantile <- q
+        dom <- do.call(create_domino, tiny_mod_args)
+        expect_setequal(rownames(dom@features), names(cv)[rank(cv) > length(cv) * q])
+        expect_setequal(colnames(dom@cor), rownames(dom@features))
+    }
+
+    # a single retained feature stays a one-row matrix
+    tiny_mod_args$tf_variance_quantile <- 0.99
+    dom <- do.call(create_domino, tiny_mod_args)
+    expect_identical(dim(dom@features), c(1L, ncol(tiny_auc1)))
+
+    tiny_mod_args$tf_variance_quantile <- 1.5
+    expect_error(
+        do.call(create_domino, tiny_mod_args),
+        "All values in tf_variance_quantile must be between 0 and 1"
+    )
+})
+
+test_that("create_domino correlates receptors with TFs only in cells with receptor counts when remove_rec_dropout = TRUE", {
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$remove_rec_dropout <- TRUE
+    dom <- do.call(create_domino, tiny_mod_args)
+    expect_true(dom@misc$create_vars$remove_rec_dropout)
+    keep <- which(tiny_counts1["CXCR3", ] > 0)
+    expected <- cor(tiny_zscores1["CXCR3", keep], tiny_auc1["FLI1", keep], method = "spearman")
+    expect_equal(dom@misc$rec_cor["CXCR3", "FLI1"], expected)
+    expect_false(isTRUE(all.equal(dom@misc$rec_cor, tiny_created_dom1@misc$rec_cor)))
+})
+
+test_that("create_domino sets correlation to NAs for receptors in a TF's regulon", {
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$tf_targets <- list(FLI1 = "CXCR3")
+    dom <- do.call(create_domino, tiny_mod_args)
+    expect_true(is.na(dom@misc$rec_cor["CXCR3", "FLI1"]))
+    expect_gt(tiny_created_dom1@misc$rec_cor["CXCR3", "FLI1"], 0)
+    # other receptor-TF pairs are unchanged
+    other <- dom@misc$rec_cor
+    other["CXCR3", "FLI1"] <- tiny_created_dom1@misc$rec_cor["CXCR3", "FLI1"]
+    expect_equal(other, tiny_created_dom1@misc$rec_cor)
+})
+
+test_that("create_domino summarizes receptor complex correlations by the median of their components", {
+    rec_cor <- tiny_created_dom1@misc$rec_cor
+    expect_equal(
+        tiny_created_dom1@cor["IL7_receptor", ],
+        apply(rec_cor[c("IL7R", "IL2RG"), , drop = FALSE], 2, median)
+    )
+    expect_equal(tiny_created_dom1@cor["CXCR3", ], rec_cor["CXCR3", ])
+})
+
+test_that("create_domino excludes rl_map rows that do not pair one receptor with one ligand", {
+    rl_map_bad <- rl_map_tiny
+    extra <- rl_map_tiny[c(2, 3, 2), ]
+    extra$type_A <- c("L", "R", NA)
+    extra$type_B <- c("L", "R", "L")
+    rl_map_bad <- rbind(rl_map_bad, extra)
+    tiny_mod_args <- tiny_create_args
+    tiny_mod_args$rl_map <- rl_map_bad
+    expect_warning(
+        dom <- do.call(create_domino, tiny_mod_args),
+        "Excluding 3 interactions that do not pair one receptor \\(R\\) with one ligand \\(L\\): L L, R R, NA L"
+    )
+    # the excluded rows do not add receptors or linkages; the result matches the valid rows alone
+    expect_equal(dom@linkages, tiny_created_dom1@linkages)
+    expect_equal(dom@cor, tiny_created_dom1@cor)
+
+    no_rl <- rl_map_tiny
+    no_rl$type_A <- "L"
+    no_rl$type_B <- "L"
+    tiny_mod_args$rl_map <- no_rl
+    expect_error(
+        suppressWarnings(do.call(create_domino, tiny_mod_args)),
+        "No rl_map rows pair a receptor \\(R\\) with a ligand \\(L\\)"
+    )
+})
+
+test_that("create_domino provides informative error when no receptor genes are present in z_scores", {
+    tiny_mod_args <- tiny_create_args
+    rownames(tiny_mod_args$z_scores) <- paste0("other_", rownames(tiny_mod_args$z_scores))
+    expect_error(
+        suppressWarnings(do.call(create_domino, tiny_mod_args)),
+        "No receptor genes are present in z_scores. Cannot calculate correlations."
+    )
 })

@@ -8,6 +8,10 @@
 - Argument `use_clusters` removed from `create_domino()`, as `TRUE` is the only option.
 - `domino()` validity check now requires that cell inputs have aligned names. Previously built objects (before the bug fix for cluster matching by positions) will now fail the validity check and should be re-run.
 - When `create_domino()` TF selection method is set to `all` or `variable`, per cluster networks (using TFs ranked by maximum correlation in expressed receptors) are generated rather than the previous `clust` list. This ensures compatibility with downstream exploration and visualization functions but will change returned results compared to previous versions.
+- Interactions in `rl_map` that do not pair one receptor (`R`) with one ligand (`L`) are excluded in `create_domino()` with a warning and the function errors if no rows remain (previously gene_B was silently treated as a receptor in those rows).
+- Component genes of a complex ligand when it is the only valid ligand for a cluster are now averaged in `build_domino()` instead of summing component genes as separate rows. Complexes with missing components drop consistently. Signaling scores for affected clusters will differ from previous versions.
+- The `summarize_linkages()` function requires `domino()` objects built with `build_domino()` and subject names present in the first column of `subject_meta`. The function reorders `subject_meta` to match `subject_names` to avoid issues with positional matching.
+- Validity check for `linkage_summary()` object now requires the first column of `subject_meta` and the names of `subject_linkages` to match `subject_names` in the same order.
 
 ## New Features
 
@@ -16,6 +20,7 @@
 - Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
 - Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
 - Parameters for `domino()` object creation (used in `create_domino()`) are now stored in object
+- Dense `matrix` or `data.frame` accepted for `counts` input to `create_domino()` and converted to sparse `dgCMatrix`.
 
 ## Bug Fixes
 
@@ -30,11 +35,20 @@
 - Removed default value of `NULL` for required arguments of `counts`, `zscores`, and `clusters` in `create_domino()`.
 - Fixed cluster matching to cells by position only by aligning cell inputs by name in `create_domino()`.
 - The maximum p-value threshold for cluster based selection of TFs in `build_domino()` has argument name `max_tf_pval` instead of incorrect `min_tf_pval`. (The previous `min_tf_pval` name stored in `build_vars` of the `domino()` object should still pass validity checks.)
+- Fixed `create_domino()` dropping receptors with non-syntactic names (such as those containing spaces or hyphens) from signaling network which were renamed in correlation matrix.
+- Fixed `create_domino()` failing when single feature is retained by `tf_selection_method` is set to `variable` and added validation for `tf_variance_quantile` argument.
+- Fixed `count_linkage()` counting the wrong subjects when subject name column of `subject_meta` is a factor.
+- Fixed `create_rl_map_cellphonedb()` keeping components that lack an ortholog (resulting in unconverted gene names) instead of skipping interactions
+- Fixed `create_rl_map_cellphonedb()` to handle missing receptor annotations in protein table input instead of crashing.
 
 ## Documentation
 
 - Added vignette for differential signaling workflow.
 - Example data regenerated with `dominoSignal` version 1.7.1.
+- Corrected documentation of `tf_variance_quantile` in `create_domino()` to indicate coefficient of variation is used and higher values keep fewer features.
+- Error message referring to `domino_create` instead of `create_domino()` in `build_domino()` has been corrected.
+- When no TFs pass `max_tf_pval` threshold in `build_domino()`, users now receive a message explaining why no signaling is inferred.
+- Fixed `create_rl_map_cellphonedb()` examples to use genes and toy ortholog table that returns results.
 
 # dominoSignal v1.6.0
 

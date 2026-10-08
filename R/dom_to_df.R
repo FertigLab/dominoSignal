@@ -30,8 +30,7 @@ get_resolved_ligands <- function(dom) {
 #'   Used to aggregate expression for multi-gene complexes. Empty list is acceptable.
 #'   The output of [get_resolved_ligands()] can be used here.
 #' @param exp_type Character of length 1: either "counts" or "z_scores" to specify expression type
-#' @return Matrix with ligands/complexes as rows and send_clusters as columns; entries are mean expression.
-#'   Missing ligands and empty clusters yield NA; row and column names are preserved.
+#' @return Data frame with a ligand column and then one column per send_cluster with mean expression values. Ligands not found are dropped with a message, complexes with missing components are dropped, and send_clusters with no cells are omitted.
 #' @keywords internal
 get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_type) {
     
@@ -69,8 +68,11 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
         cl_ligands_coll_list <- avg_exp_for_complexes(cl_ligands, complexes)
         if (length(cl_ligands_coll_list) > 0) {
             cl_ligands <- purrr::list_rbind(cl_ligands_coll_list, names_to = "ligand")
+        } else {
+            cl_ligands <- data.frame(ligand = character(), as.data.frame(cl_ligands)[0, , drop = FALSE], check.names = FALSE)
         }
     } else {
+        cl_ligands <- as.data.frame(cl_ligands)
         cl_ligands$ligand <- rownames(cl_ligands)
         cl_ligands <- dplyr::relocate(cl_ligands, ligand, .before = 1)
     }
@@ -130,6 +132,8 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
                 if (nrow(df_tmp) == 0) next
 
                 rec_sep <- unlist(resolve_complexes(dom, rec))
+                # Skip if any receptor components are missing
+                if (!all(rec_sep %in% rownames(expr_mat))) next
                 rec_sig <- mean_or_na(expr_mat, rec_sep, rec_idx)
 
                 row_list[[length(row_list) + 1]] <- data.frame(
@@ -165,7 +169,7 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
 #'   If NULL (default), uses all clusters in dom.
 #' @param rec_clusters Character/factor vector of cluster names for receptor/TF signals.
 #'   If NULL (default), uses all clusters in dom.
-#' @param exp_type Character of length 1: either "counts" or "z_scores" for expression type
+#' @param exp_type Either "counts" or "z_scores" for expression type
 #' @return Data frame with columns: ligand, receptor, transcription_factor,
 #'   ligand_exp, rec_exp, tf_auc, sending_cl, receiving_cl.
 #'   Each row is a ligand-receptor-TF triplet from a sender-to-receiver cluster pair with
@@ -177,7 +181,7 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
 #' dom <- DominoObjects$built_dom_tiny
 #' df <- dom_to_df(dom, exp_type = "z_scores")
 #' head(df)
-dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type = c("counts", "z_scores")) {
+dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type = "counts") {
 
     check_arg(dom, allow_class = "domino", allow_len = 1)
     if (!is.null(send_clusters)) {
@@ -210,6 +214,10 @@ dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type =
         lig_genes <- intersect(all_lig_names_resolved, rownames(dom@z_scores))
     }
 
+    if (length(lig_genes) == 0) {
+        stop("No ligands found in the expression matrix for the specified exp_type.")
+    }
+
     if (is.null(send_clusters)) {
         send_clusters <- levels(dom@clusters)
     }
@@ -227,7 +235,13 @@ dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type =
         rec_clusters <- levels(dom@clusters)
     }
 
+    # get_signaling_info returns a data frame w/o cols when no interactions are present
     dframe <- get_signaling_info(dom, rec_clusters, cl_ligands_sub, exp_type)
+    if (nrow(dframe) == 0) {
+        return(data.frame(ligand = character(), receptor = character(), transcription_factor = character(),
+            ligand_exp = numeric(), rec_exp = numeric(), tf_auc = numeric(),
+            sending_cl = character(), receiving_cl = character()))
+    }
 
     if (exp_type == "counts") {
         dframe <- dplyr::filter(dframe, ligand_exp > 0, rec_exp > 0, tf_auc > 0)

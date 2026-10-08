@@ -22,14 +22,14 @@ create_domino(
 \arguments{
 \item{rl_map}{Data frame where each row describes a receptor-ligand interaction with required columns
 gene_A & gene_B including the gene names for the receptor and ligand and type_A & type_B annotating
-if genes A and B are a ligand (L) or receptor (R)}
+if genes A and B are a ligand (L) or receptor (R). Each interaction must pair one receptor with one ligand (rows that do not, such as ligand-ligand or missing types) are excluded with a warning.}
 
 \item{features}{Either a path to a csv containing cell level features of interest (ie. the auc matrix from pySCENIC)
 or named matrix with cells as columns and features as rows.}
 
-\item{counts}{Counts matrix for the data. This is only used to threshold receptors on dropout.}
+\item{counts}{Counts matrix for the data. Used to threshold receptors based on expression (\code{rec_min_thresh}), to calculate percentage of clusters with receptor expression, and to remove cells with zero receptor counts if \code{remove_rec_dropout} is TRUE. Dense matrices are converted to sparse \code{dgCMatrix} for storage.}
 
-\item{z_scores}{Matrix containing z-scored expression data for all cells with cells as columns and features as rows.}
+\item{z_scores}{Matrix containing z-scored expression data for all cells with cells as columns and features as rows. Receptor genes that pass \code{rec_min_thresh} but are not present in the z_scores matrix are excluded from correlation calculations with a warning.}
 
 \item{clusters}{Named factor containing cell cluster with names as cells.}
 
@@ -57,8 +57,7 @@ This can reduce false positive correlation calculations when receptors have high
 \item{"all"}: All TFs provided in the \code{features} matrix are included in downstream analysis.
 }}
 
-\item{tf_variance_quantile}{Quantile of most variable features to take if using coefficient of variance to threshold features.
-Default is 0.5. Higher numbers will keep more features. Ignored if tf_selection_method is not 'variable'.}
+\item{tf_variance_quantile}{Quantile of coefficient of variation used to threshold features to take if \code{tf_selection_method} is \code{variable}. Features with coefficient of variation ranked above quantile are kept (default of 0.5 keeps the most variable half of features and higher numbers keep fewer features). Ignored if tf_selection_method is not 'variable'.}
 }
 \value{
 A domino object

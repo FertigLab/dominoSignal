@@ -4,12 +4,7 @@
 \alias{dom_to_df}
 \title{Turn domino object signaling information into a data frame}
 \usage{
-dom_to_df(
-  dom,
-  send_clusters = NULL,
-  rec_clusters = NULL,
-  exp_type = c("counts", "z_scores")
-)
+dom_to_df(dom, send_clusters = NULL, rec_clusters = NULL, exp_type = "counts")
 }
 \arguments{
 \item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
@@ -20,7 +15,7 @@ If NULL (default), uses all clusters in dom.}
 \item{rec_clusters}{Character/factor vector of cluster names for receptor/TF signals.
 If NULL (default), uses all clusters in dom.}
 
-\item{exp_type}{Character of length 1: either "counts" or "z_scores" for expression type}
+\item{exp_type}{Either "counts" or "z_scores" for expression type}
 }
 \value{
 Data frame with columns: ligand, receptor, transcription_factor,

@@ -4,9 +4,9 @@
 #'   lists to facilitate comparisons of networks learned by domino across subject covariates.
 #'
 #' @param domino_results list of domino results with one domino object per subject. Names from the list should
-#'   match subject_names
+#'   match subject_names. Each object used must have a signaling network built with [build_domino()].
 #' @param subject_meta data frame that includes the subject features by which the objects could be grouped.
-#'   The first column must be subject names
+#'   The first column must be subject names. Rows are reordered to match order of `subject_names`.
 #' @param subject_names vector of subject names in domino_results. If NULL, defaults to first column of subject_meta.
 #' @return A [linkage_summary()] object consisting of nested lists of the active transcription factors,
 #'   active receptors, and incoming ligands for each cluster across multiple domino results
@@ -83,6 +83,20 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
         warning("Linkage summary includes results only for provided subject names: ", toString(subject_names))
         subject_meta <- subject_meta[subject_meta[, 1] %in% subject_names, , drop = FALSE]
     }
+
+    # Subjects are paired with subject_meta rows by position, so reorder to match
+    if (!all(subject_names %in% subject_meta[ , 1])) {
+        stop("subject_names not found in the first column of subject_meta: ", toString(setdiff(subject_names, subject_meta[ , 1])))
+    }
+    subject_names <- as.character(subject_names)
+    subject_meta <- subject_meta[match(subject_names, subject_meta[[1]]), , drop = FALSE]
+    # linkages are read from built domino output so each summarized object must be built
+    not_built <- !vapply(domino_results[subject_names], function(dom) {
+        is(dom, "domino") && isTRUE(dom@misc$build)}, logical(1))
+    if (any(not_built)) {
+        stop("domino_results must contain domino objects built with build_domino(). The following subjects are not built: ", toString(subject_names[not_built]))
+    }
+
     subject_linkages <- list()
     for (id in subject_names) {
         dom <- domino_results[[id]]
