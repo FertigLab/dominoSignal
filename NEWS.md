@@ -21,7 +21,7 @@
 - Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
 - Parameters for `domino()` object creation (used in `create_domino()`) are now stored in object
 - Dense `matrix` or `data.frame` accepted for `counts` input to `create_domino()` and converted to sparse `dgCMatrix`.
-- Default for `remove_rec_dropout` in `cor_scatter()` has been changed to `NULL` and will check `domino()` metadata for creation of the object (otherwise will be set to 'FALSE`).
+- Default for `remove_rec_dropout` in `cor_scatter()` has been changed to `NULL` and will check `domino()` metadata for creation of the object (otherwise will be set to `FALSE`).
 
 ## Bug Fixes
 

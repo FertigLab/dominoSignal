@@ -24,15 +24,11 @@ A singularity image of [SCENIC](https://scenic.aertslab.org/) v0.12.1 can be ins
 
 
 ### Reference files
-First we set up a temporary directory to store the files.
-```{r setup, eval = F}
-temp_dir <- tempdir()
-```
 
-Then we build the singularity image and download reference files to the temporary directory.
+We build the singularity image and download reference files to the temporary directory.
 
 ```{bash, eval=FALSE}
-SCENIC_DIR="'temp_dir'/scenic"
+SCENIC_DIR="${TMPDIR:-/tmp}/scenic"
 mkdir ${SCENIC_DIR}
 
 # Build singularity image
@@ -84,7 +80,7 @@ pbmc_loom$add.col.attribute(list(CellID = colnames(pbmc)))
 pbmc_loom$close_all()
 ```
 
-We will use the `pbmc3k\_counts.loom` file in this tutorial.
+We will use the `pbmc3k\_counts.loom` file in this tutorial. Copy or link it into `${SCENIC_DIR}` for the following steps.
 
 ## Running SCENIC
 

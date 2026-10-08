@@ -38,7 +38,8 @@ Fruchterman-Reingold force directed layout, and 'kk' for Kamada Kawai for direct
 See \href{https://r.igraph.org/}{igraph} manual for options.}
 }
 \value{
-An igraph plot rendered to the active graphics device
+An igraph plot rendered to the active graphics device.  A list with the igraph object (\code{graph}) and
+the layout matrix (\code{layout}) is returned invisibly, or NULL if no signaling is found for the clusters.
 }
 \description{
 Create a gene association network for genes from a given cluster. The

@@ -41,7 +41,7 @@ incoming_signalling_heatmap(
 \item{max_thresh}{Maximum signaling threshold for plotting. Defaults to Inf for no threshold.}
 
 \item{scale}{How to scale the values (after thresholding). Options are 'none', 'sqrt' for square root,
-or 'log' for log10.}
+or 'log' for log10(x+1).}
 
 \item{normalize}{Options to normalize the matrix. Accepted inputs are 'none' for no normalization,
 'rec_norm' to normalize to the maximum value with each receptor cluster, or 'lig_norm' to normalize
