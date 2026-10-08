@@ -230,7 +230,9 @@ dom_to_df <- function(dom, send_clusters = NULL, rec_clusters = NULL, exp_type =
     # get_signaling_info returns a data frame w/o cols when no interactions are present
     dframe <- get_signaling_info(dom, rec_clusters, cl_ligands_sub, exp_type)
     if (nrow(dframe) == 0) {
-        return(dframe)
+        return(data.frame(ligand = character(), receptor = character(), transcription_factor = character(),
+            ligand_exp = numeric(), rec_exp = numeric(), tf_auc = numeric(),
+            sending_cl = character(), receiving_cl = character()))
     }
 
     if (exp_type == "counts") {

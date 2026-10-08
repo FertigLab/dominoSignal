@@ -44,7 +44,7 @@ NULL
 #' }
 #' 
 #' # Using alternate conversion table instead of biomaRt
-#' # (this simplified table if for illustration only, this is
+#' # (this simplified table is for illustration only, this is
 #' # NOT the correct way to convert between HGNC and MGI symbols)
 #' hs_genes <- unique(CellPhoneDB$genes_tiny$gene_name)
 #' ortho_table <- data.frame(
@@ -126,23 +126,18 @@ create_rl_map_cellphonedb <- function(
             a_features[["uniprot_A"]] <- paste(component_a, collapse = ",")
             gene_a <- vapply(component_a, FUN.VALUE = character(1), FUN = function(x) {
                 g <- unique(genes[genes[["uniprot"]] == x, "gene_name"])
+                candidates <- g
                 if (!is.null(gene_conv) && !identical(gene_conv[1], gene_conv[2])) {
                     # if the original gene trying to be converted is not in the gene dictionary the
                     # interaction is not included in the final rl_map
-                    if (sum(g %in% conv_dict[, 1]) < length(g)) {
-                        for (gn in g) {
-                            # I do not like this <<- situation but the flag needs to be assigned outside the vapply environment
-                            conversion_flag[[gn]] <<- TRUE
-                        }
-                    } else {
-                        g <- paste(unique(conv_dict[conv_dict[, 1] %in% g, 2]), collapse = ";")
+                    with_ortholog <- g[g %in% conv_dict[ , 1]]
+                    if (length(with_ortholog)) {
+                        candidates <- with_ortholog
                     }
                 }
-                # if multiple genes are annotated for the uniprot ID, use only the first unique instance
-                if (length(g) == 1) {
-                    res <- g
-                } else {
-                    res <- g[1]
+                # If multiple genes are annotated, use the first unique instance
+                res <- candidates[1]
+                if (length(g) > 1) {
                     g_col <- toString(g)
                     message(
                         x, " has multiple encoding gene mapped in genes table.\n",
@@ -152,6 +147,15 @@ create_rl_map_cellphonedb <- function(
                 }
                 return(res)
             })
+            if (!is.null(gene_conv) && !identical(gene_conv[1], gene_conv[2])) {
+                # if any component is not in the gene dictionary, interaction is not included
+                for (gn in setdiff(gene_a, conv_dict[ , 1])) {
+                    conversion_flag[[gn]] <- TRUE
+                }
+                gene_a <- vapply(gene_a, FUN.VALUE = character(1), FUN = function(gn) {
+                    paste(unique(conv_dict[conv_dict[, 1] == gn, 2]), collapse = ";")
+                })
+            }
             a_features[["gene_A"]] <- paste(gene_a, collapse = ",")
             # annotation as a receptor or ligand is based on the annotation of the complex
             a_features[["type_A"]] <- ifelse(complex_a[["receptor"]], "R", "L")
@@ -182,7 +186,7 @@ create_rl_map_cellphonedb <- function(
             next
         }
         if (length(conversion_flag)) {
-            message(paste("No gene orthologs found for:", names(conversion_flag), collapse = " "))
+            message("No gene orthologs found for: ", toString(names(conversion_flag)))
             message(paste("Skipping interaction:", partner_a, partner_b, collapse = " "))
             next
         }
@@ -196,23 +200,18 @@ create_rl_map_cellphonedb <- function(
             b_features[["uniprot_B"]] <- paste(component_b, collapse = ",")
             gene_b <- vapply(component_b, FUN.VALUE = character(1), FUN = function(x) {
                 g <- unique(genes[genes[["uniprot"]] == x, "gene_name"])
+                candidates <- g
                 if (!is.null(gene_conv) && !identical(gene_conv[1], gene_conv[2])) {
                     # if the original gene trying to be converted is not in the gene dictionary the
                     # interaction is not included in the final rl_map
-                    if (sum(g %in% conv_dict[, 1]) < length(g)) {
-                        for (gn in g) {
-                            # Back in vapply, so <<- required
-                            conversion_flag[[gn]] <<- TRUE
-                        }
-                    } else {
-                        g <- paste(unique(conv_dict[conv_dict[, 1] %in% g, 2]), collapse = ";")
+                    with_ortholog <- g[g %in% conv_dict[ , 1]]
+                    if (length(with_ortholog)) {
+                        candidates <- with_ortholog
                     }
                 }
-                # if multiple genes are annotated for the uniprot ID, use only the first unique instance
-                if (length(g) == 1) {
-                    res <- g
-                } else {
-                    res <- g[1]
+                # If multiple genes are annotated, use the first unique instance
+                res <- candidates[1]
+                if (length(g) > 1) {
                     g_col <- toString(g)
                     message(
                         x, " has multiple encoding gene mapped in genes table.\n",
@@ -222,6 +221,15 @@ create_rl_map_cellphonedb <- function(
                 }
                 return(res)
             })
+            if (!is.null(gene_conv) && !identical(gene_conv[1], gene_conv[2])) {
+                # if any component is not in the gene dictionary, interaction is not included
+                for (gn in setdiff(gene_b, conv_dict[ , 1])) {
+                    conversion_flag[[gn]] <- TRUE
+                }
+                gene_b <- vapply(gene_b, FUN.VALUE = character(1), FUN = function(gn) {
+                    paste(unique(conv_dict[conv_dict[, 1] == gn, 2]), collapse = ";")
+                })
+            }
             b_features[["gene_B"]] <- paste(gene_b, collapse = ",")
             # annotation as a receptor or ligand is based on the annotation of the complex
             b_features[["type_B"]] <- ifelse(complex_b[["receptor"]], "R", "L")
@@ -251,7 +259,7 @@ create_rl_map_cellphonedb <- function(
             next
         }
         if (length(conversion_flag)) {
-            message(paste("No gene orthologs found for:", names(conversion_flag), collapse = " "))
+            message("No gene orthologs found for: ", toString(names(conversion_flag)))
             message(paste("Skipping interaction:", partner_a, partner_b, collapse = " "))
             next
         }
@@ -263,12 +271,20 @@ create_rl_map_cellphonedb <- function(
         i_features[["database_name"]] <- database_name
         rl_map <- rbind(i_features, rl_map)
     }
+    
+    rl_map_cols <- c("int_pair", "name_A", "uniprot_A", "gene_A", "type_A", "name_B", "uniprot_B",
+        "gene_B", "type_B", "annotation_strategy", "source", "database_name")
+    # if every interaction was skipped, start from empty map with correct columns
+    if (is.null(rl_map)) {
+        rl_map <- data.frame(setNames(rep(list(character(0)), length(rl_map_cols)), rl_map_cols))
+    }
     # exclude rows without receptor-ligand interactions
     rl_map <- rl_map[!(rl_map$type_A == "R" & rl_map$type_B == "R") & !(rl_map$type_A == "L" & rl_map$type_B == "L"), ]
     # specify column order
-    rl_map <- rl_map[, c(
-        "int_pair", "name_A", "uniprot_A", "gene_A", "type_A", "name_B", "uniprot_B",
-        "gene_B", "type_B", "annotation_strategy", "source", "database_name"
-    )]
+    rl_map <- rl_map[, rl_map_cols]
+    if (nrow(rl_map) == 0) {
+        warning("No receptor-ligand interactions were retained after filtering for orthologs.",
+        "If using gene_conv, check orthologs for database genes.")
+    }
     return(rl_map)
 }

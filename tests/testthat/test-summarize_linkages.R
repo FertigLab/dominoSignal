@@ -163,3 +163,22 @@ test_that("summarize_linkages returns a valid linkage_summary", {
     out <- summarize_linkages(domino_results = dom_ls, subject_meta = meta)
     expect_true(validObject(out))
 })
+
+test_that("summarize_linkages checks build status by subject name rather than factor integer code", {
+    # factor codes (dom1 = 2, dom2 = 3) point at list positions 2 and 3, so the unbuilt dom3 would be inspected
+    dom_ls <- list(dom1 = tiny_dom1, dom2 = tiny_dom2, dom3 = tiny_created_dom2)
+    meta <- data.frame(ID = factor(c("dom1", "dom2"), levels = c("dom3", "dom1", "dom2")), group = c("A", "B"))
+    expect_warning(
+        out <- summarize_linkages(domino_results = dom_ls, subject_meta = meta),
+        "Linkage summary includes results only for provided subject names"
+    )
+    expect_named(out@subject_linkages, c("dom1", "dom2"))
+
+    # factor codes (dom1 = 3, dom2 = 2) point at built dom3 and dom2, so the unbuilt dom1 would slip past the check
+    dom_ls <- list(dom1 = tiny_created_dom2, dom2 = tiny_dom1, dom3 = tiny_dom2)
+    meta <- data.frame(ID = factor(c("dom1", "dom2"), levels = c("dom3", "dom2", "dom1")), group = c("A", "B"))
+    expect_error(
+        suppressWarnings(summarize_linkages(domino_results = dom_ls, subject_meta = meta)),
+        "The following subjects are not built: dom1"
+    )
+})

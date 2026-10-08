@@ -375,5 +375,5 @@ test_that("dom_to_df returns an empty data frame with a message when no interact
         "No interactions found for the specified clusters and expression type."
     )
     expect_s3_class(df, "data.frame")
-    expect_equal(nrow(df), 0)
+    expect_equal(dim(df), c(0, 8))
 })

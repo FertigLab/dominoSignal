@@ -88,7 +88,8 @@ summarize_linkages <- function(domino_results, subject_meta, subject_names = NUL
     if (!all(subject_names %in% subject_meta[ , 1])) {
         stop("subject_names not found in the first column of subject_meta: ", toString(setdiff(subject_names, subject_meta[ , 1])))
     }
-    subject_meta <- subject_meta[match(subject_names, subject_meta[ , 1]), , drop = FALSE]
+    subject_names <- as.character(subject_names)
+    subject_meta <- subject_meta[match(subject_names, subject_meta[[1]]), , drop = FALSE]
     # linkages are read from built domino output so each summarized object must be built
     not_built <- !vapply(domino_results[subject_names], function(dom) {
         is(dom, "domino") && isTRUE(dom@misc$build)}, logical(1))

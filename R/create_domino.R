@@ -91,12 +91,11 @@ create_domino <- function(
     )
 
     check_arg(tf_variance_quantile, allow_class = "numeric",
-        allow_range = c(0, 1))
+        allow_len = 1, allow_range = c(0, 1))
 
     # Convert dense matrix inputs to sparse
-    if (!is(counts, "dgCMatrix")) {
-        counts <- as(as(as(as.matrix(counts), "dMatrix"), "generalMatrix"), "CsparseMatrix")
-    }
+    if (!is(counts, "dgCMatrix")) counts <- as.matrix(counts)
+    counts <- as(as(as(counts, "dMatrix"), "generalMatrix"), "CsparseMatrix")
 
     # Create object
     dom <- domino()
@@ -275,6 +274,9 @@ create_domino <- function(
     if (length(missing_z) > 0) {
         warning("Receptor genes not found in z_scores are excluded from correlation calculations: ", toString(missing_z))
         ser_receptors <- setdiff(ser_receptors, missing_z)
+        if (length(ser_receptors) == 0) {
+            stop("No receptor genes are present in z_scores. Cannot calculate correlations.")
+        }
     }
     rho <- matrix(0, nrow = length(ser_receptors), ncol = nrow(dom@features))
     rownames(rho) <- ser_receptors

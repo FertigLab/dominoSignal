@@ -1,3 +1,9 @@
+tiny_create_args <- list(
+    rl_map = rl_map_tiny, features = tiny_auc1, counts = tiny_counts1, z_scores = tiny_zscores1,
+    clusters = tiny_clusters1, tf_targets = regulon_list_tiny, use_complexes = TRUE,
+    remove_rec_dropout = FALSE, verbose = FALSE
+)
+
 test_that("create_domino runs with tiny inputs", {
     dom <- create_domino(
         rl_map = rl_map_tiny,
@@ -161,12 +167,6 @@ test_that("create_domino and build_domino give identical signaling with and with
 
     expect_identical(unname(as.matrix(dom_signaling(dom))), unname(as.matrix(dom_signaling(dom_custom))))
 })
-
-tiny_create_args <- list(
-    rl_map = rl_map_tiny, features = tiny_auc1, counts = tiny_counts1, z_scores = tiny_zscores1,
-    clusters = tiny_clusters1, tf_targets = regulon_list_tiny, use_complexes = TRUE,
-    remove_rec_dropout = FALSE, verbose = FALSE
-)
 
 test_that("create_domino aligns clusters, counts, and features to z_scores cell order", {
     set.seed(1)
@@ -447,5 +447,14 @@ test_that("create_domino excludes rl_map rows that do not pair one receptor with
     expect_error(
         suppressWarnings(do.call(create_domino, tiny_mod_args)),
         "No rl_map rows pair a receptor \\(R\\) with a ligand \\(L\\)"
+    )
+})
+
+test_that("create_domino provides informative error when no receptor genes are present in z_scores", {
+    tiny_mod_args <- tiny_create_args
+    rownames(tiny_mod_args$z_scores) <- paste0("other_", rownames(tiny_mod_args$z_scores))
+    expect_error(
+        suppressWarnings(do.call(create_domino, tiny_mod_args)),
+        "No receptor genes are present in z_scores. Cannot calculate correlations."
     )
 })

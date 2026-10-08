@@ -63,7 +63,7 @@ rl_map_tiny_conv <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
 }
 
 # Using alternate conversion table instead of biomaRt
-# (this simplified table if for illustration only, this is
+# (this simplified table is for illustration only, this is
 # NOT the correct way to convert between HGNC and MGI symbols)
 hs_genes <- unique(CellPhoneDB$genes_tiny$gene_name)
 ortho_table <- data.frame(
