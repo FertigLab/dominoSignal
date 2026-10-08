@@ -16,11 +16,14 @@
 #' dom <- DominoObjects$built_dom_tiny
 #' cor_scatter(dom, "FLI1","CXCR3")
 #'
-cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
+cor_scatter <- function(dom, tf, rec, remove_rec_dropout = NULL, ...) {
 
     check_arg(dom, allow_class = "domino", allow_len = 1)
     check_arg(tf, allow_class = "character", allow_len = 1)
     check_arg(rec, allow_class = "character", allow_len = 1)
+    if (is.null(remove_rec_dropout)) {
+        remove_rec_dropout <- isTRUE(dom@misc$create_vars$remove_rec_dropout)
+    }
     check_arg(remove_rec_dropout, allow_class = "logical", allow_len = 1)
     
     if (remove_rec_dropout) {

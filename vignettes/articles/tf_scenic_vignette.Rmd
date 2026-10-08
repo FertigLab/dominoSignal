@@ -94,13 +94,16 @@ We will use the `pbmc3k\_counts.loom` file in this tutorial.
 
 Co-expression modules are used to quantify gene-TF adjacencies.
 
+
 ```{bash GRN, eval=FALSE, tidy = FALSE}
-singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic grn \
-    "pbmc3k_counts.loom" \ # path to loom file
-    "${SCENIC_DIR}/allTFs_hg38.txt" \ # list of TFs
-    -o "${SCENIC_DIR}/pbmc_adj_3k.tsv" \ # output directory
-    --num_workers 6 \ # number of CPUs to use if multi-core processing is available
-    --seed 123 # specify a random seed for reproducibility
+grn_args=(
+    "${SCENIC_DIR}/pbmc3k_counts.loom"   # path to loom file
+    "${SCENIC_DIR}/allTFs_hg38.txt"      # list of TFs
+    -o "${SCENIC_DIR}/pbmc_adj_3k.tsv"   # output adjacency table
+    --num_workers 6                      # number of CPUs if multi-core processing is available
+    --seed 123                           # specify a random seed for reproducibility
+)
+singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic grn "${grn_args[@]}"
 ```
 
 ### ctx: construct TF regulons with pruning based on TF motif enrichment
@@ -108,15 +111,20 @@ singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic grn \
 The rankings of genes based on enrichment of TF motifs to the transcription start site (TSS) are considered in the construction of regulons, where target genes in the TF-modules are removed if they lack motifs proximal to the TSS where the TF may bind.
 
 ```{bash CTX, eval=FALSE, tidy = FALSE}
-singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic ctx \
-    "${SCENIC_DIR}/pbmc_adj.tsv" \ # adjacency matrix output from grn
-    "${SCENIC_DIR}/hg38_10kbp_up_10kbp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather" \ # target rankings of motif enrichment within 10 kb of TSS
-    "${SCENIC_DIR}/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather" \ # target rankings of motif enrichment within 500 bp upstream and 100 bp downstream of TSS
-    --annotations_fname "${SCENIC_DIR}/motifs-v9-nr.hgnc-m0.001-o0.0.tbl" \ # TF motif features
-    --expression_mtx_fname "pbmc3k_counts.loom" \ # counts matrix loom file
-    --mode "dask_multiprocessing" \ # enable multi-core processing
-    --output "${SCENIC_DIR}/regulons_pbmc_3k.csv" \ # output file of learned TF regulons
-    --num_workers 1 # number of CPU cores            
+ctx_args=(
+    # adjacency table output from grn
+    "${SCENIC_DIR}/pbmc_adj_3k.tsv"
+    # gene rankings for motif enrichment within 10 kb of the TSS
+    "${SCENIC_DIR}/hg38_10kbp_up_10kbp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather"
+    # gene rankings for motif enrichment 500 bp upstream to 100 bp downstream of the TSS
+    "${SCENIC_DIR}/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather"
+    --annotations_fname "${SCENIC_DIR}/motifs-v9-nr.hgnc-m0.001-o0.0.tbl"   # TF motif annotations
+    --expression_mtx_fname "${SCENIC_DIR}/pbmc3k_counts.loom"              # counts matrix loom file
+    --mode "dask_multiprocessing"                                           # enable dask multi-core processing
+    --output "${SCENIC_DIR}/regulons_pbmc_3k.csv"                           # output file of learned TF regulons
+    --num_workers 6                                                         # number of CPU cores
+)
+singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic ctx "${ctx_args[@]}"
 ```
 
 ### aucell: calculate TF activity scores
@@ -124,10 +132,12 @@ singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic ctx \
 Enrichment of a regulon is measured as the **A**rea **U**nder the recovery **C**urve (AUC) of the genes that define this regulon.
 
 ```{bash AUCELL, eval=FALSE, tidy = FALSE}
-singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic aucell \
-    "pbmc3k_counts.loom" \ # counts matrix loom file
-    "${SCENIC_DIR}/regulons_pbmc_3k.csv" \ # regulon table output from ctx
-    -o "${SCENIC_DIR}/auc_pbmc_3k.csv" # cell x TF matrix of AUC values
+aucell_args=(
+    "${SCENIC_DIR}/pbmc3k_counts.loom"     # counts matrix loom file
+    "${SCENIC_DIR}/regulons_pbmc_3k.csv"   # regulon table output from ctx
+    -o "${SCENIC_DIR}/auc_pbmc_3k.csv"     # cell x TF matrix of AUC values
+)
+singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic aucell "${aucell_args[@]}"
 ```
 
 The csv files created in this analysis can be used as the TF activation inputs in a dominoSignal analysis. Please see our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page for more information on how to perform an analysis with dominoSignal. For a brief tutorial on the download of the necessary files for using CellPhoneDB, please see the [Using the CellPhoneDB database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html) vignette.

@@ -19,7 +19,7 @@ NULL
 #' @param min_thresh minimum signaling threshold for plotting. Defaults to -Inf for no threshold.
 #' @param max_thresh maximum signaling threshold for plotting. Defaults to Inf for no threshold.
 #' @param scale how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root, or
-#'   'log' for log10.
+#'   'log' for log10(x+1).
 #' @param normalize options to normalize the matrix. Normalization is done after thresholding and scaling.
 #'   Accepted inputs are 'none' for no normalization, 'rec_norm' to normalize to the maximum value with each receptor
 #'   cluster, or 'lig_norm' to normalize to the maximum value within each ligand cluster
@@ -58,14 +58,14 @@ signaling_heatmap <- function(
     mat <- dom@signaling
 
     if (!is.null(clusts)) {
-        mat <- mat[paste0("R_", clusts), paste0("L_", clusts)]
+        mat <- mat[paste0("R_", clusts), paste0("L_", clusts), drop = FALSE]
     }
     mat[which(mat > max_thresh)] <- max_thresh
     mat[which(mat < min_thresh)] <- min_thresh
     if (scale == "sqrt") {
         mat <- sqrt(mat)
     } else if (scale == "log") {
-        mat <- log10(mat)
+        mat <- log10(mat + 1)
     } else if (scale != "none") {
         stop("Do not recognize scale input")
     }
@@ -108,7 +108,7 @@ signalling_heatmap <- signaling_heatmap
 #' @param min_thresh Minimum signaling threshold for plotting. Defaults to -Inf for no threshold.
 #' @param max_thresh Maximum signaling threshold for plotting. Defaults to Inf for no threshold.
 #' @param scale How to scale the values (after thresholding). Options are 'none', 'sqrt' for square root,
-#'   or 'log' for log10.
+#'   or 'log' for log10(x+1).
 #' @param normalize Options to normalize the matrix. Accepted inputs are 'none' for no normalization,
 #'   'rec_norm' to normalize to the maximum value with each receptor cluster, or 'lig_norm' to normalize
 #'   to the maximum value within each ligand cluster
@@ -159,7 +159,7 @@ incoming_signaling_heatmap <- function(
     if (scale == "sqrt") {
         mat <- sqrt(mat)
     } else if (scale == "log") {
-        mat <- log10(mat)
+        mat <- log10(mat + 1)
     } else if (scale != "none") {
         stop("Do not recognize scale input")
     }
@@ -322,7 +322,7 @@ feat_heatmap <- function(
         feats <- rownames(mat)
     }
     if (length(cl)) {
-        mat <- mat[feats, names(cl)]
+        mat <- mat[feats, names(cl), drop = FALSE]
     }
     if (ann_cols) {
         ac <- list(Cluster = cl)
