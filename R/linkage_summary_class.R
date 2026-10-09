@@ -90,9 +90,9 @@ setMethod("show", "linkage_summary", function(object) {
     n_meta <- ncol(slot(object, "subject_meta"))
     n_clusts <- max(lengths(slot(object, "subject_linkages")), 0L)
     if (n_subjects == 0) {
-        cat("An empty linkage summary object (0 subjects).\n")
+        message("An empty linkage summary object (0 subjects).\n")
     } else {
-        cat("A linkage summary object of", n_subjects, "subjects with", n_meta, "metadata annotations and linkages between", n_clusts, "clusters.\n")
+        message("A linkage summary object of ", n_subjects, " subjects with ", n_meta, " metadata annotations and linkages between ", n_clusts, " clusters.\n")
     }
     return(invisible(object))
 })

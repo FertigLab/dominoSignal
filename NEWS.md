@@ -1,60 +1,88 @@
-# dominoSignal v1.7.1 (in development)
+# dominoSignal v1.7.1 (October 12, 2026)
 
 ## BREAKING CHANGES
 
-- Updated name of first argument of `count_linkage()` and `test_differential_linkages()` functions to `link_summary` to avoid conflict with `linkage_summary()` class.
-- Removed `test_name` argument from `test_differential_linkages()` function, as Fisher's Exact Test is the only option.
-- Default for `remove_rec_dropout` in `create_domino()` has been changed to `FALSE` to reflect current recommended usage.
-- Argument `use_clusters` removed from `create_domino()`, as `TRUE` is the only option.
-- `domino()` validity check now requires that cell inputs have aligned names. Previously built objects (before the bug fix for cluster matching by positions) will now fail the validity check and should be re-run.
-- When `create_domino()` TF selection method is set to `all` or `variable`, per cluster networks (using TFs ranked by maximum correlation in expressed receptors) are generated rather than the previous `clust` list. This ensures compatibility with downstream exploration and visualization functions but will change returned results compared to previous versions.
-- Interactions in `rl_map` that do not pair one receptor (`R`) with one ligand (`L`) are excluded in `create_domino()` with a warning and the function errors if no rows remain (previously gene_B was silently treated as a receptor in those rows).
-- Component genes of a complex ligand when it is the only valid ligand for a cluster are now averaged in `build_domino()` instead of summing component genes as separate rows. Complexes with missing components drop consistently. Signaling scores for affected clusters will differ from previous versions.
-- The `summarize_linkages()` function requires `domino()` objects built with `build_domino()` and subject names present in the first column of `subject_meta`. The function reorders `subject_meta` to match `subject_names` to avoid issues with positional matching.
-- Validity check for `linkage_summary()` object now requires the first column of `subject_meta` and the names of `subject_linkages` to match `subject_names` in the same order.
+Changes are noted as breaking when a call on the same inputs gives a different result or a call that used to work now errors. A number of bug fixes are included here (prefixed with [BF]), as the fixes alter the behavior of functions.
+
+### Renamed or removed functions, arguments, and data
+
+- Removed the `use_clusters` argument from `create_domino()`, as `TRUE` is the only option. The `counts`, `z_scores`, and `clusters` arguments are now required and no longer default to `NULL`.
+- Renamed the `min_tf_pval` argument of `build_domino()` to `max_tf_pval`, as it as a maximum p-value threshold. Objects built with previous versions (which store `min_tf_pval` in `build_vars`) still pass validity checks.
+- Renamed the first argument of `count_linkage()` and `test_differential_linkages()` from `linkage_summary` to `link_summary` to avoid conflict with `linkage_summary()` class.
+- Removed the `test_name` argument from `test_differential_linkages()`, as Fisher's exact test is the only option.
+- Renamed the `return` argument of `dom_network_items()` to `which_return` to avoid conflict with `return()` function.
+- `obtain_circos_expression()` and `render_circos_ligand_receptor()` are no longer exported. Use `circos_ligand_receptor()`.
+- Renamed elements of the `PBMC` example dataset: `RNA_count_tiny` is now `count_tiny` and `RNA_zscore_tiny` is now `zscore_tiny`.
+- Removed `mock_linkage_summary()`. An example `linkage_summary()` object is now provided in the `LinkageSummary` dataset.
+
+### Changed defaults
+
+- Changed the default of `remove_rec_dropout` in `create_domino()` to `FALSE` to reflect current recommended usage.
+- Changed the default of `remove_rec_dropout` in `cor_scatter()` to `NULL`, which uses the value stored in the `domino()` object by `create_domino()`. Objects created before v1.7.1 do not store this value and now default to `FALSE` (previously `TRUE`).
+- The `plot_differential_linkages()` colors now fun from the `gradient` minimum color (red, now customizable) to the maximum color (grey, now customizable) regardless of `stat_ranking`. Previously, `stat_ranking = "descending"` colored the maximum value red.
+
+### Stricter input checks and new errors
+
+- `domino()` objects now have validity checks: cell-level slots must share the same cells in the same order, and stored parameters, `clust_de`, and `cor` must be consistent within the object. Objects created with earlier versions may fail `validObject()`, in which case they should be recreated.
+- [BF] `linkage_summary()` objects now have validity checks: the first column of `subject_meta` and the names of `subject_linkages` must match `subject_names` in the same order to prevent mismatches when matching by position only. Objects created with earlier versions may fail `validObject()` if the order differed, in which case they should be recreated and results may change.
+- Added argument validation to exported functions. Inputs that were previously accepted or failed later with unclear errors now error immediately with more informative errors.
+- [BF] `create_domino()` matches cells across `counts`, `z_scores`, `features`, and `clusters` by name instead of only by position. `clusters` must be named by cell. Cells not shared by all inputs are dropped with a warning, and the function errors if no cells are shared. Results will differ for inputs whose cells were not in the same order.
+- [BF] `create_domino()` excludes `rl_map` rows that do not pair one receptor with one ligand with a warning, and errors if no rows remain. Previously, `gene_B` was silently treated as the receptor if `gene_A` was a ligand.
+- [BF] `summarize_linkages()` requires `domino()` objects built with `build_domino()` and subject names present in the first column of `subject_meta`. `subject_meta` is reordered to match `subject_names` instead of being matched by position. Results may change if order differed previously.
+- `signaling_network()` now errors instead of warning and returning `NULL` when no signaling is found.
+- `gene_network()` no errors instead of warning when the input `domino()` object has not been built.
+
+### Changed results
+
+- When `create_domino()` TF selection method is `all` or `variable`, cluster labels are kept and per-cluster networks are built using TFs ranked by maximum correlation with with receptors expressed in each cluster. Previously, clusters were set to an empty factor and a single `clust` list was returned, which was incompatible with downstream exploration and plotting functions.
+- [BF] Receptor-TF correlations that are not calculated in `create_domino()` (receptors in the TF's regulon, or TFs with all-zero scores in the retained cells) are now `NA` instead of zero. Receptor complexes with such a component now have an `NA` median correlation and are no longer linked to that TF.
+- [BF] `create_domino()` no longer drops receptors with non-syntactic names (such as those containing spaces or hyphens) from the signaling network.
+- [BF] `build_domino()` keeps a receptor when it is the only receptor gene passing `min_rec_percentage` in a cluster. Previously, it was silently excluded from the network.
+- [BF] `build_domino()` calculates signaling scores for clusters with only one incoming ligand. Previously, these scores were always zero.
+- [BF] `build_domino()` averages the component genes of a complex ligand when it is the only valid ligand for a cluster, instead of summing the components as separate ligands. Complexes with missing components are dropped consistently.
+- [BF] `create_rl_map_cellphonedb()` skips interactions whose components lack an ortholog during gene conversion, instead of keeping unconverted gene names. Names of single-protein partner B entries now replace spaces with underscores, matching partner A.
+- [BF] `count_linkage()` and `test_differential_linkages()` now filter by `subject_names`. Previously, the argument was ignored.
+- [BF] `count_linkage()` now counts the correct subjects when the subject name column of `subject_meta` is a factor.
+- [BF] `summarize_linkages()` no longer records spurious `NA <- NA` linkages for subjects or clusters without linkages.
+- `signaling_heatmap()` and `incoming_signaling_heatmap()` with `scale = "log"` now plot `log10(x + 1)` instead of `log10(x)` to avoid `log10(0)`.
+- [BF] `gene_network()` no longer counts ligand expression more than once for vertex sizes when `OutgoingSignalingClust` is used with multiple receptor clusters.
 
 ## New Features
 
+- `create_domino()` stores its parameters in the `domino()` object, and `create_domino()` and `build_domino()` record the dominoSignal version used. These are returned by `dom_info()` and reported by `print()` and `show()`, which now give the same output for `domino()` objects.
+- `create_domino()` accepts a dense `matrix` or `data.frame` for `counts` and converts it to a sparse `dgCMatrix`.
+- `build_domino()` messages when no TFs in a cluster pass the `max_tf_pval` threshold, explaining why no signaling is inferred.
+- Added a [`subset`](../reference/subset-linkage_summary-method.html) method for `linkage_summary()` objects to filter by subject names or metadata.
+- Added `gradient` argument to `plot_differential_linkages()` to set the colors of the test statistic.
 - Added `dom_to_df()` function to create data.frame of signaling results from `domino()` object.
-- Added [`subset`](../reference/subset-linkage_summary-method.html) for `linkage_summary()` class to allow for filtering of objects by subject names or metadata.
-- Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
-- Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
-- Parameters for `domino()` object creation (used in `create_domino()`) are now stored in object
-- Dense `matrix` or `data.frame` accepted for `counts` input to `create_domino()` and converted to sparse `dgCMatrix`.
-- Default for `remove_rec_dropout` in `cor_scatter()` has been changed to `NULL` and will check `domino()` metadata for creation of the object (otherwise will be set to `FALSE`).
+- Added example datasets `DominoObjects` (created and built `domino()` objects) and `LinkageSummary` (a `linkage_summary()` object and differential linkage results). Added `regulon_list_tiny` to `SCENIC` and `rl_map_tiny` to `CellPhoneDB`.
 
 ## Bug Fixes
 
-- Fixed `gene_network()` function skip iterating on linkages if length is zero.
-- Fixed `create_domino()` to work with custom rl_map without names_A and names_B columns
-- Fixed `build_domino()` to retain receptor gene names when only one receptor passes expression threshold in a cluster, rather than silently excluding it from signaling network.
-- Fixed `build_domino()` to compute signaling scores for clusters with only one incoming ligand instead of always returning zero.
-- Fixed `count_linkage()` and `test_differential_linkages()` functions to use `subject_names` argument to filter `linkage_summary()` object before calculating results.
-- Fixed `summarize_linkages()` iteration over linkage pairs (receptor-TF or ligand-receptor) to skip empty cases (removing spurious NA <- NA results when no links are present).
-- Fixed `plot_differential_linkages()` to accept statistic ranges outside of [0, 1] for odds.ratio.
-- Fixed `create_domino()` setting clusters to empty factor if using `tf_selection_method` of `variable` or `all`.
-- Removed default value of `NULL` for required arguments of `counts`, `zscores`, and `clusters` in `create_domino()`.
-- Fixed cluster matching to cells by position only by aligning cell inputs by name in `create_domino()`.
-- The maximum p-value threshold for cluster based selection of TFs in `build_domino()` has argument name `max_tf_pval` instead of incorrect `min_tf_pval`. (The previous `min_tf_pval` name stored in `build_vars` of the `domino()` object should still pass validity checks.)
-- Fixed `create_domino()` dropping receptors with non-syntactic names (such as those containing spaces or hyphens) from signaling network which were renamed in correlation matrix.
-- Fixed `create_domino()` failing when single feature is retained by `tf_selection_method` is set to `variable` and added validation for `tf_variance_quantile` argument.
-- Fixed `count_linkage()` counting the wrong subjects when subject name column of `subject_meta` is a factor.
-- Fixed `create_rl_map_cellphonedb()` keeping components that lack an ortholog (resulting in unconverted gene names) instead of skipping interactions
-- Fixed `create_rl_map_cellphonedb()` to handle missing receptor annotations in protein table input instead of crashing.
-- When `signaling_heatmap()` and `incoming_signaling_heatmap()` are called with `scale = "log"` the transformation is now `log10(x+1)` instead of `log10()` to avoid `log10(0)` issues.
-- `clust` is now a required argument of `gene_network()` (previously defaulted to `NULL`, which produced no plot).
-- Fixed `gene_network()` counting ligand expression more than once for vertex sizes when `OutgoingSignalingClust` is used with multiple receptor clusters.
+- Fixed `create_domino()` failing with a custom `rl_map` that lacks `name_A` and `name_B` columns.
+- Fixed `create_domino()` failing when a single feature is retained with `tf_selection_method = "variable"`, and added validation for `tf_variance_quantile`.
+- Fixed `create_domino()` failing when receptor genes are missing from `z_scores`. These receptors are now excluded from correlation calculations with a warning.
+- Error messages now refer to `create_domino()` and `build_domino()` instead of `domino_create` and `domino_build`.
+- Fixed `create_rl_map_cellphonedb()` failing when receptor annotations are missing from the protein table.
+- Fixed `create_rl_map_cellphonedb()` failing when no interactions remain after ortholog conversion. An empty `rl_map` is now returned with a warning.
+- Fixed `test_differential_linkages()` failing when comparing more than two groups (the odds ratio is `NA` in this case).
+- Fixed `feat_heatmap()` failing when `ann_cols = FALSE` and a title is used.
+- Fixed `signaling_network()` producing `NaN` edge weights when normalizing clusters without signaling (0/0).
+- `gene_network()` gives an informative error when `clust` is not provided.
+- Fixed `gene_network()` failing when there are no linkages to plot.
+- Fixed `plot_differential_linkages()` failing when the test statistic contains `NA` values (such as `odds.ratio`). `stat_range` is only restricted to [0, 1] for p-values.
 
 ## Documentation
 
-- Added vignette for differential signaling workflow.
-- Example data regenerated with `dominoSignal` version 1.7.1.
-- Corrected documentation of `tf_variance_quantile` in `create_domino()` to indicate coefficient of variation is used and higher values keep fewer features.
-- Error message referring to `domino_create` instead of `create_domino()` in `build_domino()` has been corrected.
-- When no TFs pass `max_tf_pval` threshold in `build_domino()`, users now receive a message explaining why no signaling is inferred.
-- Fixed `create_rl_map_cellphonedb()` examples to use genes and toy ortholog table that returns results.
+- Updated vignettes for consistent terminology, corrected pySCENIC commands, and improved accessibility.
+- Added vignette for the differential signaling workflow
+- Regenerated example data with dominoSignal v1.7.1. Examples now load the prebuilt `DominoObjects` and `LinkageSummary` datasets instead of re-running `example(build_domino)`.
+- Documented sources and contents of example datasets.
+- Corrected documentation of `tf_variance_quantile` in `create_domino()` to state that the coefficient of variation is used and higher values keep fewer features.
+- Fixed `create_rl_map_cellphonedb()` examples to use genes and a toy ortholog table that return results.
 
-# dominoSignal v1.6.0
+
+# dominoSignal v1.6.0 (May 5, 2026)
 
 ## New Features
 
@@ -76,18 +104,20 @@
 - Updated pkgdown and vignette links to use working URLs.
 - Updated README/index documentation links and citation text to current release metadata.
 
-# dominoSignal v1.4.1
+# dominoSignal v1.4.1 (March 25, 2026)
+
+## Other changes
 
 - Updated maintainer information.
 
-# dominoSignal v1.2.0
+# dominoSignal v1.2.0 (April 15th, 2025)
 
 ## Bug Fixes
 
 - Fixed `circos_ligand_receptor()` to not fail when rl_map includes ligands not present in the expression matrix. Missing ligands are excluded with informative message.
 - Fixed `create_domino()` to prevent overwriting signaling matrix with `NULL` when `complexes = TRUE` but no complexes are found to have active signaling.
 
-# dominoSignal v1.0.0
+# dominoSignal v1.0.0 (November 6, 2024)
 
 - Accepted to Bioconductor in release 3.20.
 
@@ -97,24 +127,26 @@
 
 ## Documentation
 
-- Updated vignette download instructions to use the Bioconductor URL
+- Updated vignette download instructions to use the Bioconductor URL.
 - All vignettes explicitly state seed used when executing code if applicable.
-- Example code runs with `echo = FALSE` to reduce output verbosity in documentation
+- Example code runs with `echo = FALSE` to reduce output verbosity in documentation.
 - `create_domino()` examples run with `verbose = FALSE` to reduce extensive output in documentation.
 - Vignette regarding dominoSignal object structure explains the purpose of downloading and importing data with `BiocFileCache` to demonstrate applications on large real data objects.
 - Fixed example code for `circos_ligand_receptor()` color customization and `cor_heatmap()` boolean representation.
 - Updated non-functional links to correct URLs.
 
-# dominoSignal v0.99.2-alpha
+# dominoSignal v0.99.2-alpha (May 15, 2024)
 
-- Package renamed from "domino2" to "dominoSignal".
+## BREAKING CHANGES
+
+- Renamed package from "domino2" to "dominoSignal".
 
 ## Documentation
 
 - Updated vignettes to demonstrate pipeline on data formatted as `SingleCellExperiment` objects.
-- Added SCENIC tutorial vignette in place of deprecated example scripts
+- Added SCENIC tutorial vignette in place of deprecated example scripts.
 
-# dominoSignal v0.2.2-alpha
+# dominoSignal v0.2.2-alpha (December 20, 2023)
 
 ## New Features
 
@@ -122,7 +154,7 @@
 - Added helper functions to count linkages and compare between `domino()` objects.
 - Added plotting function for differential linkages.
 
-# dominoSignal v0.2.1-alpha
+# dominoSignal v0.2.1-alpha (November 3, 2023)
 
 ## New Features
 
