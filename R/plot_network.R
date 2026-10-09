@@ -29,7 +29,7 @@ NULL
 #'   'rec_norm' to normalize to the maximum value with each receptor cluster, or 'lig_norm' to normalize to the
 #'   maximum value within each ligand cluster
 #' @param scale how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root,
-#'   'log' for log10, or 'sq' for square
+#'   'log' for log10(x+1), or 'sq' for square
 #' @param layout type of layout to use. Options are 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold
 #'   force directed layout, and 'kk' for Kamada Kawai for directed layout
 #' @param scale_by how to size vertices. Options are 'lig_sig' for summed outgoing signaling, 'rec_sig' for summed
@@ -145,6 +145,8 @@ signaling_network <- function(
         none = mat,
         stop("Do not recognize normalize input")
     )
+    # clusters with no signaling normalize to 0 / 0
+    mat[is.nan(mat)] <- 0
     links <- character(0)
     weight <- numeric(0)
     for (rcl in rownames(mat)) {
@@ -152,8 +154,9 @@ signaling_network <- function(
             if (mat[rcl, lcl] == 0) {
                 next
             }
-            lig_cl <- gsub("L_", "", lcl, fixed = TRUE)
-            rec_cl <- gsub("R_", "", rcl, fixed = TRUE)
+            # strip only the prefix so cluster names containing "L_" or "R_" are kept intact
+            lig_cl <- sub("^L_", "", lcl)
+            rec_cl <- sub("^R_", "", rcl)
             links <- c(links, as.character(lig_cl), as.character(rec_cl))
             weight[paste0(lig_cl, "|", rec_cl)] <- mat[rcl, lcl]
         }
@@ -233,7 +236,8 @@ signalling_network <- signaling_network
 #'   Fruchterman-Reingold force directed layout, and 'kk' for Kamada Kawai for directed layout.
 #' @param ... Other parameters to pass to plot() with an [igraph](https://r.igraph.org/) object.
 #'   See [igraph](https://r.igraph.org/) manual for options.
-#' @return An igraph plot rendered to the active graphics device
+#' @return An igraph plot rendered to the active graphics device.  A list with the igraph object (`graph`) and
+#'   the layout matrix (`layout`) is returned invisibly, or NULL if no signaling is found for the clusters.
 #' @export gene_network
 #' @family networks
 #' @examples
@@ -253,9 +257,10 @@ gene_network <- function(
 ) {
 
     check_arg(dom, allow_class = "domino", allow_len = 1)
-    if (!is.null(clust)) {
-        check_arg(clust, allow_class = "character", allow_values = dom_clusters(dom))
+    if (is.null(clust)) {
+        stop("Please provide clust as one or more receptor clusters in the domino object")
     }
+    check_arg(clust, allow_class = "character", allow_values = dom_clusters(dom))
     if (!is.null(OutgoingSignalingClust)) {
         check_arg(OutgoingSignalingClust, allow_class = "character", allow_values = dom_clusters(dom))
     }
@@ -270,7 +275,7 @@ gene_network <- function(
         allow_values = c("grid", "random", "sphere", "circle", "fr", "kk"))
 
     if (!dom@misc[["build"]]) {
-        warning("Please build a signaling network with build_domino prior to plotting.")
+        stop("Please build a signaling network with build_domino prior to plotting.")
     }
     if (!length(dom@clusters)) {
         warning("This domino object wasn't built with clusters. The global signaling network will be shown.")
@@ -337,8 +342,7 @@ gene_network <- function(
                 new_sums <- rowSums(mat[rowSums(mat) > 0, , drop = FALSE])
                 
                 allowed_ligs <- union(allowed_ligs, new_ligs)
-                shared <- intersect(names(all_sums), names(new_sums))
-                all_sums[shared] <- all_sums[shared] + new_sums[shared]
+                # Add ligands once (since they will be repeated)
                 new_only <- setdiff(names(new_sums), names(all_sums))
                 all_sums <- c(all_sums, new_sums[new_only])
             } else {

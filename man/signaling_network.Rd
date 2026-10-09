@@ -66,7 +66,7 @@ threshold. Defaults to Inf for no threshold}
 maximum value within each ligand cluster}
 
 \item{scale}{how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root,
-'log' for log10, or 'sq' for square}
+'log' for log10(x+1), or 'sq' for square}
 
 \item{layout}{type of layout to use. Options are 'random', 'sphere', 'circle', 'fr' for Fruchterman-Reingold
 force directed layout, and 'kk' for Kamada Kawai for directed layout}

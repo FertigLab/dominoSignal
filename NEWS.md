@@ -21,6 +21,7 @@
 - Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
 - Parameters for `domino()` object creation (used in `create_domino()`) are now stored in object
 - Dense `matrix` or `data.frame` accepted for `counts` input to `create_domino()` and converted to sparse `dgCMatrix`.
+- Default for `remove_rec_dropout` in `cor_scatter()` has been changed to `NULL` and will check `domino()` metadata for creation of the object (otherwise will be set to `FALSE`).
 
 ## Bug Fixes
 
@@ -40,6 +41,9 @@
 - Fixed `count_linkage()` counting the wrong subjects when subject name column of `subject_meta` is a factor.
 - Fixed `create_rl_map_cellphonedb()` keeping components that lack an ortholog (resulting in unconverted gene names) instead of skipping interactions
 - Fixed `create_rl_map_cellphonedb()` to handle missing receptor annotations in protein table input instead of crashing.
+- When `signaling_heatmap()` and `incoming_signaling_heatmap()` are called with `scale = "log"` the transformation is now `log10(x+1)` instead of `log10()` to avoid `log10(0)` issues.
+- `clust` is now a required argument of `gene_network()` (previously defaulted to `NULL`, which produced no plot).
+- Fixed `gene_network()` counting ligand expression more than once for vertex sizes when `OutgoingSignalingClust` is used with multiple receptor clusters.
 
 ## Documentation
 

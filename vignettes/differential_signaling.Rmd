@@ -75,7 +75,7 @@ clusters <- dom_clusters(dom, labels = TRUE)
 
 We can use a helper function to resample the cells and shuffle the cluster labels for a subset of them, and then rebuild the domino object with `create_domino()` and `build_domino()` using the same parameters across all subjects so that they can be compared.^[These parameters are fairly permissive to ensure enough linkages are inferred for demonstration purposes.]
 
-```{r create replicates, result = "hide"}
+```{r create replicates, results = "hide"}
 build_reps <- function(clusters, seed, keep_frac, shuffle_frac) {
     # Local seed for reproducibility without affecting global seed
     withr::with_seed(seed, {

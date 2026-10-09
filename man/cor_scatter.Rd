@@ -4,7 +4,7 @@
 \alias{cor_scatter}
 \title{Create a correlation plot between TF and receptor}
 \usage{
-cor_scatter(dom, tf, rec, remove_rec_dropout = TRUE, ...)
+cor_scatter(dom, tf, rec, remove_rec_dropout = NULL, ...)
 }
 \arguments{
 \item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
@@ -14,7 +14,7 @@ cor_scatter(dom, tf, rec, remove_rec_dropout = TRUE, ...)
 \item{rec}{Target receptor for plotting expression}
 
 \item{remove_rec_dropout}{Whether to remove cells with zero expression for plot.
-This should match the same setting as in \code{\link[=build_domino]{build_domino()}}.}
+Default (NULL) will use the value of \code{remove_rec_dropout} used with \code{\link[=create_domino]{create_domino()}} when the domino object was created. If the domino object was created before that parameter was added, it will default to FALSE. To override the default, set this parameter to TRUE or FALSE}
 
 \item{...}{Other parameters to pass to \code{\link[ggpubr:ggscatter]{ggpubr::ggscatter()}}.}
 }

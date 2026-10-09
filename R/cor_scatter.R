@@ -6,7 +6,7 @@
 #' @param tf Target TF for plotting AUC score
 #' @param rec Target receptor for plotting expression
 #' @param remove_rec_dropout Whether to remove cells with zero expression for plot.
-#'  This should match the same setting as in [build_domino()].
+#'  Default (NULL) will use the value of `remove_rec_dropout` used with [create_domino()] when the domino object was created. If the domino object was created before that parameter was added, it will default to FALSE. To override the default, set this parameter to TRUE or FALSE
 #' @param ... Other parameters to pass to [ggpubr::ggscatter()].
 #' @return A ggplot scatter plot rendered in the active graphics device
 #' @export cor_scatter
@@ -16,11 +16,14 @@
 #' dom <- DominoObjects$built_dom_tiny
 #' cor_scatter(dom, "FLI1","CXCR3")
 #'
-cor_scatter <- function(dom, tf, rec, remove_rec_dropout = TRUE, ...) {
+cor_scatter <- function(dom, tf, rec, remove_rec_dropout = NULL, ...) {
 
     check_arg(dom, allow_class = "domino", allow_len = 1)
     check_arg(tf, allow_class = "character", allow_len = 1)
     check_arg(rec, allow_class = "character", allow_len = 1)
+    if (is.null(remove_rec_dropout)) {
+        remove_rec_dropout <- isTRUE(dom@misc$create_vars$remove_rec_dropout)
+    }
     check_arg(remove_rec_dropout, allow_class = "logical", allow_len = 1)
     
     if (remove_rec_dropout) {

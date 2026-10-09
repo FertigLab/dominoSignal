@@ -35,7 +35,7 @@ signalling_heatmap(
 \item{max_thresh}{maximum signaling threshold for plotting. Defaults to Inf for no threshold.}
 
 \item{scale}{how to scale the values (after thresholding). Options are 'none', 'sqrt' for square root, or
-'log' for log10.}
+'log' for log10(x+1).}
 
 \item{normalize}{options to normalize the matrix. Normalization is done after thresholding and scaling.
 Accepted inputs are 'none' for no normalization, 'rec_norm' to normalize to the maximum value with each receptor

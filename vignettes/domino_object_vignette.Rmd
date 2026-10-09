@@ -58,7 +58,7 @@ There is a great deal of information stored with the `domino()` object class. Th
 
   - Differential expression p-values of transcription factors in each cluster
 
-  - Correlation values between ligands and receptors
+  - Correlation values between receptors and TFs
 
   - Median correlation between components of receptor complexes
 

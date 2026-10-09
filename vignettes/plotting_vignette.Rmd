@@ -211,7 +211,7 @@ In addition to changes such as scaling, thresholds, or layouts, this plot can be
 #|  connecting to the other clusters which are positioned around the central node.
 signaling_network(dom,
     showOutgoingSignalingClusts = "CD14_monocyte", scale = "none",
-    norm = "none", layout = "fr", scale_by = "none", edge_weight = 2, vert_scale = 10
+    normalize = "none", layout = "fr", scale_by = "none", edge_weight = 2, vert_scale = 10
 )
 ```
 
@@ -252,7 +252,7 @@ circos_ligand_receptor(dom, receptor = "CD74", cell_colors = cols)
 cor_scatter(dom, "FOSB", "CD74")
 ```
 
-Do keep in mind that there is an argument for `remove_rec_dropout` that should match the parameter that was used when the domino object was built. In this case, we did not use that build parameter, so we will leave the value in this argument as its default value of FALSE.
+Do keep in mind that there is an argument for `remove_rec_dropout` that should match the parameter that was used when the domino object was created. In this case, we did not use that parameter. By default, the function checks to see if the parameter was used when the domino object was created and will use that setting for the plot (for older objects that may not store those parameters, it will default to FALSE). If you want to override that setting, you can do so by specifying the argument in the function call.
 
 ## Continued Development
 
