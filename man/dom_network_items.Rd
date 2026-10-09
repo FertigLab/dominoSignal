@@ -7,7 +7,7 @@
 dom_network_items(dom, clusters = NULL, which_return = NULL)
 }
 \arguments{
-\item{dom}{a domino object containing a signaling network (i.e. \code{\link[=build_domino]{build_domino()}} was run)}
+\item{dom}{a \code{\link[=domino]{domino()}} object containing a signaling network (\code{\link[=build_domino]{build_domino()}} was run)}
 
 \item{clusters}{vector indicating clusters to collate network items from.
 If left as NULL then all clusters will be included.}

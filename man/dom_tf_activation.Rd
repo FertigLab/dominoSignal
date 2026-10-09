@@ -2,18 +2,18 @@
 % Please edit documentation in R/access_functions.R
 \name{dom_tf_activation}
 \alias{dom_tf_activation}
-\title{Access transcription factor activation}
+\title{Access transcription factor activity scores}
 \usage{
 dom_tf_activation(dom)
 }
 \arguments{
-\item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
+\item{dom}{a \code{\link[=domino]{domino()}} object that has been created with \code{\link[=create_domino]{create_domino()}}}
 }
 \value{
-A matrix containing the transcription factor activation scores for each TF (row) by cell (column)
+A matrix containing the transcription factor activity scores for each TF (row) by cell (column)
 }
 \description{
-A function to pull transcription factor activation scores from a domino object
+A function to pull transcription factor activity scores from a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

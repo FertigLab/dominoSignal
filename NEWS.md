@@ -15,7 +15,7 @@
 
 ## New Features
 
-- Added `dom_to_df()` function to create data.frame of signaling results from domino object.
+- Added `dom_to_df()` function to create data.frame of signaling results from `domino()` object.
 - Added [`subset`](../reference/subset-linkage_summary-method.html) for `linkage_summary()` class to allow for filtering of objects by subject names or metadata.
 - Added British-spelling synonyms for relevant functions (`summarise_linkages()`, `dom_signalling()`, `signalling_heatmap()`, `incoming_signalling_heatmap()`, `signalling_network()`).
 - Added `gradient` argument to `plot_differential_linkages()` function for statistic coloring.
@@ -118,8 +118,8 @@
 
 ## New Features
 
-- Added new `linkage_summary()` class to summarize linkages in domino objects.
-- Added helper functions to count linkages and compare between domino objects.
+- Added new `linkage_summary()` class to summarize linkages in `domino()` objects.
+- Added helper functions to count linkages and compare between `domino()` objects.
 - Added plotting function for differential linkages.
 
 # dominoSignal v0.2.1-alpha
@@ -128,7 +128,7 @@
 
 ### Function Inputs
 
-- Standardized input formats for receptor-ligand databases, transcription factor activity scores, and regulon gene lists to support alternative databases and transcription factor activation inference methods.
+- Standardized input formats for receptor-ligand databases, transcription factor activity scores, and regulon gene lists to support alternative databases and transcription factor activity inference methods.
 - Added helper functions to reformat pySCENIC outputs and CellPhoneDB database files to standardized input formats.
 - Added `host` option for gene ortholog conversions using `biomaRt` for access to maintained mirrors.
 

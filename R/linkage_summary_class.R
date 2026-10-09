@@ -3,7 +3,7 @@
 #' The linkage summary class contains linkages established in multiple domino
 #' objects through gene regulatory network inference and reference to receptor-
 #' ligand databases. A data frame summarizing meta features that describe the
-#' domino objects compared in the linkage summary facilitates comparisons of
+#' [domino()] objects compared in the linkage summary facilitates comparisons of
 #' established linkages and differential signaling interactions across categorical
 #' sample covariates.
 #'

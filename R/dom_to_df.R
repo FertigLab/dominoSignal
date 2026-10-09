@@ -2,7 +2,7 @@
 utils::globalVariables(c("ligand", "mean_counts", "ligand_exp", "rec_exp", "tf_auc"))
 
 #' Get ligands with resolved names
-#' @param dom A built domino object (as output by [build_domino()])
+#' @param dom A built [domino()] object (as output by [build_domino()])
 #' @return A named list with two elements:
 #'   \item{lig_names}{Character vector of unique ligand gene names or aliases}
 #'   \item{complex_names}{Named list mapping complex names to component gene vectors}
@@ -23,7 +23,7 @@ get_resolved_ligands <- function(dom) {
 }
 
 #' Get ligand expression matrix for outgoing clusters
-#' @param dom A built domino object (as output by [build_domino()])
+#' @param dom A built [domino()] object (as output by [build_domino()])
 #' @param send_clusters Character or factor vector of cluster names for which to compute outgoing ligand signals
 #' @param lig_genes Character vector of ligand gene names; should intersect with expression matrix rownames
 #' @param complexes Named list where names are complex identifiers and values are character vectors of component genes.
@@ -80,8 +80,8 @@ get_ligand_expression <- function(dom, send_clusters, lig_genes, complexes, exp_
     return(cl_ligands)
 }
 
-#' Get ligand-receptor signaling information
-#' @param dom A built domino object (as output by [build_domino()])
+#' Get receptor-ligand signaling information
+#' @param dom A built [domino()] object (as output by [build_domino()])
 #' @param rec_clusters Character or factor vector of cluster names for which to compute incoming receptor/TF signals
 #' @param cl_ligands_sub Data frame with columns 'ligand', 'cluster', 'mean_counts';
 #'  using [reshape2::melt()] on the output of [get_ligand_expression()] is a convenient way to get this
@@ -160,11 +160,11 @@ get_signaling_info <- function(dom, rec_clusters, cl_ligands_sub, exp_type) {
 
 #' Turn domino object signaling information into a data frame
 #'
-#' Constructs a data frame of ligand-receptor-TF signaling triplets from a built domino object.
+#' Constructs a data frame of ligand-receptor-TF signaling triplets from a built [domino()] object.
 #' Expression values are averaged across cells within each cluster (ligands from sending clusters,
 #' receptors and TFs from receiving clusters).
 #'
-#' @param dom A built domino object (as output by [build_domino()])
+#' @param dom A built [domino()] object (as output by [build_domino()])
 #' @param send_clusters Character/factor vector of cluster names for ligand signals.
 #'   If NULL (default), uses all clusters in dom.
 #' @param rec_clusters Character/factor vector of cluster names for receptor/TF signals.

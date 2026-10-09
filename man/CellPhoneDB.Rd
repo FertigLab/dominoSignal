@@ -7,20 +7,20 @@
 \format{
 A list of:
 \describe{
-\item{genes_tiny}{A subset of CellPhoneDB gene_input.csv}
-\item{proteins_tiny}{A subset of CellPhoneDB protein_input.csv}
-\item{complexes_tiny}{A subset of CellPhoneDB complex_input.csv}
-\item{interactions_tiny}{A subset of CellPhoneDB interaction_input.csv}
-\item{rl_map_tiny}{A subset of CellPhoneDB data formatted as a domino rl_map}
+\item{genes_tiny}{A subset of the CellPhoneDB \code{gene_input.csv} file.}
+\item{proteins_tiny}{A subset of the CellPhoneDB \code{protein_input.csv} file.}
+\item{complexes_tiny}{A subset of the CellPhoneDB \code{complex_input.csv} file.}
+\item{interactions_tiny}{A subset of the CellPhoneDB \code{interaction_input.csv} file.}
+\item{rl_map_tiny}{The subset formatted as a receptor-ligand map by \code{\link[=create_rl_map_cellphonedb]{create_rl_map_cellphonedb()}}.}
 }
 }
 \source{
-\url{https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz}
+\url{https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz}; subset with \code{data-raw/tiny_data.R}.
 }
 \usage{
 data("CellPhoneDB")
 }
 \description{
-A list of four subsets of CellPhoneDB data.
+A list of four subsets of CellPhoneDB v4.0.0 data and resulting domino rl_map.
 }
 \keyword{datasets}

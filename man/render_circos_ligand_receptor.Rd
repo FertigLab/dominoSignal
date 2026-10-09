@@ -14,9 +14,9 @@ render_circos_ligand_receptor(
 \arguments{
 \item{signaling_df}{Data frame output from \code{\link[=obtain_circos_expression]{obtain_circos_expression()}}}
 
-\item{receptor}{Name of a receptor active in at least one cell type in the domino object}
+\item{receptor}{Name of a receptor active in at least one cell type in the \code{\link[=domino]{domino()}} object}
 
-\item{cell_colors}{Named vector of color names or hex codes where names correspond to the plotted cell types and
+\item{cell_colors}{Named vector of color names or hex codes where names correspond to the plotted clusters and
 the color values}
 
 \item{ligand_expression_threshold}{Minimum mean expression value of a ligand by a cell type for a chord to be

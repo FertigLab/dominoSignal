@@ -26,7 +26,7 @@ signalling_heatmap(
 )
 }
 \arguments{
-\item{dom}{domino object with network built (\code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A \code{\link[=domino]{domino()}} object with network built (\code{\link[=build_domino]{build_domino()}})}
 
 \item{clusts}{vector of clusters to be included. If NULL then all clusters are used.}
 
@@ -48,7 +48,7 @@ A heatmap rendered to the active graphics device
 }
 \description{
 Creates a heatmap of the signaling network. Alternatively, the network
-matrix can be accessed directly in the signaling slot of a domino object using
+matrix can be accessed directly in the signaling slot of a \code{\link[=domino]{domino()}} object using
 the \code{\link[=dom_signaling]{dom_signaling()}} function.
 \code{\link[=signaling_heatmap]{signaling_heatmap()}} and \code{\link[=signalling_heatmap]{signalling_heatmap()}} are synonyms.
 }

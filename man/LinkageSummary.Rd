@@ -5,16 +5,20 @@
 \alias{LinkageSummary}
 \title{Example linkage summary}
 \format{
-An object of class \code{list} of length 2.
+A list of:
+\describe{
+\item{linkage_sum_tiny}{A \code{\link[=linkage_summary]{linkage_summary()}} object created with mock data.}
+\item{linkage_diff_tiny}{Results from running \code{\link[=test_differential_linkages]{test_differential_linkages()}} for receptors (\code{linkage = "rec"}) in cluster \code{"C1"}, grouped by \code{"group"}.}
+}
+}
+\source{
+Generated with \code{data-raw/tiny_data.R}.
 }
 \usage{
 data("LinkageSummary")
 }
 \description{
-A list containing a linkage summary object and a differential linkage result from a mock dataset
-\describe{
-\item{linkage_sum_tiny}{A linkage summary object created with mock data.}
-\item{linkage_diff_tiny}{Results from running \code{\link[=test_differential_linkages]{test_differential_linkages()}} on the mock linkage summary object.}
-}
+A list containing a mock linkages summary across six subjects in two groups,
+and the result of running \code{\link[=test_differential_linkages]{test_differential_linkages()}} on it.
 }
 \keyword{datasets}

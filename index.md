@@ -41,10 +41,10 @@ Changes between versions, including any that affect results, are listed in the [
 dominoSignal needs four inputs:
 
 - **Expression data**: a counts matrix, a z-scored (scaled) expression matrix, and a named factor of cluster labels, with cell names matching across all three. These can be extracted from a `SingleCellExperiment` or similar object.
-- **TF activity scores**: a matrix of TF activity per cell, plus an optional list of each TF's target genes. We recommend [pySCENIC](https://pyscenic.readthedocs.io/en/latest/); `create_regulon_list_scenic()` converts its regulon output. See [SCENIC for TF Activation Scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html).
-- **Ligand-receptor database**: a data frame describing receptor-ligand pairs. We recommend [CellPhoneDB](https://www.cellphonedb.org/); `create_rl_map_cellphonedb()` builds this table from its database files. See [Using the CellPhoneDB Database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html).
+- **TF activity scores**: a matrix of TF activity per cell, plus an optional list of each TF's target genes. We recommend [pySCENIC](https://pyscenic.readthedocs.io/en/latest/); `create_regulon_list_scenic()` converts its regulon output. See [SCENIC for TF Activity Scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html).
+- **Receptor-ligand database**: a data frame describing receptor-ligand pairs. We recommend [CellPhoneDB](https://www.cellphonedb.org/); `create_rl_map_cellphonedb()` builds this table from its database files. See [Using the CellPhoneDB Database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html).
 
-Other TF scoring methods and ligand-receptor databases can be used, provided they are provided to `create_domino()` in the correct format.
+Other TF scoring methods and receptor-ligand databases can be used, provided they are provided to `create_domino()` in the correct format.
 
 ### 2. Build a signaling network
 
@@ -69,11 +69,11 @@ See [Get Started with dominoSignal](https://fertiglab.github.io/dominoSignal/art
 
 ### 3. Explore and visualize results
 
-Results are stored in a domino object. Accessor functions (`dom_signaling()`, `dom_linkages()`, `dom_info()`, and others) retrieve its contents, and `dom_to_df()` returns the signaling results as a data frame. Plotting functions include signaling and gene networks, heatmaps of signaling, TF activity, and receptor-TF correlation, and chord diagrams of ligand expression. See [Interacting with domino Objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html) and [Plotting Functions and Options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html).
+Results are stored in a `domino` object. Accessor functions (`dom_signaling()`, `dom_linkages()`, `dom_info()`, and others) retrieve its contents, and `dom_to_df()` returns the signaling results as a data frame. Plotting functions include signaling and gene networks, heatmaps of signaling, TF activity, and receptor-TF correlation, and chord diagrams of ligand expression. See [Interacting with domino Objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html) and [Plotting Functions and Options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html).
 
 ### 4. Compare signaling across subjects
 
-With a domino object for each subject or sample, the DCST workflow identifies linkages (for example, active receptors or ligand-receptor pairs in a cluster) that differ between groups.
+With a `domino` object for each subject or sample, the DCST workflow identifies linkages (for example, active receptors or receptor-ligand pairs in a cluster) that differ between groups.
 
 
 ``` r

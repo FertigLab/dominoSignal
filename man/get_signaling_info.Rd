@@ -2,12 +2,12 @@
 % Please edit documentation in R/dom_to_df.R
 \name{get_signaling_info}
 \alias{get_signaling_info}
-\title{Get ligand-receptor signaling information}
+\title{Get receptor-ligand signaling information}
 \usage{
 get_signaling_info(dom, rec_clusters, cl_ligands_sub, exp_type)
 }
 \arguments{
-\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A built \code{\link[=domino]{domino()}} object (as output by \code{\link[=build_domino]{build_domino()}})}
 
 \item{rec_clusters}{Character or factor vector of cluster names for which to compute incoming receptor/TF signals}
 
@@ -23,6 +23,6 @@ Each row represents a ligand-receptor-TF triplet with receiver cluster, and corr
 Returns empty data frame if no interactions found.
 }
 \description{
-Get ligand-receptor signaling information
+Get receptor-ligand signaling information
 }
 \keyword{internal}

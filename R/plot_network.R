@@ -14,9 +14,9 @@ NULL
 #' colored based on the color scheme of the ligand expressing cluster
 #' [signaling_network()] and [signalling_network()] are synonyms.
 #'
-#' @param dom a domino object with network built ([build_domino()])
+#' @param dom A [domino()] object with network built ([build_domino()])
 #' @param cols named vector indicating the colors for clusters. Values are colors and names must match clusters in
-#'   the domino object. If left as NULL then ggplot colors are generated for the clusters
+#'   the [domino()] object. If left as NULL then ggplot colors are generated for the clusters
 #' @param edge_weight weight for determining thickness of edges on plot. Signaling values are multiplied by this value
 #' @param clusts vector of clusters to be included in the network plot
 #' @param showOutgoingSignalingClusts vector of clusters to plot the outgoing signaling from
@@ -223,7 +223,7 @@ signalling_network <- signaling_network
 #' only ligands, receptors, and features associated with the receptor cluster
 #' will be included in the plot.
 #'
-#' @param dom Domino object with network built ([build_domino()])
+#' @param dom A [domino()] object with network built ([build_domino()])
 #' @param clust Receptor cluster to create the gene association network for. A vector of clusters may be provided. This is a required parameter.
 #' @param OutgoingSignalingClust Vector of clusters to plot the outgoing signaling from
 #' @param class_cols Named vector of colors used to color classes of vertices. Values must be colors and names must

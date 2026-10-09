@@ -7,7 +7,7 @@
 resolve_complexes(dom, genes)
 }
 \arguments{
-\item{dom}{A domino object}
+\item{dom}{A \code{\link[=domino]{domino()}} object}
 
 \item{genes}{A vector of genes, some of which may be complexes}
 }

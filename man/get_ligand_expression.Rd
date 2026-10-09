@@ -7,7 +7,7 @@
 get_ligand_expression(dom, send_clusters, lig_genes, complexes, exp_type)
 }
 \arguments{
-\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A built \code{\link[=domino]{domino()}} object (as output by \code{\link[=build_domino]{build_domino()}})}
 
 \item{send_clusters}{Character or factor vector of cluster names for which to compute outgoing ligand signals}
 

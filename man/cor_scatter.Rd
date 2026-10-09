@@ -7,14 +7,14 @@
 cor_scatter(dom, tf, rec, remove_rec_dropout = NULL, ...)
 }
 \arguments{
-\item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A \code{\link[=domino]{domino()}} object with network built (\code{\link[=build_domino]{build_domino()}} has been run)}
 
 \item{tf}{Target TF for plotting AUC score}
 
 \item{rec}{Target receptor for plotting expression}
 
 \item{remove_rec_dropout}{Whether to remove cells with zero expression for plot.
-Default (NULL) will use the value of \code{remove_rec_dropout} used with \code{\link[=create_domino]{create_domino()}} when the domino object was created. If the domino object was created before that parameter was added, it will default to FALSE. To override the default, set this parameter to TRUE or FALSE}
+Default (NULL) will use the value of \code{remove_rec_dropout} used with \code{\link[=create_domino]{create_domino()}} when the \code{\link[=domino]{domino()}} object was created. If the \code{\link[=domino]{domino()}} object was created before that parameter was added, it will default to FALSE. To override the default, set this parameter to TRUE or FALSE}
 
 \item{...}{Other parameters to pass to \code{\link[ggpubr:ggscatter]{ggpubr::ggscatter()}}.}
 }
@@ -22,7 +22,7 @@ Default (NULL) will use the value of \code{remove_rec_dropout} used with \code{\
 A ggplot scatter plot rendered in the active graphics device
 }
 \description{
-Create a correlation plot between transcription factor activation score and receptor expression
+Create a correlation plot between transcription factor activity scores and receptor expression
 }
 \examples{
 data(DominoObjects)

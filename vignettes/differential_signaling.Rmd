@@ -26,7 +26,7 @@ In this tutorial, we will walk through the workflow for performing differential 
 
 The differential signaling workflow consists of the following steps:
 
-1. Build a domino object per subject to be compared (see the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) tutorial for details on building a domino object).
+1. Build a `domino()` object per subject to be compared (see the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) tutorial for details on building a `domino()` object).
 2. Compile linkages across the subjects into a [linkage_summary object](https://fertiglab.github.io/dominoSignal/reference/linkage_summary-class.html) using the `summarize_linkages()` function.
 3. [Optional] Subset the `linkage_summary` object to include only the subjects of interest.
 4. Create a table of linkage observations within groups of subjects using the `count_linkage()` function.
@@ -37,7 +37,7 @@ The DCST workflow can be performed with 2 or more groups of subjects. In this tu
 
 ## Demonstration data
 
-In this tutorial, we use the domino object built in the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) tutorial. If you have not yet built a domino object, you can do so by following the instructions on that page or use the code below to load the pre-built domino object.
+In this tutorial, we use the `domino()` object built in the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) tutorial. If you have not yet built a `domino()` object, you can do so by following the instructions on that page or use the code below to load the pre-built `domino()` object.
 
 <details><summary>Instructions to load data</summary>
 
@@ -56,13 +56,13 @@ dom <- readRDS(tmp_path)
 
 </details>
 
-Because the differential signaling workflow compares linkages across multiple domino objects (one per subject), we will create six synthetic domino objects from the same PBMC dataset. For each synthetic subject, we randomly retain a subset of the cells without replacement while keeping their true cluster labels and then perturb the cluster labels of a subset of those cells by reshuffling within that subset. This approach preserves some amount of per-cluster signaling while making sure each domino object is distinct from the others, giving the example workflow something to compare.^[Other methods, such as shuffling all cluster labels, results in clusters that are all statistically similar which results in few linkages reaching significance. While this approach reduces the differences between domino objects, it preserves enough signaling to infer a reasonable number of (insignificant) linkages.]
+Because the differential signaling workflow compares linkages across multiple `domino()` objects (one per subject), we will create six synthetic `domino()` objects from the same PBMC dataset. For each synthetic subject, we randomly retain a subset of the cells without replacement while keeping their true cluster labels and then perturb the cluster labels of a subset of those cells by reshuffling within that subset. This approach preserves some amount of per-cluster signaling while making sure each `domino()` object is distinct from the others, giving the example workflow something to compare.^[Other methods, such as shuffling all cluster labels, results in clusters that are all statistically similar which results in few linkages reaching significance. While this approach reduces the differences between domino objects, it preserves enough signaling to infer a reasonable number of (insignificant) linkages.]
 
-Note that reshuffling is only for demonstration purposes and does not represent any biological differences. In practice, you would build one domino object from each biological subject or sample to be used in the comparison. To ensure results are comparable across subjects, use the same parameters in `create_domino()` and `build_domino()` for all subjects. Refer to the [DCST publication](https://doi.org/10.1093/bioinformatics/btag089) for an example of this workflow applied to real data.
+Note that reshuffling is only for demonstration purposes and does not represent any biological differences. In practice, you would build one `domino()` object from each biological subject or sample to be used in the comparison. To ensure results are comparable across subjects, use the same parameters in `create_domino()` and `build_domino()` for all subjects. Refer to the [DCST publication](https://doi.org/10.1093/bioinformatics/btag089) for an example of this workflow applied to real data.
 
 <details><summary>Creating synthetic replicates</summary>
 
-To start, we extract the inputs from the original domino object so we can supply them to the `create_domino()` function for the synthetic subjects.
+To start, we extract the inputs from the original `domino()` object so we can supply them to the `create_domino()` function for the synthetic subjects.
 ```{r extract inputs}
 rl_map <- dom_database(dom, name_only = FALSE)
 features <- dom_tf_activation(dom)
@@ -73,7 +73,7 @@ tf_targets <- dom_linkages(dom, link_type = "tf-target")
 clusters <- dom_clusters(dom, labels = TRUE)
 ```
 
-We can use a helper function to resample the cells and shuffle the cluster labels for a subset of them, and then rebuild the domino object with `create_domino()` and `build_domino()` using the same parameters across all subjects so that they can be compared.^[These parameters are fairly permissive to ensure enough linkages are inferred for demonstration purposes.]
+We can use a helper function to resample the cells and shuffle the cluster labels for a subset of them, and then rebuild the `domino()` object with `create_domino()` and `build_domino()` using the same parameters across all subjects so that they can be compared.^[These parameters are fairly permissive to ensure enough linkages are inferred for demonstration purposes.]
 
 ```{r create replicates, results = "hide"}
 build_reps <- function(clusters, seed, keep_frac, shuffle_frac) {
@@ -131,19 +131,19 @@ dom_list <- purrr::pmap(params, function(set, keep, shuffle) {
 names(dom_list) <- paste0("P", seq_along(dom_list))
 ```
 
-We now have six domino objects that we can treat as different subjects (P1-6).
+We now have six `domino()` objects that we can treat as different subjects (P1-6).
 
 </details>
 
 ## The `linkage_summary` class
 
-The [linkage_summary class](https://fertiglab.github.io/dominoSignal/reference/linkage_summary-class.html) is the structure used for the differential signaling workflow. It contains linkages present in each cluster across the domino objects it contains, along with subject metadata. The object contains three slots:
+The `linkage_summary()` class is the structure used for the differential signaling workflow. It contains linkages present in each cluster across the `domino()` objects it contains, along with subject metadata. The object contains three slots:
 
-- `subject_names`: a factor with a unique name for each subject (domino object) represented in the summary.
+- `subject_names`: a factor with a unique name for each subject (`domino()` object) represented in the summary.
 - `subject_meta`: a data frame with one row per subject including provided metadata (such as condition, treatment, or other covariates) that can be used to group or subset subjects for comparison.
 - `subject_linkages`: a nested list organized as subject to cluster to linkage type (`tfs` for active transcription factors, `rec` for active receptors, `incoming_lig` for ligands that can activate the cluster, `tfs_rec` for transcription factor to receptor pairs, and `rec_lig` for receptor to ligand pairs).
 
-To create a `linkage_summary` object, we use the `summarize_linkages()` function, which takes a named list of domino objects and a data frame of subject metadata. The first column of the data frame must contain subject names that match the names of the domino objects in the list.
+To create a `linkage_summary()` object, we use the `summarize_linkages()` function, which takes a named list of `domino()` objects and a data frame of subject metadata. The first column of the data frame must contain subject names that match the names of the `domino()` objects in the list.
 
 ```{r summarize linkages, message = TRUE}
 subject_metas <- data.frame(
@@ -161,11 +161,11 @@ link_summary <- summarize_linkages(dom_list, subject_metas,
 print(link_summary)
 ```
 
-The `print` and `show` methods for the `linkage_summary` class report the number of subjects, the number of metadata annotations, and the number of clusters present in the summary.
+The `print` and `show` methods for the `linkage_summary()` class report the number of subjects, the number of metadata annotations, and the number of clusters present in the summary.
 
-Since we built this linkage summary from six domino objects with six distinct groups and two distinct conditions, we can subset the summary to include only the subjects of interest. 
+Since we built this linkage summary from six `domino()` objects with six distinct groups and two distinct conditions, we can subset the summary to include only the subjects of interest. 
 
-To create a comparison for only the treatment condition, we can subset the `linkage_summary` object by the relevant metadata column.
+To create a comparison for only the treatment condition, we can subset the `linkage_summary()` object by the relevant metadata column.
 
 ```{r subset treatment, message = TRUE}
 link_treat <- subset(link_summary, subset = condition == "treatment")
@@ -474,7 +474,7 @@ kableExtra::kable_styling(knitr::kable(slice_sample(dcst_patient, n = 5),
     bootstrap_options = c("striped", "hover"))
 ```
 
-The [DCST paper](https://doi.org/10.1093/bioinformatics/btag089) includes additional information on the recommended number of subjects for robust results (at least 15 per group), as well as an approach to simulate biological replicates using bootstrapping of cells for experiments with small numbers of replicates (scripts for the manuscript can be found at [the corresponding GitHub repository](https://github.com/FertigLab/Differential_Cell_Signaling_Test)).
+The [DCST paper](https://doi.org/10.1093/bioinformatics/btag089) includes additional information on the recommended number of subjects for robust results (ideally at least 15 per group), as well as an approach to simulate biological replicates using bootstrapping of cells for experiments with small numbers of replicates (scripts for the manuscript can be found at [the corresponding GitHub repository](https://github.com/FertigLab/Differential_Cell_Signaling_Test)).
 
 ## Visualizing differential linkages
 
@@ -484,7 +484,7 @@ The function has arguments for the test statistic (the column of the DCST result
 
 ### Two-group comparisons
 
-An example of a two-group comparison is shown below, where the p-value is used as the test statistic and the color scale is set to ascending so that the lower p-values are darker (resulting in a heatmap where all cells are white since the p-values are 1 for all linkages in this example).
+An example of a two-group comparison is shown below, where the p-value is used as the test statistic and rows are ordered by ascending p-value. All p-values are 1 in this example, so every cell shows the `maximum` gradient color.
 
 ```{r plot time treat}
 #| fig.alt: Heatmap of p-values for receptor-ligand linkages in CD8 T cell cluster differing between pre and post timepoint for treatment condition with row barplots showing proportion of subjects in each group with active linkage.
@@ -542,7 +542,7 @@ This can be useful for consistency across multiple plots or to match publication
 
 ## Example run
 
-Here's an example of what a workflow might look like from the list of `domino()` objects to the final visualization of differential linkages. We begin with the list of synthetic domino objects created above, create the metadata, create a `link_summary()` object, examine the counts for the linkages,and then run the DCST for a comparison by batch. In this example, we focus on incoming ligands in the CD14 monocyte cluster.
+Here's an example of what a workflow might look like from the list of `domino()` objects to the final visualization of differential linkages. We begin with the list of synthetic `domino()` objects created above, create the metadata, create a `link_summary()` object, examine the counts for the linkages,and then run the DCST for a comparison by batch. In this example, we focus on incoming ligands in the CD14 monocyte cluster.
 
 ```{r example workflow, eval = FALSE}
 subject_metas <- data.frame(
@@ -574,9 +574,17 @@ plot_differential_linkages(dcst_batch,
 )
 ```
 
-## Continued development
+## Related Articles
 
-As dominoSignal is actively being developed, new functions and features may be implemented in future versions. In the meantime, see our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) tutorial for the basic workflow for building a domino object and inferring signaling networks, the [domino object structure](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html) vignette to get familiar with the domino object structure, or our [plotting vignette](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html) for visualization options for single subject domino objects. If you find any bugs, have questions, or would like to suggest new features, please submit an issue on the [dominoSignal GitHub repository](https://github.com/FertigLab/dominoSignal/issues).
+- [Get started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html): the basic workflow
+- [Interacting with domino objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html): object structure and accessor functions
+- [Plotting functions and options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html): visualization options
+- [SCENIC for TF activity scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html): generating TF activity inputs
+- [Using the CellPhoneDB database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html): preparing a receptor-ligand map
+
+***
+
+To report a bug, ask a question, or suggest a feature, please [open an issue](https://github.com/FertigLab/dominoSignal/issues).
 
 
 <details><summary>Vignette Build Information</summary>

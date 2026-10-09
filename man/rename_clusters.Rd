@@ -2,12 +2,12 @@
 % Please edit documentation in R/modify_object.R
 \name{rename_clusters}
 \alias{rename_clusters}
-\title{Renames clusters in a domino object}
+\title{Renames clusters in a \code{\link[=domino]{domino()}} object}
 \usage{
 rename_clusters(dom, clust_conv, warning = FALSE)
 }
 \arguments{
-\item{dom}{a domino object to rename clusters in}
+\item{dom}{a \code{\link[=domino]{domino()}} object to rename clusters in}
 
 \item{clust_conv}{named vector of conversions from old to new clusters. Values are taken as new clusters
 IDs and names as old cluster IDs.}
@@ -15,10 +15,10 @@ IDs and names as old cluster IDs.}
 \item{warning}{logical. If TRUE, will warn if a cluster is not found in the conversion table. Default is FALSE.}
 }
 \value{
-A domino object with clusters renamed in all applicable slots.
+A \code{\link[=domino]{domino()}} object with clusters renamed in all applicable slots.
 }
 \description{
-This function renames the clusters used to build a domino object
+This function renames the clusters used to build a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

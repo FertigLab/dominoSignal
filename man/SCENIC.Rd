@@ -3,22 +3,22 @@
 \docType{data}
 \name{SCENIC}
 \alias{SCENIC}
-\title{SCENIC AUC subset}
+\title{SCENIC example subset}
 \format{
 A list of:
 \describe{
-\item{auc_tiny}{A subset of SCENIC AUCs}
-\item{regulons_tiny}{A subset of SCENIC regulons}
-\item{regulon_list_tiny}{A subset of SCENIC regulons formatted as a regulon_list}
+\item{auc_tiny}{Matrix of AUC scores from pySCENIC for a subset of TFs and cells.}
+\item{regulons_tiny}{Data frame subset of the pySCENIC regulon table.}
+\item{regulon_list_tiny}{The pySCENIC regulons formatted as a named list by \code{\link[=create_regulon_list_scenic]{create_regulon_list_scenic()}}.}
 }
 }
 \source{
-\url{https://zenodo.org/records/10951634/files}
+\url{https://doi.org/10.5281/zenodo.10124865} (files \code{auc_pbmc_3k.csv}, \code{regulons_pbmc_3k.csv}); formatted with \code{data-raw/tiny_data.R}
 }
 \usage{
 data("SCENIC")
 }
 \description{
-A subset of SCENIC AUCs as applied to PBMC data.
+A subset of pySCENIC output for the PBMC example data.
 }
 \keyword{datasets}

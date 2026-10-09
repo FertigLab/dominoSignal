@@ -1,12 +1,12 @@
 #' Access database
 #'
-#' A function to pull database information from a domino object
+#' A function to pull database information from a [domino()] object
 #'
-#' @param dom a domino object that has been created
+#' @param dom a [domino()] object that has been created
 #' @param name_only a boolean for whether to return only the name of the database used
 #'                  or the entire database that is stored. Default TRUE.
-#' @return  A vector of unique databases used in building the domino object OR
-#'          a data frame that includes the database information used in the domino object creation
+#' @return  A vector of unique databases used in building the [domino()] object OR
+#'          a data frame that includes the database information used in the [domino()] object creation
 #' @export
 #' @family accessors
 #' @examples
@@ -29,9 +29,9 @@ dom_database <- function(dom, name_only = TRUE) {
 
 #' Access z-scores
 #'
-#' A function to pull z-scored expression from a domino object
+#' A function to pull z-scored expression from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @return  A matrix containing the z-scored gene expression values for each gene (row) by cell (column)
 #' @export
 #' @family accessors
@@ -47,9 +47,9 @@ dom_zscores <- function(dom) {
 
 #' Access counts
 #'
-#' A function to pull gene expression from a domino object
+#' A function to pull gene expression from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @return  A matrix containing the gene expression values for each gene (row) by cell (column)
 #' @export
 #' @family accessors
@@ -65,9 +65,9 @@ dom_counts <- function(dom) {
 
 #' Access clusters
 #'
-#' A function to pull cluster information from a domino object
+#' A function to pull cluster information from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @param labels A boolean for whether to return the cluster labels for each cell
 #'   or the clusters used for inferring communication
 #' @return A vector containing either the names of the clusters used or factors of
@@ -92,12 +92,12 @@ dom_clusters <- function(dom, labels = FALSE) {
     }
 }
 
-#' Access transcription factor activation
+#' Access transcription factor activity scores
 #'
-#' A function to pull transcription factor activation scores from a domino object
+#' A function to pull transcription factor activity scores from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
-#' @return  A matrix containing the transcription factor activation scores for each TF (row) by cell (column)
+#' @param dom a [domino()] object that has been created with [create_domino()]
+#' @return  A matrix containing the transcription factor activity scores for each TF (row) by cell (column)
 #' @export
 #' @family accessors
 #' @examples
@@ -112,9 +112,9 @@ dom_tf_activation <- function(dom) {
 
 #' Access correlations
 #'
-#' A function to pull receptor-transcription factor correlations from a domino object
+#' A function to pull receptor-transcription factor correlations from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @param type either "rl" or "complex", to select between the receptor-ligand or complex correlation matrix
 #' @return  A matrix containing the correlation values for each receptor (row) by transcription factor (column)
 #' @export
@@ -137,9 +137,9 @@ dom_correlations <- function(dom, type = "rl") {
 
 #' Access linkages
 #'
-#' A function to pull linkages from a domino object
+#' A function to pull linkages from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @param link_type one value (out of "complexes", "receptor-ligand",
 #'                  "tf-target", "tf-receptor", "receptor", "incoming-ligand") used
 #'                  to select the desired type of linkage. Note that "receptor" and
@@ -186,10 +186,10 @@ by_cluster = FALSE) {
 
 #' Access signaling
 #'
-#' A function to pull signaling matrices from a domino object
+#' A function to pull signaling matrices from a [domino()] object
 #' [dom_signaling()] and [dom_signalling()] are synonyms.
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @param cluster either NULL to indicate global signaling or a specific cluster for which a signaling matrix
 #'   is desired
 #' @return  A data frame containing the signaling score through each ligand (row) by each cluster (column) OR
@@ -218,9 +218,9 @@ dom_signalling <- dom_signaling
 
 #' Access differential expression
 #'
-#' A function to pull differential expression p-values from a domino object
+#' A function to pull differential expression p-values from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @return  A matrix containing the p-values for differential expression of transcription factors (rows)
 #'  in each cluster (columns)
 #' @export
@@ -237,9 +237,9 @@ dom_de <- function(dom) {
 
 #' Access build information
 #'
-#' A function to pull the parameters used when running [build_domino()] from a domino object
+#' A function to pull the parameters used when running [build_domino()] from a [domino()] object
 #'
-#' @param dom a domino object that has been created with [create_domino()]
+#' @param dom a [domino()] object that has been created with [create_domino()]
 #' @return  A list containing booleans for whether the object has been created and built, the parameters
 #'          used in [create_domino()] and [build_domino()] to infer the signaling network, and the
 #'          dominoSignal versions used to create and build the object (NULL if not recorded)
@@ -267,7 +267,7 @@ dom_info <- function(dom) {
 #' comparing signaling networks across two separate conditions. In order to run
 #' this [build_domino()] must be run on the object previously.
 #'
-#' @param dom a domino object containing a signaling network (i.e. [build_domino()] was run)
+#' @param dom a [domino()] object containing a signaling network ([build_domino()] was run)
 #' @param which_return string indicating whether to collate "features", "receptors", or "ligands".
 #'   If NULL then a list of all three will be returned.
 #' @param clusters vector indicating clusters to collate network items from.

@@ -1,5 +1,5 @@
 ---
-title: "SCENIC for TF Activation Scoring"
+title: "SCENIC for TF Activity Scoring"
 ---
 
 ```{r, include = FALSE}
@@ -17,10 +17,10 @@ options(timeout = 300)
 
 [SCENIC](https://scenic.aertslab.org/) is our preferred software for TF activity scoring. We recommend using the Python implementation ([pySCENIC](https://pyscenic.readthedocs.io/en/latest/)) as it is faster than the original R implementation. Be aware, the use of [SCENIC](https://scenic.aertslab.org/) is often the slowest and most memory intensive step of this analysis pipeline. [SCENIC](https://scenic.aertslab.org/) should be run on computing resources with access to multi-core processing and large amounts of memory.
 
-## File Downloads for SCENIC
+## File downloads for SCENIC
 For this tutorial, [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) is used as the method for TF activity inference. This requires downloading some files prior to use. Here, we show how to download these files and the way we run pySCENIC to generate the necessary files for use in dominoSignal analysis.
 
-A singularity image of [SCENIC](https://scenic.aertslab.org/) v0.12.1 can be installed from the DockerHub image as a source. [SCENIC](https://scenic.aertslab.org/) requires a list of TFs, motif annotations, and cisTarget motifs which are all available from the authors of [SCENIC](https://scenic.aertslab.org/) for human (HGNC), mouse (MGI), and fly. The following will download everything necessary for an analysis of a data set with HGNC gene labels for the hg38 genome.
+A singularity image of [SCENIC](https://scenic.aertslab.org/) v0.12.1 can be built from the aertslab Docker Hub image. [SCENIC](https://scenic.aertslab.org/) requires a list of TFs, motif annotations, and cisTarget motifs which are all available from the authors of SCENIC for human (HGNC), mouse (MGI), and fly. The following will download everything necessary for an analysis of a data set with HGNC gene labels for the hg38 genome.
 
 
 ### Reference files
@@ -42,7 +42,7 @@ curl "https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/refse
 curl "https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/refseq_r80/mc_v10_clust/gene_based/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather" \
   -o "${SCENIC_DIR}/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather"
 
-# List of genes encoding TFs in the HG38 reference genome
+# List of genes encoding TFs in the hg38 reference genome
 curl "https://resources.aertslab.org/cistarget/tf_lists/allTFs_hg38.txt" \
   -o "${SCENIC_DIR}/allTFs_hg38.txt"
 
@@ -51,8 +51,10 @@ curl "https://resources.aertslab.org/cistarget/motif2tf/motifs-v9-nr.hgnc-m0.001
   -o "${SCENIC_DIR}/motifs-v9-nr.hgnc-m0.001-o0.0.tbl"
 ```
 
-### Preparing Preprocessed Data:
-dominoSignal was designed to be compatible with single cell workflows, accepting gene by cell matrices for counts and scaled counts. However, [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) is used for TF activation inference, and it requires as input a cell by gene matrix. This is the opposite orientation of many R based single cell packages (such as `{Seurat}` or [SingleCellExperiment](https://doi.org/doi:10.18129/B9.bioc.SingleCellExperiment)) but is the default for Python based tools such as [scanpy](https://scanpy.readthedocs.io/en/stable/). The RNA counts matrix can be saved as a tab-separated value (.tsv) or comma-separated value (.csv) file after transposing the matrix to cell by gene orientation. Below is an example of extracting the counts from a [SingleCellExperiment](https://doi.org/doi:10.18129/B9.bioc.SingleCellExperiment) object and saving it as a .tsv file.
+### Preparing preprocessed data:
+These examples use the `pbmc` SingleCellExperiment object and the `input_dir` directory created in the [Get Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) vignette.
+
+dominoSignal was designed to be compatible with single cell workflows, accepting gene by cell matrices for counts and scaled counts. However, [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) is used for TF activity inference, and it requires as input a cell by gene matrix. This is the opposite orientation of many R based single cell packages (such as `{Seurat}` or [SingleCellExperiment](https://doi.org/doi:10.18129/B9.bioc.SingleCellExperiment)) but is the default for Python based tools such as [scanpy](https://scanpy.readthedocs.io/en/stable/). The RNA counts matrix can be saved as a tab-separated value (.tsv) or comma-separated value (.csv) file after transposing the matrix to cell by gene orientation. Below is an example of extracting the counts from a `SingleCellExperiment` object and saving it as a .tsv file.
 
 ```{r Save Counts Matrix as tsv File, eval=FALSE}
 pbmc_counts <- assay(pbmc, "counts")
@@ -61,7 +63,7 @@ write.table(t(as.matrix(pbmc_counts)), paste0(input_dir, "/pbmc3k_counts.tsv"),
 )
 ```
 
-tsv and csv files are very inefficient for storing large matrices. As an alternative, the counts matrix can be saved as a loom file and directly passed to [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) in this format. Generating a loom file in R requires use of the [loomR](https://github.com/mojaveazure/loomR) package. The package automatically handles the transposition of the counts matrix to cell by gene orientation as well. We recommend this approach to passing a counts matrix to pySCENIC. However, users should be aware that [loomR](https://github.com/mojaveazure/loomR) is not hosted on CRAN or Bioconductor at the time of this vignette's creation. 
+TSV and CSV files are very inefficient for storing large matrices. As an alternative, the counts matrix can be saved as a loom file and directly passed to [pySCENIC](https://pyscenic.readthedocs.io/en/latest/) in this format. Generating a loom file in R requires use of the [loomR](https://github.com/mojaveazure/loomR) package. The package automatically handles the transposition of the counts matrix to cell by gene orientation as well. We recommend this approach to passing a counts matrix to pySCENIC. However, users should be aware that `loomR` is not hosted on CRAN or Bioconductor at the time of this vignette's creation. 
 
 ```{r Save Counts as loomR, eval = FALSE}
 library(loomR)
@@ -88,7 +90,7 @@ We will use the `pbmc3k\_counts.loom` file in this tutorial. Copy or link it int
 
 ### grn: construct TF-modules
 
-Co-expression modules are used to quantify gene-TF adjacencies.
+Co-expression modules are used to quantify gene-TF adjacencies. Arguments are collected in a bash array so they can be annotated and the command still runs as written (this is not necessary for analysis; arguments can be passed directly to the command).
 
 
 ```{bash GRN, eval=FALSE, tidy = FALSE}
@@ -125,7 +127,7 @@ singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic ctx "${ct
 
 ### aucell: calculate TF activity scores
 
-Enrichment of a regulon is measured as the **A**rea **U**nder the recovery **C**urve (AUC) of the genes that define this regulon.
+Enrichment of a regulon is measured as the area under the recovery curve (AUC) of the genes that define the regulon.
 
 ```{bash AUCELL, eval=FALSE, tidy = FALSE}
 aucell_args=(
@@ -136,7 +138,20 @@ aucell_args=(
 singularity exec "${SCENIC_DIR}/aertslab-pyscenic-0.12.1.sif" pyscenic aucell "${aucell_args[@]}"
 ```
 
-The csv files created in this analysis can be used as the TF activation inputs in a dominoSignal analysis. Please see our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page for more information on how to perform an analysis with dominoSignal. For a brief tutorial on the download of the necessary files for using CellPhoneDB, please see the [Using the CellPhoneDB database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html) vignette.
+The csv files created in this analysis can be used as the TF activity inputs in a dominoSignal analysis.
+
+## Related articles
+
+
+- [Get started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html): the basic workflow
+- [Interacting with domino objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html): object structure and accessor functions
+- [Plotting functions and options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html): visualization options
+- [Differential signaling workflow](https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html): comparing signaling across subjects
+- [Using the CellPhoneDB database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html): preparing a receptor-ligand map
+
+***
+
+To report a bug, ask a question, or suggest a feature, please [open an issue](https://github.com/FertigLab/dominoSignal/issues).
 
 <details><summary>Vignette Build Information</summary>
 Date last built and session information:

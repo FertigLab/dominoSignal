@@ -16,7 +16,7 @@ cor_heatmap(
 )
 }
 \arguments{
-\item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A \code{\link[=domino]{domino()}} object with network built (\code{\link[=build_domino]{build_domino()}})}
 
 \item{bool}{Boolean indicating whether the heatmap should be continuous or boolean. If boolean then bool_thresh
 will be used to determine how to define activity as positive or negative.}

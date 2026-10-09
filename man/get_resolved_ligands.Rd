@@ -7,7 +7,7 @@
 get_resolved_ligands(dom)
 }
 \arguments{
-\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A built \code{\link[=domino]{domino()}} object (as output by \code{\link[=build_domino]{build_domino()}})}
 }
 \value{
 A named list with two elements:

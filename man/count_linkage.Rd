@@ -20,7 +20,7 @@ count_linkage(
 \item{group.by}{the name of the column in \code{linkage_summary@subject_meta} by which to group subjects for counting.
 If NULL, only total counts of linkages for linkages in the cluster across all subjects is given.}
 
-\item{linkage}{a stored linkage from the domino object.
+\item{linkage}{a stored linkage from the \code{\link[=domino]{domino()}} object.
 Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'}
 
 \item{subject_names}{a vector of subject_names from the linkage_summary to restrict counting to.

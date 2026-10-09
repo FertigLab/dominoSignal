@@ -7,15 +7,15 @@
 \S4method{print}{domino}(x, ...)
 }
 \arguments{
-\item{x}{A domino object}
+\item{x}{A \code{\link[=domino]{domino()}} object}
 
 \item{...}{Additional arguments to be passed to other methods}
 }
 \value{
-A printed description of the number of cells and clusters in the domino object
+A printed description of the number of cells and clusters in the \code{\link[=domino]{domino()}} object
 }
 \description{
-Prints a summary of a domino object
+Prints a summary of a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

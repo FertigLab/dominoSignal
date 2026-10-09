@@ -7,13 +7,13 @@
 dom_zscores(dom)
 }
 \arguments{
-\item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
+\item{dom}{a \code{\link[=domino]{domino()}} object that has been created with \code{\link[=create_domino]{create_domino()}}}
 }
 \value{
 A matrix containing the z-scored gene expression values for each gene (row) by cell (column)
 }
 \description{
-A function to pull z-scored expression from a domino object
+A function to pull z-scored expression from a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

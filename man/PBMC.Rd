@@ -3,22 +3,22 @@
 \docType{data}
 \name{PBMC}
 \alias{PBMC}
-\title{PBMC RNAseq data subset}
+\title{PBMC scRNAseq data subset}
 \format{
 A list of:
 \describe{
-\item{count_tiny}{A subset of PBMC RNA-seq data: counts assay}
-\item{zscore_tiny}{A subset of PBMC RNA-seq data: zscore assay}
-\item{clusters_tiny}{A subset of PBMC RNA-seq data: clusters as defined by cell_type}
+\item{count_tiny}{Subset of the sparse counts matrix (\code{dgCMatrix}), genes x cells.}
+\item{zscore_tiny}{Subset of z-scored expression matrix, genes x cells.}
+\item{clusters_tiny}{Factor of cell-type labels named by cell barcode.}
 }
 }
 \source{
-\url{https://zenodo.org/records/10951634/files/pbmc3k_sce.rds}
+\url{https://doi.org/10.5281/zenodo.10124865} (file \code{pbmc3k_sce.rds}); formatted with \code{data-raw/tiny_data.R}.
 }
 \usage{
 data("PBMC")
 }
 \description{
-A subset of the results of PBMC RNA-seq data.
+A subset of the preprocessed 10x Genomics PBMC 3k scRNAseq data.
 }
 \keyword{datasets}

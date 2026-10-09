@@ -10,11 +10,11 @@ NULL
 #' Create a network heatmap
 #'
 #' Creates a heatmap of the signaling network. Alternatively, the network
-#' matrix can be accessed directly in the signaling slot of a domino object using
+#' matrix can be accessed directly in the signaling slot of a [domino()] object using
 #' the [dom_signaling()] function.
 #' [signaling_heatmap()] and [signalling_heatmap()] are synonyms.
 #'
-#' @param dom domino object with network built ([build_domino()])
+#' @param dom A [domino()] object with network built ([build_domino()])
 #' @param clusts vector of clusters to be included. If NULL then all clusters are used.
 #' @param min_thresh minimum signaling threshold for plotting. Defaults to -Inf for no threshold.
 #' @param max_thresh maximum signaling threshold for plotting. Defaults to Inf for no threshold.
@@ -98,12 +98,12 @@ signalling_heatmap <- signaling_heatmap
 #' list of ligands capable of activating its enriched transcription factors. The
 #' function creates a heatmap of cluster average expression for all of those
 #' ligands. A list of all cluster incoming signaling matrices can be found in
-#' the cl_signaling_matrices slot of a domino option as an alternative to this
+#' the cl_signaling_matrices slot of a [domino()] object as an alternative to this
 #' plotting function.
 #' [incoming_signaling_heatmap()] and [incoming_signalling_heatmap()] are synonyms.
 #'
-#' @param dom Domino object with network built ([build_domino()])
-#' @param rec_clust Which cluster to select as the receptor. Must match naming of clusters in the domino object.
+#' @param dom A [domino()] object with network built ([build_domino()])
+#' @param rec_clust Which cluster to select as the receptor. Must match naming of clusters in the [domino()] object.
 #' @param clusts Vector of clusters to be included. If NULL then all clusters are used.
 #' @param min_thresh Minimum signaling threshold for plotting. Defaults to -Inf for no threshold.
 #' @param max_thresh Maximum signaling threshold for plotting. Defaults to Inf for no threshold.
@@ -215,9 +215,9 @@ incoming_signalling_heatmap <- incoming_signaling_heatmap
 
 #' Create a heatmap of features organized by cluster
 #'
-#' Creates a heatmap of transcription factor activation scores by cells grouped by cluster.
+#' Creates a heatmap of transcription factor activity scores by cells grouped by cluster.
 #'
-#' @param dom Domino object with network built ([build_domino()])
+#' @param dom A [domino()] object with network built ([build_domino()])
 #' @param feats Either a vector of features to include in the heatmap or 'all' for all features.
 #'    If left NULL then the features selected for the signaling network will be shown.
 #' @param bool Boolean indicating whether the heatmap should be continuous or boolean.
@@ -376,7 +376,7 @@ feat_heatmap <- function(
 #' Creates a heatmap of correlation values between receptors and transcription
 #' factors either with boolean threshold or with continuous values displayed
 #'
-#' @param dom Domino object with network built ([build_domino()])
+#' @param dom A [domino()] object with network built ([build_domino()])
 #' @param bool Boolean indicating whether the heatmap should be continuous or boolean. If boolean then bool_thresh
 #'   will be used to determine how to define activity as positive or negative.
 #' @param bool_thresh Numeric indicating the threshold separating 'on' or 'off' for feature activity

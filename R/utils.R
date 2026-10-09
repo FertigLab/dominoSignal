@@ -95,7 +95,7 @@ conv_py_bools <- function(obj) {
 
 #' Convert between ligand names and gene names
 #'
-#' @param dom A domino object
+#' @param dom A [domino()] object
 #' @param genes A vector of genes on which to resolve ligand and gene names
 #'
 #' @return A vector of names where ligand names have been replaced with gene names if applicable
@@ -115,7 +115,7 @@ resolve_names <- function(dom, genes) {
 
 #' Convert between complex names and gene names
 #'
-#' @param dom A domino object
+#' @param dom A [domino()] object
 #' @param genes A vector of genes, some of which may be complexes
 #'
 #' @return A list where any complexes are mapped to a vector of

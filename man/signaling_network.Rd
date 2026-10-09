@@ -42,10 +42,10 @@ signalling_network(
 )
 }
 \arguments{
-\item{dom}{a domino object with network built (\code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A \code{\link[=domino]{domino()}} object with network built (\code{\link[=build_domino]{build_domino()}})}
 
 \item{cols}{named vector indicating the colors for clusters. Values are colors and names must match clusters in
-the domino object. If left as NULL then ggplot colors are generated for the clusters}
+the \code{\link[=domino]{domino()}} object. If left as NULL then ggplot colors are generated for the clusters}
 
 \item{edge_weight}{weight for determining thickness of edges on plot. Signaling values are multiplied by this value}
 

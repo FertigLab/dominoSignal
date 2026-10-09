@@ -3,15 +3,15 @@
 #'
 NULL
 
-#' Renames clusters in a domino object
+#' Renames clusters in a [domino()] object
 #'
-#' This function renames the clusters used to build a domino object
+#' This function renames the clusters used to build a [domino()] object
 #'
-#' @param dom a domino object to rename clusters in
+#' @param dom a [domino()] object to rename clusters in
 #' @param clust_conv named vector of conversions from old to new clusters. Values are taken as new clusters
 #'   IDs and names as old cluster IDs.
 #' @param warning logical. If TRUE, will warn if a cluster is not found in the conversion table. Default is FALSE.
-#' @return A domino object with clusters renamed in all applicable slots.
+#' @return A [domino()] object with clusters renamed in all applicable slots.
 #' @export
 #' @examples
 #' data(DominoObjects)

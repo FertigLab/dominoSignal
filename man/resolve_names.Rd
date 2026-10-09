@@ -7,7 +7,7 @@
 resolve_names(dom, genes)
 }
 \arguments{
-\item{dom}{A domino object}
+\item{dom}{A \code{\link[=domino]{domino()}} object}
 
 \item{genes}{A vector of genes on which to resolve ligand and gene names}
 }

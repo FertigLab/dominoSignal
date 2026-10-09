@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_domino.R
 \name{build_domino}
 \alias{build_domino}
-\title{Calculate a signaling network for a domino object}
+\title{Calculate a signaling network for a \code{\link[=domino]{domino()}} object}
 \usage{
 build_domino(
   dom,
@@ -14,7 +14,7 @@ build_domino(
 )
 }
 \arguments{
-\item{dom}{Domino object from \code{\link[=create_domino]{create_domino()}}.}
+\item{dom}{A \code{\link[=domino]{domino()}} object from \code{\link[=create_domino]{create_domino()}}.}
 
 \item{max_tf_per_clust}{Maximum number of transcription factors called active in a cluster.}
 
@@ -32,11 +32,11 @@ transcription factor.}
 receptor to be linked to transcription factors in that cluster. For receptor complexes, every component gene must exceed this threshold.}
 }
 \value{
-A domino object with a signaling network built
+A \code{\link[=domino]{domino()}} object with a signaling network built
 }
 \description{
-This function calculates a signaling network. It requires a domino object
-preprocessed from create_domino and returns a domino object prepared for
+This function calculates a signaling network. It requires a \code{\link[=domino]{domino()}} object
+preprocessed from \code{\link[=create_domino]{create_domino()}} and returns a \code{\link[=domino]{domino()}} object prepared for
 plotting with the various plotting functions in this package.
 }
 \examples{
@@ -51,5 +51,5 @@ pbmc_dom_built_tiny <- build_domino(
 
 }
 \seealso{
-\code{\link[=create_domino]{create_domino()}} to create a domino object
+\code{\link[=create_domino]{create_domino()}} to create a \code{\link[=domino]{domino()}} object
 }

@@ -15,15 +15,19 @@ knitr::opts_chunk$set(
 options(timeout = 300)
 ```
 
-The dominoSignal analysis pipeline requires the use of a reference receptor - ligand database to identify potential receptor - ligand interactions. We recommend the use of CellPhoneDB. Here is a very brief tutorial on how to download the requisite files from CellPhoneDB v4.0.0.
+The dominoSignal analysis pipeline requires the use of a reference receptor-ligand database to identify potential receptor-ligand interactions. We recommend CellPhoneDB. Here is a very brief tutorial on how to download the requisite files from CellPhoneDB v4.0.0.
 
-## File Downloads for CellPhoneDB:
+## File downloads for CellPhoneDB:
 
-Database files from [CellPhoneDB v4.0.0](https://github.com/ventolab/cellphonedb-data/releases/tag/v4.0.0) for human scRNAseq data can be installed from a public Github repository from the Tiechmann Group that developed CellPhoneDB.
+Database files from [CellPhoneDB v4.0.0](https://github.com/ventolab/cellphonedb-data/releases/tag/v4.0.0) for human scRNAseq data can be installed from a public GitHub repository from the Teichmann Group, which developed CellPhoneDB.
 
 ```{r download CellPhoneDB, eval = FALSE}
+# directories for the download
+temp_dir <- tempdir()
+cellphone_dir <- file.path(temp_dir, "cellphone")
+
 # URL for desired version of CellPhoneDB
-cellphone_url <- "https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz"
+cellphone_url <- "https://github.com/ventolab/cellphonedb-data/archive/refs/tags/v4.0.0.tar.gz"`
 
 # download compressed database
 cellphone_tar <- paste0(temp_dir, "/cellphoneDB_v4.tar.gz")
@@ -34,7 +38,19 @@ untar(tarfile = cellphone_tar, exdir = cellphone_dir)
 cellphone_data <- paste0(cellphone_dir, "/cellphonedb-data-4.0.0/data")
 ```
 
-To facilitate the use of these files in the format used in dominoSignal, we include a helper function, `create_rl_map_cellphonedb()`, that automatically parses files from the CellPhoneDB database to arrive at the rl\_map format. For more information on how to use these files in the dominoSignal pipeline, please see our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page. To learn how to use SCENIC for TF activation scoring, please see our [SCENIC for TF Activation Scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette) tutorial.
+To facilitate the use of these files in the format used in dominoSignal, we include a helper function, `create_rl_map_cellphonedb()`, that automatically parses files from the CellPhoneDB database to arrive at the rl\_map format.
+
+## Related articles
+
+- [Get started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html): the basic workflow
+- [Interacting with domino objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html): object structure and accessor functions
+- [Plotting functions and options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html): visualization options
+- [Differential signaling workflow](https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html): comparing signaling across subjects
+- [SCENIC for TF activity scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html): generating TF activity inputs
+
+***
+
+To report a bug, ask a question, or suggest a feature, please [open an issue](https://github.com/FertigLab/dominoSignal/issues).
 
 <details><summary>Vignette Build Information</summary>
 Date last built and session information:

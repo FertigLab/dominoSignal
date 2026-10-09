@@ -7,14 +7,17 @@
 \format{
 An object of class \code{list} of length 2.
 }
+\source{
+Generated with \code{data-raw/tiny_data.R}.
+}
 \usage{
 data("DominoObjects")
 }
 \description{
-A list of two domino objects, one from \code{\link[=create_domino]{create_domino()}} and one from \code{\link[=build_domino]{build_domino()}} outputs.
+A list of two domino objects built from the example data subsets (\link{PBMC}, \link{SCENIC}, and \link{CellPhoneDB}).
 \describe{
-\item{dom_tiny}{A domino object created using \code{\link[=create_domino]{create_domino()}} with the tiny datasets.}
-\item{built_dom_tiny}{A domino object created using \code{\link[=build_domino]{build_domino()}} with the tiny datasets.}
+\item{dom_tiny}{A \code{\link[=domino]{domino()}} object created using \code{\link[=create_domino]{create_domino()}}.}
+\item{built_dom_tiny}{The same object after running \code{\link[=build_domino]{build_domino()}}.}
 }
 }
 \keyword{datasets}

@@ -21,15 +21,15 @@ knitr::opts_chunk$set(
 options(timeout = 300)
 ```
 
-In addition to the numerous plotting options available in the original [Domino](https://github.com/Elisseeff-Lab/domino), dominoSignal has added more functionality and new methods to improve visualization and interpretation of analysis results. Here, we will go over the different plotting functions available, as well as different options that can be utilized, and options for customization.
+dominoSignal provides several functions for visualizing analysis results. Here, we go over the available plotting functions, their options, and ways to customize them.
 
-## Setup and Data Load
+## Setup and data load
 ```{r setup, eval = TRUE}
 set.seed(42)
 library(dominoSignal)
 ```
 
-In this tutorial, we will use the domino object we built on the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page. If you have not yet built a domino object, you can do so by following the instructions on that page.
+In this tutorial, we will use the `domino()` object we built on the [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page. If you have not yet built a `domino()` object, you can do so by following the instructions on that page.
 
 <details><summary>Instructions to load data</summary>
 
@@ -46,7 +46,7 @@ dom <- readRDS(tmp_path)
 
 ### Correlations between receptors and transcription factors
 
-`cor_heatmap()` can be used to show the correlations calculated between receptors and transcription factors.
+`cor_heatmap()` can be used to show the correlations calculated between receptors and transcription factors (TFs).
 
 ```{r corheatmap}
 #| fig.alt: >
@@ -54,7 +54,7 @@ dom <- readRDS(tmp_path)
 cor_heatmap(dom, title = "PBMC R-TF Correlations", column_names_gp = grid::gpar(fontsize = 8))
 ```
 
-In addition to displaying the scores for the correlations, this function can also be used to identify correlations above a certain value (using the `bool` and `bool_thresh` arguments) or to identify the combinations of receptors and transcription factors (TFs) that are connected (with argument `mark_connections`).
+In addition to displaying the scores for the correlations, this function can also be used to identify correlations above a certain value (using the `bool` and `bool_thresh` arguments) or to identify the combinations of receptors and TFs that are connected (with argument `mark_connections`).
 
 ```{r corheatmap-options, fig.show="hold", out.width = "50%"}
 #| fig.alt: >
@@ -64,7 +64,7 @@ cor_heatmap(dom, bool = TRUE, bool_thresh = 0.25)
 cor_heatmap(dom, bool = FALSE, mark_connections = TRUE)
 ```
 
-If only a subset of receptors or transcription factors are of interest, a vector of either (or both) can be passed to the function.
+If only a subset of receptors or TFs are of interest, a vector of either (or both) can be passed to the function.
 
 ```{r corheatmap-subset}
 #| fig.alt: >
@@ -75,14 +75,14 @@ tfs <- c("PAX5", "JUNB", "FOXJ3", "FOSB")
 cor_heatmap(dom, feats = tfs, recs = receptors)
 ```
 
-The heatmap functions in dominoSignal are based on `ComplexHeatmap::Heatmap()` and will also accept additional arguments meant for that function. For example, while an argument for clustering rows or columns of the heatmap is not explicitly stated, they can still be passed to `ComplexHeatmap::Heatmap()` through `cor_heatmap()`.
+The heatmap functions in dominoSignal are based on `ComplexHeatmap::Heatmap()` and will also accept additional arguments meant for that function. For example, while an argument for clustering rows or columns of the heatmap is not explicitly stated, they can still be passed to `ComplexHeatmap::Heatmap()` through `cor_heatmap()`. To set `column_title` directly, set `title = FALSE`.
 
 ```{r corheatmap-ComplexHeatmap-args}
 #| fig.alt: >
 #|  A correlation heatmap that has not been clustered and does not display a dendrogram
 #|  as a result.
 cor_heatmap(
-    dom,
+    dom, title = FALSE,
     cluster_rows = FALSE, cluster_columns = FALSE,
     column_title = "Heatmap Without Clustering", column_names_gp = grid::gpar(fontsize = 4)
 )
@@ -90,7 +90,7 @@ cor_heatmap(
 
 ### Heatmap of Transcription Factor Activation Scores
 
-`feat_heatmap()` is used to show the transcription factor activation for features in the signaling network. 
+`feat_heatmap()` is used to show the activity of the TFs in the signaling network.
 
 ```{r featheatmap}
 #| fig.alt: >
@@ -98,7 +98,7 @@ cor_heatmap(
 feat_heatmap(dom, use_raster = FALSE, row_names_gp = grid::gpar(fontsize = 4))
 ```
 
-It functions similarly to `cor_heatmap()`, with arguments to select a specific vector of features, to use a boolean view with a threshold, and to pass other arguments to `ComplexHeatmap::Heatmap()`. Specific to this function though are arguments for setting the range of values to be visualized and one to choose to normalize the scores to the max value.
+It functions similarly to `cor_heatmap()`, with arguments to select a specific vector of features, to use a boolean view with a threshold, and to pass other arguments to `ComplexHeatmap::Heatmap()`. Specific to this function are arguments for setting the range of values to be visualized and an argument to choose to normalize the scores to the max value.
 
 ```{r featheatmap-options, fig.show="hold", out.width = "50%"}
 #| fig.alt: >
@@ -112,9 +112,9 @@ feat_heatmap(dom,
 feat_heatmap(dom, bool = TRUE, use_raster = FALSE)
 ```
 
-### Heatmap of Incoming Signaling for a Cluster
+### Heatmap of incoming signaling for a cluster
 
-`incoming_signaling_heatmap()` can be used to visualize the cluster average expression of the ligands capable of activating the TFs enriched in the cluster. For example, to view the incoming signaling of the CD8  T cells:
+`incoming_signaling_heatmap()` can be used to visualize the mean expression, by sending cluster, of the ligands capable of activating the TFs enriched in the cluster. For example, to view the incoming signaling of the CD8 T cells:
 
 ```{r incoming}
 #| fig.alt: >
@@ -133,9 +133,9 @@ incoming_signaling_heatmap(dom, "CD8_T_cell", clusts = c("CD14_monocyte", "CD16_
 
 As with our other heatmap functions, options are available for a minimum threshold, maximum threshold, whether to scale the values after thresholding, whether to normalize the matrix, and the ability to pass further arguments to `ComplexHeatmap::Heatmap()`.
 
-### Heatmap of Signaling Between Clusters
+### Heatmap of signaling between clusters
 
-`signaling_heatmap()` makes a heatmap showing the signaling strength of ligands from each cluster to receptors of each cluster based on averaged expression.
+`signaling_heatmap()` makes a heatmap showing the signaling strength of ligands from each cluster to receptors of each cluster based on mean expression.
 
 ```{r signaling}
 #| fig.alt: >
@@ -153,9 +153,9 @@ signaling_heatmap(dom, scale = "sqrt")
 signaling_heatmap(dom, normalize = "rec_norm")
 ```
 
-## Network Plots
+## Network plots
 
-### Network showing L - R - TF signaling between clusters
+### Network showing L-R-TF signaling between clusters
 
 `gene_network()` makes a network plot to display signaling in selected clusters such that ligands, receptors and features associated with those clusters are displayed as nodes with edges as linkages. To look at signaling to the CD16 Monocytes from the CD14 Monocytes:
 
@@ -191,7 +191,7 @@ gene_network(dom,
 )
 ```
 
-### Network Showing Interaction Strength Across Data
+### Network showing interaction strength across data
 
 `signaling_network()` can be used to create a network plot such that nodes are clusters and the edges indicate signaling from one cluster to another.
 
@@ -215,10 +215,12 @@ signaling_network(dom,
 )
 ```
 
-## Other Types of Plots
+As the edges in these plots do not show arrows to represent directionality, the `showOutgoingSignalingClusts` and `showIncomingSignalingClusts` arguments can be used to specify which clusters are sending or receiving signaling to resolve any ambiguity.
 
-### Chord Diagrams Connecting Ligands and Receptors
-A new addition to dominoSignal, `circos_ligand_receptor()` creates a chord plot showing ligands that can activate a specific receptor, displaying mean cluster expression of the ligand with the width of the chord.
+## Other types of plots
+
+### Chord diagrams connecting ligands and receptors
+`circos_ligand_receptor()` creates a chord plot showing ligands that can activate a specific receptor, displaying mean cluster expression of the ligand with the width of the chord.
 
 ```{r circos, fig.asp = 0.6, out.width = "90%"}
 #| fig.alt: >
@@ -241,9 +243,9 @@ names(cols) <- dom_clusters(dom, labels = FALSE)
 circos_ligand_receptor(dom, receptor = "CD74", cell_colors = cols)
 ```
 
-### Scatter Plot to Visualize Correlation
+### Scatter plot to visualize correlation
 
-`cor_scatter()` can be used to plot each cell based on activation of the selected TF and expression of the receptor. This produces a scatter plot as well as a line of best fit to look at receptor - TF correlation.
+`cor_scatter()` can be used to plot each cell based on activation of the selected TF and expression of the receptor. This produces a scatter plot as well as a line of best fit to look at receptor-TF correlation.
 
 ```{r corscatter}
 #| fig.alt: >
@@ -252,11 +254,19 @@ circos_ligand_receptor(dom, receptor = "CD74", cell_colors = cols)
 cor_scatter(dom, "FOSB", "CD74")
 ```
 
-Do keep in mind that there is an argument for `remove_rec_dropout` that should match the parameter that was used when the domino object was created. In this case, we did not use that parameter. By default, the function checks to see if the parameter was used when the domino object was created and will use that setting for the plot (for older objects that may not store those parameters, it will default to FALSE). If you want to override that setting, you can do so by specifying the argument in the function call.
+Do keep in mind that there is an argument for `remove_rec_dropout` that should match the parameter that was used when the `domino()` object was created. By default, the function checks to see if the parameter was used when the `domino()` object was created and will use that setting for the plot (for older objects that may not store those parameters, it will default to FALSE). If you want to override that setting, you can do so by specifying the argument in the function call.
 
-## Continued Development
+## Related articles
 
-Since dominoSignal is a package still being developed, there are new functions and features that will be implemented in future versions. In the meantime, to view an example analysis, see our [Getting Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) page, or see our [domino object structure](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html) page to get familiar with the object structure. Additionally, if you find any bugs, have further questions, or want to share an idea, please let us know [here](https://github.com/FertigLab/dominoSignal/issues).
+- [Get started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html): the basic workflow
+- [Interacting with domino objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html): object structure and accessor functions
+- [Differential signaling workflow](https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html): comparing signaling across subjects
+- [SCENIC for TF activity scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html): generating TF activity inputs
+- [Using the CellPhoneDB database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html): preparing a receptor-ligand map
+
+***
+
+To report a bug, ask a question, or suggest a feature, please [open an issue](https://github.com/FertigLab/dominoSignal/issues).
 
 <details><summary>Vignette Build Information</summary>
 Date last built and session information:
