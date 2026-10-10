@@ -12,7 +12,7 @@ dom_linkages(
 )
 }
 \arguments{
-\item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
+\item{dom}{a \code{\link[=domino]{domino()}} object that has been created with \code{\link[=create_domino]{create_domino()}}}
 
 \item{link_type}{one value (out of "complexes", "receptor-ligand",
 "tf-target", "tf-receptor", "receptor", "incoming-ligand") used
@@ -26,7 +26,7 @@ A list containing linkages between some combination of receptors, ligands,
 transcription factors, and clusters
 }
 \description{
-A function to pull linkages from a domino object
+A function to pull linkages from a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

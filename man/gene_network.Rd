@@ -16,7 +16,7 @@ gene_network(
 )
 }
 \arguments{
-\item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A \code{\link[=domino]{domino()}} object with network built (\code{\link[=build_domino]{build_domino()}})}
 
 \item{clust}{Receptor cluster to create the gene association network for. A vector of clusters may be provided. This is a required parameter.}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_rl_map.R
 \name{create_rl_map_cellphonedb}
 \alias{create_rl_map_cellphonedb}
-\title{Create a receptor - ligand map from a CellPhoneDB signaling database}
+\title{Create a receptor-ligand map from a CellPhoneDB signaling database}
 \usage{
 create_rl_map_cellphonedb(
   genes,
@@ -44,7 +44,7 @@ alternate_convert = TRUE}
 Data frame where each row describes a possible receptor-ligand interaction
 }
 \description{
-Generates a data frame of ligand-receptor interactions from a CellPhoneDB database annotating the genes
+Generates a data frame of receptor-ligand interactions from a CellPhoneDB database annotating the genes
 encoding the interacting ligands and receptors to be queried in transcriptomic data.
 }
 \examples{

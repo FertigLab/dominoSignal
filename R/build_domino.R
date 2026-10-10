@@ -1,10 +1,10 @@
-#' Calculate a signaling network for a domino object
+#' Calculate a signaling network for a [domino()] object
 #'
-#' This function calculates a signaling network. It requires a domino object
-#' preprocessed from create_domino and returns a domino object prepared for
+#' This function calculates a signaling network. It requires a [domino()] object
+#' preprocessed from [create_domino()] and returns a [domino()] object prepared for
 #' plotting with the various plotting functions in this package.
 #'
-#' @param dom Domino object from [create_domino()].
+#' @param dom A [domino()] object from [create_domino()].
 #' @param max_tf_per_clust Maximum number of transcription factors called active in a cluster.
 #' @param max_tf_pval Maximum p-value from differential feature score test to call a transcription
 #'   factor active in a cluster, serving as a significance threshold (used if object was created with TF selection method "clusters"). For selection with "variable" or "all", this argument is ignored, and TFs are ranked by max correlation with active receptors
@@ -15,9 +15,9 @@
 #'  transcription factor.
 #' @param min_rec_percentage Minimum proportion of cells in cluster expressing a receptor (0 to 1) for the
 #'  receptor to be linked to transcription factors in that cluster. For receptor complexes, every component gene must exceed this threshold.
-#' @return A domino object with a signaling network built
+#' @return A [domino()] object with a signaling network built
 #' @export
-#' @seealso [create_domino()] to create a domino object
+#' @seealso [create_domino()] to create a [domino()] object
 #' @examples
 #' data(DominoObjects)
 #' dom <- DominoObjects$dom_tiny

@@ -1,11 +1,11 @@
-#' Create a domino object and prepare it for network construction
+#' Create a [domino()] object and prepare it for network construction
 #'
 #' This function reads in a receptor ligand signaling database, cell level
 #' features of some kind (ie. output from pySCENIC), z-scored single cell data,
 #' and cluster id for single cell data, calculates a correlation matrix between
 #' receptors and other features (this is transcription factor module scores if
 #' using pySCENIC), and finds features enriched by cluster. It will return a
-#' domino object prepared for [build_domino()], which will calculate a signaling
+#' [domino()] object prepared for [build_domino()], which will calculate a signaling
 #' network.
 #'
 #' @param rl_map Data frame where each row describes a receptor-ligand interaction with required columns
@@ -23,23 +23,23 @@
 #'   signaling database. If FALSE, receptor/ligand pairs where either functions as a protein complex will not be
 #'   considered when constructing the signaling network.
 #' @param rec_min_thresh Minimum expression level of receptors by cell. Default is 0.025 or 2.5 percent of all cells
-#'   in the data set. This is important when calculating correlation to connect receptors to transcription activation.
+#'   in the data set. This is important when calculating correlation to connect receptors to transcription activity.
 #'   If this threshold is too low then correlation calculations will proceed with very few cells with non-zero
 #'   expression.
 #' @param remove_rec_dropout Whether to remove receptors with 0 expression counts when calculating correlations.
 #'   This can reduce false positive correlation calculations when receptors have high dropout rates.
 #' @param tf_selection_method Selection of which method to target transcription factors. Options: 
 #' \itemize{
-#' \item{"clusters"}: TFs are selected based on differential activity by cluster using Wilcoxon rank sum test.
+#' \item{"clusters"}: TFs are selected based on differential activity by cluster using Wilcoxon rank-sum test.
 #' \item{"variable"}: TFs are selected based on coefficient of variation (also known as relative standard deviation or normalized root-mean-square) across all cells in dataset.
 #' \item{"all"}: All TFs provided in the `features` matrix are included in downstream analysis.
 #' }
 #' @param tf_variance_quantile Quantile of coefficient of variation used to threshold features to take if `tf_selection_method` is `variable`. Features with coefficient of variation ranked above quantile are kept (default of 0.5 keeps the most variable half of features and higher numbers keep fewer features). Ignored if tf_selection_method is not 'variable'.
-#' @return A domino object
+#' @return A [domino()] object
 #' @export create_domino
 #' @seealso [create_rl_map_cellphonedb()] for creating receptor-ligand maps, 
 #'   [create_regulon_list_scenic()] for creating regulon lists from pySCENIC output,
-#'   and [build_domino()] for building signaling networks from domino objects created by this function.
+#'   and [build_domino()] for building signaling networks from [domino()] objects created by this function.
 #' @examples
 #' 
 #' data(CellPhoneDB)

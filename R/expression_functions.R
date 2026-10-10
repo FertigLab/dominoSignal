@@ -31,7 +31,7 @@ avg_exp_for_complexes <- function(exp_mat, complexes_list) {
 
 #' Get average expression for a set of genes over cluster(s)
 #'
-#' @param dom A domino object
+#' @param dom A [domino()] object
 #' @param clusts Cluster(s) for which we want to get average expression
 #' @param genes The genes for which we want to get average expression
 #'

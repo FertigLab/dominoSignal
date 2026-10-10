@@ -6,7 +6,7 @@
 #' @param cluster the name of the cell cluster being compared across multiple domino results
 #' @param group.by the name of the column in `linkage_summary@subject_meta` by which to group subjects for counting.
 #'  If NULL, only total counts of linkages for linkages in the cluster across all subjects is given.
-#' @param linkage a stored linkage from the domino object.
+#' @param linkage a stored linkage from the [domino()] object.
 #'  Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
 #' @param subject_names a vector of subject_names from the linkage_summary to restrict counting to.
 #'   If NULL, all subjects in `link_summary` are included.

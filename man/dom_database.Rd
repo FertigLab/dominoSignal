@@ -7,17 +7,17 @@
 dom_database(dom, name_only = TRUE)
 }
 \arguments{
-\item{dom}{a domino object that has been created}
+\item{dom}{a \code{\link[=domino]{domino()}} object that has been created}
 
 \item{name_only}{a boolean for whether to return only the name of the database used
 or the entire database that is stored. Default TRUE.}
 }
 \value{
-A vector of unique databases used in building the domino object OR
-a data frame that includes the database information used in the domino object creation
+A vector of unique databases used in building the \code{\link[=domino]{domino()}} object OR
+a data frame that includes the database information used in the \code{\link[=domino]{domino()}} object creation
 }
 \description{
-A function to pull database information from a domino object
+A function to pull database information from a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

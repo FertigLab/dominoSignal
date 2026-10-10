@@ -208,13 +208,13 @@ test_that("print and show report creation variables when recorded", {
         tf_selection_method = "variable", tf_variance_quantile = 0.5,
         use_complexes = FALSE, rec_min_thresh = 0.025, remove_rec_dropout = FALSE
     )
-    expect_message(print(dom), "Created using 'variable' TF selection without receptor-ligand complexes")
-    expect_message(show(dom), "Created using 'variable' TF selection without receptor-ligand complexes")
+    expect_message(print(dom), "Created using 'variable' TF selection without receptor and ligand complexes")
+    expect_message(show(dom), "Created using 'variable' TF selection without receptor and ligand complexes")
 
     created <- tiny_created_dom1
     created@misc$create_vars <- dom@misc$create_vars
     created@misc$create_vars$use_complexes <- TRUE
-    expect_message(print(created), "has not been built\nCreated using 'variable' TF selection with receptor-ligand")
+    expect_message(print(created), "has not been built\nCreated using 'variable' TF selection with receptor and ligand")
 
     expect_no_match(capture.output(print(tiny_dom1), type = "message"), "TF selection")
 })

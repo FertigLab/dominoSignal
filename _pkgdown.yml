@@ -20,18 +20,23 @@ template:
     component-active-bg: "#DFD4EC"
     code-font-size: 95%
     code-bg: "#FEFEFE"
-    link-color: "#8963BA"
+    link-color: "#73569A"
+    dropdown-link-hover-color: "#1D132B"
     border-color: "#F4F0FA"
     body-secondary-color: "#1D132BCC"
     danger: "#7A0235"
     code_font: { google: "Fira Code" }
     border-width: 2px
+  opengraph:
+    image:
+      src: man/figures/logo.svg
+      alt: "Toppling dominos for dominoSignal hex logo"
 
 
 reference:
-- title: "Domino Classes"
+- title: "domino Classes"
   desc: >
-    An object class designed to store information used 
+    Object classes designed to store information used 
     and produced in dominoSignal analysis
   contents:
   - domino-class
@@ -93,13 +98,32 @@ reference:
   - subset,linkage_summary-method
 - title: "Example Data"
   desc: >
-    Example data used for testing and demonstration purposes
+    Example data used for exploration and demonstration purposes
   contents:
   - CellPhoneDB
   - DominoObjects
   - LinkageSummary
   - PBMC
   - SCENIC
+
+articles:
+- title: "Getting started"
+  navbar: ~
+  contents:
+  - dominoSignal
+- title: "Preparing inputs"
+  desc: "Preparing TF activity and receptor-ligand database"
+  contents:
+  - "articles/tf_scenic_vignette"
+  - "articles/cellphonedb_vignette"
+- title: "Working with results"
+  desc: "Accessing and visualizing dominoSignal results"
+  contents:
+  - domino_object_vignette
+  - plotting_vignette
+- title: "Comparing signaling across subjects"
+  contents:
+  - differential_signaling
 
 navbar:
   type: light
@@ -128,7 +152,7 @@ navbar:
 home:
   title: Cell Communication from Single Cell RNA Sequencing Data
   description: >
-    dominoSignal uses transcription factor activation and ligand - receptor linkages to infer intra- and inter- cellular signaling from single cell RNA sequencing data.
+    dominoSignal uses transcription factor activity and receptor-ligand linkages to infer intra- and inter- cellular signaling from single cell RNA sequencing data.
   sidebar:
     structure: [toc, authors, labs, citation, license]
     components:
@@ -137,9 +161,9 @@ home:
         text: |
               For more information about these labs, click below.\n
 
-              <a href=https://elisseefflab.jhu.edu/> Elisseeff Lab </a> \n
+              <a href=https://elisseefflab.jhu.edu/> Elisseeff Lab Website </a> \n
 
-              <a href=https://fertiglab.com/> Fertig Lab </a>
+              <a href=https://fertiglab.com/> Fertig Lab Website </a>
 
 footer:
   structure:
@@ -156,3 +180,4 @@ authors:
     text: "is developed by"
   sidebar:
     roles: [aut, ctb]
+

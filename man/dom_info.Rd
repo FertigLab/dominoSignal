@@ -7,7 +7,7 @@
 dom_info(dom)
 }
 \arguments{
-\item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
+\item{dom}{a \code{\link[=domino]{domino()}} object that has been created with \code{\link[=create_domino]{create_domino()}}}
 }
 \value{
 A list containing booleans for whether the object has been created and built, the parameters
@@ -15,7 +15,7 @@ used in \code{\link[=create_domino]{create_domino()}} and \code{\link[=build_dom
 dominoSignal versions used to create and build the object (NULL if not recorded)
 }
 \description{
-A function to pull the parameters used when running \code{\link[=build_domino]{build_domino()}} from a domino object
+A function to pull the parameters used when running \code{\link[=build_domino]{build_domino()}} from a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

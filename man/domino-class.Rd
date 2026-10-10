@@ -17,7 +17,7 @@ Calculated intermediate values are also stored.
 \section{Slots}{
 
 \describe{
-\item{\code{db_info}}{List of data sets from ligand - receptor database}
+\item{\code{db_info}}{List of data sets from receptor-ligand database}
 
 \item{\code{counts}}{Raw count gene expression data}
 
@@ -25,7 +25,7 @@ Calculated intermediate values are also stored.
 
 \item{\code{clusters}}{Named factor with cluster identity of each cell}
 
-\item{\code{features}}{Matrix of features (TFs) to correlate receptor - ligand expression with.
+\item{\code{features}}{Matrix of features (TFs) to correlate receptor-ligand expression with.
 Cells are columns and features are rows.}
 
 \item{\code{cor}}{Correlation matrix of receptor expression to features.}

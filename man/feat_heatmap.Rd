@@ -19,7 +19,7 @@ feat_heatmap(
 )
 }
 \arguments{
-\item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A \code{\link[=domino]{domino()}} object with network built (\code{\link[=build_domino]{build_domino()}})}
 
 \item{feats}{Either a vector of features to include in the heatmap or 'all' for all features.
 If left NULL then the features selected for the signaling network will be shown.}
@@ -53,7 +53,7 @@ and to use 'annCol' or 'annColors' ann_cols must be FALSE.}
 A heatmap rendered to the active graphics device
 }
 \description{
-Creates a heatmap of transcription factor activation scores by cells grouped by cluster.
+Creates a heatmap of transcription factor activity scores by cells grouped by cluster.
 }
 \examples{
 # basic usage

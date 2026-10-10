@@ -1,12 +1,12 @@
 #' Create a correlation plot between TF and receptor
 #'
-#' Create a correlation plot between transcription factor activation score and receptor expression
+#' Create a correlation plot between transcription factor activity scores and receptor expression
 #'
-#' @param dom Domino object with network built ([build_domino()])
+#' @param dom A [domino()] object with network built ([build_domino()] has been run)
 #' @param tf Target TF for plotting AUC score
 #' @param rec Target receptor for plotting expression
 #' @param remove_rec_dropout Whether to remove cells with zero expression for plot.
-#'  Default (NULL) will use the value of `remove_rec_dropout` used with [create_domino()] when the domino object was created. If the domino object was created before that parameter was added, it will default to FALSE. To override the default, set this parameter to TRUE or FALSE
+#'  Default (NULL) will use the value of `remove_rec_dropout` used with [create_domino()] when the [domino()] object was created. If the [domino()] object was created before that parameter was added, it will default to FALSE. To override the default, set this parameter to TRUE or FALSE
 #' @param ... Other parameters to pass to [ggpubr::ggscatter()].
 #' @return A ggplot scatter plot rendered in the active graphics device
 #' @export cor_scatter

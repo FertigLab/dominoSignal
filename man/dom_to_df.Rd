@@ -7,7 +7,7 @@
 dom_to_df(dom, send_clusters = NULL, rec_clusters = NULL, exp_type = "counts")
 }
 \arguments{
-\item{dom}{A built domino object (as output by \code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A built \code{\link[=domino]{domino()}} object (as output by \code{\link[=build_domino]{build_domino()}})}
 
 \item{send_clusters}{Character/factor vector of cluster names for ligand signals.
 If NULL (default), uses all clusters in dom.}
@@ -25,7 +25,7 @@ corresponding mean expression values.
 Empty data frame returned if no valid interactions found.
 }
 \description{
-Constructs a data frame of ligand-receptor-TF signaling triplets from a built domino object.
+Constructs a data frame of ligand-receptor-TF signaling triplets from a built \code{\link[=domino]{domino()}} object.
 Expression values are averaged across cells within each cluster (ligands from sending clusters,
 receptors and TFs from receiving clusters).
 }

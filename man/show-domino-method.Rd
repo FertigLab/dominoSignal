@@ -7,13 +7,13 @@
 \S4method{show}{domino}(object)
 }
 \arguments{
-\item{object}{A domino object}
+\item{object}{A \code{\link[=domino]{domino()}} object}
 }
 \value{
 A printed description of cell numbers and clusters in the object
 }
 \description{
-Shows content overview of domino object
+Shows content overview of a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

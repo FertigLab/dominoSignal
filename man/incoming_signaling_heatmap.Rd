@@ -30,9 +30,9 @@ incoming_signalling_heatmap(
 )
 }
 \arguments{
-\item{dom}{Domino object with network built (\code{\link[=build_domino]{build_domino()}})}
+\item{dom}{A \code{\link[=domino]{domino()}} object with network built (\code{\link[=build_domino]{build_domino()}})}
 
-\item{rec_clust}{Which cluster to select as the receptor. Must match naming of clusters in the domino object.}
+\item{rec_clust}{Which cluster to select as the receptor. Must match naming of clusters in the \code{\link[=domino]{domino()}} object.}
 
 \item{clusts}{Vector of clusters to be included. If NULL then all clusters are used.}
 
@@ -61,7 +61,7 @@ Creates a heatmap of a cluster incoming signaling matrix. Each cluster has a
 list of ligands capable of activating its enriched transcription factors. The
 function creates a heatmap of cluster average expression for all of those
 ligands. A list of all cluster incoming signaling matrices can be found in
-the cl_signaling_matrices slot of a domino option as an alternative to this
+the cl_signaling_matrices slot of a \code{\link[=domino]{domino()}} object as an alternative to this
 plotting function.
 \code{\link[=incoming_signaling_heatmap]{incoming_signaling_heatmap()}} and \code{\link[=incoming_signalling_heatmap]{incoming_signalling_heatmap()}} are synonyms.
 }

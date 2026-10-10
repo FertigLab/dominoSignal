@@ -7,7 +7,7 @@
 mean_exp_by_cluster(dom, clusts, genes)
 }
 \arguments{
-\item{dom}{A domino object}
+\item{dom}{A \code{\link[=domino]{domino()}} object}
 
 \item{clusts}{Cluster(s) for which we want to get average expression}
 

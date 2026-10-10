@@ -13,22 +13,22 @@ obtain_circos_expression(
 )
 }
 \arguments{
-\item{dom}{Domino object that has undergone network building with build_domino()}
+\item{dom}{A \code{\link[=domino]{domino()}} object that has undergone network building with build_domino()}
 
-\item{receptor}{Name of a receptor active in at least one cell type in the domino object}
+\item{receptor}{Name of a receptor active in at least one cell type in the \code{\link[=domino]{domino()}} object}
 
 \item{ligands}{Character vector of ligands capable of interaction with the receptor}
 
 \item{ligand_expression_threshold}{Minimum mean expression value of a ligand by a cell type for a chord to
 be rendered between the cell type and the receptor}
 
-\item{cell_idents}{Vector of cell types from cluster assignments in the domino object to be included in the plot.}
+\item{cell_idents}{Vector of clusters from cluster assignments in the \code{\link[=domino]{domino()}} object to be included in the plot.}
 }
 \value{
-a data frame where each row describes plotting parameters of ligand-receptor interactions to pass
+a data frame where each row describes plotting parameters of receptor-ligand interactions to pass
 to render_circos_ligand_receptor()
 }
 \description{
-Pull expression data from a domino object and format for plotting as a receptor-oriented circos plot.
+Pull expression data from a \code{\link[=domino]{domino()}} object and format for plotting as a receptor-oriented circos plot.
 }
 \keyword{internal}

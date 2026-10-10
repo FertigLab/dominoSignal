@@ -10,7 +10,7 @@ summarize_linkages(domino_results, subject_meta, subject_names = NULL)
 summarise_linkages(domino_results, subject_meta, subject_names = NULL)
 }
 \arguments{
-\item{domino_results}{list of domino results with one domino object per subject. Names from the list should
+\item{domino_results}{list of analysis results with one \code{\link[=domino]{domino()}} object per subject. Names from the list should
 match subject_names. Each object used must have a signaling network built with \code{\link[=build_domino]{build_domino()}}.}
 
 \item{subject_meta}{data frame that includes the subject features by which the objects could be grouped.
@@ -23,8 +23,8 @@ A \code{\link[=linkage_summary]{linkage_summary()}} object consisting of nested 
 active receptors, and incoming ligands for each cluster across multiple domino results
 }
 \description{
-Creates a \code{\link[=linkage_summary]{linkage_summary()}} object storing the linkages learned in different domino objects as nested
-lists to facilitate comparisons of networks learned by domino across subject covariates.
+Creates a \code{\link[=linkage_summary]{linkage_summary()}} object storing the linkages learned in different \code{\link[=domino]{domino()}} objects as nested
+lists to facilitate comparisons of networks learned by \code{\link[=domino]{domino()}} across subject covariates.
 }
 \examples{
 data(PBMC)

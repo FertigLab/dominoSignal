@@ -1,9 +1,9 @@
 #' Summarize linkages from multiple domino objects
 #'
-#' Creates a [linkage_summary()] object storing the linkages learned in different domino objects as nested
-#'   lists to facilitate comparisons of networks learned by domino across subject covariates.
+#' Creates a [linkage_summary()] object storing the linkages learned in different [domino()] objects as nested
+#'   lists to facilitate comparisons of networks learned by [domino()] across subject covariates.
 #'
-#' @param domino_results list of domino results with one domino object per subject. Names from the list should
+#' @param domino_results list of analysis results with one [domino()] object per subject. Names from the list should
 #'   match subject_names. Each object used must have a signaling network built with [build_domino()].
 #' @param subject_meta data frame that includes the subject features by which the objects could be grouped.
 #'   The first column must be subject names. Rows are reordered to match order of `subject_names`.

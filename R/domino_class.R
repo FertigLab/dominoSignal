@@ -9,11 +9,11 @@ NULL
 #' and a referenced receptor-ligand database formatted as a receptor-ligand map.
 #' Calculated intermediate values are also stored.
 #'
-#' @slot db_info List of data sets from ligand - receptor database
+#' @slot db_info List of data sets from receptor-ligand database
 #' @slot counts Raw count gene expression data
 #' @slot z_scores Matrix of z-scored expression data with cells as columns
 #' @slot clusters Named factor with cluster identity of each cell
-#' @slot features Matrix of features (TFs) to correlate receptor - ligand expression with.
+#' @slot features Matrix of features (TFs) to correlate receptor-ligand expression with.
 #'   Cells are columns and features are rows.
 #' @slot cor Correlation matrix of receptor expression to features.
 #' @slot linkages List of lists containing info linking cluster->tf->rec->lig
@@ -134,11 +134,11 @@ setValidity("domino", valid_domino)
 
 #' Print domino object
 #'
-#' Prints a summary of a domino object
+#' Prints a summary of a [domino()] object
 #'
-#' @param x A domino object
+#' @param x A [domino()] object
 #' @param ... Additional arguments to be passed to other methods
-#' @return A printed description of the number of cells and clusters in the domino object
+#' @return A printed description of the number of cells and clusters in the [domino()] object
 #' @export
 #' @examples
 #' data(DominoObjects)
@@ -149,7 +149,7 @@ setMethod("print", "domino", function(x, ...) {
     create_msg <- if (!is.null(create_vars)) {
         paste0(
             "Created using '", create_vars$tf_selection_method, "' TF selection ",
-            if (create_vars$use_complexes) "with" else "without", " receptor-ligand complexes\n"
+            if (create_vars$use_complexes) "with" else "without", " receptor and ligand complexes\n"
         )
     }
     version_msg <- paste0(
@@ -174,9 +174,9 @@ setMethod("print", "domino", function(x, ...) {
 })
 #' Show domino object information
 #'
-#' Shows content overview of domino object
+#' Shows content overview of a [domino()] object
 #'
-#' @param object A domino object
+#' @param object A [domino()] object
 #' @return A printed description of cell numbers and clusters in the object
 #' @export
 #' @examples

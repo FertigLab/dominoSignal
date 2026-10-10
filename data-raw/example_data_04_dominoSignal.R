@@ -69,7 +69,7 @@ pbmc_dom <- create_domino(
     z_scores = z_scores,         # scaled expression data
     clusters = clusters,         # vector of cell cluster assignments
     tf_targets = regulon_list,   # list of TFs and their regulons
-    use_clusters = TRUE,         # assess receptor activation and ligand expression on a per-cluster basis (argument no longer used after v1.7.1)
+    use_clusters = TRUE,         # assess receptor activity and ligand expression on a per-cluster basis (argument no longer used after v1.7.1)
     use_complexes = TRUE,        # include receptors and genes that function as a complex in results
     remove_rec_dropout = FALSE   # whether to remove zeroes from correlation calculations
 )

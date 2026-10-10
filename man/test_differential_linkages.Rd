@@ -15,11 +15,11 @@ test_differential_linkages(
 \arguments{
 \item{link_summary}{a \code{\link[=linkage_summary]{linkage_summary()}} object}
 
-\item{cluster}{the name of the cell cluster being compared across multiple domino results}
+\item{cluster}{the name of the cell cluster being compared across multiple \code{\link[=domino]{domino()}} results}
 
 \item{group.by}{the name of the column in \code{linkage_summary@subject_meta} by which to group subjects for counting.}
 
-\item{linkage}{a stored linkage from the domino object.
+\item{linkage}{a stored linkage from the \code{\link[=domino]{domino()}} object.
 Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'}
 
 \item{subject_names}{a vector of subject_names from the linkage_summary to restrict testing to.

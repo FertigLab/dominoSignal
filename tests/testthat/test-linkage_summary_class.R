@@ -6,14 +6,14 @@ test_that("linkage_summary class methods run", {
 })
 
 test_that("print reports the object's actual subject, metadata, and cluster counts", {
-    expect_output(
+    expect_message(
         print(tiny_linkage_summary),
         "A linkage summary object of 3 subjects with 2 metadata annotations and linkages between 3 clusters."
     )
 })
 
 test_that("show reports the object's actual subject, metadata, and cluster counts", {
-    expect_output(
+    expect_message(
         show(tiny_linkage_summary),
         "A linkage summary object of 3 subjects with 2 metadata annotations and linkages between 3 clusters."
     )
@@ -21,11 +21,11 @@ test_that("show reports the object's actual subject, metadata, and cluster count
 
 test_that("print and show reflect a subsetted object's reduced subject count", {
     sub <- subset(tiny_linkage_summary, subset = group == "A")
-    expect_output(
+    expect_message(
         print(sub),
         "A linkage summary object of 2 subjects with 2 metadata annotations and linkages between 3 clusters."
     )
-    expect_output(
+    expect_message(
         show(sub),
         "A linkage summary object of 2 subjects with 2 metadata annotations and linkages between 3 clusters."
     )
@@ -34,11 +34,11 @@ test_that("print and show reflect a subsetted object's reduced subject count", {
 test_that("print and show reflect total metadata annotations", {
     big_links <- tiny_linkage_summary
     big_links@subject_meta$extra_col <- c("X", "Y", "Z")
-    expect_output(
+    expect_message(
         print(big_links),
         "A linkage summary object of 3 subjects with 3 metadata annotations and linkages between 3 clusters."
     )
-    expect_output(
+    expect_message(
         show(big_links),
         "A linkage summary object of 3 subjects with 3 metadata annotations and linkages between 3 clusters."
     )
@@ -47,8 +47,8 @@ test_that("print and show reflect total metadata annotations", {
 test_that("print and show handle empty linkage_summary objects", {
     # prototype object with no slots supplied; S4 skips validity checks in this case
     empty_link <- linkage_summary()
-    expect_output(print(empty_link), "An empty linkage summary object \\(0 subjects\\)\\.")
-    expect_output(show(empty_link), "An empty linkage summary object \\(0 subjects\\)\\.")
+    expect_message(print(empty_link), "An empty linkage summary object \\(0 subjects\\)\\.")
+    expect_message(show(empty_link), "An empty linkage summary object \\(0 subjects\\)\\.")
     expect_no_warning(capture.output(show(empty_link)))
 })
 
@@ -59,7 +59,7 @@ test_that("show reports 0 clusters rather than -Inf when subjects have no linkag
         subject_linkages = list(dom1 = list())
     )
     expect_no_warning(capture.output(show(no_links)))
-    expect_output(show(no_links), "linkages between 0 clusters\\.")
+    expect_message(show(no_links), "linkages between 0 clusters\\.")
 })
 
 test_that("linkage_summary validity rejects empty objects", {

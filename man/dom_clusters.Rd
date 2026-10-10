@@ -7,7 +7,7 @@
 dom_clusters(dom, labels = FALSE)
 }
 \arguments{
-\item{dom}{a domino object that has been created with \code{\link[=create_domino]{create_domino()}}}
+\item{dom}{a \code{\link[=domino]{domino()}} object that has been created with \code{\link[=create_domino]{create_domino()}}}
 
 \item{labels}{A boolean for whether to return the cluster labels for each cell
 or the clusters used for inferring communication}
@@ -17,7 +17,7 @@ A vector containing either the names of the clusters used or factors of
 the cluster label for each individual cell
 }
 \description{
-A function to pull cluster information from a domino object
+A function to pull cluster information from a \code{\link[=domino]{domino()}} object
 }
 \examples{
 data(DominoObjects)

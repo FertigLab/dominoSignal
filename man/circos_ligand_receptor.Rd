@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_circos.R
 \name{circos_ligand_receptor}
 \alias{circos_ligand_receptor}
-\title{Plot expression of a receptor's ligands by other cell types as a chord plot}
+\title{Plot expression of a receptor's ligands by other clusters as a chord plot}
 \usage{
 circos_ligand_receptor(
   dom,
@@ -13,14 +13,14 @@ circos_ligand_receptor(
 )
 }
 \arguments{
-\item{dom}{Domino object that has undergone network building with \code{\link[=build_domino]{build_domino()}}}
+\item{dom}{A \code{\link[=domino]{domino()}} object that has undergone network building with \code{\link[=build_domino]{build_domino()}}}
 
-\item{receptor}{Name of a receptor active in at least one cell type in the domino object}
+\item{receptor}{Name of a receptor active in at least one cell type in the \code{\link[=domino]{domino()}} object}
 
 \item{ligand_expression_threshold}{Minimum mean expression value of a ligand by a cell type for a chord to
 be rendered between the cell type and the receptor}
 
-\item{cell_idents}{Vector of cell types from cluster assignments in the domino object to be included in the plot.}
+\item{cell_idents}{Vector of clusters from cluster assignments in the \code{\link[=domino]{domino()}} object to be included in the plot.}
 
 \item{cell_colors}{Named vector of color names or hex codes where names correspond to the plotted cell
 types and values to the colors.}
