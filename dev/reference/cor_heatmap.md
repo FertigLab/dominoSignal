@@ -23,7 +23,9 @@ cor_heatmap(
 
 - dom:
 
-  Domino object with network built
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object with network built
   ([`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md))
 
 - bool:

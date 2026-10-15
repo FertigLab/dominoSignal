@@ -24,13 +24,14 @@ render_circos_ligand_receptor(
 
 - receptor:
 
-  Name of a receptor active in at least one cell type in the domino
+  Name of a receptor active in at least one cell type in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
   object
 
 - cell_colors:
 
   Named vector of color names or hex codes where names correspond to the
-  plotted cell types and the color values
+  plotted clusters and the color values
 
 - ligand_expression_threshold:
 

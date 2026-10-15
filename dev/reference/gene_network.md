@@ -24,7 +24,9 @@ gene_network(
 
 - dom:
 
-  Domino object with network built
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object with network built
   ([`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md))
 
 - clust:
@@ -66,7 +68,9 @@ gene_network(
 
 ## Value
 
-An igraph plot rendered to the active graphics device
+An igraph plot rendered to the active graphics device. A list with the
+igraph object (`graph`) and the layout matrix (`layout`) is returned
+invisibly, or NULL if no signaling is found for the clusters.
 
 ## See also
 

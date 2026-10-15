@@ -1,4 +1,23 @@
 small.text-danger.nav-text {
     font-weight: bold;
-    text-decoration: underline;
+    text-decoration: none;
+    border: 2px solid currentColor;
+    border-radius: 0.25rem;
+    padding: 0 0.15rem;
+}
+
+/* Visible keyboard focus on the navbar, dropdown items, and search box */
+.navbar .nav-link:focus-visible,
+.navbar .navbar-brand:focus-visible,
+.navbar-toggler:focus-visible,
+.dropdown-item:focus-visible,
+.form-control:focus {
+    outline: 3px solid #7A54AD;
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+/* Search box border with at least 3:1 contrast against the navbar */
+.navbar .form-control {
+    border-color: #7A54AD;
 }

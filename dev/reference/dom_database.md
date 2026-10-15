@@ -1,6 +1,8 @@
 # Access database
 
-A function to pull database information from a domino object
+A function to pull database information from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -12,7 +14,9 @@ dom_database(dom, name_only = TRUE)
 
 - dom:
 
-  a domino object that has been created
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object that has been created
 
 - name_only:
 
@@ -21,8 +25,11 @@ dom_database(dom, name_only = TRUE)
 
 ## Value
 
-A vector of unique databases used in building the domino object OR a
-data frame that includes the database information used in the domino
+A vector of unique databases used in building the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object OR a data frame that includes the database information used in
+the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
 object creation
 
 ## See also

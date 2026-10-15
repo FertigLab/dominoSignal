@@ -12,7 +12,9 @@ resolve_complexes(dom, genes)
 
 - dom:
 
-  A domino object
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object
 
 - genes:
 

@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/LICENSE-text.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/articles/cellphonedb_vignette.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/articles/differential_signaling.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/articles/dominoSignal.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/articles/domino_object_vignette.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/articles/index.html</loc></url>
@@ -42,6 +43,7 @@
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/dom_zscores.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/feat_heatmap.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/filter_by_subject_names.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/get_ligand_expression.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/get_resolved_ligands.html</loc></url>
@@ -66,9 +68,9 @@
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/show-linkage_summary-method.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/signaling_heatmap.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.html</loc></url>
+<url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/subset-linkage_summary-method.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/table_convert_genes.html</loc></url>
 <url><loc>https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.html</loc></url>
-<url><loc>https://FertigLab.github.io/dominoSignal/dev/workflow_notes.html</loc></url>
 </urlset>
 

@@ -1,7 +1,8 @@
 # Access correlations
 
 A function to pull receptor-transcription factor correlations from a
-domino object
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -13,7 +14,9 @@ dom_correlations(dom, type = "rl")
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
 
 - type:

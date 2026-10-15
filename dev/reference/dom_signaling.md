@@ -1,18 +1,24 @@
 # Access signaling
 
-A function to pull signaling matrices from a domino object
+A function to pull signaling matrices from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object `dom_signaling()` and `dom_signalling()` are synonyms.
 
 ## Usage
 
 ``` r
 dom_signaling(dom, cluster = NULL)
+
+dom_signalling(dom, cluster = NULL)
 ```
 
 ## Arguments
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
 
 - cluster:

@@ -2,27 +2,35 @@
 
 Creates a
 [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
-object storing the linkages learned in different domino objects as
-nested lists to facilitate comparisons of networks learned by domino
+object storing the linkages learned in different
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+objects as nested lists to facilitate comparisons of networks learned by
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
 across subject covariates.
 
 ## Usage
 
 ``` r
 summarize_linkages(domino_results, subject_meta, subject_names = NULL)
+
+summarise_linkages(domino_results, subject_meta, subject_names = NULL)
 ```
 
 ## Arguments
 
 - domino_results:
 
-  list of domino results with one domino object per subject. Names from
-  the list should match subject_names
+  list of analysis results with one
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object per subject. Names from the list should match subject_names.
+  Each object used must have a signaling network built with
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md).
 
 - subject_meta:
 
   data frame that includes the subject features by which the objects
-  could be grouped. The first column must be subject names
+  could be grouped. The first column must be subject names. Rows are
+  reordered to match order of `subject_names`.
 
 - subject_names:
 
@@ -67,28 +75,14 @@ pbmc_dom_tiny_alt <- create_domino(
     z_scores = PBMC$zscore_tiny,
     clusters = clusters_tiny_alt,
     tf_targets = SCENIC$regulon_list_tiny,
-    use_clusters = TRUE,
     use_complexes = TRUE,
-    remove_rec_dropout = FALSE
+    remove_rec_dropout = FALSE,
+    verbose = FALSE
 )
-#> Reading in and processing signaling database
-#> Database provided from source: CellPhoneDB
-#> Getting z_scores, clusters, and counts
-#> Calculating feature enrichment by cluster
-#> 1 of 3
-#> 2 of 3
-#> 3 of 3
-#> Calculating correlations
-#> 1 of 6
-#> 2 of 6
-#> 3 of 6
-#> 4 of 6
-#> 5 of 6
-#> 6 of 6
 
 pbmc_dom_built_tiny_alt <- build_domino(
     dom = pbmc_dom_tiny_alt,
-    min_tf_pval = .05,
+    max_tf_pval = .05,
     max_tf_per_clust = Inf,
     max_rec_per_tf = Inf,
     rec_tf_cor_threshold = .1,

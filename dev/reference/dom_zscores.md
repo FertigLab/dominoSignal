@@ -1,6 +1,8 @@
 # Access z-scores
 
-A function to pull z-scored expression from a domino object
+A function to pull z-scored expression from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -12,7 +14,9 @@ dom_zscores(dom)
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
 
 ## Value

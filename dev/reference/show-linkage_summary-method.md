@@ -26,4 +26,6 @@ the linkage summary object
 data(LinkageSummary)
 LinkageSummary$linkage_sum_tiny
 #> A linkage summary object of 6 subjects with 2 metadata annotations and linkages between 2 clusters.
+show(LinkageSummary$linkage_sum_tiny)
+#> A linkage summary object of 6 subjects with 2 metadata annotations and linkages between 2 clusters.
 ```

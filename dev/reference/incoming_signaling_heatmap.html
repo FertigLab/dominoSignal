@@ -3,13 +3,15 @@
 list of ligands capable of activating its enriched transcription factors. The
 function creates a heatmap of cluster average expression for all of those
 ligands. A list of all cluster incoming signaling matrices can be found in
-the cl_signaling_matrices slot of a domino option as an alternative to this
-plotting function."><meta property="og:description" content="Creates a heatmap of a cluster incoming signaling matrix. Each cluster has a
+the cl_signaling_matrices slot of a domino() object as an alternative to this
+plotting function.
+incoming_signaling_heatmap() and incoming_signalling_heatmap() are synonyms."><meta property="og:description" content="Creates a heatmap of a cluster incoming signaling matrix. Each cluster has a
 list of ligands capable of activating its enriched transcription factors. The
 function creates a heatmap of cluster average expression for all of those
 ligands. A list of all cluster incoming signaling matrices can be found in
-the cl_signaling_matrices slot of a domino option as an alternative to this
-plotting function."><meta property="og:image" content="https://FertigLab.github.io/dominoSignal/logo.svg"><meta name="robots" content="noindex"></head><body>
+the cl_signaling_matrices slot of a domino() object as an alternative to this
+plotting function.
+incoming_signaling_heatmap() and incoming_signalling_heatmap() are synonyms."><meta property="og:image" content="https://FertigLab.github.io/dominoSignal/reference/figures/logo.svg"><meta property="og:image:alt" content="Toppling dominos for dominoSignal hex logo"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -17,7 +19,7 @@ plotting function."><meta property="og:image" content="https://FertigLab.github.
 
     <a class="navbar-brand me-2" href="../index.html">dominoSignal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.7.0</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +34,7 @@ plotting function."><meta property="og:image" content="https://FertigLab.github.
     <li><a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using CellphoneDB</a></li>
     <li><a class="dropdown-item" href="../articles/domino_object_vignette.html">domino Object Structure</a></li>
     <li><a class="dropdown-item" href="../articles/plotting_vignette.html">Plotting and Visualization</a></li>
+    <li><a class="dropdown-item" href="../articles/differential_signaling.html">Differential Signaling Workflow</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -46,7 +49,7 @@ plotting function."><meta property="og:image" content="https://FertigLab.github.
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Create a cluster incoming signaling heatmap</h1>
-      <small class="dont-index">Source: <a href="https://github.com/FertigLab/dominoSignal/blob/gha/test_actions/R/plot_heatmaps.R" class="external-link"><code>R/plot_heatmaps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/FertigLab/dominoSignal/blob/master/R/plot_heatmaps.R" class="external-link"><code>R/plot_heatmaps.R</code></a></small>
       <div class="d-none name"><code>incoming_signaling_heatmap.Rd</code></div>
     </div>
 
@@ -55,13 +58,26 @@ plotting function."><meta property="og:image" content="https://FertigLab.github.
 list of ligands capable of activating its enriched transcription factors. The
 function creates a heatmap of cluster average expression for all of those
 ligands. A list of all cluster incoming signaling matrices can be found in
-the cl_signaling_matrices slot of a domino option as an alternative to this
-plotting function.</p>
+the cl_signaling_matrices slot of a <code><a href="domino-class.html">domino()</a></code> object as an alternative to this
+plotting function.
+<code>incoming_signaling_heatmap()</code> and <code>incoming_signalling_heatmap()</code> are synonyms.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">incoming_signaling_heatmap</span><span class="op">(</span></span>
+<span>  <span class="va">dom</span>,</span>
+<span>  <span class="va">rec_clust</span>,</span>
+<span>  clusts <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  min_thresh <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span>,</span>
+<span>  max_thresh <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  scale <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  normalize <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">incoming_signalling_heatmap</span><span class="op">(</span></span>
 <span>  <span class="va">dom</span>,</span>
 <span>  <span class="va">rec_clust</span>,</span>
 <span>  clusts <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -79,11 +95,11 @@ plotting function.</p>
 
 
 <dl><dt id="arg-dom">dom<a class="anchor" aria-label="anchor" href="#arg-dom"></a></dt>
-<dd><p>Domino object with network built (<code><a href="build_domino.html">build_domino()</a></code>)</p></dd>
+<dd><p>A <code><a href="domino-class.html">domino()</a></code> object with network built (<code><a href="build_domino.html">build_domino()</a></code>)</p></dd>
 
 
 <dt id="arg-rec-clust">rec_clust<a class="anchor" aria-label="anchor" href="#arg-rec-clust"></a></dt>
-<dd><p>Which cluster to select as the receptor. Must match naming of clusters in the domino object.</p></dd>
+<dd><p>Which cluster to select as the receptor. Must match naming of clusters in the <code><a href="domino-class.html">domino()</a></code> object.</p></dd>
 
 
 <dt id="arg-clusts">clusts<a class="anchor" aria-label="anchor" href="#arg-clusts"></a></dt>
@@ -100,7 +116,7 @@ plotting function.</p>
 
 <dt id="arg-scale">scale<a class="anchor" aria-label="anchor" href="#arg-scale"></a></dt>
 <dd><p>How to scale the values (after thresholding). Options are 'none', 'sqrt' for square root,
-or 'log' for log10.</p></dd>
+or 'log' for log10(x+1).</p></dd>
 
 
 <dt id="arg-normalize">normalize<a class="anchor" aria-label="anchor" href="#arg-normalize"></a></dt>

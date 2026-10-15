@@ -1,6 +1,8 @@
-# Renames clusters in a domino object
+# Renames clusters in a [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md) object
 
-This function renames the clusters used to build a domino object
+This function renames the clusters used to build a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -12,7 +14,9 @@ rename_clusters(dom, clust_conv, warning = FALSE)
 
 - dom:
 
-  a domino object to rename clusters in
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object to rename clusters in
 
 - clust_conv:
 
@@ -26,7 +30,9 @@ rename_clusters(dom, clust_conv, warning = FALSE)
 
 ## Value
 
-A domino object with clusters renamed in all applicable slots.
+A
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object with clusters renamed in all applicable slots.
 
 ## Examples
 

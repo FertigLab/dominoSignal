@@ -1,11 +1,13 @@
-# Create a domino object and prepare it for network construction
+# Create a [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md) object and prepare it for network construction
 
 This function reads in a receptor ligand signaling database, cell level
 features of some kind (ie. output from pySCENIC), z-scored single cell
 data, and cluster id for single cell data, calculates a correlation
 matrix between receptors and other features (this is transcription
 factor module scores if using pySCENIC), and finds features enriched by
-cluster. It will return a domino object prepared for
+cluster. It will return a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object prepared for
 [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md),
 which will calculate a signaling network.
 
@@ -15,15 +17,14 @@ which will calculate a signaling network.
 create_domino(
   rl_map,
   features,
-  counts = NULL,
-  z_scores = NULL,
-  clusters = NULL,
-  use_clusters = TRUE,
+  counts,
+  z_scores,
+  clusters,
   tf_targets = NULL,
   verbose = TRUE,
   use_complexes = TRUE,
   rec_min_thresh = 0.025,
-  remove_rec_dropout = TRUE,
+  remove_rec_dropout = FALSE,
   tf_selection_method = "clusters",
   tf_variance_quantile = 0.5
 )
@@ -36,7 +37,9 @@ create_domino(
   Data frame where each row describes a receptor-ligand interaction with
   required columns gene_A & gene_B including the gene names for the
   receptor and ligand and type_A & type_B annotating if genes A and B
-  are a ligand (L) or receptor (R)
+  are a ligand (L) or receptor (R). Each interaction must pair one
+  receptor with one ligand (rows that do not, such as ligand-ligand or
+  missing types) are excluded with a warning.
 
 - features:
 
@@ -46,21 +49,22 @@ create_domino(
 
 - counts:
 
-  Counts matrix for the data. This is only used to threshold receptors
-  on dropout.
+  Counts matrix for the data. Used to threshold receptors based on
+  expression (`rec_min_thresh`), to calculate percentage of clusters
+  with receptor expression, and to remove cells with zero receptor
+  counts if `remove_rec_dropout` is TRUE. Dense matrices are converted
+  to sparse `dgCMatrix` for storage.
 
 - z_scores:
 
   Matrix containing z-scored expression data for all cells with cells as
-  columns and features as rows.
+  columns and features as rows. Receptor genes that pass
+  `rec_min_thresh` but are not present in the z_scores matrix are
+  excluded from correlation calculations with a warning.
 
 - clusters:
 
   Named factor containing cell cluster with names as cells.
-
-- use_clusters:
-
-  Boolean indicating whether to use clusters (currently must be TRUE)
 
 - tf_targets:
 
@@ -85,7 +89,7 @@ create_domino(
   Minimum expression level of receptors by cell. Default is 0.025 or 2.5
   percent of all cells in the data set. This is important when
   calculating correlation to connect receptors to transcription
-  activation. If this threshold is too low then correlation calculations
+  activity. If this threshold is too low then correlation calculations
   will proceed with very few cells with non-zero expression.
 
 - remove_rec_dropout:
@@ -96,23 +100,31 @@ create_domino(
 
 - tf_selection_method:
 
-  Selection of which method to target transcription factors. If
-  'clusters' then differential expression for clusters will be
-  calculated. If 'variable' then the most variable transcription factors
-  will be selected. If 'all' then all transcription factors in the
-  feature matrix will be used. Default is 'clusters'. Note that if you
-  wish to use clusters for intercellular signaling downstream to MUST
-  choose clusters.
+  Selection of which method to target transcription factors. Options:
+
+  - "clusters": TFs are selected based on differential activity by
+    cluster using Wilcoxon rank-sum test.
+
+  - "variable": TFs are selected based on coefficient of variation (also
+    known as relative standard deviation or normalized root-mean-square)
+    across all cells in dataset.
+
+  - "all": All TFs provided in the `features` matrix are included in
+    downstream analysis.
 
 - tf_variance_quantile:
 
-  What proportion of variable features to take if using variance to
-  threshold features. Default is 0.5. Higher numbers will keep more
-  features. Ignored if tf_selection_method is not 'variable'
+  Quantile of coefficient of variation used to threshold features to
+  take if `tf_selection_method` is `variable`. Features with coefficient
+  of variation ranked above quantile are kept (default of 0.5 keeps the
+  most variable half of features and higher numbers keep fewer
+  features). Ignored if tf_selection_method is not 'variable'.
 
 ## Value
 
-A domino object
+A
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object
 
 ## See also
 
@@ -121,8 +133,9 @@ for creating receptor-ligand maps,
 [`create_regulon_list_scenic()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_regulon_list_scenic.md)
 for creating regulon lists from pySCENIC output, and
 [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
-for building signaling networks from domino objects created by this
-function.
+for building signaling networks from
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+objects created by this function.
 
 ## Examples
 
@@ -136,7 +149,7 @@ pbmc_dom_tiny <- create_domino(
  rl_map = CellPhoneDB$rl_map_tiny, features = SCENIC$auc_tiny,
  counts = PBMC$count_tiny, z_scores = PBMC$zscore_tiny,
  clusters = PBMC$clusters_tiny, tf_targets = SCENIC$regulon_list_tiny,
- use_clusters = TRUE, use_complexes = TRUE, remove_rec_dropout = FALSE,
+ use_complexes = TRUE, remove_rec_dropout = FALSE,
  verbose = FALSE
  )
 ```

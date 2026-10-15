@@ -1,89 +1,167 @@
 ## Introducing dominoSignal ![dominoSignal hex logo](logo.svg)
 
-dominoSignal is an updated version of the original
-[domino](https://github.com/Elisseeff-Lab/domino) R package published in
-Nature Biomedical Engineering in [Computational reconstruction of the
-signalling networks surrounding implanted biomaterials from single-cell
-transcriptomics](https://doi.org/10.1038/s41551-021-00770-5).
-dominoSignal is a tool for analysis of intra- and intercellular
-signaling in single cell RNA sequencing data based on transcription
-factor activation and receptor and ligand linkages.
+dominoSignal infers intra- and intercellular signaling from single cell
+RNA sequencing (scRNAseq) data. Within each cell cluster, it identifies
+transcription factors (TFs) with enriched activity and links them to
+receptors whose expression correlates with that activity. It then
+connects those active receptors to ligands expressed by other clusters,
+producing a cluster-to-cluster signaling network associated with
+downstream transcriptional response rather than ligand and receptor
+expression alone.
+
+dominoSignal builds on the original
+[domino](https://github.com/Elisseeff-Lab/domino) R package ([Cherry et
+al., 2021, *Nature Biomedical
+Engineering*](https://doi.org/10.1038/s41551-021-00770-5)) and adds the
+Differential Cell Signaling Test (DCST) for statistically comparing
+signaling across subjects and conditions ([Mitchell et al., 2026,
+*Bioinformatics*](https://doi.org/10.1093/bioinformatics/btag089)).
 
 ## Installation
 
-dominoSignal is undergoing active development to improve analysis
-capabilities and interpretability, so the codebase is subject to change
-as new features and fixes are implemented. The current version of
-dominoSignal can be found on
-[Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html)
-though the package is still undergoing development (see our
-[changelog](https://fertiglab.github.io/dominoSignal/news/index.html)
-for more information on changes). This version can be installed through
-Bioconductor.
+dominoSignal is available from
+[Bioconductor](https://bioconductor.org/packages/release/bioc/html/dominoSignal.html):
 
 ``` r
 
-if (!requireNamespace("BiocManager")) {
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
 BiocManager::install("dominoSignal")
 ```
 
-The development version can be installed from the devel branch of
-Bioconductor.
+The development version, with the latest features and fixes, is
+available from Bioconductor devel:
 
 ``` r
 
-if (!requireNamespace("BiocManager")) {
-    install.packages("BiocManager")
-}
-
-# The following initializes usage of Bioc devel
 BiocManager::install(version = "devel")
 BiocManager::install("dominoSignal")
 ```
 
-## Usage Overview
+Changes between versions, including any that affect results, are listed
+in the
+[changelog](https://fertiglab.github.io/dominoSignal/news/index.html).
 
-Here is an overview of how dominoSignal might be used in analysis of a
-single cell RNA sequencing data set:
+## Workflow
 
-1.  Transcription factor activation scores are calculated (we recommend
-    using [pySCENIC](https://pyscenic.readthedocs.io/en/latest/), but
-    other methods can be used as well). For more information on how to
-    use SCENIC, please see our [Using SCENIC for TF
-    Activation](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html)
-    page.
-2.  A ligand-receptor database is used to map linkages between ligands
-    and receptors (we recommend using
-    [cellphoneDB](https://www.cellphonedb.org/), but other methods can
-    be used as well). For information on downloading the necessary files
-    for cellphoneDB, please see our [Using the cellphoneDB
-    Database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html)
-    page.
-3.  A domino object is created using counts, z-scored counts, clustering
-    information, and the data from steps 1 and 2.
-4.  Parameters such as the maximum number of transcription factors and
-    receptors or the minimum correlation threshold (among others) are
-    used to make a cell communication network
-5.  Communication networks can be extracted from within the domino
-    object or visualized using a variety of plotting functions
+### 1. Prepare inputs
 
-Please see the [Getting
-Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html)
-page for an example analysis that includes all of these steps in a
-dominoSignal analysis in detail, from creating a domino object to
-parameters for building the network to visualizing domino results. Other
-articles include further details on [plotting
-functions](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html)
-and the structure of the [domino
-object](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html).
+dominoSignal needs four inputs:
+
+- **Expression data**: a counts matrix, a z-scored (scaled) expression
+  matrix, and a named factor of cluster labels, with cell names matching
+  across all three. These can be extracted from a `SingleCellExperiment`
+  or similar object.
+- **TF activity scores**: a matrix of TF activity per cell, plus an
+  optional list of each TF’s target genes. We recommend
+  [pySCENIC](https://pyscenic.readthedocs.io/en/latest/);
+  [`create_regulon_list_scenic()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_regulon_list_scenic.md)
+  converts its regulon output. See [SCENIC for TF Activity
+  Scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html).
+- **Receptor-ligand database**: a data frame describing receptor-ligand
+  pairs. We recommend [CellPhoneDB](https://www.cellphonedb.org/);
+  [`create_rl_map_cellphonedb()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_rl_map_cellphonedb.md)
+  builds this table from its database files. See [Using the CellPhoneDB
+  Database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html).
+
+Other TF scoring methods and receptor-ligand databases can be used,
+provided they are provided to
+[`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+in the correct format.
+
+### 2. Build a signaling network
+
+[`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+stores the inputs, tests TF enrichment by cluster, and correlates
+receptor expression with TF activity.
+[`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+then applies thresholds to assemble the signaling network.
+
+``` r
+
+library(dominoSignal)
+
+dom <- create_domino(
+    rl_map = rl_map, features = tf_scores, counts = counts,
+    z_scores = z_scores, clusters = clusters, tf_targets = regulon_list
+)
+dom <- build_domino(
+    dom,
+    max_tf_pval = 0.001, max_tf_per_clust = 25, max_rec_per_tf = 25,
+    rec_tf_cor_threshold = 0.25, min_rec_percentage = 0.1
+)
+```
+
+See [Get Started with
+dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html)
+for a complete example, including guidance on choosing these thresholds.
+
+### 3. Explore and visualize results
+
+Results are stored in a `domino` object. Accessor functions
+([`dom_signaling()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_signaling.md),
+[`dom_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_linkages.md),
+[`dom_info()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_info.md),
+and others) retrieve its contents, and
+[`dom_to_df()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_to_df.md)
+returns the signaling results as a data frame. Plotting functions
+include signaling and gene networks, heatmaps of signaling, TF activity,
+and receptor-TF correlation, and chord diagrams of ligand expression.
+See [Interacting with domino
+Objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html)
+and [Plotting Functions and
+Options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html).
+
+### 4. Compare signaling across subjects
+
+With a `domino` object for each subject or sample, the DCST workflow
+identifies linkages (for example, active receptors or receptor-ligand
+pairs in a cluster) that differ between groups.
+
+``` r
+
+link_summary <- summarize_linkages(dom_list, subject_meta, subject_names = subject_meta$subject)
+diff_links <- test_differential_linkages(
+    link_summary, cluster = "CD8_T_cell", group.by = "condition", linkage = "rec"
+)
+plot_differential_linkages(diff_links, "p.value")
+```
+
+See [Differential Signaling
+Workflow](https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html)
+for a full walkthrough.
+
+## Citation
+
+If you use dominoSignal, please cite:
+
+> Cherry C, Maestas DR, Han J, Andorko JI, Cahan P, Fertig EJ, Garmire
+> LX, Elisseeff JH. Computational reconstruction of the signalling
+> networks surrounding implanted biomaterials from single-cell
+> transcriptomics. *Nat Biomed Eng*. 2021;5(10):1228-1238.
+> [doi:10.1038/s41551-021-00770-5](https://doi.org/10.1038/s41551-021-00770-5)
+
+If you use the differential signaling workflow, please also cite:
+
+> Mitchell JT, Stapleton O, Krishnan K, Nagaraj S, Lvovs D, Cherry C,
+> Poissonnier A, Horton W, Adey A, Rao V, Huff A, Zimmerman JW, Kagohara
+> LT, Zaidi N, Coussens LM, Jaffee EM, Elisseeff JH, Fertig EJ.
+> Differential cell signaling testing for cell-cell communication
+> inference from single-cell data by dominoSignal. *Bioinformatics*.
+> 2026;42(3):btag089.
+> [doi:10.1093/bioinformatics/btag089](https://doi.org/10.1093/bioinformatics/btag089)
+
+## Getting help
+
+If you find a bug or have a question, please [open an
+issue](https://github.com/FertigLab/dominoSignal/issues).
 
 # Package index
 
-## Domino Classes
+## domino Classes
 
-An object class designed to store information used and produced in
+Object classes designed to store information used and produced in
 dominoSignal analysis
 
 - [`domino-class`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
@@ -99,15 +177,29 @@ Functions for performing cell-cell communication analysis with the
 dominoSignal package
 
 - [`create_rl_map_cellphonedb()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_rl_map_cellphonedb.md)
-  : Create a receptor - ligand map from a CellPhoneDB signaling database
+  : Create a receptor-ligand map from a CellPhoneDB signaling database
+
 - [`create_regulon_list_scenic()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_regulon_list_scenic.md)
   : Create a list of genes in regulons inferred by SCENIC
+
 - [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
-  : Create a domino object and prepare it for network construction
+  :
+
+  Create a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object and prepare it for network construction
+
 - [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
-  : Calculate a signaling network for a domino object
+  :
+
+  Calculate a signaling network for a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object
+
 - [`summarize_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.md)
+  [`summarise_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.md)
   : Summarize linkages from multiple domino objects
+
 - [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md)
   : Statistical test for differential linkages across multiple domino
   results
@@ -124,8 +216,10 @@ Functions for visualizing dominoSignal analysis results
 - [`feat_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/feat_heatmap.md)
   : Create a heatmap of features organized by cluster
 - [`incoming_signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/incoming_signaling_heatmap.md)
+  [`incoming_signalling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/incoming_signaling_heatmap.md)
   : Create a cluster incoming signaling heatmap
 - [`signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_heatmap.md)
+  [`signalling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_heatmap.md)
   : Create a network heatmap
 
 ### Network Plots
@@ -133,13 +227,14 @@ Functions for visualizing dominoSignal analysis results
 - [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
   : Create a gene association network
 - [`signaling_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.md)
+  [`signalling_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.md)
   : Create a cluster to cluster signaling network diagram
 
 ### Other Plots
 
 - [`circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/circos_ligand_receptor.md)
-  : Plot expression of a receptor's ligands by other cell types as a
-  chord plot
+  : Plot expression of a receptor's ligands by other clusters as a chord
+  plot
 - [`cor_scatter()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_scatter.md)
   : Create a correlation plot between TF and receptor
 - [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
@@ -170,9 +265,10 @@ Convenience functions for working with dominoSignal objects
   : Access all features, receptors, or ligands present in a signaling
   network.
 - [`dom_signaling()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_signaling.md)
+  [`dom_signalling()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_signaling.md)
   : Access signaling
 - [`dom_tf_activation()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_tf_activation.md)
-  : Access transcription factor activation
+  : Access transcription factor activity scores
 - [`dom_zscores()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_zscores.md)
   : Access z-scores
 
@@ -180,28 +276,43 @@ Convenience functions for working with dominoSignal objects
 
 - [`add_rl_column()`](https://FertigLab.github.io/dominoSignal/dev/reference/add_rl_column.md)
   : Adds a column to the RL signaling data frame.
+
 - [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md)
   : Count occurrences of linkages across multiple domino results from a
   linkage summary
+
 - [`dom_to_df()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_to_df.md)
   : Turn domino object signaling information into a data frame
+
 - [`mean_ligand_expression()`](https://FertigLab.github.io/dominoSignal/dev/reference/mean_ligand_expression.md)
   : Calculate mean ligand expression as a data frame for plotting in
   circos plot
+
 - [`print(`*`<domino>`*`)`](https://FertigLab.github.io/dominoSignal/dev/reference/print-domino-method.md)
   : Print domino object
+
 - [`print(`*`<linkage_summary>`*`)`](https://FertigLab.github.io/dominoSignal/dev/reference/print-linkage_summary-method.md)
   : Print linkage summary object
+
 - [`rename_clusters()`](https://FertigLab.github.io/dominoSignal/dev/reference/rename_clusters.md)
-  : Renames clusters in a domino object
+  :
+
+  Renames clusters in a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object
+
 - [`show(`*`<domino>`*`)`](https://FertigLab.github.io/dominoSignal/dev/reference/show-domino-method.md)
   : Show domino object information
+
 - [`show(`*`<linkage_summary>`*`)`](https://FertigLab.github.io/dominoSignal/dev/reference/show-linkage_summary-method.md)
   : Show linkage_summary object information
 
+- [`subset(`*`<linkage_summary>`*`)`](https://FertigLab.github.io/dominoSignal/dev/reference/subset-linkage_summary-method.md)
+  : Subset a linkage_summary object
+
 ## Example Data
 
-Example data used for testing and demonstration purposes
+Example data used for exploration and demonstration purposes
 
 - [`CellPhoneDB`](https://FertigLab.github.io/dominoSignal/dev/reference/CellPhoneDB.md)
   : CellPhoneDB subset
@@ -210,21 +321,36 @@ Example data used for testing and demonstration purposes
 - [`LinkageSummary`](https://FertigLab.github.io/dominoSignal/dev/reference/LinkageSummary.md)
   : Example linkage summary
 - [`PBMC`](https://FertigLab.github.io/dominoSignal/dev/reference/PBMC.md)
-  : PBMC RNAseq data subset
+  : PBMC scRNAseq data subset
 - [`SCENIC`](https://FertigLab.github.io/dominoSignal/dev/reference/SCENIC.md)
-  : SCENIC AUC subset
+  : SCENIC example subset
 
 # Articles
 
-### All vignettes
+### Getting started
 
-- [Using the CellPhoneDB
-  Database](https://FertigLab.github.io/dominoSignal/dev/articles/cellphonedb_vignette.md):
-- [Interacting with domino
-  Objects](https://FertigLab.github.io/dominoSignal/dev/articles/domino_object_vignette.md):
 - [Get Started with
   dominoSignal](https://FertigLab.github.io/dominoSignal/dev/articles/dominoSignal.md):
+
+### Preparing inputs
+
+Preparing TF activity and receptor-ligand database
+
+- [SCENIC for TF Activity
+  Scoring](https://FertigLab.github.io/dominoSignal/dev/articles/tf_scenic_vignette.md):
+- [Using the CellPhoneDB
+  Database](https://FertigLab.github.io/dominoSignal/dev/articles/cellphonedb_vignette.md):
+
+### Working with results
+
+Accessing and visualizing dominoSignal results
+
+- [Interacting with domino
+  Objects](https://FertigLab.github.io/dominoSignal/dev/articles/domino_object_vignette.md):
 - [Plotting Functions and
   Options](https://FertigLab.github.io/dominoSignal/dev/articles/plotting_vignette.md):
-- [SCENIC for TF Activation
-  Scoring](https://FertigLab.github.io/dominoSignal/dev/articles/tf_scenic_vignette.md):
+
+### Comparing signaling across subjects
+
+- [Differential Signaling
+  Workflow](https://FertigLab.github.io/dominoSignal/dev/articles/differential_signaling.md):

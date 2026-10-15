@@ -17,8 +17,10 @@ dom_network_items(dom, clusters = NULL, which_return = NULL)
 
 - dom:
 
-  a domino object containing a signaling network (i.e.
-  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object containing a signaling network
+  ([`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
   was run)
 
 - clusters:

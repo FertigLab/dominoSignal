@@ -4,13 +4,28 @@ Creates a heatmap of a cluster incoming signaling matrix. Each cluster
 has a list of ligands capable of activating its enriched transcription
 factors. The function creates a heatmap of cluster average expression
 for all of those ligands. A list of all cluster incoming signaling
-matrices can be found in the cl_signaling_matrices slot of a domino
-option as an alternative to this plotting function.
+matrices can be found in the cl_signaling_matrices slot of a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object as an alternative to this plotting function.
+`incoming_signaling_heatmap()` and `incoming_signalling_heatmap()` are
+synonyms.
 
 ## Usage
 
 ``` r
 incoming_signaling_heatmap(
+  dom,
+  rec_clust,
+  clusts = NULL,
+  min_thresh = -Inf,
+  max_thresh = Inf,
+  scale = "none",
+  normalize = "none",
+  title = TRUE,
+  ...
+)
+
+incoming_signalling_heatmap(
   dom,
   rec_clust,
   clusts = NULL,
@@ -27,13 +42,17 @@ incoming_signaling_heatmap(
 
 - dom:
 
-  Domino object with network built
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object with network built
   ([`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md))
 
 - rec_clust:
 
   Which cluster to select as the receptor. Must match naming of clusters
-  in the domino object.
+  in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object.
 
 - clusts:
 
@@ -52,7 +71,7 @@ incoming_signaling_heatmap(
 - scale:
 
   How to scale the values (after thresholding). Options are 'none',
-  'sqrt' for square root, or 'log' for log10.
+  'sqrt' for square root, or 'log' for log10(x+1).
 
 - normalize:
 

@@ -1,6 +1,6 @@
-# Get ligand-receptor signaling information
+# Get receptor-ligand signaling information
 
-Get ligand-receptor signaling information
+Get receptor-ligand signaling information
 
 ## Usage
 
@@ -12,7 +12,9 @@ get_signaling_info(dom, rec_clusters, cl_ligands_sub, exp_type)
 
 - dom:
 
-  A built domino object (as output by
+  A built
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object (as output by
   [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md))
 
 - rec_clusters:

@@ -7,18 +7,17 @@ results
 
 ``` r
 test_differential_linkages(
-  linkage_summary,
+  link_summary,
   cluster,
   group.by,
   linkage = "rec_lig",
-  subject_names = NULL,
-  test_name = "fishers.exact"
+  subject_names = NULL
 )
 ```
 
 ## Arguments
 
-- linkage_summary:
+- link_summary:
 
   a
   [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
@@ -26,7 +25,8 @@ test_differential_linkages(
 
 - cluster:
 
-  the name of the cell cluster being compared across multiple domino
+  the name of the cell cluster being compared across multiple
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
   results
 
 - group.by:
@@ -36,23 +36,15 @@ test_differential_linkages(
 
 - linkage:
 
-  a stored linkage from the domino object. Can compare any of 'tfs',
-  'rec', 'incoming_lig', 'tfs_rec', or 'rec_lig'
+  a stored linkage from the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object. Can compare any of 'tfs', 'rec', 'incoming_lig', 'tfs_rec', or
+  'rec_lig'
 
 - subject_names:
 
-  a vector of subject_names from the linkage_summary. NOTE: all
-  subject_names in the linkage summary are included in counting.
-
-- test_name:
-
-  the statistical test used for comparison.
-
-  - 'fishers.exact' : Fisher's exact test for the dependence of the
-    proportion of subjects with an active linkage in the cluster on
-    which group the subject belongs to in the group.by variable.
-    Provides an odds ratio, p-value, and a Benjamini-Hochberg
-    FDR-adjusted p-value (p.adj) for each linkage tested.
+  a vector of subject_names from the linkage_summary to restrict testing
+  to. If NULL, all subjects in `link_summary` are included.
 
 ## Value
 
@@ -65,13 +57,12 @@ correspond to each linkage tested. Columns correspond to:
 
 - 'group.by' : the grouping variable
 
-- 'test_name' : the test used for comparison
+- 'test_name' : the test used for comparison (Fisher's exact test)
 
 - 'feature' : individual linkages compared
 
-- 'test statistics' : test statistics provided are based on test method.
-  'fishers.exact' provides a odds ratio, p-value, and fdr-adjusted
-  p-value.
+- 'test statistics' : an odds ratio (for 2 groups), p-value, and
+  fdr-adjusted p-value.
 
 - 'total_count' : total number of subjects where the linkage is active
 
@@ -99,7 +90,7 @@ Differential Signaling Workflow:
 ``` r
 data(LinkageSummary)
 tiny_differential_linkage_c1 <- test_differential_linkages(
-    linkage_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
-    linkage = "rec", test_name = "fishers.exact"
+    link_summary = LinkageSummary$linkage_sum_tiny, cluster = "C1", group.by = "group",
+    linkage = "rec", subject_names = c("P1", "P2", "P4", "P5")
 )
 ```

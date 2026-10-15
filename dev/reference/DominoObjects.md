@@ -1,22 +1,22 @@
 # Example domino objects
 
-A list of two domino objects, one from
-[`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
-and one from
-[`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
-outputs.
+A list of two domino objects built from the example data subsets
+([PBMC](https://FertigLab.github.io/dominoSignal/dev/reference/PBMC.md),
+[SCENIC](https://FertigLab.github.io/dominoSignal/dev/reference/SCENIC.md),
+and
+[CellPhoneDB](https://FertigLab.github.io/dominoSignal/dev/reference/CellPhoneDB.md)).
 
 - dom_tiny:
 
-  A domino object created using
-  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
-  with the tiny datasets.
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object created using
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md).
 
 - built_dom_tiny:
 
-  A domino object created using
-  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
-  with the tiny datasets.
+  The same object after running
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md).
 
 ## Usage
 
@@ -27,3 +27,7 @@ data("DominoObjects")
 ## Format
 
 An object of class `list` of length 2.
+
+## Source
+
+Generated with `data-raw/tiny_data.R`.

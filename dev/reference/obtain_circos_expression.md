@@ -1,7 +1,8 @@
 # Obtain Circos Expression
 
-Pull expression data from a domino object and format for plotting as a
-receptor-oriented circos plot.
+Pull expression data from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object and format for plotting as a receptor-oriented circos plot.
 
 ## Usage
 
@@ -19,11 +20,14 @@ obtain_circos_expression(
 
 - dom:
 
-  Domino object that has undergone network building with build_domino()
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object that has undergone network building with build_domino()
 
 - receptor:
 
-  Name of a receptor active in at least one cell type in the domino
+  Name of a receptor active in at least one cell type in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
   object
 
 - ligands:
@@ -37,10 +41,11 @@ obtain_circos_expression(
 
 - cell_idents:
 
-  Vector of cell types from cluster assignments in the domino object to
-  be included in the plot.
+  Vector of clusters from cluster assignments in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object to be included in the plot.
 
 ## Value
 
 a data frame where each row describes plotting parameters of
-ligand-receptor interactions to pass to render_circos_ligand_receptor()
+receptor-ligand interactions to pass to render_circos_ligand_receptor()

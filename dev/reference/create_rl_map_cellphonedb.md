@@ -1,6 +1,6 @@
-# Create a receptor - ligand map from a CellPhoneDB signaling database
+# Create a receptor-ligand map from a CellPhoneDB signaling database
 
-Generates a data frame of ligand-receptor interactions from a
+Generates a data frame of receptor-ligand interactions from a
 CellPhoneDB database annotating the genes encoding the interacting
 ligands and receptors to be queried in transcriptomic data.
 
@@ -50,7 +50,10 @@ create_rl_map_cellphonedb(
 
   character vector of length 2 formatted as (from, to) or (source,
   target) if gene conversion to orthologs is desired; options are
-  ENSMUSG, ENSG, MGI, or HGNC
+  ENSMUSG, ENSG, MGI, or HGNC (for from) and MGI or HGNC (for to).
+  Identifiers in the `gene_name` column of `genes` (gene symbols, such
+  as HGNC for CellPhoneDB human databases). Interactions with any gene
+  lacking an ortholog are skipped.
 
 - gene_conv_host:
 
@@ -96,25 +99,16 @@ rl_map_tiny_conv <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
 } # }
 
 # Using alternate conversion table instead of biomaRt
+# (this simplified table is for illustration only, this is
+# NOT the correct way to convert between HGNC and MGI symbols)
+hs_genes <- unique(CellPhoneDB$genes_tiny$gene_name)
 ortho_table <- data.frame(
-  hs.ens = c("ENSG00000198888", "ENSG00000198763", "ENSG00000198804"),
-  hgnc = c("MT-ND1", "MT-ND2", "MT-CO1"),
-  mm.ens = c("ENSMUSG00000064341", "ENSMUSG00000064345", "ENSMUSG00000064351"),
-  mgi = c("mt-Nd1", "mt-Nd2", "mt-Co1"))
+  hgnc = hs_genes,
+  mgi = paste0(substr(hs_genes, 1, 1), tolower(substr(hs_genes, 2, nchar(hs_genes)))))
 
 rl_map_tiny_alt <- create_rl_map_cellphonedb(genes = CellPhoneDB$genes_tiny,
   proteins = CellPhoneDB$proteins_tiny,
   interactions = CellPhoneDB$interactions_tiny,
-  complexes = CellPhoneDB$complexes_tiny, gene_conv = c("ENSG", "MGI"),
+  complexes = CellPhoneDB$complexes_tiny, gene_conv = c("HGNC", "MGI"),
   alternate_convert = TRUE, alternate_convert_table = ortho_table)
-#> No gene orthologs found for: IL7
-#> Skipping interaction: IL7_receptor P13232
-#> No gene orthologs found for: TGFB3
-#> Skipping interaction: P10600 Q03167
-#> No gene orthologs found for: CXCR3
-#> Skipping interaction: P49682 P78556
-#> No gene orthologs found for: CCR6
-#> Skipping interaction: P51684 P78556
-#> No gene orthologs found for: NRG1
-#> Skipping interaction: Q02297 integrin_a6b4_complex
 ```

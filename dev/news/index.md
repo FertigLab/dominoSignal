@@ -1,20 +1,301 @@
 # Changelog
 
-## dominoSignal v1.7.0 (in deveopment)
+## dominoSignal v1.7.1 (October 12, 2026)
 
-### Bug fixes
+### BREAKING CHANGES
 
-- Fixed
+Changes are noted as breaking when a call on the same inputs gives a
+different result or a call that used to work now errors. A number of bug
+fixes are included here (prefixed with \[BF\]), as the fixes alter the
+behavior of functions.
+
+#### Renamed or removed functions, arguments, and data
+
+- Removed the `use_clusters` argument from
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md),
+  as `TRUE` is the only option. The `counts`, `z_scores`, and `clusters`
+  arguments are now required and no longer default to `NULL`.
+- Renamed the `min_tf_pval` argument of
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  to `max_tf_pval`, as it as a maximum p-value threshold. Objects built
+  with previous versions (which store `min_tf_pval` in `build_vars`)
+  still pass validity checks.
+- Renamed the first argument of
+  [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md)
+  and
+  [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md)
+  from `linkage_summary` to `link_summary` to avoid conflict with
+  [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+  class.
+- Removed the `test_name` argument from
+  [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md),
+  as Fisher’s exact test is the only option.
+- Renamed the `return` argument of
+  [`dom_network_items()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_network_items.md)
+  to `which_return` to avoid conflict with
+  [`return()`](https://rdrr.io/r/base/function.html) function.
+- [`obtain_circos_expression()`](https://FertigLab.github.io/dominoSignal/dev/reference/obtain_circos_expression.md)
+  and
+  [`render_circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/render_circos_ligand_receptor.md)
+  are no longer exported. Use
+  [`circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/circos_ligand_receptor.md).
+- Renamed elements of the `PBMC` example dataset: `RNA_count_tiny` is
+  now `count_tiny` and `RNA_zscore_tiny` is now `zscore_tiny`.
+- Removed `mock_linkage_summary()`. An example
+  [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+  object is now provided in the `LinkageSummary` dataset.
+
+#### Changed defaults
+
+- Changed the default of `remove_rec_dropout` in
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  to `FALSE` to reflect current recommended usage.
+- Changed the default of `remove_rec_dropout` in
+  [`cor_scatter()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_scatter.md)
+  to `NULL`, which uses the value stored in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object by
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md).
+  Objects created before v1.7.1 do not store this value and now default
+  to `FALSE` (previously `TRUE`).
+- The
+  [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
+  colors now fun from the `gradient` minimum color (red, now
+  customizable) to the maximum color (grey, now customizable) regardless
+  of `stat_ranking`. Previously, `stat_ranking = "descending"` colored
+  the maximum value red.
+
+#### Stricter input checks and new errors
+
+- [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  objects now have validity checks: cell-level slots must share the same
+  cells in the same order, and stored parameters, `clust_de`, and `cor`
+  must be consistent within the object. Objects created with earlier
+  versions may fail `validObject()`, in which case they should be
+  recreated.
+- \[BF\]
+  [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+  objects now have validity checks: the first column of `subject_meta`
+  and the names of `subject_linkages` must match `subject_names` in the
+  same order to prevent mismatches when matching by position only.
+  Objects created with earlier versions may fail `validObject()` if the
+  order differed, in which case they should be recreated and results may
+  change.
+- Added argument validation to exported functions. Inputs that were
+  previously accepted or failed later with unclear errors now error
+  immediately with more informative errors.
+- \[BF\]
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  matches cells across `counts`, `z_scores`, `features`, and `clusters`
+  by name instead of only by position. `clusters` must be named by cell.
+  Cells not shared by all inputs are dropped with a warning, and the
+  function errors if no cells are shared. Results will differ for inputs
+  whose cells were not in the same order.
+- \[BF\]
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  excludes `rl_map` rows that do not pair one receptor with one ligand
+  with a warning, and errors if no rows remain. Previously, `gene_B` was
+  silently treated as the receptor if `gene_A` was a ligand.
+- \[BF\]
+  [`summarize_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.md)
+  requires
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  objects built with
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  and subject names present in the first column of `subject_meta`.
+  `subject_meta` is reordered to match `subject_names` instead of being
+  matched by position. Results may change if order differed previously.
+- [`signaling_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.md)
+  now errors instead of warning and returning `NULL` when no signaling
+  is found.
+- [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
+  no errors instead of warning when the input
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object has not been built.
+
+#### Changed results
+
+- When
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  TF selection method is `all` or `variable`, cluster labels are kept
+  and per-cluster networks are built using TFs ranked by maximum
+  correlation with with receptors expressed in each cluster. Previously,
+  clusters were set to an empty factor and a single `clust` list was
+  returned, which was incompatible with downstream exploration and
+  plotting functions.
+- \[BF\] Receptor-TF correlations that are not calculated in
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  (receptors in the TF’s regulon, or TFs with all-zero scores in the
+  retained cells) are now `NA` instead of zero. Receptor complexes with
+  such a component now have an `NA` median correlation and are no longer
+  linked to that TF.
+- \[BF\]
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  no longer drops receptors with non-syntactic names (such as those
+  containing spaces or hyphens) from the signaling network.
+- \[BF\]
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  keeps a receptor when it is the only receptor gene passing
+  `min_rec_percentage` in a cluster. Previously, it was silently
+  excluded from the network.
+- \[BF\]
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  calculates signaling scores for clusters with only one incoming
+  ligand. Previously, these scores were always zero.
+- \[BF\]
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  averages the component genes of a complex ligand when it is the only
+  valid ligand for a cluster, instead of summing the components as
+  separate ligands. Complexes with missing components are dropped
+  consistently.
+- \[BF\]
+  [`create_rl_map_cellphonedb()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_rl_map_cellphonedb.md)
+  skips interactions whose components lack an ortholog during gene
+  conversion, instead of keeping unconverted gene names. Names of
+  single-protein partner B entries now replace spaces with underscores,
+  matching partner A.
+- \[BF\]
+  [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md)
+  and
+  [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md)
+  now filter by `subject_names`. Previously, the argument was ignored.
+- \[BF\]
+  [`count_linkage()`](https://FertigLab.github.io/dominoSignal/dev/reference/count_linkage.md)
+  now counts the correct subjects when the subject name column of
+  `subject_meta` is a factor.
+- \[BF\]
+  [`summarize_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/summarize_linkages.md)
+  no longer records spurious `NA <- NA` linkages for subjects or
+  clusters without linkages.
+- [`signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_heatmap.md)
+  and
+  [`incoming_signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/incoming_signaling_heatmap.md)
+  with `scale = "log"` now plot `log10(x + 1)` instead of `log10(x)` to
+  avoid `log10(0)`.
+- \[BF\]
   [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
-  function skip iterating on linkages if length is zero
-
-## dominoSignal v1.6.0
+  no longer counts ligand expression more than once for vertex sizes
+  when `OutgoingSignalingClust` is used with multiple receptor clusters.
 
 ### New Features
 
-- Added [`print()`](https://rdrr.io/r/base/print.html) and
-  [`show()`](https://rdrr.io/r/methods/show.html) methods for
-  `linkage_summary` objects to provide concise summary output.
+- [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  stores its parameters in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object, and
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  and
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  record the dominoSignal version used. These are returned by
+  [`dom_info()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_info.md)
+  and reported by [`print()`](https://rdrr.io/r/base/print.html) and
+  `show()`, which now give the same output for
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  objects.
+- [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  accepts a dense `matrix` or `data.frame` for `counts` and converts it
+  to a sparse `dgCMatrix`.
+- [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  messages when no TFs in a cluster pass the `max_tf_pval` threshold,
+  explaining why no signaling is inferred.
+- Added a
+  [`subset`](https://FertigLab.github.io/dominoSignal/dev/reference/subset-linkage_summary-method.md)
+  method for
+  [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+  objects to filter by subject names or metadata.
+- Added `gradient` argument to
+  [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
+  to set the colors of the test statistic.
+- Added
+  [`dom_to_df()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_to_df.md)
+  function to create data.frame of signaling results from
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object.
+- Added example datasets `DominoObjects` (created and built
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  objects) and `LinkageSummary` (a
+  [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+  object and differential linkage results). Added `regulon_list_tiny` to
+  `SCENIC` and `rl_map_tiny` to `CellPhoneDB`.
+
+### Bug Fixes
+
+- Fixed
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  failing with a custom `rl_map` that lacks `name_A` and `name_B`
+  columns.
+- Fixed
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  failing when a single feature is retained with
+  `tf_selection_method = "variable"`, and added validation for
+  `tf_variance_quantile`.
+- Fixed
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  failing when receptor genes are missing from `z_scores`. These
+  receptors are now excluded from correlation calculations with a
+  warning.
+- Error messages now refer to
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  and
+  [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+  instead of `domino_create` and `domino_build`.
+- Fixed
+  [`create_rl_map_cellphonedb()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_rl_map_cellphonedb.md)
+  failing when receptor annotations are missing from the protein table.
+- Fixed
+  [`create_rl_map_cellphonedb()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_rl_map_cellphonedb.md)
+  failing when no interactions remain after ortholog conversion. An
+  empty `rl_map` is now returned with a warning.
+- Fixed
+  [`test_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/test_differential_linkages.md)
+  failing when comparing more than two groups (the odds ratio is `NA` in
+  this case).
+- Fixed
+  [`feat_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/feat_heatmap.md)
+  failing when `ann_cols = FALSE` and a title is used.
+- Fixed
+  [`signaling_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.md)
+  producing `NaN` edge weights when normalizing clusters without
+  signaling (0/0).
+- [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
+  gives an informative error when `clust` is not provided.
+- Fixed
+  [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
+  failing when there are no linkages to plot.
+- Fixed
+  [`plot_differential_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/plot_differential_linkages.md)
+  failing when the test statistic contains `NA` values (such as
+  `odds.ratio`). `stat_range` is only restricted to \[0, 1\] for
+  p-values.
+
+### Documentation
+
+- Updated vignettes for consistent terminology, corrected pySCENIC
+  commands, and improved accessibility.
+- Added vignette for the differential signaling workflow
+- Regenerated example data with dominoSignal v1.7.1. Examples now load
+  the prebuilt `DominoObjects` and `LinkageSummary` datasets instead of
+  re-running `example(build_domino)`.
+- Documented sources and contents of example datasets.
+- Corrected documentation of `tf_variance_quantile` in
+  [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+  to state that the coefficient of variation is used and higher values
+  keep fewer features.
+- Fixed
+  [`create_rl_map_cellphonedb()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_rl_map_cellphonedb.md)
+  examples to use genes and a toy ortholog table that return results.
+
+## dominoSignal v1.6.0 (May 5, 2026)
+
+### New Features
+
+- Added
+  [`print`](https://FertigLab.github.io/dominoSignal/dev/reference/print-linkage_summary-method.md)
+  and
+  [`show`](https://FertigLab.github.io/dominoSignal/dev/reference/show-linkage_summary-method.md)
+  methods for
+  [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+  objects to provide concise summary output.
 
 ### Bug Fixes
 
@@ -51,11 +332,13 @@
 - Updated README/index documentation links and citation text to current
   release metadata.
 
-## dominoSignal v1.4.1
+## dominoSignal v1.4.1 (March 25, 2026)
+
+### Other changes
 
 - Updated maintainer information.
 
-## dominoSignal v1.2.0
+## dominoSignal v1.2.0 (April 15th, 2025)
 
 ### Bug Fixes
 
@@ -69,7 +352,7 @@
   `complexes = TRUE` but no complexes are found to have active
   signaling.
 
-## dominoSignal v1.0.0
+## dominoSignal v1.0.0 (November 6, 2024)
 
 - Accepted to Bioconductor in release 3.20.
 
@@ -83,11 +366,11 @@
 
 ### Documentation
 
-- Updated vignette download instructions to use the Bioconductor URL
+- Updated vignette download instructions to use the Bioconductor URL.
 - All vignettes explicitly state seed used when executing code if
   applicable.
 - Example code runs with `echo = FALSE` to reduce output verbosity in
-  documentation
+  documentation.
 - [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
   examples run with `verbose = FALSE` to reduce extensive output in
   documentation.
@@ -101,27 +384,33 @@
   boolean representation.
 - Updated non-functional links to correct URLs.
 
-## dominoSignal v0.99.2-alpha
+## dominoSignal v0.99.2-alpha (May 15, 2024)
 
-- Package renamed from “domino2” to “dominoSignal”.
+### BREAKING CHANGES
+
+- Renamed package from “domino2” to “dominoSignal”.
 
 ### Documentation
 
 - Updated vignettes to demonstrate pipeline on data formatted as
   `SingleCellExperiment` objects.
-- Added SCENIC tutorial vignette in place of deprecated example scripts
+- Added SCENIC tutorial vignette in place of deprecated example scripts.
 
-## dominoSignal v0.2.2-alpha
+## dominoSignal v0.2.2-alpha (December 20, 2023)
 
 ### New Features
 
-- Added new `linkage_summary` class to summarize linkages in domino
+- Added new
+  [`linkage_summary()`](https://FertigLab.github.io/dominoSignal/dev/reference/linkage_summary-class.md)
+  class to summarize linkages in
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
   objects.
-- Added helper functions to count linkages and compare between domino
+- Added helper functions to count linkages and compare between
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
   objects.
 - Added plotting function for differential linkages.
 
-## dominoSignal v0.2.1-alpha
+## dominoSignal v0.2.1-alpha (November 3, 2023)
 
 ### New Features
 
@@ -129,7 +418,7 @@
 
 - Standardized input formats for receptor-ligand databases,
   transcription factor activity scores, and regulon gene lists to
-  support alternative databases and transcription factor activation
+  support alternative databases and transcription factor activity
   inference methods.
 - Added helper functions to reformat pySCENIC outputs and CellPhoneDB
   database files to standardized input formats.

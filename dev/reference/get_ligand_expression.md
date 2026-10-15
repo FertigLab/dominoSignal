@@ -12,7 +12,9 @@ get_ligand_expression(dom, send_clusters, lig_genes, complexes, exp_type)
 
 - dom:
 
-  A built domino object (as output by
+  A built
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object (as output by
   [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md))
 
 - send_clusters:
@@ -40,6 +42,7 @@ get_ligand_expression(dom, send_clusters, lig_genes, complexes, exp_type)
 
 ## Value
 
-Matrix with ligands/complexes as rows and send_clusters as columns;
-entries are mean expression. Missing ligands and empty clusters yield
-NA; row and column names are preserved.
+Data frame with a ligand column and then one column per send_cluster
+with mean expression values. Ligands not found are dropped with a
+message, complexes with missing components are dropped, and
+send_clusters with no cells are omitted.

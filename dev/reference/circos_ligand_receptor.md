@@ -1,4 +1,4 @@
-# Plot expression of a receptor's ligands by other cell types as a chord plot
+# Plot expression of a receptor's ligands by other clusters as a chord plot
 
 Creates a chord plot of expression of ligands that can activate a
 specified receptor where chord widths correspond to mean ligand
@@ -20,12 +20,15 @@ circos_ligand_receptor(
 
 - dom:
 
-  Domino object that has undergone network building with
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object that has undergone network building with
   [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
 
 - receptor:
 
-  Name of a receptor active in at least one cell type in the domino
+  Name of a receptor active in at least one cell type in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
   object
 
 - ligand_expression_threshold:
@@ -35,8 +38,9 @@ circos_ligand_receptor(
 
 - cell_idents:
 
-  Vector of cell types from cluster assignments in the domino object to
-  be included in the plot.
+  Vector of clusters from cluster assignments in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object to be included in the plot.
 
 - cell_colors:
 

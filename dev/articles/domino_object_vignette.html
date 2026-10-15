@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dominoSignal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.7.0</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,7 @@
     <li><a class="dropdown-item" href="../articles/cellphonedb_vignette.html">Using CellphoneDB</a></li>
     <li><a class="dropdown-item" href="../articles/domino_object_vignette.html">domino Object Structure</a></li>
     <li><a class="dropdown-item" href="../articles/plotting_vignette.html">Plotting and Visualization</a></li>
+    <li><a class="dropdown-item" href="../articles/differential_signaling.html">Differential Signaling Workflow</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -64,24 +65,24 @@
 
 
 
-
+<script src="domino_object_vignette_files/kePrint-0.0.1/kePrint.js"></script><link href="domino_object_vignette_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Interacting with domino Objects</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/FertigLab/dominoSignal/blob/gha/test_actions/vignettes/domino_object_vignette.Rmd" class="external-link"><code>vignettes/domino_object_vignette.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/FertigLab/dominoSignal/blob/master/vignettes/domino_object_vignette.Rmd" class="external-link"><code>vignettes/domino_object_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>domino_object_vignette.Rmd</code></div>
     </div>
 
     
     
 <p>In this tutorial, we will go into more detail on the structure of a
-domino object and the ways in which to access the data stored within. We
-will be using the domino object we built on the <a href="https://fertiglab.github.io/dominoSignal" class="external-link">Getting Started</a>
-page. If you have not yet built a domino object, you can do so by
-following the instructions on the <a href="https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html" class="external-link">Getting
-Started</a> page.</p>
+<code><a href="../reference/domino-class.html">domino()</a></code> object and the ways in which to access the data
+stored within. We will be using the <code><a href="../reference/domino-class.html">domino()</a></code> object we
+built on the <a href="https://fertiglab.github.io/dominoSignal" class="external-link">Getting
+Started</a> page. If you have not yet built a <code><a href="../reference/domino-class.html">domino()</a></code>
+object, you can do so by following the instructions on that page.</p>
 <details><summary>
 Instructions to load data
 </summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -96,47 +97,48 @@ Instructions to load data
 </details><div class="section level2">
 <h2 id="object-contents">Object contents<a class="anchor" aria-label="anchor" href="#object-contents"></a>
 </h2>
-<p>There is a great deal of information stored with the <a href="https://fertiglab.github.io/dominoSignal/reference/domino-class.html" class="external-link">domino
-object class</a>. The domino object is an S4 class object that contains
-a variety of information about the data set used to build the object,
-the calculated values, and the linkages between receptors, ligands, and
-transcription factors. The object is structured as follows (with some
-examples of the information stored within each slot:</p>
+<p>There is a great deal of information stored with the
+<code><a href="../reference/domino-class.html">domino()</a></code> object class. The <code><a href="../reference/domino-class.html">domino()</a></code> object is
+an S4 class object that contains a variety of information about the data
+set used to build the object, the calculated values, and the linkages
+between receptors, ligands, and transcription factors. The object is
+structured as follows (with some examples of the information stored
+within each slot):</p>
 <ul>
 <li>
 <p>Input Data</p>
 <ul>
 <li><p>Information about the database used to construct the
-rl_map</p></li>
+<code>rl_map</code></p></li>
 <li><p>Inputted counts matrix</p></li>
 <li><p>Inputted z-scored counts matrix</p></li>
 <li><p>Inputted cluster labels</p></li>
-<li><p>Inputted transcription factor activation scores</p></li>
+<li><p>Inputted transcription factor (TF) activity scores</p></li>
 </ul>
 </li>
 <li>
 <p>Calculated values</p>
 <ul>
-<li><p>Differential expression p-values of transcription factors in each
+<li><p>P-values for differential activity of TFs in each
 cluster</p></li>
-<li><p>Correlation values between ligands and receptors</p></li>
-<li><p>Median correlation between components of receptor
-complexes</p></li>
+<li><p>Correlation values between receptor expression and TF
+activity</p></li>
+<li><p>Receptor-TF correlations with receptor complexes summarized as
+the median of their component genes</p></li>
 </ul>
 </li>
 <li>
 <p>Linkages</p>
 <ul>
-<li><p>Complexes show the component genes of any complexes in the rl
-map</p></li>
-<li><p>Receptor - ligand linkages as determined from the rl map</p></li>
-<li><p>Transcription factor - target linkages as determined from the
-SCENIC analysis (or other regulon inference method)</p></li>
-<li><p>Transcription factors that are differentially expressed in each
-cluster</p></li>
-<li><p>Transcription factors that are correlated with receptors</p></li>
-<li><p>Transcription factors that are correlated with receptors in each
-cluster</p></li>
+<li><p>Complexes show the component genes of any complexes in the
+<code>rl_map</code></p></li>
+<li><p>Receptor-ligand linkages as determined from the
+<code>rl_map</code></p></li>
+<li><p>TF-target linkages as determined from the SCENIC analysis (or
+other regulon inference method)</p></li>
+<li><p>TFs that are active in each cluster</p></li>
+<li><p>TFs that are correlated with receptors</p></li>
+<li><p>TFs that are correlated with receptors in each cluster</p></li>
 <li><p>Receptors which are active in each cluster</p></li>
 <li><p>Ligands that may activate a receptor in a given cluster
 (so-called incoming ligands; these may include ligands from outside the
@@ -154,44 +156,58 @@ data set that they are coming from</p></li>
 <li>
 <p>Miscellaneous Information</p>
 <ul>
-<li><p>Build information, which includes the parameters used to build
-the object in the <code><a href="../reference/build_domino.html">build_domino()</a></code> functions</p></li>
-<li><p>The pared down receptor ligand map information used in building
-the object</p></li>
+<li><p>Create information, which includes the parameters and package
+version used to create the object in
+<code><a href="../reference/create_domino.html">create_domino()</a></code></p></li>
+<li><p>Build information, which includes the parameters and package
+versionused to build the object in <code><a href="../reference/build_domino.html">build_domino()</a></code></p></li>
+<li><p>The processed <code>rl_map</code> used in building the
+object</p></li>
 <li><p>The percent expression of receptors within each cluster</p></li>
 </ul>
 </li>
 </ul>
 <p>For commonly accessed information (the number of cells, clusters, and
-some build information), the show and print methods for domino objects
-can be used.</p>
+some build information), the show and print methods for
+<code><a href="../reference/domino-class.html">domino()</a></code> objects can be used.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dom</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dom</span></span>
+<span><span class="co">#&gt; A domino object of 2607 cells</span></span>
+<span><span class="co">#&gt;                 Contains signaling between 9 clusters</span></span>
+<span><span class="co">#&gt;                 Built with a maximum of 25 TFs per cluster</span></span>
+<span><span class="co">#&gt;                 and a maximum of 25 receptors per TF</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
+<span><span class="co">#&gt; A domino object of 2607 cells</span></span>
+<span><span class="co">#&gt;                 Contains signaling between 9 clusters</span></span>
+<span><span class="co">#&gt;                 Built with a maximum of 25 TFs per cluster</span></span>
+<span><span class="co">#&gt;                 and a maximum of 25 receptors per TF</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="access-functions">Access functions<a class="anchor" aria-label="anchor" href="#access-functions"></a>
 </h2>
-<p>To facilitate access to the information stored in the domino object,
-we have provided a collection of functions to retrieve specific items.
-These functions begin with “dom_” and can be listed using
-<code><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls()</a></code>.</p>
+<p>To facilitate access to the information stored in the
+<code><a href="../reference/domino-class.html">domino()</a></code> object, we have provided a collection of functions
+to retrieve specific items. These functions begin with “dom_” and can be
+listed using <code><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="st">"package:dominoSignal"</span>, pattern <span class="op">=</span> <span class="st">"^dom_"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "dom_clusters"      "dom_correlations"  "dom_counts"       </span></span>
 <span><span class="co">#&gt;  [4] "dom_database"      "dom_de"            "dom_info"         </span></span>
 <span><span class="co">#&gt;  [7] "dom_linkages"      "dom_network_items" "dom_signaling"    </span></span>
-<span><span class="co">#&gt; [10] "dom_tf_activation" "dom_to_df"         "dom_zscores"</span></span></code></pre></div>
+<span><span class="co">#&gt; [10] "dom_signalling"    "dom_tf_activation" "dom_to_df"        </span></span>
+<span><span class="co">#&gt; [13] "dom_zscores"</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="input-data">Input data<a class="anchor" aria-label="anchor" href="#input-data"></a>
 </h3>
-<p>When creating a domino object with the <code><a href="../reference/create_domino.html">create_domino()</a></code>
-function, several inputs are required which are then stored in the
-domino object itself. These include cluster labels, the counts matrix,
-z-scored counts matrix, transcription factor activation scores, and the
-R-L database used in <code><a href="../reference/create_rl_map_cellphonedb.html">create_rl_map_cellphonedb()</a></code>.</p>
-<p>For example, to access the cluster names in the domino object:</p>
+<p>When creating a <code><a href="../reference/domino-class.html">domino()</a></code> object with the
+<code><a href="../reference/create_domino.html">create_domino()</a></code> function, several inputs are required which
+are then stored in the <code><a href="../reference/domino-class.html">domino()</a></code> object itself. These
+include cluster labels, the counts matrix, z-scored expression matrix,
+TF activity scores, and the receptor-ligand database used in
+<code><a href="../reference/create_rl_map_cellphonedb.html">create_rl_map_cellphonedb()</a></code>.</p>
+<p>For example, to access the cluster names in the <code><a href="../reference/domino-class.html">domino()</a></code>
+object:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dom_clusters.html">dom_clusters</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "B_cell"            "CD14_monocyte"     "CD16_monocyte"    </span></span>
@@ -202,266 +218,545 @@ of cluster labels for each cell rather than the unique cluster
 names.</p>
 <p>To access the counts:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">count_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_counts.html">dom_counts</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">count_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="14%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">AAACATACAACCAC-1</th>
-<th align="right">AAACATTGAGCTAC-1</th>
-<th align="right">AAACATTGATCAGC-1</th>
-<th align="right">AAACCGTGCTTCCG-1</th>
-<th align="right">AAACCGTGTATGCG-1</th>
+<code class="sourceCode R"><span><span class="va">count_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_counts.html">dom_counts</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">count_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Subset of counts matrix from domino object."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Subset of counts matrix from domino object.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+AAACATACAACCAC-1
+</th>
+<th style="text-align:right;">
+AAACATTGAGCTAC-1
+</th>
+<th style="text-align:right;">
+AAACATTGATCAGC-1
+</th>
+<th style="text-align:right;">
+AAACCGTGCTTCCG-1
+</th>
+<th style="text-align:right;">
+AAACCGTGTATGCG-1
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">AL627309.1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+AL627309.1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">AP006222.2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+AP006222.2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">RP11-206L10.2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+RP11-206L10.2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">RP11-206L10.9</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+RP11-206L10.9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">FAM87B</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+FAM87B
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
 </tbody>
 </table>
-<p>Or z-scored counts:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">z_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_zscores.html">dom_zscores</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">z_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="14%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">AAACATACAACCAC-1</th>
-<th align="right">AAACATTGAGCTAC-1</th>
-<th align="right">AAACATTGATCAGC-1</th>
-<th align="right">AAACCGTGCTTCCG-1</th>
-<th align="right">AAACCGTGTATGCG-1</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">AL627309.1</td>
-<td align="right">-0.0581122</td>
-<td align="right">-0.0581122</td>
-<td align="right">-0.0581122</td>
-<td align="right">-0.0581122</td>
-<td align="right">-0.0581122</td>
-</tr>
-<tr class="even">
-<td align="left">AP006222.2</td>
-<td align="right">-0.0335151</td>
-<td align="right">-0.0335151</td>
-<td align="right">-0.0335151</td>
-<td align="right">-0.0335151</td>
-<td align="right">-0.0335151</td>
-</tr>
-<tr class="odd">
-<td align="left">RP11-206L10.2</td>
-<td align="right">-0.0399375</td>
-<td align="right">-0.0399375</td>
-<td align="right">-0.0399375</td>
-<td align="right">-0.0399375</td>
-<td align="right">-0.0399375</td>
-</tr>
-<tr class="even">
-<td align="left">RP11-206L10.9</td>
-<td align="right">-0.0337574</td>
-<td align="right">-0.0337574</td>
-<td align="right">-0.0337574</td>
-<td align="right">-0.0337574</td>
-<td align="right">-0.0337574</td>
-</tr>
-<tr class="odd">
-<td align="left">FAM87B</td>
-<td align="right">-0.0274227</td>
-<td align="right">-0.0274227</td>
-<td align="right">-0.0274227</td>
-<td align="right">-0.0274227</td>
-<td align="right">-0.0274227</td>
-</tr>
-</tbody>
-</table>
-<p>The transcription factor activation scores can be similarly
-accessed:</p>
+<p>Or z-scored expression:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">activation_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_tf_activation.html">dom_tf_activation</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">activation_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="6%">
-<col width="18%">
-<col width="18%">
-<col width="18%">
-<col width="18%">
-<col width="18%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">AAACATACAACCAC-1</th>
-<th align="right">AAACATTGAGCTAC-1</th>
-<th align="right">AAACATTGATCAGC-1</th>
-<th align="right">AAACCGTGCTTCCG-1</th>
-<th align="right">AAACCGTGTATGCG-1</th>
+<code class="sourceCode R"><span><span class="va">z_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_zscores.html">dom_zscores</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">z_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Subset of z-scored counts matrix from domino object."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Subset of z-scored counts matrix from domino object.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+AAACATACAACCAC-1
+</th>
+<th style="text-align:right;">
+AAACATTGAGCTAC-1
+</th>
+<th style="text-align:right;">
+AAACATTGATCAGC-1
+</th>
+<th style="text-align:right;">
+AAACCGTGCTTCCG-1
+</th>
+<th style="text-align:right;">
+AAACCGTGTATGCG-1
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">ARNTL</td>
-<td align="right">0.0446386</td>
-<td align="right">0.0413253</td>
-<td align="right">0.0441566</td>
-<td align="right">0.0437952</td>
-<td align="right">0.1087952</td>
+<tr>
+<td style="text-align:left;">
+AL627309.1
+</td>
+<td style="text-align:right;">
+-0.0581122
+</td>
+<td style="text-align:right;">
+-0.0581122
+</td>
+<td style="text-align:right;">
+-0.0581122
+</td>
+<td style="text-align:right;">
+-0.0581122
+</td>
+<td style="text-align:right;">
+-0.0581122
+</td>
 </tr>
-<tr class="even">
-<td align="left">ATF3</td>
-<td align="right">0.0582029</td>
-<td align="right">0.0870623</td>
-<td align="right">0.0509289</td>
-<td align="right">0.1172953</td>
-<td align="right">0.0638104</td>
+<tr>
+<td style="text-align:left;">
+AP006222.2
+</td>
+<td style="text-align:right;">
+-0.0335151
+</td>
+<td style="text-align:right;">
+-0.0335151
+</td>
+<td style="text-align:right;">
+-0.0335151
+</td>
+<td style="text-align:right;">
+-0.0335151
+</td>
+<td style="text-align:right;">
+-0.0335151
+</td>
 </tr>
-<tr class="odd">
-<td align="left">ATF4</td>
-<td align="right">0.0295733</td>
-<td align="right">0.0437047</td>
-<td align="right">0.0542889</td>
-<td align="right">0.0427879</td>
-<td align="right">0.0436855</td>
+<tr>
+<td style="text-align:left;">
+RP11-206L10.2
+</td>
+<td style="text-align:right;">
+-0.0399375
+</td>
+<td style="text-align:right;">
+-0.0399375
+</td>
+<td style="text-align:right;">
+-0.0399375
+</td>
+<td style="text-align:right;">
+-0.0399375
+</td>
+<td style="text-align:right;">
+-0.0399375
+</td>
 </tr>
-<tr class="even">
-<td align="left">ATF6</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0211198</td>
-<td align="right">0.1151665</td>
-<td align="right">0.0850461</td>
-<td align="right">0.0460666</td>
+<tr>
+<td style="text-align:left;">
+RP11-206L10.9
+</td>
+<td style="text-align:right;">
+-0.0337574
+</td>
+<td style="text-align:right;">
+-0.0337574
+</td>
+<td style="text-align:right;">
+-0.0337574
+</td>
+<td style="text-align:right;">
+-0.0337574
+</td>
+<td style="text-align:right;">
+-0.0337574
+</td>
 </tr>
-<tr class="odd">
-<td align="left">BCL3</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+FAM87B
+</td>
+<td style="text-align:right;">
+-0.0274227
+</td>
+<td style="text-align:right;">
+-0.0274227
+</td>
+<td style="text-align:right;">
+-0.0274227
+</td>
+<td style="text-align:right;">
+-0.0274227
+</td>
+<td style="text-align:right;">
+-0.0274227
+</td>
 </tr>
 </tbody>
 </table>
-<p>Information about the database referenced for ligand - receptor pairs
+<p>The TF activity scores can be similarly accessed:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">activity_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_tf_activation.html">dom_tf_activation</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">activity_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Subset of transcription factor activity matrix from domino object."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Subset of transcription factor activity matrix from domino object.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+AAACATACAACCAC-1
+</th>
+<th style="text-align:right;">
+AAACATTGAGCTAC-1
+</th>
+<th style="text-align:right;">
+AAACATTGATCAGC-1
+</th>
+<th style="text-align:right;">
+AAACCGTGCTTCCG-1
+</th>
+<th style="text-align:right;">
+AAACCGTGTATGCG-1
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ARNTL
+</td>
+<td style="text-align:right;">
+0.0446386
+</td>
+<td style="text-align:right;">
+0.0413253
+</td>
+<td style="text-align:right;">
+0.0441566
+</td>
+<td style="text-align:right;">
+0.0437952
+</td>
+<td style="text-align:right;">
+0.1087952
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATF3
+</td>
+<td style="text-align:right;">
+0.0582029
+</td>
+<td style="text-align:right;">
+0.0870623
+</td>
+<td style="text-align:right;">
+0.0509289
+</td>
+<td style="text-align:right;">
+0.1172953
+</td>
+<td style="text-align:right;">
+0.0638104
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATF4
+</td>
+<td style="text-align:right;">
+0.0295733
+</td>
+<td style="text-align:right;">
+0.0437047
+</td>
+<td style="text-align:right;">
+0.0542889
+</td>
+<td style="text-align:right;">
+0.0427879
+</td>
+<td style="text-align:right;">
+0.0436855
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATF6
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0211198
+</td>
+<td style="text-align:right;">
+0.1151665
+</td>
+<td style="text-align:right;">
+0.0850461
+</td>
+<td style="text-align:right;">
+0.0460666
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BCL3
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+</tbody>
+</table>
+<p>Information about the database referenced for receptor-ligand pairs
 and composition of protein complexes can be extracted from the
 <code><a href="../reference/dom_database.html">dom_database()</a></code> function. By default, the function returns
 the name(s) of the database(s) used:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dom_database.html">dom_database</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "CellPhoneDB_v4.0"</span></span></code></pre></div>
-<p>If you would like to view the entire ligand - receptor map, set
+<p>If you would like to view the entire receptor-ligand map, set
 <code>name_only = FALSE</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">db_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_database.html">dom_database</a></span><span class="op">(</span><span class="va">dom</span>, name_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">db_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="3%">
-<col width="45%">
-<col width="16%">
-<col width="14%">
-<col width="12%">
-<col width="7%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="left">int_pair</th>
-<th align="left">name_A</th>
-<th align="left">uniprot_A</th>
-<th align="left">gene_A</th>
-<th align="left">type_A</th>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">db_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_database.html">dom_database</a></span><span class="op">(</span><span class="va">dom</span>, name_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">db_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Subset of full receptor-ligand map from domino object."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Subset of full receptor-ligand map from domino object.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+int_pair
+</th>
+<th style="text-align:left;">
+name_A
+</th>
+<th style="text-align:left;">
+uniprot_A
+</th>
+<th style="text-align:left;">
+gene_A
+</th>
+<th style="text-align:left;">
+type_A
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">4</td>
-<td align="left">RAreceptor_RXRG &amp; atRetinoicAcid_byALDH1A3</td>
-<td align="left">RAreceptor_RXRG</td>
-<td align="left">P48443,P29373</td>
-<td align="left">RXRG,CRABP2</td>
-<td align="left">R</td>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRG &amp; atRetinoicAcid_byALDH1A3
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRG
+</td>
+<td style="text-align:left;">
+P48443,P29373
+</td>
+<td style="text-align:left;">
+RXRG,CRABP2
+</td>
+<td style="text-align:left;">
+R
+</td>
 </tr>
-<tr class="even">
-<td align="left">5</td>
-<td align="left">RAreceptor_RXRG &amp; atRetinoicAcid_byALDH1A2</td>
-<td align="left">RAreceptor_RXRG</td>
-<td align="left">P48443,P29373</td>
-<td align="left">RXRG,CRABP2</td>
-<td align="left">R</td>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRG &amp; atRetinoicAcid_byALDH1A2
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRG
+</td>
+<td style="text-align:left;">
+P48443,P29373
+</td>
+<td style="text-align:left;">
+RXRG,CRABP2
+</td>
+<td style="text-align:left;">
+R
+</td>
 </tr>
-<tr class="odd">
-<td align="left">6</td>
-<td align="left">RAreceptor_RXRG &amp; atRetinoicAcid_byALDH1A1</td>
-<td align="left">RAreceptor_RXRG</td>
-<td align="left">P48443,P29373</td>
-<td align="left">RXRG,CRABP2</td>
-<td align="left">R</td>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRG &amp; atRetinoicAcid_byALDH1A1
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRG
+</td>
+<td style="text-align:left;">
+P48443,P29373
+</td>
+<td style="text-align:left;">
+RXRG,CRABP2
+</td>
+<td style="text-align:left;">
+R
+</td>
 </tr>
-<tr class="even">
-<td align="left">7</td>
-<td align="left">RAreceptor_RXRB &amp; atRetinoicAcid_byALDH1A3</td>
-<td align="left">RAreceptor_RXRB</td>
-<td align="left">P28702,P29373</td>
-<td align="left">RXRB,CRABP2</td>
-<td align="left">R</td>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRB &amp; atRetinoicAcid_byALDH1A3
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRB
+</td>
+<td style="text-align:left;">
+P28702,P29373
+</td>
+<td style="text-align:left;">
+RXRB,CRABP2
+</td>
+<td style="text-align:left;">
+R
+</td>
 </tr>
-<tr class="odd">
-<td align="left">8</td>
-<td align="left">RAreceptor_RXRB &amp; atRetinoicAcid_byALDH1A2</td>
-<td align="left">RAreceptor_RXRB</td>
-<td align="left">P28702,P29373</td>
-<td align="left">RXRB,CRABP2</td>
-<td align="left">R</td>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRB &amp; atRetinoicAcid_byALDH1A2
+</td>
+<td style="text-align:left;">
+RAreceptor_RXRB
+</td>
+<td style="text-align:left;">
+P28702,P29373
+</td>
+<td style="text-align:left;">
+RXRB,CRABP2
+</td>
+<td style="text-align:left;">
+R
+</td>
 </tr>
 </tbody>
 </table>
@@ -469,136 +764,284 @@ the name(s) of the database(s) used:</p>
 <div class="section level3">
 <h3 id="calculations">Calculations<a class="anchor" aria-label="anchor" href="#calculations"></a>
 </h3>
-<p>Active transcription factors in each cluster are determined by
-conducting Wilcoxon rank sum tests for each transcription factor where
-the transcription factor activity scores amongst all cells in a cluster
-are tested against the activity scores of all cells outside of the
-cluster. The p-values for the one-sided test for greater activity within
-the cluster compared to other cells can be accessed with the
-<code><a href="../reference/dom_de.html">dom_de()</a></code> function.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">de_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_de.html">dom_de</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">de_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="8%">
-<col width="14%">
-<col width="20%">
-<col width="20%">
-<col width="15%">
-<col width="21%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">B_cell</th>
-<th align="right">CD14_monocyte</th>
-<th align="right">CD16_monocyte</th>
-<th align="right">CD8_T_cell</th>
-<th align="right">dendritic_cell</th>
+<p>By default, active TFs in each cluster are determined by conducting
+Wilcoxon rank-sum tests for each TF where the TF activity scores amongst
+all cells in a cluster are tested against the activity scores of all
+cells outside of the cluster. The p-values for the one-sided test for
+greater activity within the cluster compared to other cells can be
+accessed with the <code><a href="../reference/dom_de.html">dom_de()</a></code> function.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">de_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_de.html">dom_de</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">de_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Subset of differential expression p-values for TFs."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Subset of differential expression p-values for TFs.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+B_cell
+</th>
+<th style="text-align:right;">
+CD14_monocyte
+</th>
+<th style="text-align:right;">
+CD16_monocyte
+</th>
+<th style="text-align:right;">
+CD8_T_cell
+</th>
+<th style="text-align:right;">
+dendritic_cell
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">ARNTL</td>
-<td align="right">0.0000019</td>
-<td align="right">1</td>
-<td align="right">0.9947780</td>
-<td align="right">0.9865518</td>
-<td align="right">0.8359381</td>
+<tr>
+<td style="text-align:left;">
+ARNTL
+</td>
+<td style="text-align:right;">
+0.0000019
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.9947780
+</td>
+<td style="text-align:right;">
+0.9865518
+</td>
+<td style="text-align:right;">
+0.8359381
+</td>
 </tr>
-<tr class="even">
-<td align="left">ATF3</td>
-<td align="right">0.0006972</td>
-<td align="right">0</td>
-<td align="right">0.0000000</td>
-<td align="right">1.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+ATF3
+</td>
+<td style="text-align:right;">
+0.0006972
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">ATF4</td>
-<td align="right">0.8399818</td>
-<td align="right">1</td>
-<td align="right">1.0000000</td>
-<td align="right">0.9631934</td>
-<td align="right">0.1748338</td>
+<tr>
+<td style="text-align:left;">
+ATF4
+</td>
+<td style="text-align:right;">
+0.8399818
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.9631934
+</td>
+<td style="text-align:right;">
+0.1748338
+</td>
 </tr>
-<tr class="even">
-<td align="left">ATF6</td>
-<td align="right">0.5988625</td>
-<td align="right">1</td>
-<td align="right">0.9893142</td>
-<td align="right">0.0365779</td>
-<td align="right">0.9549489</td>
+<tr>
+<td style="text-align:left;">
+ATF6
+</td>
+<td style="text-align:right;">
+0.5988625
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.9893142
+</td>
+<td style="text-align:right;">
+0.0365779
+</td>
+<td style="text-align:right;">
+0.9549489
+</td>
 </tr>
-<tr class="odd">
-<td align="left">BCL3</td>
-<td align="right">0.9299696</td>
-<td align="right">0</td>
-<td align="right">0.6007326</td>
-<td align="right">0.1482247</td>
-<td align="right">0.0757460</td>
+<tr>
+<td style="text-align:left;">
+BCL3
+</td>
+<td style="text-align:right;">
+0.9299696
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.6007326
+</td>
+<td style="text-align:right;">
+0.1482247
+</td>
+<td style="text-align:right;">
+0.0757460
+</td>
 </tr>
 </tbody>
 </table>
-<p>Linkage between receptors and transcription factors is assessed by
-Spearman correlation between transcription factor activity scores and
-scaled expression of receptor-encoding genes across all cells in the
-data set. Spearman coefficients can be accessed with the
-<code><a href="../reference/dom_correlations.html">dom_correlations()</a></code> function. Setting <code>type</code> to
-“complex” will return the median correlation between components of
-receptor complexes; the default (“rl”) will return receptor - ligand
-correlations.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cor_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_correlations.html">dom_correlations</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">cor_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">ARNTL</th>
-<th align="right">ATF3</th>
-<th align="right">ATF4</th>
-<th align="right">ATF6</th>
-<th align="right">BCL3</th>
+<p>Linkages between receptors and TFs are assessed by Spearman
+correlation between TF activity scores and scaled expression of
+receptor-encoding genes across all cells in the data set. Spearman
+coefficients can be accessed with the <code><a href="../reference/dom_correlations.html">dom_correlations()</a></code>
+function. The default (<code>type = "rl"</code>) will return the
+correlation of each receptor gene with each TF. Setting
+<code>type= "complex"</code> will return receptor-TF correlations in
+which receptor complexes are summarized as the median of their component
+genes (the values used by <code><a href="../reference/build_domino.html">build_domino()</a></code>).</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cor_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_correlations.html">dom_correlations</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">cor_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Correlation matrix from domino object."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Correlation matrix from domino object.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+ARNTL
+</th>
+<th style="text-align:right;">
+ATF3
+</th>
+<th style="text-align:right;">
+ATF4
+</th>
+<th style="text-align:right;">
+ATF6
+</th>
+<th style="text-align:right;">
+BCL3
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">TNFRSF18</td>
-<td align="right">0.0057014</td>
-<td align="right">-0.0297120</td>
-<td align="right">0.0043825</td>
-<td align="right">0.0063055</td>
-<td align="right">-0.0029035</td>
+<tr>
+<td style="text-align:left;">
+TNFRSF18
+</td>
+<td style="text-align:right;">
+0.0057014
+</td>
+<td style="text-align:right;">
+-0.0297120
+</td>
+<td style="text-align:right;">
+0.0043825
+</td>
+<td style="text-align:right;">
+0.0063055
+</td>
+<td style="text-align:right;">
+-0.0029035
+</td>
 </tr>
-<tr class="even">
-<td align="left">TNFRSF4</td>
-<td align="right">0.0373481</td>
-<td align="right">-0.1012705</td>
-<td align="right">0.0344042</td>
-<td align="right">0.0508720</td>
-<td align="right">0.0282500</td>
+<tr>
+<td style="text-align:left;">
+TNFRSF4
+</td>
+<td style="text-align:right;">
+0.0373481
+</td>
+<td style="text-align:right;">
+-0.1012705
+</td>
+<td style="text-align:right;">
+0.0344042
+</td>
+<td style="text-align:right;">
+0.0508720
+</td>
+<td style="text-align:right;">
+0.0282500
+</td>
 </tr>
-<tr class="odd">
-<td align="left">TNFRSF14</td>
-<td align="right">-0.0356892</td>
-<td align="right">0.0541435</td>
-<td align="right">0.0015811</td>
-<td align="right">0.0093978</td>
-<td align="right">0.0206700</td>
+<tr>
+<td style="text-align:left;">
+TNFRSF14
+</td>
+<td style="text-align:right;">
+-0.0356892
+</td>
+<td style="text-align:right;">
+0.0541435
+</td>
+<td style="text-align:right;">
+0.0015811
+</td>
+<td style="text-align:right;">
+0.0093978
+</td>
+<td style="text-align:right;">
+0.0206700
+</td>
 </tr>
-<tr class="even">
-<td align="left">TNFRSF25</td>
-<td align="right">0.0310362</td>
-<td align="right">-0.1171502</td>
-<td align="right">0.0701541</td>
-<td align="right">0.0458227</td>
-<td align="right">0.0047186</td>
+<tr>
+<td style="text-align:left;">
+TNFRSF25
+</td>
+<td style="text-align:right;">
+0.0310362
+</td>
+<td style="text-align:right;">
+-0.1171502
+</td>
+<td style="text-align:right;">
+0.0701541
+</td>
+<td style="text-align:right;">
+0.0458227
+</td>
+<td style="text-align:right;">
+0.0047186
+</td>
 </tr>
-<tr class="odd">
-<td align="left">TNFRSF1B</td>
-<td align="right">-0.0933019</td>
-<td align="right">0.2690328</td>
-<td align="right">-0.0625319</td>
-<td align="right">-0.0457366</td>
-<td align="right">0.0239629</td>
+<tr>
+<td style="text-align:left;">
+TNFRSF1B
+</td>
+<td style="text-align:right;">
+-0.0933019
+</td>
+<td style="text-align:right;">
+0.2690328
+</td>
+<td style="text-align:right;">
+-0.0625319
+</td>
+<td style="text-align:right;">
+-0.0457366
+</td>
+<td style="text-align:right;">
+0.0239629
+</td>
 </tr>
 </tbody>
 </table>
@@ -606,24 +1049,24 @@ correlations.</p>
 <div class="section level3">
 <h3 id="linkages">Linkages<a class="anchor" aria-label="anchor" href="#linkages"></a>
 </h3>
-<p>Linkages between ligands, receptors, and transcription factors can be
-accessed in several different ways, depending on the specific link and
-the scope desired. The <code><a href="../reference/dom_linkages.html">dom_linkages()</a></code> function has three
-arguments - the first, like all of our access functions, is for the
-domino object. The second, <code>link_type</code>, is used to specify
-which linkages are desired (options are complexes, receptor - ligand, tf
-- target, or tf - receptor). The third argument,
+<p>Linkages between ligands, receptors, and TFs can be accessed in
+several different ways, depending on the specific link and the scope
+desired. The <code><a href="../reference/dom_linkages.html">dom_linkages()</a></code> function has three arguments -
+the first, like all of our access functions, is for the
+<code><a href="../reference/domino-class.html">domino()</a></code> object. The second, <code>link_type</code>, is
+used to specify which linkages are desired (options are complexes,
+receptor-ligand, tf-target, or tf-receptor). The third argument,
 <code>by_cluster</code>, determines whether the linkages returned are
 arranged by cluster (though this does change the available linkage types
-to tf - receptor, receptor, or incoming-ligand). For example, to access
+to tf-receptor, receptor, or incoming-ligand). For example, to access
 the complexes used across the dataset:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">complex_links</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_linkages.html">dom_linkages</a></span><span class="op">(</span><span class="va">dom</span>, link_type <span class="op">=</span> <span class="st">"complexes"</span><span class="op">)</span></span>
-<span><span class="co"># Look for components of NODAL receptor complex</span></span>
-<span><span class="va">complex_links</span><span class="op">$</span><span class="va">NODAL_receptor</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span><span class="co"># Look for components of IL7 receptor complex</span></span>
+<span><span class="va">complex_links</span><span class="op">$</span><span class="va">IL7_receptor</span></span>
+<span><span class="co">#&gt; [1] "IL7R"  "IL2RG"</span></span></code></pre></div>
 <p>To view incoming ligands to each cluster:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">incoming_links</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_linkages.html">dom_linkages</a></span><span class="op">(</span><span class="va">dom</span>, link_type <span class="op">=</span> <span class="st">"incoming-ligand"</span>, by_cluster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># Check incoming signals to dendritic cells</span></span>
 <span><span class="va">incoming_links</span><span class="op">$</span><span class="va">dendritic_cell</span></span>
@@ -638,8 +1081,8 @@ the complexes used across the dataset:</p>
 <span><span class="co">#&gt; [25] "CXCL12"                "CXCL14"                "CD58"</span></span></code></pre></div>
 <p>If, for some reason, you find yourself in need of the entire linkage
 structure (not recommended), it can be accessed through its slot name;
-domino objects are S4 objects.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code><a href="../reference/domino-class.html">domino()</a></code> objects are S4 objects.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_linkages</span> <span class="op">&lt;-</span> <span class="fu">slot</span><span class="op">(</span><span class="va">dom</span>, <span class="st">"linkages"</span><span class="op">)</span></span>
 <span><span class="co"># Names of all sub-structures:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">all_linkages</span><span class="op">)</span></span>
@@ -647,10 +1090,10 @@ domino objects are S4 objects.</p>
 <span><span class="co">#&gt; [4] "clust_tf"           "tf_rec"             "clust_tf_rec"      </span></span>
 <span><span class="co">#&gt; [7] "clust_rec"          "clust_incoming_lig"</span></span></code></pre></div>
 <p>Alternately, to obtain a simplified list of receptors, ligands,
-and/or features in the domino object, use the
+and/or features in the <code><a href="../reference/domino-class.html">domino()</a></code> object, use the
 <code><a href="../reference/dom_network_items.html">dom_network_items()</a></code> function. To pull all transcription
 factors associated with the dendritic cell cluster:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dc_tfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_network_items.html">dom_network_items</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">"dendritic_cell"</span>, which_return <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dc_tfs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "ATF3"  "CEBPD" "FOSB"  "STAT6" "KLF4"  "CEBPA"</span></span></code></pre></div>
@@ -658,405 +1101,994 @@ factors associated with the dendritic cell cluster:</p>
 <div class="section level3">
 <h3 id="signaling-matrices">Signaling Matrices<a class="anchor" aria-label="anchor" href="#signaling-matrices"></a>
 </h3>
-<p>The averaged z-scored expression of ligands and receptors between
-different clusters can be accessed in matrix form.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">signal_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_signaling.html">dom_signaling</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">signal_matrix</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="13%">
-<col width="6%">
-<col width="10%">
-<col width="10%">
-<col width="8%">
-<col width="11%">
-<col width="13%">
-<col width="12%">
-<col width="6%">
-<col width="7%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">L_B_cell</th>
-<th align="right">L_CD14_monocyte</th>
-<th align="right">L_CD16_monocyte</th>
-<th align="right">L_CD8_T_cell</th>
-<th align="right">L_dendritic_cell</th>
-<th align="right">L_memory_CD4_T_cell</th>
-<th align="right">L_naive_CD4_T_cell</th>
-<th align="right">L_NK_cell</th>
-<th align="right">L_Platelet</th>
+<p>The mean z-scored expression of ligands, by sending cluster, that
+target each receiving cluster’s active receptors can be accessed in
+matrix form.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">signal_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_signaling.html">dom_signaling</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">signal_matrix</span>, caption <span class="op">=</span> <span class="st">"Cluster signaling matrix of averaged z_scored expression."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Cluster signaling matrix of averaged z_scored expression.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+L_B_cell
+</th>
+<th style="text-align:right;">
+L_CD14_monocyte
+</th>
+<th style="text-align:right;">
+L_CD16_monocyte
+</th>
+<th style="text-align:right;">
+L_CD8_T_cell
+</th>
+<th style="text-align:right;">
+L_dendritic_cell
+</th>
+<th style="text-align:right;">
+L_memory_CD4_T_cell
+</th>
+<th style="text-align:right;">
+L_naive_CD4_T_cell
+</th>
+<th style="text-align:right;">
+L_NK_cell
+</th>
+<th style="text-align:right;">
+L_Platelet
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">R_B_cell</td>
-<td align="right">0.0494729</td>
-<td align="right">0.1976263</td>
-<td align="right">0.1686996</td>
-<td align="right">0.0000000</td>
-<td align="right">0.3040989</td>
-<td align="right">0.2459618</td>
-<td align="right">0.1367747</td>
-<td align="right">0.0000000</td>
-<td align="right">4.013299</td>
+<tr>
+<td style="text-align:left;">
+R_B_cell
+</td>
+<td style="text-align:right;">
+0.0494729
+</td>
+<td style="text-align:right;">
+0.1976263
+</td>
+<td style="text-align:right;">
+0.1686996
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.3040989
+</td>
+<td style="text-align:right;">
+0.2459618
+</td>
+<td style="text-align:right;">
+0.1367747
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+4.013299
+</td>
 </tr>
-<tr class="even">
-<td align="left">R_CD14_monocyte</td>
-<td align="right">0.8060665</td>
-<td align="right">2.5378490</td>
-<td align="right">1.4429140</td>
-<td align="right">1.1787148</td>
-<td align="right">3.4961650</td>
-<td align="right">2.2611486</td>
-<td align="right">1.2608492</td>
-<td align="right">1.4485708</td>
-<td align="right">10.559449</td>
+<tr>
+<td style="text-align:left;">
+R_CD14_monocyte
+</td>
+<td style="text-align:right;">
+0.8060665
+</td>
+<td style="text-align:right;">
+2.5378490
+</td>
+<td style="text-align:right;">
+1.4429140
+</td>
+<td style="text-align:right;">
+1.1787148
+</td>
+<td style="text-align:right;">
+3.4961650
+</td>
+<td style="text-align:right;">
+2.2611486
+</td>
+<td style="text-align:right;">
+1.2608492
+</td>
+<td style="text-align:right;">
+1.4485708
+</td>
+<td style="text-align:right;">
+10.559449
+</td>
 </tr>
-<tr class="odd">
-<td align="left">R_CD16_monocyte</td>
-<td align="right">0.8060665</td>
-<td align="right">2.5378490</td>
-<td align="right">1.1473216</td>
-<td align="right">1.1787148</td>
-<td align="right">3.4961650</td>
-<td align="right">2.2611486</td>
-<td align="right">0.8757246</td>
-<td align="right">1.4055805</td>
-<td align="right">7.258572</td>
+<tr>
+<td style="text-align:left;">
+R_CD16_monocyte
+</td>
+<td style="text-align:right;">
+0.8060665
+</td>
+<td style="text-align:right;">
+2.5378490
+</td>
+<td style="text-align:right;">
+1.1473216
+</td>
+<td style="text-align:right;">
+1.1787148
+</td>
+<td style="text-align:right;">
+3.4961650
+</td>
+<td style="text-align:right;">
+2.2611486
+</td>
+<td style="text-align:right;">
+0.8757246
+</td>
+<td style="text-align:right;">
+1.4055805
+</td>
+<td style="text-align:right;">
+7.258572
+</td>
 </tr>
-<tr class="even">
-<td align="left">R_CD8_T_cell</td>
-<td align="right">0.3759111</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1263349</td>
-<td align="right">0.2120444</td>
-<td align="right">0.0000000</td>
-<td align="right">0.2772703</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1604005</td>
-<td align="right">0.000000</td>
+<tr>
+<td style="text-align:left;">
+R_CD8_T_cell
+</td>
+<td style="text-align:right;">
+0.3759111
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1263349
+</td>
+<td style="text-align:right;">
+0.2120444
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.2772703
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1604005
+</td>
+<td style="text-align:right;">
+0.000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">R_dendritic_cell</td>
-<td align="right">0.3176857</td>
-<td align="right">2.5041485</td>
-<td align="right">0.7368126</td>
-<td align="right">1.3152485</td>
-<td align="right">3.4961650</td>
-<td align="right">2.3809976</td>
-<td align="right">0.3061580</td>
-<td align="right">1.5659811</td>
-<td align="right">7.258572</td>
+<tr>
+<td style="text-align:left;">
+R_dendritic_cell
+</td>
+<td style="text-align:right;">
+0.3176857
+</td>
+<td style="text-align:right;">
+2.5041485
+</td>
+<td style="text-align:right;">
+0.7368126
+</td>
+<td style="text-align:right;">
+1.3152485
+</td>
+<td style="text-align:right;">
+3.4961650
+</td>
+<td style="text-align:right;">
+2.3809976
+</td>
+<td style="text-align:right;">
+0.3061580
+</td>
+<td style="text-align:right;">
+1.5659811
+</td>
+<td style="text-align:right;">
+7.258572
+</td>
 </tr>
-<tr class="even">
-<td align="left">R_memory_CD4_T_cell</td>
-<td align="right">0.3759111</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1263349</td>
-<td align="right">0.2120444</td>
-<td align="right">0.0000000</td>
-<td align="right">0.3801282</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1604005</td>
-<td align="right">0.000000</td>
+<tr>
+<td style="text-align:left;">
+R_memory_CD4_T_cell
+</td>
+<td style="text-align:right;">
+0.3759111
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1263349
+</td>
+<td style="text-align:right;">
+0.2120444
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.3801282
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1604005
+</td>
+<td style="text-align:right;">
+0.000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">R_naive_CD4_T_cell</td>
-<td align="right">0.3759111</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1263349</td>
-<td align="right">0.2120444</td>
-<td align="right">0.0000000</td>
-<td align="right">0.3801282</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1604005</td>
-<td align="right">0.000000</td>
+<tr>
+<td style="text-align:left;">
+R_naive_CD4_T_cell
+</td>
+<td style="text-align:right;">
+0.3759111
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1263349
+</td>
+<td style="text-align:right;">
+0.2120444
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.3801282
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1604005
+</td>
+<td style="text-align:right;">
+0.000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">R_NK_cell</td>
-<td align="right">0.2930600</td>
-<td align="right">1.5760509</td>
-<td align="right">0.6086536</td>
-<td align="right">0.2556741</td>
-<td align="right">1.5025648</td>
-<td align="right">0.7620921</td>
-<td align="right">0.1772729</td>
-<td align="right">0.1604005</td>
-<td align="right">4.013299</td>
+<tr>
+<td style="text-align:left;">
+R_NK_cell
+</td>
+<td style="text-align:right;">
+0.2930600
+</td>
+<td style="text-align:right;">
+1.5760509
+</td>
+<td style="text-align:right;">
+0.6086536
+</td>
+<td style="text-align:right;">
+0.2556741
+</td>
+<td style="text-align:right;">
+1.5025648
+</td>
+<td style="text-align:right;">
+0.7620921
+</td>
+<td style="text-align:right;">
+0.1772729
+</td>
+<td style="text-align:right;">
+0.1604005
+</td>
+<td style="text-align:right;">
+4.013299
+</td>
 </tr>
-<tr class="odd">
-<td align="left">R_Platelet</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.000000</td>
+<tr>
+<td style="text-align:left;">
+R_Platelet
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.000000
+</td>
 </tr>
 </tbody>
 </table>
 <p>To view signaling to a specific cluster from the other clusters, set
 the <code>cluster</code> argument to the cluster name.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dc_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_signaling.html">dom_signaling</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">"dendritic_cell"</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dc_matrix</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="14%">
-<col width="6%">
-<col width="10%">
-<col width="10%">
-<col width="8%">
-<col width="11%">
-<col width="12%">
-<col width="12%">
-<col width="6%">
-<col width="7%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">L_B_cell</th>
-<th align="right">L_CD14_monocyte</th>
-<th align="right">L_CD16_monocyte</th>
-<th align="right">L_CD8_T_cell</th>
-<th align="right">L_dendritic_cell</th>
-<th align="right">L_memory_CD4_T_cell</th>
-<th align="right">L_naive_CD4_T_cell</th>
-<th align="right">L_NK_cell</th>
-<th align="right">L_Platelet</th>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dc_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dom_signaling.html">dom_signaling</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">"dendritic_cell"</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Show table code
+</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dc_matrix</span>, caption <span class="op">=</span> <span class="st">"Cluster signaling matrix for dendritic cell cluster."</span><span class="op">)</span>,</span>
+<span>    bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><table class="table table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+Cluster signaling matrix for dendritic cell cluster.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+L_B_cell
+</th>
+<th style="text-align:right;">
+L_CD14_monocyte
+</th>
+<th style="text-align:right;">
+L_CD16_monocyte
+</th>
+<th style="text-align:right;">
+L_CD8_T_cell
+</th>
+<th style="text-align:right;">
+L_dendritic_cell
+</th>
+<th style="text-align:right;">
+L_memory_CD4_T_cell
+</th>
+<th style="text-align:right;">
+L_naive_CD4_T_cell
+</th>
+<th style="text-align:right;">
+L_NK_cell
+</th>
+<th style="text-align:right;">
+L_Platelet
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">COPA</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1352458</td>
-<td align="right">0.1686996</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1706852</td>
-<td align="right">0.0243003</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1634935</td>
+<tr>
+<td style="text-align:left;">
+COPA
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1352458
+</td>
+<td style="text-align:right;">
+0.1686996
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1706852
+</td>
+<td style="text-align:right;">
+0.0243003
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1634935
+</td>
 </tr>
-<tr class="even">
-<td align="left">MIF</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0810828</td>
-<td align="right">0.1637432</td>
-<td align="right">0.1367747</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MIF
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0810828
+</td>
+<td style="text-align:right;">
+0.1637432
+</td>
+<td style="text-align:right;">
+0.1367747
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">APP</td>
-<td align="right">0.0494729</td>
-<td align="right">0.0623805</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0523309</td>
-<td align="right">0.0579182</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">3.8498060</td>
+<tr>
+<td style="text-align:left;">
+APP
+</td>
+<td style="text-align:right;">
+0.0494729
+</td>
+<td style="text-align:right;">
+0.0623805
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0523309
+</td>
+<td style="text-align:right;">
+0.0579182
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+3.8498060
+</td>
 </tr>
-<tr class="even">
-<td align="left">ANXA1</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1864958</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1682595</td>
-<td align="right">0.6876552</td>
-<td align="right">0.5065038</td>
-<td align="right">0.0000000</td>
-<td align="right">0.3542401</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+ANXA1
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1864958
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1682595
+</td>
+<td style="text-align:right;">
+0.6876552
+</td>
+<td style="text-align:right;">
+0.5065038
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.3542401
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CD99</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0626658</td>
-<td align="right">0.0000000</td>
-<td align="right">0.4718174</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1952307</td>
-<td align="right">0.0000000</td>
-<td align="right">0.7924524</td>
-<td align="right">1.9983051</td>
+<tr>
+<td style="text-align:left;">
+CD99
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0626658
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.4718174
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1952307
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.7924524
+</td>
+<td style="text-align:right;">
+1.9983051
+</td>
 </tr>
-<tr class="even">
-<td align="left">integrin_a4b1_complex</td>
-<td align="right">0.0775377</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0274081</td>
-<td align="right">0.0128595</td>
-<td align="right">0.0933263</td>
-<td align="right">0.1408531</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">1.2469674</td>
+<tr>
+<td style="text-align:left;">
+integrin_a4b1_complex
+</td>
+<td style="text-align:right;">
+0.0775377
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0274081
+</td>
+<td style="text-align:right;">
+0.0128595
+</td>
+<td style="text-align:right;">
+0.0933263
+</td>
+<td style="text-align:right;">
+0.1408531
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+1.2469674
+</td>
 </tr>
-<tr class="odd">
-<td align="left">BMP8B</td>
-<td align="right">0.1291568</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+BMP8B
+</td>
+<td style="text-align:right;">
+0.1291568
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">PLAU</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0455798</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0711901</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+PLAU
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0455798
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0711901
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CXCL9</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0663249</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0582573</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CXCL9
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0663249
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0582573
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">HLA-F</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.2918047</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.2588880</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+HLA-F
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.2918047
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.2588880
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CD1D</td>
-<td align="right">0.0615183</td>
-<td align="right">0.5670314</td>
-<td align="right">0.1007509</td>
-<td align="right">0.0000000</td>
-<td align="right">1.2126187</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CD1D
+</td>
+<td style="text-align:right;">
+0.0615183
+</td>
+<td style="text-align:right;">
+0.5670314
+</td>
+<td style="text-align:right;">
+0.1007509
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+1.2126187
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">CSF1</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0067252</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1724684</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CSF1
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0067252
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1724684
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CTLA4</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0369179</td>
-<td align="right">0.0000000</td>
-<td align="right">0.2085753</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CTLA4
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0369179
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.2085753
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">CD28</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.2771802</td>
-<td align="right">0.1288850</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CD28
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.2771802
+</td>
+<td style="text-align:right;">
+0.1288850
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">GRN</td>
-<td align="right">0.0000000</td>
-<td align="right">1.3784246</td>
-<td align="right">0.2818176</td>
-<td align="right">0.0000000</td>
-<td align="right">1.1878101</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+GRN
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+1.3784246
+</td>
+<td style="text-align:right;">
+0.2818176
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+1.1878101
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">TNF</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0318015</td>
-<td align="right">0.1191403</td>
-<td align="right">0.0106558</td>
-<td align="right">0.1381279</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+TNF
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0318015
+</td>
+<td style="text-align:right;">
+0.1191403
+</td>
+<td style="text-align:right;">
+0.0106558
+</td>
+<td style="text-align:right;">
+0.1381279
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">LTA</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1828448</td>
-<td align="right">0.0404983</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+LTA
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1828448
+</td>
+<td style="text-align:right;">
+0.0404983
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">CXCL12</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1028579</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CXCL12
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1028579
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CD58</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1263349</td>
-<td align="right">0.1365337</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1521363</td>
-<td align="right">0.0000000</td>
-<td align="right">0.1604005</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CD58
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1263349
+</td>
+<td style="text-align:right;">
+0.1365337
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1521363
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.1604005
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
 </tbody>
 </table>
@@ -1065,10 +2097,15 @@ the <code>cluster</code> argument to the cluster name.</p>
 <h3 id="build-information">Build information<a class="anchor" aria-label="anchor" href="#build-information"></a>
 </h3>
 <p>To keep track of the options set when running
-<code><a href="../reference/build_domino.html">build_domino()</a></code>, they are stored within the domino object
-itself. To view these options, use the <code><a href="../reference/dom_info.html">dom_info()</a></code>
-function.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code><a href="../reference/create_domino.html">create_domino()</a></code> and <code><a href="../reference/build_domino.html">build_domino()</a></code>, they are
+stored within the <code><a href="../reference/domino-class.html">domino()</a></code> object itself. To view these
+options, use the <code><a href="../reference/dom_info.html">dom_info()</a></code> function. Objects created with
+dominoSignal version 1.7.1 or newer also record the package versions
+used to create and build them. This example object was generated before
+that, so the package versions are <code>NULL</code> (as are the
+<code><a href="../reference/build_domino.html">build_domino()</a></code> parameters, which were also added in version
+1.7.1).</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dom_info.html">dom_info</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $create</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
@@ -1076,28 +2113,77 @@ function.</p>
 <span><span class="co">#&gt; $build</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $create_variables</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $build_variables</span></span>
 <span><span class="co">#&gt;     max_tf_per_clust          min_tf_pval       max_rec_per_tf </span></span>
 <span><span class="co">#&gt;               25.000                0.001               25.000 </span></span>
 <span><span class="co">#&gt; rec_tf_cor_threshold   min_rec_percentage </span></span>
-<span><span class="co">#&gt;                0.250                0.100</span></span></code></pre></div>
+<span><span class="co">#&gt;                0.250                0.100 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $create_version</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $build_version</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<p>Building the object again (with different parameters) results in a
+<code><a href="../reference/domino-class.html">domino()</a></code> object with the new parameters.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_domino.html">build_domino</a></span><span class="op">(</span><span class="va">dom</span>, max_tf_per_clust <span class="op">=</span> <span class="cn">Inf</span>, max_tf_pval <span class="op">=</span> <span class="fl">0.05</span>, max_rec_per_tf <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>    rec_tf_cor_threshold <span class="op">=</span> <span class="fl">0.1</span>, min_rec_percentage <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/dom_info.html">dom_info</a></span><span class="op">(</span><span class="va">dom</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $create</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $build</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $create_variables</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $build_variables</span></span>
+<span><span class="co">#&gt;     max_tf_per_clust          max_tf_pval       max_rec_per_tf </span></span>
+<span><span class="co">#&gt;                  Inf                 0.05                50.00 </span></span>
+<span><span class="co">#&gt; rec_tf_cor_threshold   min_rec_percentage </span></span>
+<span><span class="co">#&gt;                 0.10                 0.05 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $create_version</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $build_version</span></span>
+<span><span class="co">#&gt; [1] "1.7.1"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
-<h2 id="continued-development">Continued Development<a class="anchor" aria-label="anchor" href="#continued-development"></a>
+<h2 id="related-articles">Related articles<a class="anchor" aria-label="anchor" href="#related-articles"></a>
 </h2>
-<p>Since dominoSignal is a package still being developed, there are new
-functions and features that will be implemented in future versions. In
-the meantime, we have put together further information on <a href="https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html" class="external-link">plotting</a>
-and an example analysis can be viewed on our <a href="https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html" class="external-link">Getting
-Started</a> page. Additionally, if you find any bugs, have further
-questions, or want to share an idea, please let us know <a href="https://github.com/FertigLab/dominoSignal/issues" class="external-link">here</a>.</p>
+<ul>
+<li>
+<a href="https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html" class="external-link">Get
+started with dominoSignal</a>: the basic workflow</li>
+<li>
+<a href="https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html" class="external-link">Plotting
+functions and options</a>: visualization options</li>
+<li>
+<a href="https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html" class="external-link">Differential
+signaling workflow</a>: comparing signaling across subjects</li>
+<li>
+<a href="https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html" class="external-link">SCENIC
+for TF activity scoring</a>: generating TF activity inputs</li>
+<li>
+<a href="https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html" class="external-link">Using
+the CellPhoneDB database</a>: preparing a receptor-ligand map</li>
+</ul>
+<hr>
+<p>To report a bug, ask a question, or suggest a feature, please <a href="https://github.com/FertigLab/dominoSignal/issues" class="external-link">open an
+issue</a>.</p>
 <details><summary>
 Vignette Build Information
 </summary><p>Date last built and session information:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2026-09-16"</span></span>
+<span><span class="co">#&gt; [1] "2026-10-15"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.6.1 (2026-06-24)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -1120,45 +2206,46 @@ Vignette Build Information
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] dominoSignal_1.7.0</span></span>
+<span><span class="co">#&gt; [1] dominoSignal_1.7.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] tidyselect_1.2.1      dplyr_1.2.1           farver_2.1.2         </span></span>
-<span><span class="co">#&gt;   [4] blob_1.3.0            S7_0.2.2              filelock_1.0.3       </span></span>
-<span><span class="co">#&gt;   [7] Biostrings_2.80.2     fastmap_1.2.0         BiocFileCache_3.2.0  </span></span>
-<span><span class="co">#&gt;  [10] digest_0.6.39         lifecycle_1.0.5       cluster_2.1.8.2      </span></span>
-<span><span class="co">#&gt;  [13] KEGGREST_1.52.2       RSQLite_3.53.3        magrittr_2.0.5       </span></span>
-<span><span class="co">#&gt;  [16] compiler_4.6.1        rlang_1.3.0           sass_0.4.10          </span></span>
-<span><span class="co">#&gt;  [19] progress_1.2.3        tools_4.6.1           igraph_2.3.3         </span></span>
-<span><span class="co">#&gt;  [22] yaml_2.3.12           ggsignif_0.6.4        knitr_1.52           </span></span>
-<span><span class="co">#&gt;  [25] prettyunits_1.2.0     htmlwidgets_1.6.4     bit_4.6.0            </span></span>
-<span><span class="co">#&gt;  [28] curl_8.0.0            plyr_1.8.9            RColorBrewer_1.1-3   </span></span>
-<span><span class="co">#&gt;  [31] abind_1.4-8           withr_3.0.3           purrr_1.2.2          </span></span>
-<span><span class="co">#&gt;  [34] BiocGenerics_0.58.1   desc_1.4.3            grid_4.6.1           </span></span>
-<span><span class="co">#&gt;  [37] stats4_4.6.1          ggpubr_1.0.0          colorspace_2.1-3     </span></span>
-<span><span class="co">#&gt;  [40] ggplot2_4.0.3         scales_1.4.0          iterators_1.0.14     </span></span>
-<span><span class="co">#&gt;  [43] biomaRt_2.68.0        cli_3.6.6             rmarkdown_2.32       </span></span>
-<span><span class="co">#&gt;  [46] crayon_1.5.3          ragg_1.5.2            generics_0.1.4       </span></span>
-<span><span class="co">#&gt;  [49] otel_0.2.0            httr_1.4.9            rjson_0.2.23         </span></span>
-<span><span class="co">#&gt;  [52] DBI_1.3.0             cachem_1.1.0          stringr_1.6.0        </span></span>
-<span><span class="co">#&gt;  [55] parallel_4.6.1        AnnotationDbi_1.74.0  formatR_1.14         </span></span>
-<span><span class="co">#&gt;  [58] XVector_0.52.0        matrixStats_1.5.0     vctrs_0.7.3          </span></span>
-<span><span class="co">#&gt;  [61] Matrix_1.7-5          carData_3.0-6         jsonlite_2.0.0       </span></span>
-<span><span class="co">#&gt;  [64] car_3.1-5             IRanges_2.46.0        hms_1.1.4            </span></span>
-<span><span class="co">#&gt;  [67] GetoptLong_1.1.1      S4Vectors_0.50.2      rstatix_1.1.0        </span></span>
-<span><span class="co">#&gt;  [70] bit64_4.8.6           Formula_1.2-6         clue_0.3-68          </span></span>
-<span><span class="co">#&gt;  [73] systemfonts_1.3.2     foreach_1.5.2         tidyr_1.3.2          </span></span>
-<span><span class="co">#&gt;  [76] jquerylib_0.1.4       glue_1.8.1            pkgdown_2.2.1        </span></span>
-<span><span class="co">#&gt;  [79] codetools_0.2-20      stringi_1.8.9         shape_1.4.6.1        </span></span>
-<span><span class="co">#&gt;  [82] gtable_0.3.6          ComplexHeatmap_2.28.0 tibble_3.3.1         </span></span>
-<span><span class="co">#&gt;  [85] pillar_1.11.1         htmltools_0.5.9       Seqinfo_1.2.0        </span></span>
-<span><span class="co">#&gt;  [88] circlize_0.4.18       R6_2.6.1              dbplyr_2.6.0         </span></span>
-<span><span class="co">#&gt;  [91] httr2_1.3.0           textshaping_1.0.5     doParallel_1.0.17    </span></span>
-<span><span class="co">#&gt;  [94] evaluate_1.0.5        Biobase_2.72.0        lattice_0.22-9       </span></span>
-<span><span class="co">#&gt;  [97] backports_1.5.1       png_0.1-9             broom_1.0.13         </span></span>
-<span><span class="co">#&gt; [100] memoise_2.0.1         bslib_0.12.0          Rcpp_1.1.2           </span></span>
-<span><span class="co">#&gt; [103] xfun_0.60             fs_2.1.0              pkgconfig_2.0.3      </span></span>
-<span><span class="co">#&gt; [106] GlobalOptions_0.1.4</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] DBI_1.3.0             httr2_1.3.0           formatR_1.14         </span></span>
+<span><span class="co">#&gt;   [4] biomaRt_2.68.0        rlang_1.3.0           magrittr_2.0.5       </span></span>
+<span><span class="co">#&gt;   [7] clue_0.3-68           GetoptLong_1.1.1      otel_0.2.0           </span></span>
+<span><span class="co">#&gt;  [10] matrixStats_1.5.0     compiler_4.6.1        RSQLite_3.53.3       </span></span>
+<span><span class="co">#&gt;  [13] png_0.1-9             systemfonts_1.3.2     vctrs_0.7.3          </span></span>
+<span><span class="co">#&gt;  [16] stringr_1.6.0         pkgconfig_2.0.3       shape_1.4.6.1        </span></span>
+<span><span class="co">#&gt;  [19] crayon_1.5.3          fastmap_1.2.0         backports_1.5.1      </span></span>
+<span><span class="co">#&gt;  [22] dbplyr_2.6.0          XVector_0.52.0        rmarkdown_2.32       </span></span>
+<span><span class="co">#&gt;  [25] ragg_1.5.2            purrr_1.2.2           bit_4.6.0            </span></span>
+<span><span class="co">#&gt;  [28] xfun_0.61             cachem_1.1.0          jsonlite_2.0.0       </span></span>
+<span><span class="co">#&gt;  [31] progress_1.2.3        blob_1.3.0            broom_1.0.13         </span></span>
+<span><span class="co">#&gt;  [34] parallel_4.6.1        prettyunits_1.2.0     cluster_2.1.8.2      </span></span>
+<span><span class="co">#&gt;  [37] R6_2.6.1              bslib_0.12.0          stringi_1.8.9        </span></span>
+<span><span class="co">#&gt;  [40] RColorBrewer_1.1-3    car_3.1-5             jquerylib_0.1.4      </span></span>
+<span><span class="co">#&gt;  [43] Rcpp_1.1.2            Seqinfo_1.2.0         iterators_1.0.14     </span></span>
+<span><span class="co">#&gt;  [46] knitr_1.52            IRanges_2.46.0        Matrix_1.7-5         </span></span>
+<span><span class="co">#&gt;  [49] igraph_2.3.4          tidyselect_1.2.1      rstudioapi_0.19.0    </span></span>
+<span><span class="co">#&gt;  [52] abind_1.4-8           yaml_2.3.12           doParallel_1.0.17    </span></span>
+<span><span class="co">#&gt;  [55] codetools_0.2-20      curl_8.1.0            lattice_0.22-9       </span></span>
+<span><span class="co">#&gt;  [58] tibble_3.3.1          plyr_1.8.9            Biobase_2.72.0       </span></span>
+<span><span class="co">#&gt;  [61] withr_3.0.3           KEGGREST_1.52.2       S7_0.2.2             </span></span>
+<span><span class="co">#&gt;  [64] evaluate_1.0.5        desc_1.4.3            BiocFileCache_3.2.0  </span></span>
+<span><span class="co">#&gt;  [67] xml2_1.6.0            circlize_0.4.18       Biostrings_2.80.2    </span></span>
+<span><span class="co">#&gt;  [70] pillar_1.11.1         ggpubr_1.0.0          filelock_1.0.3       </span></span>
+<span><span class="co">#&gt;  [73] carData_3.0-6         foreach_1.5.2         stats4_4.6.1         </span></span>
+<span><span class="co">#&gt;  [76] generics_0.1.4        S4Vectors_0.50.3      hms_1.1.4            </span></span>
+<span><span class="co">#&gt;  [79] ggplot2_4.0.3         scales_1.4.0          glue_1.8.1           </span></span>
+<span><span class="co">#&gt;  [82] tools_4.6.1           ggsignif_0.6.4        fs_2.1.0             </span></span>
+<span><span class="co">#&gt;  [85] grid_4.6.1            tidyr_1.3.2           AnnotationDbi_1.74.0 </span></span>
+<span><span class="co">#&gt;  [88] colorspace_2.1-4      Formula_1.2-6         cli_3.6.6            </span></span>
+<span><span class="co">#&gt;  [91] kableExtra_1.4.1      textshaping_1.0.5     viridisLite_0.4.3    </span></span>
+<span><span class="co">#&gt;  [94] svglite_2.2.2         ComplexHeatmap_2.28.0 dplyr_1.2.1          </span></span>
+<span><span class="co">#&gt;  [97] gtable_0.3.6          rstatix_1.1.0         sass_0.4.10          </span></span>
+<span><span class="co">#&gt; [100] digest_0.6.39         BiocGenerics_0.58.1   rjson_0.2.23         </span></span>
+<span><span class="co">#&gt; [103] htmlwidgets_1.6.4     farver_2.1.2          memoise_2.0.1        </span></span>
+<span><span class="co">#&gt; [106] htmltools_0.5.9       pkgdown_2.2.1         lifecycle_1.0.5      </span></span>
+<span><span class="co">#&gt; [109] httr_1.4.9            GlobalOptions_0.1.4   bit64_4.8.6</span></span></code></pre></div>
 </details>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

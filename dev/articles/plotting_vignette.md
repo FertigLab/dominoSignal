@@ -1,13 +1,10 @@
 # Plotting Functions and Options
 
-In addition to the numerous plotting options available in the original
-[Domino](https://github.com/Elisseeff-Lab/domino), dominoSignal has
-added more functionality and new methods to improve visualization and
-interpretation of analysis results. Here, we will go over the different
-plotting functions available, as well as different options that can be
-utilized, and options for customization.
+dominoSignal provides several functions for visualizing analysis
+results. Here, we go over the available plotting functions, their
+options, and ways to customize them.
 
-## Setup and Data Load
+## Setup and data load
 
 ``` r
 
@@ -15,10 +12,13 @@ set.seed(42)
 library(dominoSignal)
 ```
 
-In this tutorial, we will use the domino object we built on the [Getting
+In this tutorial, we will use the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object we built on the [Getting
 Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html)
-page. If you have not yet built a domino object, you can do so by
-following the instructions on that page.
+page. If you have not yet built a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object, you can do so by following the instructions on that page.
 
 Instructions to load data
 
@@ -37,7 +37,7 @@ dom <- readRDS(tmp_path)
 
 [`cor_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_heatmap.md)
 can be used to show the correlations calculated between receptors and
-transcription factors.
+transcription factors (TFs).
 
 ``` r
 
@@ -51,8 +51,8 @@ set.](plotting_vignette_files/figure-html/corheatmap-1.png)
 In addition to displaying the scores for the correlations, this function
 can also be used to identify correlations above a certain value (using
 the `bool` and `bool_thresh` arguments) or to identify the combinations
-of receptors and transcription factors (TFs) that are connected (with
-argument `mark_connections`).
+of receptors and TFs that are connected (with argument
+`mark_connections`).
 
 ``` r
 
@@ -69,8 +69,8 @@ heatmap of correlations with xs shown over receptors and transcription
 factors that are
 linked.](plotting_vignette_files/figure-html/corheatmap-options-2.png)
 
-If only a subset of receptors or transcription factors are of interest,
-a vector of either (or both) can be passed to the function.
+If only a subset of receptors or TFs are of interest, a vector of either
+(or both) can be passed to the function.
 
 ``` r
 
@@ -91,10 +91,11 @@ is not explicitly stated, they can still be passed to
 [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
 through
 [`cor_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_heatmap.md).
+To set `column_title` directly, set `title = FALSE`.
 
 ``` r
 
-cor_heatmap(dom, cluster_rows = FALSE, cluster_columns = FALSE, column_title = "Heatmap Without Clustering",
+cor_heatmap(dom, title = FALSE, cluster_rows = FALSE, cluster_columns = FALSE, column_title = "Heatmap Without Clustering",
     column_names_gp = grid::gpar(fontsize = 4))
 ```
 
@@ -105,8 +106,7 @@ result.](plotting_vignette_files/figure-html/corheatmap-ComplexHeatmap-args-1.pn
 ### Heatmap of Transcription Factor Activation Scores
 
 [`feat_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/feat_heatmap.md)
-is used to show the transcription factor activation for features in the
-signaling network.
+is used to show the activity of the TFs in the signaling network.
 
 ``` r
 
@@ -122,9 +122,9 @@ It functions similarly to
 with arguments to select a specific vector of features, to use a boolean
 view with a threshold, and to pass other arguments to
 [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html).
-Specific to this function though are arguments for setting the range of
-values to be visualized and one to choose to normalize the scores to the
-max value.
+Specific to this function are arguments for setting the range of values
+to be visualized and an argument to choose to normalize the scores to
+the max value.
 
 ``` r
 
@@ -144,12 +144,12 @@ the maximum score, and a binary heatmap showing transcription factor
 activation with the default threshold of
 0.2.](plotting_vignette_files/figure-html/featheatmap-options-2.png)
 
-### Heatmap of Incoming Signaling for a Cluster
+### Heatmap of incoming signaling for a cluster
 
 [`incoming_signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/incoming_signaling_heatmap.md)
-can be used to visualize the cluster average expression of the ligands
-capable of activating the TFs enriched in the cluster. For example, to
-view the incoming signaling of the CD8 T cells:
+can be used to visualize the mean expression, by sending cluster, of the
+ligands capable of activating the TFs enriched in the cluster. For
+example, to view the incoming signaling of the CD8 T cells:
 
 ``` r
 
@@ -169,7 +169,7 @@ incoming_signaling_heatmap(dom, "CD8_T_cell", clusts = c("CD14_monocyte", "CD16_
 ```
 
 ![Heatmap of ligand expression subset to sending clusters CD14 monocytes
-and CD16 monocytes targetting CD8 T
+and CD16 monocytes targeting CD8 T
 cells.](plotting_vignette_files/figure-html/incoming-subset-1.png)
 
 As with our other heatmap functions, options are available for a minimum
@@ -178,11 +178,11 @@ thresholding, whether to normalize the matrix, and the ability to pass
 further arguments to
 [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html).
 
-### Heatmap of Signaling Between Clusters
+### Heatmap of signaling between clusters
 
 [`signaling_heatmap()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_heatmap.md)
 makes a heatmap showing the signaling strength of ligands from each
-cluster to receptors of each cluster based on averaged expression.
+cluster to receptors of each cluster based on mean expression.
 
 ``` r
 
@@ -210,9 +210,9 @@ heatmap of collective signaling normalized to the maximum value of
 received
 signaling.](plotting_vignette_files/figure-html/signaling-norm-2.png)
 
-## Network Plots
+## Network plots
 
-### Network showing L - R - TF signaling between clusters
+### Network showing L-R-TF signaling between clusters
 
 [`gene_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/gene_network.md)
 makes a network plot to display signaling in selected clusters such that
@@ -257,7 +257,7 @@ layout where ligand CD1D, receptor LILRB2, and transcription factor FOSB
 have been highlighted in violet and ligand nodes are scaled
 up.](plotting_vignette_files/figure-html/genenetwork-cols-1.png)
 
-### Network Showing Interaction Strength Across Data
+### Network showing interaction strength across data
 
 [`signaling_network()`](https://FertigLab.github.io/dominoSignal/dev/reference/signaling_network.md)
 can be used to create a network plot such that nodes are clusters and
@@ -281,7 +281,7 @@ clusters:
 ``` r
 
 signaling_network(dom, showOutgoingSignalingClusts = "CD14_monocyte", scale = "none",
-    norm = "none", layout = "fr", scale_by = "none", edge_weight = 2, vert_scale = 10)
+    normalize = "none", layout = "fr", scale_by = "none", edge_weight = 2, vert_scale = 10)
 ```
 
 ![Network plot for signaling from the CD14 monocytes which are plotted
@@ -289,11 +289,15 @@ in the center with edges connecting to the other clusters which are
 positioned around the central
 node.](plotting_vignette_files/figure-html/signalingnet-clusts-1.png)
 
-## Other Types of Plots
+As the edges in these plots do not show arrows to represent
+directionality, the `showOutgoingSignalingClusts` and
+`showIncomingSignalingClusts` arguments can be used to specify which
+clusters are sending or receiving signaling to resolve any ambiguity.
 
-### Chord Diagrams Connecting Ligands and Receptors
+## Other types of plots
 
-A new addition to dominoSignal,
+### Chord diagrams connecting ligands and receptors
+
 [`circos_ligand_receptor()`](https://FertigLab.github.io/dominoSignal/dev/reference/circos_ligand_receptor.md)
 creates a chord plot showing ligands that can activate a specific
 receptor, displaying mean cluster expression of the ligand with the
@@ -325,12 +329,12 @@ circos_ligand_receptor(dom, receptor = "CD74", cell_colors = cols)
 arcs have been assigned specific
 colors.](plotting_vignette_files/figure-html/circos-opt-1.png)
 
-### Scatter Plot to Visualize Correlation
+### Scatter plot to visualize correlation
 
 [`cor_scatter()`](https://FertigLab.github.io/dominoSignal/dev/reference/cor_scatter.md)
 can be used to plot each cell based on activation of the selected TF and
 expression of the receptor. This produces a scatter plot as well as a
-line of best fit to look at receptor - TF correlation.
+line of best fit to look at receptor-TF correlation.
 
 ``` r
 
@@ -342,21 +346,38 @@ with a line of best fit displayed over the
 points.](plotting_vignette_files/figure-html/corscatter-1.png)
 
 Do keep in mind that there is an argument for `remove_rec_dropout` that
-should match the parameter that was used when the domino object was
-built. In this case, we did not use that build parameter, so we will
-leave the value in this argument as its default value of FALSE.
+should match the parameter that was used when the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object was created. By default, the function checks to see if the
+parameter was used when the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object was created and will use that setting for the plot (for older
+objects that may not store those parameters, it will default to FALSE).
+If you want to override that setting, you can do so by specifying the
+argument in the function call.
 
-## Continued Development
+## Related articles
 
-Since dominoSignal is a package still being developed, there are new
-functions and features that will be implemented in future versions. In
-the meantime, to view an example analysis, see our [Getting
-Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html)
-page, or see our [domino object
-structure](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html)
-page to get familiar with the object structure. Additionally, if you
-find any bugs, have further questions, or want to share an idea, please
-let us know [here](https://github.com/FertigLab/dominoSignal/issues).
+- [Get started with
+  dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html):
+  the basic workflow
+- [Interacting with domino
+  objects](https://fertiglab.github.io/dominoSignal/articles/domino_object_vignette.html):
+  object structure and accessor functions
+- [Differential signaling
+  workflow](https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html):
+  comparing signaling across subjects
+- [SCENIC for TF activity
+  scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html):
+  generating TF activity inputs
+- [Using the CellPhoneDB
+  database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html):
+  preparing a receptor-ligand map
+
+------------------------------------------------------------------------
+
+To report a bug, ask a question, or suggest a feature, please [open an
+issue](https://github.com/FertigLab/dominoSignal/issues).
 
 Vignette Build Information
 
@@ -365,7 +386,7 @@ Date last built and session information:
 ``` r
 
 Sys.Date()
-#> [1] "2026-09-16"
+#> [1] "2026-10-15"
 sessionInfo()
 #> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
@@ -388,7 +409,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] dominoSignal_1.7.0
+#> [1] dominoSignal_1.7.1
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.3.0             httr2_1.3.0           formatR_1.14         
@@ -400,7 +421,7 @@ sessionInfo()
 #>  [19] shape_1.4.6.1         crayon_1.5.3          fastmap_1.2.0        
 #>  [22] backports_1.5.1       dbplyr_2.6.0          XVector_0.52.0       
 #>  [25] labeling_0.4.3        rmarkdown_2.32        ragg_1.5.2           
-#>  [28] purrr_1.2.2           bit_4.6.0             xfun_0.60            
+#>  [28] purrr_1.2.2           bit_4.6.0             xfun_0.61            
 #>  [31] cachem_1.1.0          jsonlite_2.0.0        progress_1.2.3       
 #>  [34] blob_1.3.0            broom_1.0.13          parallel_4.6.1       
 #>  [37] prettyunits_1.2.0     cluster_2.1.8.2       R6_2.6.1             
@@ -408,19 +429,19 @@ sessionInfo()
 #>  [43] car_3.1-5             jquerylib_0.1.4       Rcpp_1.1.2           
 #>  [46] Seqinfo_1.2.0         iterators_1.0.14      knitr_1.52           
 #>  [49] IRanges_2.46.0        splines_4.6.1         Matrix_1.7-5         
-#>  [52] igraph_2.3.3          tidyselect_1.2.1      abind_1.4-8          
+#>  [52] igraph_2.3.4          tidyselect_1.2.1      abind_1.4-8          
 #>  [55] yaml_2.3.12           doParallel_1.0.17     codetools_0.2-20     
-#>  [58] curl_8.0.0            lattice_0.22-9        tibble_3.3.1         
+#>  [58] curl_8.1.0            lattice_0.22-9        tibble_3.3.1         
 #>  [61] plyr_1.8.9            Biobase_2.72.0        withr_3.0.3          
 #>  [64] KEGGREST_1.52.2       S7_0.2.2              evaluate_1.0.5       
 #>  [67] desc_1.4.3            BiocFileCache_3.2.0   circlize_0.4.18      
 #>  [70] Biostrings_2.80.2     pillar_1.11.1         ggpubr_1.0.0         
 #>  [73] filelock_1.0.3        carData_3.0-6         foreach_1.5.2        
-#>  [76] stats4_4.6.1          generics_0.1.4        S4Vectors_0.50.2     
+#>  [76] stats4_4.6.1          generics_0.1.4        S4Vectors_0.50.3     
 #>  [79] hms_1.1.4             ggplot2_4.0.3         scales_1.4.0         
 #>  [82] glue_1.8.1            tools_4.6.1           ggsignif_0.6.4       
 #>  [85] fs_2.1.0              grid_4.6.1            tidyr_1.3.2          
-#>  [88] AnnotationDbi_1.74.0  colorspace_2.1-3      nlme_3.1-169         
+#>  [88] AnnotationDbi_1.74.0  colorspace_2.1-4      nlme_3.1-169         
 #>  [91] Formula_1.2-6         cli_3.6.6             textshaping_1.0.5    
 #>  [94] ComplexHeatmap_2.28.0 dplyr_1.2.1           gtable_0.3.6         
 #>  [97] rstatix_1.1.0         sass_0.4.10           digest_0.6.39        

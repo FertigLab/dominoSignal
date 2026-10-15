@@ -1,13 +1,15 @@
 # Interacting with domino Objects
 
 In this tutorial, we will go into more detail on the structure of a
-domino object and the ways in which to access the data stored within. We
-will be using the domino object we built on the [Getting
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object and the ways in which to access the data stored within. We will
+be using the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object we built on the [Getting
 Started](https://fertiglab.github.io/dominoSignal) page. If you have not
-yet built a domino object, you can do so by following the instructions
-on the [Getting
-Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html)
-page.
+yet built a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object, you can do so by following the instructions on that page.
 
 Instructions to load data
 
@@ -25,17 +27,19 @@ dom <- readRDS(tmp_path)
 
 ## Object contents
 
-There is a great deal of information stored with the [domino object
-class](https://fertiglab.github.io/dominoSignal/reference/domino-class.html).
-The domino object is an S4 class object that contains a variety of
-information about the data set used to build the object, the calculated
-values, and the linkages between receptors, ligands, and transcription
-factors. The object is structured as follows (with some examples of the
-information stored within each slot:
+There is a great deal of information stored with the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object class. The
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object is an S4 class object that contains a variety of information
+about the data set used to build the object, the calculated values, and
+the linkages between receptors, ligands, and transcription factors. The
+object is structured as follows (with some examples of the information
+stored within each slot):
 
 - Input Data
 
-  - Information about the database used to construct the rl_map
+  - Information about the database used to construct the `rl_map`
 
   - Inputted counts matrix
 
@@ -43,33 +47,31 @@ information stored within each slot:
 
   - Inputted cluster labels
 
-  - Inputted transcription factor activation scores
+  - Inputted transcription factor (TF) activity scores
 
 - Calculated values
 
-  - Differential expression p-values of transcription factors in each
-    cluster
+  - P-values for differential activity of TFs in each cluster
 
-  - Correlation values between ligands and receptors
+  - Correlation values between receptor expression and TF activity
 
-  - Median correlation between components of receptor complexes
+  - Receptor-TF correlations with receptor complexes summarized as the
+    median of their component genes
 
 - Linkages
 
-  - Complexes show the component genes of any complexes in the rl map
+  - Complexes show the component genes of any complexes in the `rl_map`
 
-  - Receptor - ligand linkages as determined from the rl map
+  - Receptor-ligand linkages as determined from the `rl_map`
 
-  - Transcription factor - target linkages as determined from the SCENIC
-    analysis (or other regulon inference method)
+  - TF-target linkages as determined from the SCENIC analysis (or other
+    regulon inference method)
 
-  - Transcription factors that are differentially expressed in each
-    cluster
+  - TFs that are active in each cluster
 
-  - Transcription factors that are correlated with receptors
+  - TFs that are correlated with receptors
 
-  - Transcription factors that are correlated with receptors in each
-    cluster
+  - TFs that are correlated with receptors in each cluster
 
   - Receptors which are active in each cluster
 
@@ -86,35 +88,47 @@ information stored within each slot:
 
 - Miscellaneous Information
 
-  - Build information, which includes the parameters used to build the
-    object in the
-    [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
-    functions
+  - Create information, which includes the parameters and package
+    version used to create the object in
+    [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
 
-  - The pared down receptor ligand map information used in building the
-    object
+  - Build information, which includes the parameters and package
+    versionused to build the object in
+    [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+
+  - The processed `rl_map` used in building the object
 
   - The percent expression of receptors within each cluster
 
 For commonly accessed information (the number of cells, clusters, and
-some build information), the show and print methods for domino objects
-can be used.
+some build information), the show and print methods for
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+objects can be used.
 
 ``` r
 
 dom
+#> A domino object of 2607 cells
+#>                 Contains signaling between 9 clusters
+#>                 Built with a maximum of 25 TFs per cluster
+#>                 and a maximum of 25 receptors per TF
 ```
 
 ``` r
 
 print(dom)
+#> A domino object of 2607 cells
+#>                 Contains signaling between 9 clusters
+#>                 Built with a maximum of 25 TFs per cluster
+#>                 and a maximum of 25 receptors per TF
 ```
 
 ## Access functions
 
-To facilitate access to the information stored in the domino object, we
-have provided a collection of functions to retrieve specific items.
-These functions begin with “dom\_” and can be listed using
+To facilitate access to the information stored in the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object, we have provided a collection of functions to retrieve specific
+items. These functions begin with “dom\_” and can be listed using
 [`ls()`](https://rdrr.io/r/base/ls.html).
 
 ``` r
@@ -123,20 +137,26 @@ ls("package:dominoSignal", pattern = "^dom_")
 #>  [1] "dom_clusters"      "dom_correlations"  "dom_counts"       
 #>  [4] "dom_database"      "dom_de"            "dom_info"         
 #>  [7] "dom_linkages"      "dom_network_items" "dom_signaling"    
-#> [10] "dom_tf_activation" "dom_to_df"         "dom_zscores"
+#> [10] "dom_signalling"    "dom_tf_activation" "dom_to_df"        
+#> [13] "dom_zscores"
 ```
 
 ### Input data
 
-When creating a domino object with the
+When creating a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object with the
 [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
 function, several inputs are required which are then stored in the
-domino object itself. These include cluster labels, the counts matrix,
-z-scored counts matrix, transcription factor activation scores, and the
-R-L database used in
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object itself. These include cluster labels, the counts matrix, z-scored
+expression matrix, TF activity scores, and the receptor-ligand database
+used in
 [`create_rl_map_cellphonedb()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_rl_map_cellphonedb.md).
 
-For example, to access the cluster names in the domino object:
+For example, to access the cluster names in the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object:
 
 ``` r
 
@@ -154,7 +174,14 @@ To access the counts:
 ``` r
 
 count_matrix <- dom_counts(dom)
-knitr::kable(count_matrix[1:5, 1:5])
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(count_matrix[1:5, 1:5], caption = "Subset of counts matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |  | AAACATACAACCAC-1 | AAACATTGAGCTAC-1 | AAACATTGATCAGC-1 | AAACCGTGCTTCCG-1 | AAACCGTGTATGCG-1 |
@@ -165,12 +192,23 @@ knitr::kable(count_matrix[1:5, 1:5])
 | RP11-206L10.9 | 0 | 0 | 0 | 0 | 0 |
 | FAM87B | 0 | 0 | 0 | 0 | 0 |
 
-Or z-scored counts:
+Subset of counts matrix from domino object. {.table .table
+.table-striped .table-hover
+style="margin-left: auto; margin-right: auto;"}
+
+Or z-scored expression:
 
 ``` r
 
 z_matrix <- dom_zscores(dom)
-knitr::kable(z_matrix[1:5, 1:5])
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(z_matrix[1:5, 1:5], caption = "Subset of z-scored counts matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |  | AAACATACAACCAC-1 | AAACATTGAGCTAC-1 | AAACATTGATCAGC-1 | AAACCGTGCTTCCG-1 | AAACCGTGTATGCG-1 |
@@ -181,12 +219,23 @@ knitr::kable(z_matrix[1:5, 1:5])
 | RP11-206L10.9 | -0.0337574 | -0.0337574 | -0.0337574 | -0.0337574 | -0.0337574 |
 | FAM87B | -0.0274227 | -0.0274227 | -0.0274227 | -0.0274227 | -0.0274227 |
 
-The transcription factor activation scores can be similarly accessed:
+Subset of z-scored counts matrix from domino object. {.table .table
+.table-striped .table-hover
+style="margin-left: auto; margin-right: auto;"}
+
+The TF activity scores can be similarly accessed:
 
 ``` r
 
-activation_matrix <- dom_tf_activation(dom)
-knitr::kable(activation_matrix[1:5, 1:5])
+activity_matrix <- dom_tf_activation(dom)
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(activity_matrix[1:5, 1:5], caption = "Subset of transcription factor activity matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |  | AAACATACAACCAC-1 | AAACATTGAGCTAC-1 | AAACATTGATCAGC-1 | AAACCGTGCTTCCG-1 | AAACCGTGTATGCG-1 |
@@ -197,8 +246,12 @@ knitr::kable(activation_matrix[1:5, 1:5])
 | ATF6 | 0.0000000 | 0.0211198 | 0.1151665 | 0.0850461 | 0.0460666 |
 | BCL3 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 |
 
-Information about the database referenced for ligand - receptor pairs
-and composition of protein complexes can be extracted from the
+Subset of transcription factor activity matrix from domino object.
+{.table .table .table-striped .table-hover
+style="margin-left: auto; margin-right: auto;"}
+
+Information about the database referenced for receptor-ligand pairs and
+composition of protein complexes can be extracted from the
 [`dom_database()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_database.md)
 function. By default, the function returns the name(s) of the
 database(s) used:
@@ -209,13 +262,20 @@ dom_database(dom)
 #> [1] "CellPhoneDB_v4.0"
 ```
 
-If you would like to view the entire ligand - receptor map, set
+If you would like to view the entire receptor-ligand map, set
 `name_only = FALSE`:
 
 ``` r
 
 db_matrix <- dom_database(dom, name_only = FALSE)
-knitr::kable(db_matrix[1:5, 1:5])
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(db_matrix[1:5, 1:5], caption = "Subset of full receptor-ligand map from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |  | int_pair | name_A | uniprot_A | gene_A | type_A |
@@ -226,21 +286,32 @@ knitr::kable(db_matrix[1:5, 1:5])
 | 7 | RAreceptor_RXRB & atRetinoicAcid_byALDH1A3 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R |
 | 8 | RAreceptor_RXRB & atRetinoicAcid_byALDH1A2 | RAreceptor_RXRB | P28702,P29373 | RXRB,CRABP2 | R |
 
+Subset of full receptor-ligand map from domino object. {.table .table
+.table-striped .table-hover
+style="margin-left: auto; margin-right: auto;"}
+
 ### Calculations
 
-Active transcription factors in each cluster are determined by
-conducting Wilcoxon rank sum tests for each transcription factor where
-the transcription factor activity scores amongst all cells in a cluster
-are tested against the activity scores of all cells outside of the
-cluster. The p-values for the one-sided test for greater activity within
-the cluster compared to other cells can be accessed with the
+By default, active TFs in each cluster are determined by conducting
+Wilcoxon rank-sum tests for each TF where the TF activity scores amongst
+all cells in a cluster are tested against the activity scores of all
+cells outside of the cluster. The p-values for the one-sided test for
+greater activity within the cluster compared to other cells can be
+accessed with the
 [`dom_de()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_de.md)
 function.
 
 ``` r
 
 de_matrix <- dom_de(dom)
-knitr::kable(de_matrix[1:5, 1:5])
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(de_matrix[1:5, 1:5], caption = "Subset of differential expression p-values for TFs."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |       |    B_cell | CD14_monocyte | CD16_monocyte | CD8_T_cell | dendritic_cell |
@@ -251,19 +322,32 @@ knitr::kable(de_matrix[1:5, 1:5])
 | ATF6  | 0.5988625 |             1 |     0.9893142 |  0.0365779 |      0.9549489 |
 | BCL3  | 0.9299696 |             0 |     0.6007326 |  0.1482247 |      0.0757460 |
 
-Linkage between receptors and transcription factors is assessed by
-Spearman correlation between transcription factor activity scores and
-scaled expression of receptor-encoding genes across all cells in the
-data set. Spearman coefficients can be accessed with the
+Subset of differential expression p-values for TFs. {.table .table
+.table-striped .table-hover
+style="margin-left: auto; margin-right: auto;"}
+
+Linkages between receptors and TFs are assessed by Spearman correlation
+between TF activity scores and scaled expression of receptor-encoding
+genes across all cells in the data set. Spearman coefficients can be
+accessed with the
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_correlations.md)
-function. Setting `type` to “complex” will return the median correlation
-between components of receptor complexes; the default (“rl”) will return
-receptor - ligand correlations.
+function. The default (`type = "rl"`) will return the correlation of
+each receptor gene with each TF. Setting `type= "complex"` will return
+receptor-TF correlations in which receptor complexes are summarized as
+the median of their component genes (the values used by
+[`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)).
 
 ``` r
 
 cor_matrix <- dom_correlations(dom)
-knitr::kable(cor_matrix[1:5, 1:5])
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(cor_matrix[1:5, 1:5], caption = "Correlation matrix from domino object."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |          |      ARNTL |       ATF3 |       ATF4 |       ATF6 |       BCL3 |
@@ -274,27 +358,31 @@ knitr::kable(cor_matrix[1:5, 1:5])
 | TNFRSF25 |  0.0310362 | -0.1171502 |  0.0701541 |  0.0458227 |  0.0047186 |
 | TNFRSF1B | -0.0933019 |  0.2690328 | -0.0625319 | -0.0457366 |  0.0239629 |
 
+Correlation matrix from domino object. {.table .table .table-striped
+.table-hover style="margin-left: auto; margin-right: auto;"}
+
 ### Linkages
 
-Linkages between ligands, receptors, and transcription factors can be
-accessed in several different ways, depending on the specific link and
-the scope desired. The
+Linkages between ligands, receptors, and TFs can be accessed in several
+different ways, depending on the specific link and the scope desired.
+The
 [`dom_linkages()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_linkages.md)
 function has three arguments - the first, like all of our access
-functions, is for the domino object. The second, `link_type`, is used to
-specify which linkages are desired (options are complexes, receptor -
-ligand, tf - target, or tf - receptor). The third argument,
-`by_cluster`, determines whether the linkages returned are arranged by
-cluster (though this does change the available linkage types to tf -
-receptor, receptor, or incoming-ligand). For example, to access the
-complexes used across the dataset:
+functions, is for the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object. The second, `link_type`, is used to specify which linkages are
+desired (options are complexes, receptor-ligand, tf-target, or
+tf-receptor). The third argument, `by_cluster`, determines whether the
+linkages returned are arranged by cluster (though this does change the
+available linkage types to tf-receptor, receptor, or incoming-ligand).
+For example, to access the complexes used across the dataset:
 
 ``` r
 
 complex_links <- dom_linkages(dom, link_type = "complexes")
-# Look for components of NODAL receptor complex
-complex_links$NODAL_receptor
-#> NULL
+# Look for components of IL7 receptor complex
+complex_links$IL7_receptor
+#> [1] "IL7R"  "IL2RG"
 ```
 
 To view incoming ligands to each cluster:
@@ -317,7 +405,8 @@ incoming_links$dendritic_cell
 
 If, for some reason, you find yourself in need of the entire linkage
 structure (not recommended), it can be accessed through its slot name;
-domino objects are S4 objects.
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+objects are S4 objects.
 
 ``` r
 
@@ -330,7 +419,9 @@ names(all_linkages)
 ```
 
 Alternately, to obtain a simplified list of receptors, ligands, and/or
-features in the domino object, use the
+features in the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object, use the
 [`dom_network_items()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_network_items.md)
 function. To pull all transcription factors associated with the
 dendritic cell cluster:
@@ -344,13 +435,21 @@ head(dc_tfs)
 
 ### Signaling Matrices
 
-The averaged z-scored expression of ligands and receptors between
-different clusters can be accessed in matrix form.
+The mean z-scored expression of ligands, by sending cluster, that target
+each receiving cluster’s active receptors can be accessed in matrix
+form.
 
 ``` r
 
 signal_matrix <- dom_signaling(dom)
-knitr::kable(signal_matrix)
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(signal_matrix, caption = "Cluster signaling matrix of averaged z_scored expression."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |  | L_B_cell | L_CD14_monocyte | L_CD16_monocyte | L_CD8_T_cell | L_dendritic_cell | L_memory_CD4_T_cell | L_naive_CD4_T_cell | L_NK_cell | L_Platelet |
@@ -365,13 +464,24 @@ knitr::kable(signal_matrix)
 | R_NK_cell | 0.2930600 | 1.5760509 | 0.6086536 | 0.2556741 | 1.5025648 | 0.7620921 | 0.1772729 | 0.1604005 | 4.013299 |
 | R_Platelet | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.000000 |
 
+Cluster signaling matrix of averaged z_scored expression. {.table .table
+.table-striped .table-hover
+style="margin-left: auto; margin-right: auto;"}
+
 To view signaling to a specific cluster from the other clusters, set the
 `cluster` argument to the cluster name.
 
 ``` r
 
 dc_matrix <- dom_signaling(dom, "dendritic_cell")
-knitr::kable(dc_matrix)
+```
+
+Show table code
+
+``` r
+
+kableExtra::kable_styling(knitr::kable(dc_matrix, caption = "Cluster signaling matrix for dendritic cell cluster."),
+    bootstrap_options = c("striped", "hover"))
 ```
 
 |  | L_B_cell | L_CD14_monocyte | L_CD16_monocyte | L_CD8_T_cell | L_dendritic_cell | L_memory_CD4_T_cell | L_naive_CD4_T_cell | L_NK_cell | L_Platelet |
@@ -396,14 +506,26 @@ knitr::kable(dc_matrix)
 | CXCL12 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.1028579 | 0.0000000 | 0.0000000 | 0.0000000 |
 | CD58 | 0.0000000 | 0.0000000 | 0.1263349 | 0.1365337 | 0.0000000 | 0.1521363 | 0.0000000 | 0.1604005 | 0.0000000 |
 
+Cluster signaling matrix for dendritic cell cluster. {.table .table
+.table-striped .table-hover
+style="margin-left: auto; margin-right: auto;"}
+
 ### Build information
 
 To keep track of the options set when running
+[`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+and
 [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md),
-they are stored within the domino object itself. To view these options,
-use the
+they are stored within the
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object itself. To view these options, use the
 [`dom_info()`](https://FertigLab.github.io/dominoSignal/dev/reference/dom_info.md)
-function.
+function. Objects created with dominoSignal version 1.7.1 or newer also
+record the package versions used to create and build them. This example
+object was generated before that, so the package versions are `NULL` (as
+are the
+[`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
+parameters, which were also added in version 1.7.1).
 
 ``` r
 
@@ -414,24 +536,75 @@ dom_info(dom)
 #> $build
 #> [1] TRUE
 #> 
+#> $create_variables
+#> NULL
+#> 
 #> $build_variables
 #>     max_tf_per_clust          min_tf_pval       max_rec_per_tf 
 #>               25.000                0.001               25.000 
 #> rec_tf_cor_threshold   min_rec_percentage 
-#>                0.250                0.100
+#>                0.250                0.100 
+#> 
+#> $create_version
+#> NULL
+#> 
+#> $build_version
+#> NULL
 ```
 
-## Continued Development
+Building the object again (with different parameters) results in a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object with the new parameters.
 
-Since dominoSignal is a package still being developed, there are new
-functions and features that will be implemented in future versions. In
-the meantime, we have put together further information on
-[plotting](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html)
-and an example analysis can be viewed on our [Getting
-Started](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html)
-page. Additionally, if you find any bugs, have further questions, or
-want to share an idea, please let us know
-[here](https://github.com/FertigLab/dominoSignal/issues).
+``` r
+
+dom <- build_domino(dom, max_tf_per_clust = Inf, max_tf_pval = 0.05, max_rec_per_tf = 50,
+    rec_tf_cor_threshold = 0.1, min_rec_percentage = 0.05)
+dom_info(dom)
+#> $create
+#> [1] TRUE
+#> 
+#> $build
+#> [1] TRUE
+#> 
+#> $create_variables
+#> NULL
+#> 
+#> $build_variables
+#>     max_tf_per_clust          max_tf_pval       max_rec_per_tf 
+#>                  Inf                 0.05                50.00 
+#> rec_tf_cor_threshold   min_rec_percentage 
+#>                 0.10                 0.05 
+#> 
+#> $create_version
+#> NULL
+#> 
+#> $build_version
+#> [1] "1.7.1"
+```
+
+## Related articles
+
+- [Get started with
+  dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html):
+  the basic workflow
+- [Plotting functions and
+  options](https://fertiglab.github.io/dominoSignal/articles/plotting_vignette.html):
+  visualization options
+- [Differential signaling
+  workflow](https://fertiglab.github.io/dominoSignal/articles/differential_signaling.html):
+  comparing signaling across subjects
+- [SCENIC for TF activity
+  scoring](https://fertiglab.github.io/dominoSignal/articles/tf_scenic_vignette.html):
+  generating TF activity inputs
+- [Using the CellPhoneDB
+  database](https://fertiglab.github.io/dominoSignal/articles/cellphonedb_vignette.html):
+  preparing a receptor-ligand map
+
+------------------------------------------------------------------------
+
+To report a bug, ask a question, or suggest a feature, please [open an
+issue](https://github.com/FertigLab/dominoSignal/issues).
 
 Vignette Build Information
 
@@ -440,7 +613,7 @@ Date last built and session information:
 ``` r
 
 Sys.Date()
-#> [1] "2026-09-16"
+#> [1] "2026-10-15"
 sessionInfo()
 #> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
@@ -463,43 +636,44 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] dominoSignal_1.7.0
+#> [1] dominoSignal_1.7.1
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] tidyselect_1.2.1      dplyr_1.2.1           farver_2.1.2         
-#>   [4] blob_1.3.0            S7_0.2.2              filelock_1.0.3       
-#>   [7] Biostrings_2.80.2     fastmap_1.2.0         BiocFileCache_3.2.0  
-#>  [10] digest_0.6.39         lifecycle_1.0.5       cluster_2.1.8.2      
-#>  [13] KEGGREST_1.52.2       RSQLite_3.53.3        magrittr_2.0.5       
-#>  [16] compiler_4.6.1        rlang_1.3.0           sass_0.4.10          
-#>  [19] progress_1.2.3        tools_4.6.1           igraph_2.3.3         
-#>  [22] yaml_2.3.12           ggsignif_0.6.4        knitr_1.52           
-#>  [25] prettyunits_1.2.0     htmlwidgets_1.6.4     bit_4.6.0            
-#>  [28] curl_8.0.0            plyr_1.8.9            RColorBrewer_1.1-3   
-#>  [31] abind_1.4-8           withr_3.0.3           purrr_1.2.2          
-#>  [34] BiocGenerics_0.58.1   desc_1.4.3            grid_4.6.1           
-#>  [37] stats4_4.6.1          ggpubr_1.0.0          colorspace_2.1-3     
-#>  [40] ggplot2_4.0.3         scales_1.4.0          iterators_1.0.14     
-#>  [43] biomaRt_2.68.0        cli_3.6.6             rmarkdown_2.32       
-#>  [46] crayon_1.5.3          ragg_1.5.2            generics_0.1.4       
-#>  [49] otel_0.2.0            httr_1.4.9            rjson_0.2.23         
-#>  [52] DBI_1.3.0             cachem_1.1.0          stringr_1.6.0        
-#>  [55] parallel_4.6.1        AnnotationDbi_1.74.0  formatR_1.14         
-#>  [58] XVector_0.52.0        matrixStats_1.5.0     vctrs_0.7.3          
-#>  [61] Matrix_1.7-5          carData_3.0-6         jsonlite_2.0.0       
-#>  [64] car_3.1-5             IRanges_2.46.0        hms_1.1.4            
-#>  [67] GetoptLong_1.1.1      S4Vectors_0.50.2      rstatix_1.1.0        
-#>  [70] bit64_4.8.6           Formula_1.2-6         clue_0.3-68          
-#>  [73] systemfonts_1.3.2     foreach_1.5.2         tidyr_1.3.2          
-#>  [76] jquerylib_0.1.4       glue_1.8.1            pkgdown_2.2.1        
-#>  [79] codetools_0.2-20      stringi_1.8.9         shape_1.4.6.1        
-#>  [82] gtable_0.3.6          ComplexHeatmap_2.28.0 tibble_3.3.1         
-#>  [85] pillar_1.11.1         htmltools_0.5.9       Seqinfo_1.2.0        
-#>  [88] circlize_0.4.18       R6_2.6.1              dbplyr_2.6.0         
-#>  [91] httr2_1.3.0           textshaping_1.0.5     doParallel_1.0.17    
-#>  [94] evaluate_1.0.5        Biobase_2.72.0        lattice_0.22-9       
-#>  [97] backports_1.5.1       png_0.1-9             broom_1.0.13         
-#> [100] memoise_2.0.1         bslib_0.12.0          Rcpp_1.1.2           
-#> [103] xfun_0.60             fs_2.1.0              pkgconfig_2.0.3      
-#> [106] GlobalOptions_0.1.4
+#>   [1] DBI_1.3.0             httr2_1.3.0           formatR_1.14         
+#>   [4] biomaRt_2.68.0        rlang_1.3.0           magrittr_2.0.5       
+#>   [7] clue_0.3-68           GetoptLong_1.1.1      otel_0.2.0           
+#>  [10] matrixStats_1.5.0     compiler_4.6.1        RSQLite_3.53.3       
+#>  [13] png_0.1-9             systemfonts_1.3.2     vctrs_0.7.3          
+#>  [16] stringr_1.6.0         pkgconfig_2.0.3       shape_1.4.6.1        
+#>  [19] crayon_1.5.3          fastmap_1.2.0         backports_1.5.1      
+#>  [22] dbplyr_2.6.0          XVector_0.52.0        rmarkdown_2.32       
+#>  [25] ragg_1.5.2            purrr_1.2.2           bit_4.6.0            
+#>  [28] xfun_0.61             cachem_1.1.0          jsonlite_2.0.0       
+#>  [31] progress_1.2.3        blob_1.3.0            broom_1.0.13         
+#>  [34] parallel_4.6.1        prettyunits_1.2.0     cluster_2.1.8.2      
+#>  [37] R6_2.6.1              bslib_0.12.0          stringi_1.8.9        
+#>  [40] RColorBrewer_1.1-3    car_3.1-5             jquerylib_0.1.4      
+#>  [43] Rcpp_1.1.2            Seqinfo_1.2.0         iterators_1.0.14     
+#>  [46] knitr_1.52            IRanges_2.46.0        Matrix_1.7-5         
+#>  [49] igraph_2.3.4          tidyselect_1.2.1      rstudioapi_0.19.0    
+#>  [52] abind_1.4-8           yaml_2.3.12           doParallel_1.0.17    
+#>  [55] codetools_0.2-20      curl_8.1.0            lattice_0.22-9       
+#>  [58] tibble_3.3.1          plyr_1.8.9            Biobase_2.72.0       
+#>  [61] withr_3.0.3           KEGGREST_1.52.2       S7_0.2.2             
+#>  [64] evaluate_1.0.5        desc_1.4.3            BiocFileCache_3.2.0  
+#>  [67] xml2_1.6.0            circlize_0.4.18       Biostrings_2.80.2    
+#>  [70] pillar_1.11.1         ggpubr_1.0.0          filelock_1.0.3       
+#>  [73] carData_3.0-6         foreach_1.5.2         stats4_4.6.1         
+#>  [76] generics_0.1.4        S4Vectors_0.50.3      hms_1.1.4            
+#>  [79] ggplot2_4.0.3         scales_1.4.0          glue_1.8.1           
+#>  [82] tools_4.6.1           ggsignif_0.6.4        fs_2.1.0             
+#>  [85] grid_4.6.1            tidyr_1.3.2           AnnotationDbi_1.74.0 
+#>  [88] colorspace_2.1-4      Formula_1.2-6         cli_3.6.6            
+#>  [91] kableExtra_1.4.1      textshaping_1.0.5     viridisLite_0.4.3    
+#>  [94] svglite_2.2.2         ComplexHeatmap_2.28.0 dplyr_1.2.1          
+#>  [97] gtable_0.3.6          rstatix_1.1.0         sass_0.4.10          
+#> [100] digest_0.6.39         BiocGenerics_0.58.1   rjson_0.2.23         
+#> [103] htmlwidgets_1.6.4     farver_2.1.2          memoise_2.0.1        
+#> [106] htmltools_0.5.9       pkgdown_2.2.1         lifecycle_1.0.5      
+#> [109] httr_1.4.9            GlobalOptions_0.1.4   bit64_4.8.6
 ```

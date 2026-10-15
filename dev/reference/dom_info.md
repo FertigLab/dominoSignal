@@ -2,7 +2,9 @@
 
 A function to pull the parameters used when running
 [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
-from a domino object
+from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -14,15 +16,20 @@ dom_info(dom)
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
 
 ## Value
 
 A list containing booleans for whether the object has been created and
-built and a list of the build parameters that were used in
+built, the parameters used in
+[`create_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/create_domino.md)
+and
 [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md)
-to infer the signaling network
+to infer the signaling network, and the dominoSignal versions used to
+create and build the object (NULL if not recorded)
 
 ## See also
 

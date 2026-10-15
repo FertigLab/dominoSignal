@@ -46,4 +46,6 @@ mean_exp <- mean_ligand_expression(counts,
     ligands = c("PTPRC", "FASLG"), cell_ident = "CD14_monocyte",
     cell_barcodes = colnames(counts), destination = "FAS"
 )
+#> Warning: Ligand PTPRC not found in expression matrix; skipping
+#> Warning: Ligand FASLG not found in expression matrix; skipping
 ```

@@ -12,7 +12,9 @@ get_resolved_ligands(dom)
 
 - dom:
 
-  A built domino object (as output by
+  A built
+  [`domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/domino-class.md)
+  object (as output by
   [`build_domino()`](https://FertigLab.github.io/dominoSignal/dev/reference/build_domino.md))
 
 ## Value
