@@ -1,3 +1,7 @@
+# dominoSignal v2.0.0 (November 25, 2026)
+
+dominoSignal v2 released as part of Bioconductor release 3.24 to reflect major (and breaking) changes.
+
 # dominoSignal v1.7.1 (October 12, 2026)
 
 ## BREAKING CHANGES

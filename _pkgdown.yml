@@ -176,8 +176,8 @@ news:
 
 authors:
   footer:
-    roles: aut
-    text: "is developed by"
+    roles: cre
+    text: "is currently maintained by"
   sidebar:
     roles: [aut, ctb]
 
