@@ -65,7 +65,7 @@ dom <- build_domino(
 )
 ```
 
-See [Get Started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) for a complete example, including guidance on choosing these thresholds.
+See [Get Started with dominoSignal](https://fertiglab.github.io/dominoSignal/articles/dominoSignal.html) for a complete example, including details on these thresholds.
 
 ### 3. Explore and visualize results
 
