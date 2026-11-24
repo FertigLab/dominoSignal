@@ -10,7 +10,7 @@ cluster will be included in the plot.
 ``` r
 gene_network(
   dom,
-  clust,
+  clust = NULL,
   OutgoingSignalingClust = NULL,
   class_cols = c(lig = "#FF685F", rec = "#47a7ff", feat = "#39C740"),
   cols = NULL,
@@ -24,7 +24,9 @@ gene_network(
 
 - dom:
 
-  Domino object with network built
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object with network built
   ([`build_domino()`](https://FertigLab.github.io/dominoSignal/reference/build_domino.md))
 
 - clust:
@@ -40,7 +42,7 @@ gene_network(
 
   Named vector of colors used to color classes of vertices. Values must
   be colors and names must be classes ('rec', 'lig', and 'feat' for
-  receptors, ligands, and features.).
+  receptors, ligands, and features).
 
 - cols:
 
@@ -66,7 +68,9 @@ gene_network(
 
 ## Value
 
-An igraph plot rendered to the active graphics device
+An igraph plot rendered to the active graphics device. A list with the
+igraph object (`graph`) and the layout matrix (`layout`) is returned
+invisibly, or NULL if no signaling is found for the clusters.
 
 ## See also
 
@@ -76,10 +80,13 @@ Network Plotting Functions:
 ## Examples
 
 ``` r
-#basic usage
-example(build_domino, echo = FALSE)
+# basic usage
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
 gene_network(
- pbmc_dom_built_tiny, clust = "CD8_T_cell", 
- OutgoingSignalingClust = "CD14_monocyte")
+    dom,
+    clust = "CD8_T_cell",
+    OutgoingSignalingClust = "CD14_monocyte"
+)
 
 ```

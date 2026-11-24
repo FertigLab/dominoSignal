@@ -1,6 +1,7 @@
-# Access transcription factor activation
+# Access transcription factor activity scores
 
-A function to pull transcription factor activation scores from a domino
+A function to pull transcription factor activity scores from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
 object
 
 ## Usage
@@ -13,17 +14,19 @@ dom_tf_activation(dom)
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/reference/create_domino.md)
 
 ## Value
 
-A matrix containing the transcription factor activation scores for each
-TF (row) by cell (column)
+A matrix containing the transcription factor activity scores for each TF
+(row) by cell (column)
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/reference/dom_counts.md),
@@ -38,6 +41,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-tf_activation <- dom_tf_activation(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+tf_activation <- dom_tf_activation(dom)
 ```

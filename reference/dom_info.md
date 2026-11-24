@@ -2,7 +2,9 @@
 
 A function to pull the parameters used when running
 [`build_domino()`](https://FertigLab.github.io/dominoSignal/reference/build_domino.md)
-from a domino object
+from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -14,19 +16,24 @@ dom_info(dom)
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/reference/create_domino.md)
 
 ## Value
 
 A list containing booleans for whether the object has been created and
-built and a list of the build parameters that were used in
+built, the parameters used in
+[`create_domino()`](https://FertigLab.github.io/dominoSignal/reference/create_domino.md)
+and
 [`build_domino()`](https://FertigLab.github.io/dominoSignal/reference/build_domino.md)
-to infer the signaling network
+to infer the signaling network, and the dominoSignal versions used to
+create and build the object (NULL if not recorded)
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/reference/dom_counts.md),
@@ -41,6 +48,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-build_details <- dom_info(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+build_details <- dom_info(dom)
 ```

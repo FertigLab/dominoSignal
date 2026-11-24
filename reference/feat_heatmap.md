@@ -1,6 +1,6 @@
 # Create a heatmap of features organized by cluster
 
-Creates a heatmap of transcription factor activation scores by cells
+Creates a heatmap of transcription factor activity scores by cells
 grouped by cluster.
 
 ## Usage
@@ -25,7 +25,9 @@ feat_heatmap(
 
 - dom:
 
-  Domino object with network built
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object with network built
   ([`build_domino()`](https://FertigLab.github.io/dominoSignal/reference/build_domino.md))
 
 - feats:
@@ -54,7 +56,7 @@ feat_heatmap(
 
 - norm:
 
-  Boolean indicating whether or not to normalize the transcrption
+  Boolean indicating whether or not to normalize the transcription
   factors to their max value.
 
 - cols:
@@ -81,8 +83,8 @@ feat_heatmap(
 - ...:
 
   Other parameters to pass to
-  [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
-  . Note that to use the 'main' parameter of
+  [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html).
+  Note that to use the 'main' parameter of
   [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
   you must set title = FALSE and to use 'annCol' or 'annColors' ann_cols
   must be FALSE.
@@ -101,14 +103,23 @@ Heatmap Plotting Functions:
 ## Examples
 
 ``` r
-#basic usage
-example(build_domino, echo = FALSE)
-feat_heatmap(pbmc_dom_built_tiny)
+# basic usage
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+feat_heatmap(dom)
 
-#using thresholds
+# using thresholds
 feat_heatmap(
- pbmc_dom_built_tiny, min_thresh = 0.1, 
- max_thresh = 0.6, norm = TRUE, bool = FALSE)
-#> Warning: You are using norm with min_thresh and max_thresh. Note that values will be thresholded AFTER normalization.
+    dom,
+    min_thresh = 0.1,
+    max_thresh = 0.6,
+    bool = FALSE
+)
+#> The automatically generated colors map from the 1^st and 99^th of the
+#> values in the matrix. There are outliers in the matrix whose patterns
+#> might be hidden by this color mapping. You can manually set the color
+#> to `col` argument.
+#> 
+#> Use `suppressMessages()` to turn off this message.
 
 ```

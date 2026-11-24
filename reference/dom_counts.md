@@ -1,6 +1,8 @@
 # Access counts
 
-A function to pull gene expression from a domino object
+A function to pull gene expression from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -12,7 +14,9 @@ dom_counts(dom)
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/reference/create_domino.md)
 
 ## Value
@@ -22,7 +26,7 @@ cell (column)
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/reference/dom_correlations.md),
 [`dom_database()`](https://FertigLab.github.io/dominoSignal/reference/dom_database.md),
@@ -37,6 +41,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-counts <- dom_counts(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+counts <- dom_counts(dom)
 ```

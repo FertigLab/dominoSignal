@@ -3,12 +3,31 @@
 Creates a network diagram of signaling between clusters. Nodes are
 clusters and directed edges indicate signaling from one cluster to
 another. Edges are colored based on the color scheme of the ligand
-expressing cluster
+expressing cluster `signaling_network()` and `signalling_network()` are
+synonyms.
 
 ## Usage
 
 ``` r
 signaling_network(
+  dom,
+  cols = NULL,
+  edge_weight = 0.3,
+  clusts = NULL,
+  showOutgoingSignalingClusts = NULL,
+  showIncomingSignalingClusts = NULL,
+  min_thresh = -Inf,
+  max_thresh = Inf,
+  normalize = "none",
+  scale = "sq",
+  layout = "circle",
+  scale_by = "rec_sig",
+  vert_scale = 3,
+  plot_title = NULL,
+  ...
+)
+
+signalling_network(
   dom,
   cols = NULL,
   edge_weight = 0.3,
@@ -31,14 +50,18 @@ signaling_network(
 
 - dom:
 
-  a domino object with network built
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object with network built
   ([`build_domino()`](https://FertigLab.github.io/dominoSignal/reference/build_domino.md))
 
 - cols:
 
   named vector indicating the colors for clusters. Values are colors and
-  names must match clusters in the domino object. If left as NULL then
-  ggplot colors are generated for the clusters
+  names must match clusters in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object. If left as NULL then ggplot colors are generated for the
+  clusters
 
 - edge_weight:
 
@@ -78,7 +101,7 @@ signaling_network(
 - scale:
 
   how to scale the values (after thresholding). Options are 'none',
-  'sqrt' for square root, 'log' for log10, or 'sq' for square
+  'sqrt' for square root, 'log' for log10(x+1), or 'sq' for square
 
 - layout:
 
@@ -92,12 +115,12 @@ signaling_network(
   signaling, 'rec_sig' for summed incoming signaling, and 'none'. In the
   former two cases the values are scaled with asinh after summing all
   incoming or outgoing signaling. Vertices with no incoming/outgoing
-  signaling due to the other parameters are given a size of 0.
+  signaling due to other parameters are given a size of 0.
 
 - vert_scale:
 
   integer used to scale size of vertices with or without variable
-  scaling from scale_by.
+  scaling from scale_by parameter.
 
 - plot_title:
 
@@ -119,14 +142,17 @@ Network Plotting Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-#basic usage
-signaling_network(pbmc_dom_built_tiny, edge_weight = 2)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+# basic usage
+signaling_network(dom, edge_weight = 2)
 
 # scaling, thresholds, layouts, selecting clusters
 signaling_network(
- pbmc_dom_built_tiny, showOutgoingSignalingClusts = "CD14_monocyte", 
- scale = "none", normalize = "none", layout = "fr", scale_by = "none", 
- vert_scale = 5, edge_weight = 2)
+    dom,
+    showOutgoingSignalingClusts = "CD14_monocyte",
+    scale = "none", normalize = "none", layout = "fr", scale_by = "none",
+    vert_scale = 5, edge_weight = 2
+)
 
 ```

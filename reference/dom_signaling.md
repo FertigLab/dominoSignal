@@ -1,18 +1,24 @@
 # Access signaling
 
-A function to pull signaling matrices from a domino object
+A function to pull signaling matrices from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object `dom_signaling()` and `dom_signalling()` are synonyms.
 
 ## Usage
 
 ``` r
 dom_signaling(dom, cluster = NULL)
+
+dom_signalling(dom, cluster = NULL)
 ```
 
 ## Arguments
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/reference/create_domino.md)
 
 - cluster:
@@ -23,13 +29,13 @@ dom_signaling(dom, cluster = NULL)
 ## Value
 
 A data frame containing the signaling score through each ligand (row) by
-each cluster (column) OR a data frame containing the global summed
+each cluster (column) OR . a data frame containing the global summed
 signaling scores between receptors (rows) and ligands (columns) of each
 cluster
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/reference/dom_counts.md),
@@ -44,6 +50,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-monocyte_signaling <- dom_signaling(pbmc_dom_built_tiny, cluster = "CD14_monocyte")
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+monocyte_signaling <- dom_signaling(dom, cluster = "CD14_monocyte")
 ```

@@ -34,8 +34,10 @@ An updated RL signaling data frame
 ## Examples
 
 ``` r
-example(create_rl_map_cellphonedb, echo = FALSE)
+data(CellPhoneDB)
 lr_name <- data.frame("abbrev" = c("L", "R"), "full" = c("Ligand", "Receptor"))
-rl_map_expanded <- add_rl_column(map = rl_map_tiny, map_ref = "type_A",
-conv = lr_name, new_name = "type_A_full")
+rl_map_expanded <- add_rl_column(
+    map = CellPhoneDB$rl_map_tiny, map_ref = "type_A",
+    conv = lr_name, new_name = "type_A_full"
+)
 ```

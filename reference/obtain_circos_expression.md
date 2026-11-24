@@ -1,7 +1,8 @@
 # Obtain Circos Expression
 
-Pull expression data from a domino object and format for plotting as a
-receptor-oriented circos plot.
+Pull expression data from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object and format for plotting as a receptor-oriented circos plot.
 
 ## Usage
 
@@ -19,11 +20,14 @@ obtain_circos_expression(
 
 - dom:
 
-  Domino object that has undergone network building with build_domino()
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has undergone network building with build_domino()
 
 - receptor:
 
-  Name of a receptor active in at least one cell type in the domino
+  Name of a receptor active in at least one cell type in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
   object
 
 - ligands:
@@ -37,26 +41,11 @@ obtain_circos_expression(
 
 - cell_idents:
 
-  Vector of cell types from cluster assignments in the domino object to
-  be included in the plot.
+  Vector of clusters from cluster assignments in the
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object to be included in the plot.
 
 ## Value
 
 a data frame where each row describes plotting parameters of
-ligand-receptor interactions to pass to render_circos_ligand_receptor()
-
-## Examples
-
-``` r
-example(build_domino, echo = FALSE)
-#basic usage
-obtain_circos_expression(pbmc_dom_built_tiny, receptor = "CXCR3", ligands = "CCL20")
-#>                origin destination mean.expression        sender ligand receptor
-#> 1        B_cell-CCL20       CXCR3       0.0000000        B_cell  CCL20    CXCR3
-#> 2 CD14_monocyte-CCL20       CXCR3       0.2095956 CD14_monocyte  CCL20    CXCR3
-#> 3    CD8_T_cell-CCL20       CXCR3       0.0000000    CD8_T_cell  CCL20    CXCR3
-#>   scaled.mean.expression ligand.arc receptor.arc
-#> 1                      0          1     1.333333
-#> 2                      1          1     1.333333
-#> 3                      0          1     1.333333
-```
+receptor-ligand interactions to pass to render_circos_ligand_receptor()

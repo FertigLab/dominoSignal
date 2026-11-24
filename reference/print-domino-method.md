@@ -1,6 +1,8 @@
 # Print domino object
 
-Prints a summary of a domino object
+Prints a summary of a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -13,7 +15,9 @@ print(x, ...)
 
 - x:
 
-  A domino object
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object
 
 - ...:
 
@@ -21,16 +25,20 @@ print(x, ...)
 
 ## Value
 
-A printed description of the number of cells and clusters in the domino
+A printed description of the number of cells and clusters in the
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
 object
 
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-print(pbmc_dom_built_tiny)
+data(DominoObjects)
+print(DominoObjects$built_dom_tiny)
 #> A domino object of 360 cells
 #>                 Contains signaling between 3 clusters
 #>                 Built with a maximum of Inf TFs per cluster
 #>                 and a maximum of Inf receptors per TF
+#> Created using 'clusters' TF selection with receptor and ligand complexes
+#> Created with dominoSignal v1.7.1
+#> Built with dominoSignal v1.7.1
 ```

@@ -1,6 +1,8 @@
 # Access differential expression
 
-A function to pull differential expression p-values from a domino object
+A function to pull differential expression p-values from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -12,7 +14,9 @@ dom_de(dom)
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/reference/create_domino.md)
 
 ## Value
@@ -22,7 +26,7 @@ transcription factors (rows) in each cluster (columns)
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/reference/dom_counts.md),
@@ -37,6 +41,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-de_mat <- dom_de(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+de_mat <- dom_de(dom)
 ```

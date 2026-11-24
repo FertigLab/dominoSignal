@@ -1,6 +1,8 @@
 # Access z-scores
 
-A function to pull z-scored expression from a domino object
+A function to pull z-scored expression from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -12,7 +14,9 @@ dom_zscores(dom)
 
 - dom:
 
-  a domino object that has been created with
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has been created with
   [`create_domino()`](https://FertigLab.github.io/dominoSignal/reference/create_domino.md)
 
 ## Value
@@ -22,7 +26,7 @@ A matrix containing the z-scored gene expression values for each gene
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/reference/dom_counts.md),
@@ -37,6 +41,7 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-zscores <- dom_zscores(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+zscores <- dom_zscores(dom)
 ```

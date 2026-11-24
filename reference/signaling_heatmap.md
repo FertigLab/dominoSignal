@@ -1,15 +1,26 @@
 # Create a network heatmap
 
 Creates a heatmap of the signaling network. Alternatively, the network
-matrix can be accessed directly in the signaling slot of a domino object
-using the
+matrix can be accessed directly in the signaling slot of a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object using the
 [`dom_signaling()`](https://FertigLab.github.io/dominoSignal/reference/dom_signaling.md)
-function.
+function. `signaling_heatmap()` and `signalling_heatmap()` are synonyms.
 
 ## Usage
 
 ``` r
 signaling_heatmap(
+  dom,
+  clusts = NULL,
+  min_thresh = -Inf,
+  max_thresh = Inf,
+  scale = "none",
+  normalize = "none",
+  ...
+)
+
+signalling_heatmap(
   dom,
   clusts = NULL,
   min_thresh = -Inf,
@@ -24,7 +35,9 @@ signaling_heatmap(
 
 - dom:
 
-  domino object with network built
+  A
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object with network built
   ([`build_domino()`](https://FertigLab.github.io/dominoSignal/reference/build_domino.md))
 
 - clusts:
@@ -44,7 +57,7 @@ signaling_heatmap(
 - scale:
 
   how to scale the values (after thresholding). Options are 'none',
-  'sqrt' for square root, or 'log' for log10.
+  'sqrt' for square root, or 'log' for log10(x+1).
 
 - normalize:
 
@@ -73,15 +86,15 @@ Heatmap Plotting Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-#basic usage
-signaling_heatmap(pbmc_dom_built_tiny)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+# basic usage
+signaling_heatmap(dom)
 
-#scale
-signaling_heatmap(pbmc_dom_built_tiny, scale = "sqrt")
+# scale
+signaling_heatmap(dom, scale = "sqrt")
 
-#normalize
-signaling_heatmap(pbmc_dom_built_tiny, normalize = "rec_norm")
-#> Warning: Some values are NA, replacing with 0s.
+# normalize
+signaling_heatmap(dom, normalize = "lig_norm")
 
 ```

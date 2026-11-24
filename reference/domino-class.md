@@ -14,7 +14,7 @@ An instance of class `domino `
 
 - `db_info`:
 
-  List of data sets from ligand - receptor database
+  List of data sets from receptor-ligand database
 
 - `counts`:
 
@@ -30,8 +30,8 @@ An instance of class `domino `
 
 - `features`:
 
-  Matrix of features (TFs) to correlate receptor - ligand expression
-  with. Cells are columns and features are rows.
+  Matrix of features (TFs) to correlate receptor-ligand expression with.
+  Cells are columns and features are rows.
 
 - `cor`:
 
@@ -48,7 +48,9 @@ An instance of class `domino `
 
 - `misc`:
 
-  List of miscellaneous info pertaining to run parameters etc.
+  List of miscellaneous info pertaining to run parameters etc.,
+  including the dominoSignal versions used to create (`create_version`)
+  and build (`build_version`) the object.
 
 - `cl_signaling_matrices`:
 

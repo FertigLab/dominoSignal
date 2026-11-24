@@ -1,6 +1,6 @@
-# PBMC RNAseq data subset
+# PBMC scRNAseq data subset
 
-A subset of the results of PBMC RNA-seq data.
+A subset of the preprocessed 10x Genomics PBMC 3k scRNAseq data.
 
 ## Usage
 
@@ -12,18 +12,19 @@ data("PBMC")
 
 A list of:
 
-- RNA_count_tiny:
+- count_tiny:
 
-  A subset of PBMC RNA-seq data: counts assay
+  Subset of the sparse counts matrix (`dgCMatrix`), genes x cells.
 
-- RNA_zscore_tiny:
+- zscore_tiny:
 
-  A subset of PBMC RNA-seq data: zscore assay
+  Subset of z-scored expression matrix, genes x cells.
 
 - clusters_tiny:
 
-  A subset of PBMC RNA-seq data: clusters as defined by cell_type
+  Factor of cell-type labels named by cell barcode.
 
 ## Source
 
-<https://zenodo.org/records/10951634/files/pbmc3k_sce.rds>
+<https://doi.org/10.5281/zenodo.10124865> (file `pbmc3k_sce.rds`);
+formatted with `data-raw/tiny_data.R`.

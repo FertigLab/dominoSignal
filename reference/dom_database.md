@@ -1,6 +1,8 @@
 # Access database
 
-A function to pull database information from a domino object
+A function to pull database information from a
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object
 
 ## Usage
 
@@ -12,7 +14,9 @@ dom_database(dom, name_only = TRUE)
 
 - dom:
 
-  a domino object that has been created
+  a
+  [`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+  object that has been created
 
 - name_only:
 
@@ -21,13 +25,16 @@ dom_database(dom, name_only = TRUE)
 
 ## Value
 
-A vector of unique databases used in building the domino object OR a
-data frame that includes the database information used in the domino
+A vector of unique databases used in building the
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
+object OR a data frame that includes the database information used in
+the
+[`domino()`](https://FertigLab.github.io/dominoSignal/reference/domino-class.md)
 object creation
 
 ## See also
 
-Accessor Functions:
+Other accessors:
 [`dom_clusters()`](https://FertigLab.github.io/dominoSignal/reference/dom_clusters.md),
 [`dom_correlations()`](https://FertigLab.github.io/dominoSignal/reference/dom_correlations.md),
 [`dom_counts()`](https://FertigLab.github.io/dominoSignal/reference/dom_counts.md),
@@ -42,7 +49,8 @@ Accessor Functions:
 ## Examples
 
 ``` r
-example(build_domino, echo = FALSE)
-database_name <- dom_database(pbmc_dom_built_tiny)
-full_database <- dom_database(pbmc_dom_built_tiny, name_only = FALSE)
+data(DominoObjects)
+dom <- DominoObjects$built_dom_tiny
+database_name <- dom_database(dom)
+full_database <- dom_database(dom, name_only = FALSE)
 ```
